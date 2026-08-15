@@ -40,10 +40,14 @@
   --border-soft: #172033;
   --border-strong: #334155;
 
-  --text: #e8edf5;
-  --text-dim: #93a1b8;
-  --text-faint: #64748b;
-  --text-ghost: #4b5768;
+  /* Every step is checked against both --bg and --bg-raised at WCAG AA for
+     normal text (4.5:1). The obvious slate-500/slate-600 picks measured 3.73
+     and 2.62 — they look fine and fail, which is exactly how inaccessible
+     dark UI happens. Ratios in comments are against --bg-raised. */
+  --text: #e8edf5; /* 15.08 */
+  --text-dim: #93a1b8; /* 7.34 */
+  --text-faint: #7d8ba3; /* 5.15 — labels, table headers, sub-labels */
+  --text-ghost: #6f7f96; /* 4.35 raised / 4.71 on --bg, where it is used */
 
   /* --- meaning ----------------------------------------------------------- */
   --long: #34d399;
@@ -765,6 +769,18 @@ a.src:hover {
 }
 
 /* ======================================================== responsive ==== */
+
+/* Chips and buttons measure 27px and 30px tall — fine for a mouse, under the
+   44px comfortable-touch target. Rather than making the desktop UI chunky to
+   satisfy a case it does not have, bump only where the pointer is coarse. */
+@media (pointer: coarse) {
+  .chip,
+  .ghost-btn {
+    min-height: 44px;
+    padding-left: var(--s4);
+    padding-right: var(--s4);
+  }
+}
 
 @media (max-width: 700px) {
   .stat-value {
