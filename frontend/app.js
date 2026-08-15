@@ -17,6 +17,8 @@
   var state = {
     overview: null,
     live: false,
+    loading: false,
+    error: null,
     venueFilter: null,
     signalFilter: null,
   };
@@ -131,21 +133,65 @@
       });
   }
 
-  function load() {
+  function setLoading(isLoading) {
+    state.loading = isLoading;
+
     var badge = document.getElementById("data-mode");
-    badge.className = "badge badge-muted";
-    badge.textContent = "connecting…";
+    var button = document.getElementById("refresh-btn");
+
+    button.disabled = isLoading;
+    button.setAttribute("aria-busy", isLoading ? "true" : "false");
+    button.textContent = isLoading ? "Loading…" : "Reload";
+
+    if (isLoading) {
+      badge.className = "badge badge-muted";
+      badge.textContent = "connecting…";
+      // Only skeleton the first load. On a manual reload the existing data is
+      // still on screen and still true, so replacing it with placeholders
+      // would be a downgrade.
+      if (!state.overview) renderSkeletons();
+    }
+  }
+
+  function renderSkeletons(cardCount) {
+    var host = document.getElementById("signals");
+    clear(host);
+    for (var index = 0; index < (cardCount || 6); index += 1) {
+      var card = el("div", "skeleton");
+      card.setAttribute("aria-hidden", "true");
+      ["w-30", "w-100", "w-80", "w-60"].forEach(function (width) {
+        card.appendChild(el("div", "skeleton-line " + width));
+      });
+      host.appendChild(card);
+    }
+  }
+
+  function load() {
+    if (state.loading) return Promise.resolve();
+    setLoading(true);
 
     return fetchWithTimeout(API_BASE + "/api/overview")
       .then(function (data) {
         state.overview = data;
         state.live = true;
+        state.error = null;
       })
-      .catch(function () {
-        state.overview = window.FINANCERT_FALLBACK || null;
+      .catch(function (error) {
+        var snapshot = window.FINANCERT_FALLBACK || null;
         state.live = false;
+        if (snapshot) {
+          // Degraded, not broken: the snapshot is real data, just not current.
+          state.overview = snapshot;
+          state.error = null;
+        } else {
+          state.overview = null;
+          state.error = error && error.name === "AbortError" ? "timeout" : "unreachable";
+        }
       })
-      .then(render);
+      .then(function () {
+        setLoading(false);
+        render();
+      });
   }
 
   // ---------------------------------------------------------------- render
@@ -155,9 +201,9 @@
     var badge = document.getElementById("data-mode");
 
     if (!data) {
-      badge.className = "badge badge-fallback";
-      badge.textContent = "no data";
-      setEmpty(document.getElementById("signals"), "No data available. Start the API or reseed.");
+      badge.className = "badge badge-error";
+      badge.textContent = state.error === "timeout" ? "timed out" : "unreachable";
+      renderErrorState();
       return;
     }
 
@@ -179,6 +225,42 @@
     renderActivity(data);
   }
 
+  function renderErrorState() {
+    var host = document.getElementById("signals");
+    clear(host);
+
+    var block = el("div", "state-block");
+    block.appendChild(el("div", "state-title", "Can't reach the API"));
+    block.appendChild(
+      el(
+        "p",
+        "state-detail",
+        state.error === "timeout"
+          ? "The API at localhost:8000 didn't respond in time, and no offline snapshot is bundled."
+          : "Nothing is serving localhost:8000, and no offline snapshot is bundled. Start it with `make run` in backend/, or run `make seed && make fallback` to build a snapshot."
+      )
+    );
+
+    var retry = el("button", "ghost-btn", "Try again");
+    retry.type = "button";
+    retry.addEventListener("click", load);
+    block.appendChild(retry);
+
+    host.appendChild(block);
+
+    // Wipe the summary rather than leaving stale figures standing next to an
+    // error that says we have no data.
+    ["stat-usd", "stat-positions", "stat-actors", "stat-window"].forEach(function (id) {
+      document.getElementById(id).textContent = "—";
+    });
+    clear(document.getElementById("venue-row"));
+    clear(document.getElementById("signal-filters"));
+    clear(document.getElementById("venue-filters"));
+    setEmpty(document.getElementById("conviction-body"), "No data.", 5);
+    setEmpty(document.getElementById("contested-body"), "No data.", 4);
+    setEmpty(document.getElementById("activity-body"), "No data.", 6);
+  }
+
   function renderStats(data) {
     document.getElementById("stat-usd").textContent = money(data.total_usd_tracked);
     document.getElementById("stat-positions").textContent = count(data.total_positions);
@@ -192,7 +274,7 @@
 
     (data.venues || []).forEach(function (venue) {
       var card = el("div", "venue-card" + (venue.position_count ? "" : " is-empty"));
-      card.style.setProperty("--accent", "var(--" + venue.venue + ")");
+      card.style.setProperty("--accent-venue", "var(--" + venue.venue + ")");
 
       card.appendChild(el("h3", null, VENUE_NAME[venue.venue] || venue.venue));
 
