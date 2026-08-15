@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Financert — where power puts its money</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128200;</text></svg>"
+    />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="mark" aria-hidden="true"></span>
+        <div>
+          <h1>Financert</h1>
+          <p class="tagline">Where the most powerful people actually put their money</p>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <span id="data-mode" class="badge badge-muted">connecting…</span>
+        <button id="refresh-btn" class="ghost-btn" type="button">Reload</button>
+      </div>
+    </header>
+
+    <main>
+      <!-- ---------------------------------------------------------------- -->
+      <section class="stats" id="stats" aria-label="Summary">
+        <div class="stat"><span class="stat-label">Tracked flow</span><span class="stat-value" id="stat-usd">—</span></div>
+        <div class="stat"><span class="stat-label">Disclosed moves</span><span class="stat-value" id="stat-positions">—</span></div>
+        <div class="stat"><span class="stat-label">People tracked</span><span class="stat-value" id="stat-actors">—</span></div>
+        <div class="stat"><span class="stat-label">Lookback</span><span class="stat-value" id="stat-window">—</span></div>
+      </section>
+
+      <section class="venue-row" id="venue-row" aria-label="Sources"></section>
+
+      <!-- ---------------------------------------------------------------- -->
+      <section class="panel" aria-labelledby="signals-heading">
+        <div class="panel-head">
+          <div>
+            <h2 id="signals-heading">Signals</h2>
+            <p class="panel-sub">
+              What you cannot get from any one of these feeds alone. Divergence
+              leads: it means two groups with different non-public information
+              are taking opposite sides.
+            </p>
+          </div>
+          <div class="filters" id="signal-filters" role="group" aria-label="Filter signals"></div>
+        </div>
+        <div id="signals" class="signal-grid"></div>
+      </section>
+
+      <!-- ---------------------------------------------------------------- -->
+      <div class="two-col">
+        <section class="panel" aria-labelledby="conviction-heading">
+          <div class="panel-head">
+            <div>
+              <h2 id="conviction-heading">Strongest conviction</h2>
+              <p class="panel-sub">Power-weighted, size-weighted, recency-decayed.</p>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th scope="col">Subject</th>
+                  <th scope="col" class="num">Conviction</th>
+                  <th scope="col" class="num">Lean</th>
+                  <th scope="col" class="num">People</th>
+                  <th scope="col">Sources</th>
+                </tr>
+              </thead>
+              <tbody id="conviction-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="contested-heading">
+          <div class="panel-head">
+            <div>
+              <h2 id="contested-heading">Most contested</h2>
+              <p class="panel-sub">Where powerful money is most evenly split.</p>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th scope="col">Subject</th>
+                  <th scope="col" class="num">Buy / sell</th>
+                  <th scope="col" class="num">People</th>
+                  <th scope="col">Sources</th>
+                </tr>
+              </thead>
+              <tbody id="contested-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- ---------------------------------------------------------------- -->
+      <section class="panel" aria-labelledby="activity-heading">
+        <div class="panel-head">
+          <div>
+            <h2 id="activity-heading">Activity</h2>
+            <p class="panel-sub">Every disclosed move, newest first.</p>
+          </div>
+          <div class="filters" id="venue-filters" role="group" aria-label="Filter by source"></div>
+        </div>
+        <div class="table-scroll">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th scope="col">Who</th>
+                <th scope="col">Move</th>
+                <th scope="col">Subject</th>
+                <th scope="col" class="num">Size</th>
+                <th scope="col" class="num">Traded</th>
+                <th scope="col" class="num">Lag</th>
+              </tr>
+            </thead>
+            <tbody id="activity-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        <strong>Financert</strong> unifies U.S. House STOCK Act disclosures, SEC
+        Form 4 insider filings, and Polymarket positions into one schema.
+        Sources are public and linked on every row.
+      </p>
+      <p class="disclaimer">
+        Not investment advice. Congressional amounts are disclosed as brackets,
+        never exact figures. Prediction-market rows are current-holdings
+        snapshots, not trades. See the README for what each number does and
+        does not mean.
+      </p>
+    </footer>
+
+    <script src="fallback-data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

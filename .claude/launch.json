@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "financert-frontend",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8080", "--directory", "frontend"],
+      "port": 8080
+    },
+    {
+      "name": "financert-api",
+      "runtimeExecutable": "backend/.venv/bin/uvicorn",
+      "runtimeArgs": ["app.main:app", "--port", "8000", "--app-dir", "backend"],
+      "port": 8000
+    }
+  ]
+}
