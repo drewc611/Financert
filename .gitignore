@@ -216,3 +216,10 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# --- Financert ---
+node_modules/
+frontend/dist/
+backend/financert.db
+backend/.venv/
+.DS_Store
