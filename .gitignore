@@ -216,3 +216,15 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# --- Financert ---
+node_modules/
+frontend/dist/
+backend/financert.db
+backend/.venv/
+.DS_Store
+
+# The Python template above ignores `lib/`, which also swallows the
+# frontend's src/lib source directory. Re-include it (the directory itself
+# must be un-ignored before git will look at the files inside it).
+!frontend/src/lib/

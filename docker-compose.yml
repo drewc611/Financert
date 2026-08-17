@@ -1,0 +1,27 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      # Wide open for local development. Set this to your real origin before
+      # exposing the API anywhere other than localhost.
+      FINANCERT_CORS_ORIGINS: "*"
+      FINANCERT_DATABASE_URL: "sqlite:////data/financert.db"
+    volumes:
+      - financert-db:/data
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request;urllib.request.urlopen('http://localhost:8000/healthz')\""]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+volumes:
+  financert-db:
