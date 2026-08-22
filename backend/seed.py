@@ -40,14 +40,19 @@ def main() -> None:
         total = sum(SAMPLE_HOLDINGS.values())
         print(f"seeded portfolio 'default' -- {len(SAMPLE_HOLDINGS)} holdings, ${total:,.0f}")
 
-        result = allocation.analyse(SAMPLE_HOLDINGS, group="top1")
+        # Summarised against the newest fully published quarter, so the demo
+        # shows a complete breakdown rather than one with a class pending.
+        result = allocation.analyse(SAMPLE_HOLDINGS, group="top1", period="complete")
         nearest = result["nearest_tier"]
         print(f"benchmark period {result['period']}, vs {result['benchmark_label']}")
         print(f"closest tier: {nearest['nearest_label']} (similarity {nearest['similarity']:.2f})")
         print("\nlargest gaps vs the top 1%:")
         for row in result["gaps"][:5]:
-            arrow = "over " if row["gap_pp"] > 0 else "under"
-            print(f"  {row['label']:<26} {arrow} {abs(row['gap_pp']):5.1f}pp")
+            if row["status"] == "pending":
+                verdict = "not yet published"
+            else:
+                verdict = f"{'over ' if row['gap_pp'] > 0 else 'under'} {abs(row['gap_pp']):5.1f}pp"
+            print(f"  {row['label']:<26} {verdict}")
     finally:
         db.close()
 

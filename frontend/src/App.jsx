@@ -88,7 +88,8 @@ function Disclaimer({ benchmarks }) {
         <a href={benchmarks.source.url} target="_blank" rel="noreferrer">
           Distributional Financial Accounts
         </a>
-        . Latest period {quarterLabel(benchmarks.latestPeriod)}.
+        . Data through {quarterLabel(benchmarks.latestPeriod)}; the newest fully published quarter is{' '}
+        {quarterLabel(benchmarks.completePeriod)}.
       </p>
       <p style={{ margin: 0 }}>
         <strong>What it is not.</strong> It is descriptive, not advice. Matching the top 1%&apos;s allocation

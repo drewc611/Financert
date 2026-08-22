@@ -19,7 +19,7 @@ BACKEND_DIR = Path(__file__).resolve().parent.parent
 SNAPSHOT = BACKEND_DIR / "data" / "dfa_snapshot.json"
 TARGET = BACKEND_DIR.parent / "frontend" / "src" / "lib" / "fallbackData.js"
 
-GROUPS = ["top1", "next9", "next40", "bottom50"]
+GROUPS = ["top01", "top1", "next9", "next40", "bottom50"]
 TREND_ASSETS = ["corporate_equities", "private_business", "real_estate"]
 
 HEADER = """/* Embedded snapshot of the Federal Reserve Distributional Financial
@@ -38,24 +38,42 @@ def main() -> None:
     out: dict = {
         "source": snapshot["source"],
         "latest_period": latest,
+        "latest_complete_period": snapshot["latest_complete_period"],
+        "complete_periods": snapshot["complete_periods"][-40:],
+        "group_order": snapshot["group_order"],
         "periods": snapshot["periods"][-40:],
         "asset_classes": [{k: a[k] for k in ("key", "label", "liquid", "blurb")} for a in snapshot["asset_classes"]],
         "groups": {},
         "trends": {},
     }
 
+    complete_period = snapshot["latest_complete_period"]
     for group_key in GROUPS:
         group = snapshot["groups"][group_key]
         row = group["history"][-1]
+        complete_row = next(r for r in group["history"] if r["period"] == complete_period)
         out["groups"][group_key] = {
             "key": group_key,
             "label": group["label"],
             "percentile_range": group["percentile_range"],
+            "nested": group.get("nested", False),
+            "nested_in": group.get("nested_in"),
             "period": latest,
+            "complete": row.get("complete", True),
+            "unavailable": row.get("unavailable", []),
             "total_assets": row["total_assets"],
             "total_liabilities": row["total_liabilities"],
             "net_worth": row["net_worth"],
             "assets": row["assets"],
+            # The newest fully published quarter, so the offline dashboard can
+            # still show a complete breakdown when the latest one lags.
+            "complete_snapshot": {
+                "period": complete_row["period"],
+                "assets": complete_row["assets"],
+                "total_assets": complete_row["total_assets"],
+                "total_liabilities": complete_row["total_liabilities"],
+                "net_worth": complete_row["net_worth"],
+            },
         }
 
     # Annual Q3 samples keep the file small while preserving the curve's shape.
@@ -66,7 +84,9 @@ def main() -> None:
             for row in snapshot["groups"][group_key]["history"]:
                 if not row["period"].endswith("-07-01"):
                     continue
-                total = sum(row["assets"].values())
+                if asset not in row["assets"]:
+                    continue  # not published for this quarter yet
+                total = row["total_assets"] or sum(row["assets"].values())
                 points.append(
                     {
                         "period": row["period"],

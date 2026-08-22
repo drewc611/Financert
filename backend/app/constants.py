@@ -8,7 +8,7 @@ Source: Federal Reserve Distributional Financial Accounts (DFA), which give
 quarterly household balance-sheet levels split by wealth percentile group,
 from 1989 Q3 to the present. Series are pulled from FRED (fred.stlouisfed.org).
 
-Two naming conventions coexist in the DFA on FRED, and both are needed:
+Three naming conventions coexist in the DFA on FRED, and all three are needed:
 
 * Legacy block ids -- ``WFRBL<GROUP><NNN>``, where ``NNN`` is a globally
   sequential number. Each wealth group owns a contiguous 27-slot block, and
@@ -20,6 +20,13 @@ Two naming conventions coexist in the DFA on FRED, and both are needed:
   at 2022 Q1). Their replacements use a different scheme, and, unhelpfully,
   the top 1% orders the parts differently from every other group:
   ``WFRBLTOP1DE`` but ``WFRBLDEN09``. Both spellings are recorded below.
+* Alphabetical block ids -- the finer top 0.1% cut, added later, does not
+  follow the legacy layout at all. Its block (``WFRBLTP1227``..``253``) is
+  ordered alphabetically by category name, so there is no offset arithmetic
+  to do and its series are listed explicitly in ``TOP01_SERIES``.
+
+Because of that third scheme, series lookup is per-group rather than a single
+formula -- see ``series_ids_for``.
 """
 
 # --- wealth groups ----------------------------------------------------------
@@ -27,12 +34,26 @@ Two naming conventions coexist in the DFA on FRED, and both are needed:
 # block_start is the legacy sequential id of offset 0 ("Nonfinancial Assets")
 # for that group.
 WEALTH_GROUPS = {
+    # `nested` marks a group that is a subset of another rather than its own
+    # slice of the population. The four legacy groups partition every US
+    # household; the top 0.1% sits inside the top 1%, so it must never be
+    # summed alongside them or presented as a fifth slice of a pie.
+    "top01": {
+        "code": "TP1",
+        "label": "Top 0.1%",
+        "percentile_range": "99.9th-100th",
+        "block_start": None,  # alphabetical block, see TOP01_SERIES
+        "population_share": 0.001,
+        "nested": True,
+        "nested_in": "top1",
+    },
     "top1": {
         "code": "T01",
         "label": "Top 1%",
         "percentile_range": "99th-100th",
         "block_start": 1,
         "population_share": 0.01,
+        "nested": False,
     },
     "next9": {
         "code": "N09",
@@ -40,6 +61,7 @@ WEALTH_GROUPS = {
         "percentile_range": "90th-99th",
         "block_start": 28,
         "population_share": 0.09,
+        "nested": False,
     },
     "next40": {
         "code": "N40",
@@ -47,6 +69,7 @@ WEALTH_GROUPS = {
         "percentile_range": "50th-90th",
         "block_start": 55,
         "population_share": 0.40,
+        "nested": False,
     },
     "bottom50": {
         "code": "B50",
@@ -54,10 +77,20 @@ WEALTH_GROUPS = {
         "percentile_range": "0-50th",
         "block_start": 82,
         "population_share": 0.50,
+        "nested": False,
     },
 }
 
+# The four groups that partition the population, in wealth order. The
+# nested top 0.1% is deliberately excluded so anything iterating tiers to
+# build a distribution cannot double count it.
 GROUP_ORDER = ["top1", "next9", "next40", "bottom50"]
+
+# Every group with data, including nested ones. Use this for fetching and
+# for offering benchmarks to compare against.
+ALL_GROUPS = ["top01", "top1", "next9", "next40", "bottom50"]
+
+NESTED_GROUPS = [g for g in ALL_GROUPS if WEALTH_GROUPS[g].get("nested")]
 
 # --- legacy block offsets ---------------------------------------------------
 
@@ -209,6 +242,12 @@ ASSET_CLASS_BY_KEY = {a["key"]: a for a in ASSET_CLASSES}
 
 # Reported alongside the mapped buckets to close the gap to the Fed's control
 # total. It is not a real asset category and users cannot hold it.
+# In an incomplete quarter the residual is not really "unallocated" -- it is
+# holding the classes the Fed has not released yet, so it is relabelled and
+# given no over/underweight verdict. Being underweight a residual is not a
+# statement anyone can act on.
+PENDING_LABEL = "Not yet published"
+
 UNALLOCATED = {
     "key": "unallocated",
     "label": "Unallocated",
@@ -261,16 +300,52 @@ def modern_series_id(group_key: str, category: str) -> str:
 
     `category` is a short DFA code such as ``DE`` (deposits), ``DBP``
     (defined benefit pension) or ``DCP`` (defined contribution pension).
-    The top 1% puts the group before the category; every other group puts it
-    after.
+    Three spellings exist: the top 1% puts the group first
+    (``WFRBLTOP1DE``), the top 0.1% uses a percentile suffix
+    (``WFRBLDE999T100``), and everyone else puts the group last
+    (``WFRBLDEN09``).
     """
     if group_key == "top1":
         return f"WFRBLTOP1{category}"
+    if group_key == "top01":
+        return f"WFRBL{category}999T100"
     return f"WFRBL{category}{WEALTH_GROUPS[group_key]['code']}"
+
+
+# The top 0.1% block is ordered alphabetically by category name rather than by
+# the legacy layout, so its ids are listed rather than computed. Verified
+# against the series titles on FRED.
+TOP01_SERIES = {
+    "corporate_equities": ["WFRBLTP1232"],
+    "private_business": ["WFRBLTP1236"],
+    "real_estate": ["WFRBLTP1251"],
+    "consumer_durables": ["WFRBLTP1230"],
+    "money_market": ["WFRBLTP1244"],
+    "debt_securities": ["WFRBLTP1233"],
+    "life_insurance": ["WFRBLTP1240"],
+    "loans_assets": ["WFRBLTP1241"],
+    "misc_assets": ["WFRBLTP1243"],
+    "deposits": ["WFRBLDE999T100"],
+    "pension": ["WFRBLDBP999T100", "WFRBLDCP999T100"],
+}
+
+# Control totals for the top 0.1%, matching CONTROL_OFFSETS by name.
+TOP01_CONTROLS = {
+    "nonfinancial_assets": "WFRBLTP1247",
+    "financial_assets": "WFRBLTP1237",
+    "total_liabilities": "WFRBLTP1239",
+    "net_worth": "WFRBLTP1246",
+}
 
 
 def series_ids_for(group_key: str, asset_key: str) -> list[str]:
     """Return the FRED series id(s) whose sum is this bucket's level."""
+    if group_key == "top01":
+        try:
+            return TOP01_SERIES[asset_key]
+        except KeyError:
+            raise ValueError(f"no top 0.1% series for asset class {asset_key!r}") from None
+
     spec = ASSET_CLASS_BY_KEY[asset_key]
     if spec["offset"] is not None:
         return [legacy_series_id(group_key, spec["offset"])]
@@ -282,3 +357,10 @@ def series_ids_for(group_key: str, asset_key: str) -> list[str]:
             modern_series_id(group_key, "DCP"),
         ]
     raise ValueError(f"no series mapping for asset class {asset_key!r}")
+
+
+def control_series_id(group_key: str, control: str) -> str:
+    """Return the FRED series id for one of a group's control totals."""
+    if group_key == "top01":
+        return TOP01_CONTROLS[control]
+    return legacy_series_id(group_key, CONTROL_OFFSETS[control])

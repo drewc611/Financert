@@ -19,13 +19,51 @@ def test_healthz_reports_snapshot(client):
     assert body["latest_period"]
 
 
-def test_benchmarks_returns_all_four_tiers(client):
+def test_benchmarks_returns_every_tier(client):
     body = client.get("/api/benchmarks").json()
     groups = [a["group"] for a in body["allocations"]]
-    assert groups == ["top1", "next9", "next40", "bottom50"]
+    assert groups == ["top01", "top1", "next9", "next40", "bottom50"]
     assert body["source"]["publisher"].startswith("Board of Governors")
     for alloc in body["allocations"]:
         assert sum(alloc["weights"].values()) == pytest.approx(1.0, abs=1e-6)
+
+
+def test_nested_tier_is_flagged_and_excluded_from_group_order(client):
+    """The top 0.1% must not read as a fifth slice of the population."""
+    body = client.get("/api/benchmarks").json()
+    by_group = {a["group"]: a for a in body["allocations"]}
+    assert by_group["top01"]["nested"] is True
+    assert by_group["top01"]["nested_in"] == "top1"
+    assert by_group["top1"]["nested"] is False
+    # group_order is the partition; it excludes the nested tier.
+    assert body["group_order"] == ["top1", "next9", "next40", "bottom50"]
+
+
+def test_top01_is_more_concentrated_than_top1(client):
+    """The whole point of the finer tier: it sharpens the same story."""
+    body = client.get("/api/benchmarks", params={"period": "complete"}).json()
+    by_group = {a["group"]: a["weights"] for a in body["allocations"]}
+    assert by_group["top01"]["corporate_equities"] > by_group["top1"]["corporate_equities"]
+    assert by_group["top01"]["private_business"] > by_group["top1"]["private_business"]
+    assert by_group["top01"]["real_estate"] < by_group["top1"]["real_estate"]
+
+
+def test_latest_period_is_current_but_flagged_incomplete(client):
+    body = client.get("/api/benchmarks").json()
+    assert body["period"] == body["latest_period"]
+    assert body["latest_period"] > body["latest_complete_period"]
+    top1 = next(a for a in body["allocations"] if a["group"] == "top1")
+    assert top1["complete"] is False
+    assert "private_business" in top1["unavailable"]
+
+
+def test_complete_period_has_every_class(client):
+    body = client.get("/api/benchmarks", params={"period": "complete"}).json()
+    assert body["period"] == body["latest_complete_period"]
+    for alloc in body["allocations"]:
+        assert alloc["complete"] is True
+        assert alloc["unavailable"] == []
+        assert "private_business" in alloc["weights"]
 
 
 def test_benchmarks_investable_flag_changes_taxonomy(client):
@@ -41,12 +79,20 @@ def test_benchmarks_rejects_unknown_period(client):
 
 def test_top1_holds_more_equity_than_bottom50(client):
     """The headline claim the product is built on, asserted against real data."""
-    body = client.get("/api/benchmarks").json()
+    body = client.get("/api/benchmarks", params={"period": "complete"}).json()
     by_group = {a["group"]: a["weights"] for a in body["allocations"]}
     assert by_group["top1"]["corporate_equities"] > by_group["bottom50"]["corporate_equities"]
     assert by_group["top1"]["private_business"] > by_group["bottom50"]["private_business"]
     # ...and the bottom half's wealth is far more concentrated in their home.
     assert by_group["bottom50"]["real_estate"] > by_group["top1"]["real_estate"]
+
+
+def test_trend_omits_unpublished_quarters(client):
+    """A lagging class ends its line early rather than dropping to zero."""
+    equities = client.get("/api/benchmarks/trend", params={"group": "top1", "asset_class": "corporate_equities"}).json()
+    business = client.get("/api/benchmarks/trend", params={"group": "top1", "asset_class": "private_business"}).json()
+    assert len(business["points"]) < len(equities["points"])
+    assert all(p["share"] > 0 for p in business["points"])
 
 
 def test_trend_returns_full_history(client):

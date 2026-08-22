@@ -1,21 +1,39 @@
 """/api/portfolio and /api/analysis -- the user's own holdings.
 
-Financert is a single-user local tool, so there is no auth and portfolios are
-addressed by slug. Treat the database as private to the person running it.
+These endpoints are gated by ``require_token`` whenever ``FINANCERT_API_TOKEN``
+is set. Portfolios are addressed by slug, so one install can hold several
+(a personal one, a spouse's, a "what if" variant) without user accounts.
+
+The token is a single shared secret, not a per-user login: everyone holding it
+sees every portfolio. That is the right shape for a self-hosted single-household
+tool and the wrong one for a multi-tenant service -- see the scope note in the
+README before exposing this to more than one household.
 """
+
+import re
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from ..constants import GROUP_ORDER
-from ..dependencies import get_db
+from ..constants import ALL_GROUPS
+from ..dependencies import get_db, require_token
 from ..models import Holding, Portfolio
-from ..schemas import AnalysisOut, PortfolioIn, PortfolioOut
+from ..schemas import AnalysisOut, PortfolioIn, PortfolioOut, PortfolioSummaryOut
 from ..services import allocation, benchmarks
 
-router = APIRouter(prefix="/api", tags=["portfolio"])
+router = APIRouter(prefix="/api", tags=["portfolio"], dependencies=[Depends(require_token)])
 
 DEFAULT_SLUG = "default"
+SLUG_RE = re.compile(r"^[a-z0-9][a-z0-9-]{0,62}$")
+
+
+def _validate_slug(slug: str) -> str:
+    if not SLUG_RE.match(slug):
+        raise HTTPException(
+            status_code=422,
+            detail="slug must be lowercase letters, digits and hyphens (max 63 chars)",
+        )
+    return slug
 
 
 def _get_or_404(db: Session, slug: str) -> Portfolio:
@@ -25,9 +43,24 @@ def _get_or_404(db: Session, slug: str) -> Portfolio:
     return portfolio
 
 
+@router.get("/portfolios", response_model=list[PortfolioSummaryOut])
+def list_portfolios(db: Session = Depends(get_db)):
+    """Every portfolio on this install, newest first."""
+    rows = db.query(Portfolio).order_by(Portfolio.updated_at.desc()).all()
+    return [
+        {
+            "slug": p.slug,
+            "name": p.name,
+            "total_value": p.total_value,
+            "holdings_count": len(p.holdings),
+        }
+        for p in rows
+    ]
+
+
 @router.get("/portfolio", response_model=PortfolioOut)
 def read_portfolio(slug: str = Query(DEFAULT_SLUG), db: Session = Depends(get_db)):
-    return _get_or_404(db, slug)
+    return _get_or_404(db, _validate_slug(slug))
 
 
 @router.put("/portfolio", response_model=PortfolioOut)
@@ -42,6 +75,7 @@ def upsert_portfolio(
     allocation, and a partial update would make "I sold all my bonds" require
     a delete the UI has no natural place for.
     """
+    _validate_slug(slug)
     portfolio = db.query(Portfolio).filter(Portfolio.slug == slug).one_or_none()
     if portfolio is None:
         portfolio = Portfolio(slug=slug, name=payload.name)
@@ -61,7 +95,7 @@ def upsert_portfolio(
 
 @router.delete("/portfolio", status_code=204)
 def delete_portfolio(slug: str = Query(DEFAULT_SLUG), db: Session = Depends(get_db)):
-    portfolio = _get_or_404(db, slug)
+    portfolio = _get_or_404(db, _validate_slug(slug))
     db.delete(portfolio)
     db.commit()
 
@@ -74,9 +108,9 @@ def analyse_portfolio(
     investable_only: bool = Query(True),
     db: Session = Depends(get_db),
 ):
-    if group not in GROUP_ORDER:
+    if group not in ALL_GROUPS:
         raise HTTPException(status_code=404, detail=f"unknown group {group!r}")
-    portfolio = _get_or_404(db, slug)
+    portfolio = _get_or_404(db, _validate_slug(slug))
     holdings = {h.asset_class: h.value for h in portfolio.holdings}
     try:
         return allocation.analyse(holdings, group=group, period=period, investable_only=investable_only)
@@ -93,7 +127,7 @@ def preview_analysis(
 ):
     """Analyse holdings without saving them -- lets the UI show a live
     comparison while the user is still typing numbers in."""
-    if group not in GROUP_ORDER:
+    if group not in ALL_GROUPS:
         raise HTTPException(status_code=404, detail=f"unknown group {group!r}")
     holdings = {h.asset_class: h.value for h in payload.holdings}
     try:

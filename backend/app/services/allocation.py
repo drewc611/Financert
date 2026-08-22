@@ -15,7 +15,9 @@ from ..constants import (
     GAP_TOLERANCE_PP,
     GROUP_ORDER,
     NON_INVESTABLE,
+    PENDING_LABEL,
     SIMILARITY_FLOOR,
+    UNALLOCATED,
 )
 from . import benchmarks
 
@@ -79,7 +81,13 @@ def gaps(
 
 
 def nearest_tier(user: dict[str, float], period: str, *, investable_only: bool = True) -> dict[str, Any]:
-    """Which wealth group's allocation the user's mix most resembles."""
+    """Which wealth group's allocation the user's mix most resembles.
+
+    Ranked over GROUP_ORDER, not every group: the nested top 0.1% is a subset
+    of the top 1%, so including it would put two overlapping populations in
+    one ranking and let "closest tier" land on a group that is not a distinct
+    slice of anyone.
+    """
     scored = []
     for group_key in GROUP_ORDER:
         bench = benchmarks.weights(group_key, period, investable_only=investable_only)
@@ -122,8 +130,11 @@ def analyse(
     bench = benchmarks.weights(group, resolved, investable_only=investable_only)
 
     total = sum(v for v in considered.values() if v > 0)
+    snapshot_row = benchmarks.allocation(group, resolved, investable_only=investable_only)
     result = {
         "period": resolved,
+        "period_complete": snapshot_row["complete"],
+        "period_unavailable": snapshot_row["unavailable"],
         "benchmark_group": group,
         "benchmark_label": benchmarks.load_snapshot()["groups"][group]["label"],
         "investable_only": investable_only,
@@ -135,4 +146,21 @@ def analyse(
         "similarity": round(cosine_similarity(user, bench), 4) if user else 0.0,
     }
     result["nearest_tier"] = nearest_tier(user, resolved, investable_only=investable_only) if user else None
+
+    if not snapshot_row["complete"]:
+        _mark_pending(result["gaps"], snapshot_row["unavailable"])
     return result
+
+
+def _mark_pending(rows: list[dict[str, Any]], unavailable: list[str]) -> None:
+    """Relabel the residual row in an incomplete quarter.
+
+    It carries the unpublished classes, so calling the user "underweight
+    unallocated" would be both meaningless and wrong -- there is no verdict to
+    give until the Fed publishes.
+    """
+    missing = ", ".join(ASSET_CLASS_BY_KEY[k]["label"] for k in unavailable if k in ASSET_CLASS_BY_KEY)
+    for row in rows:
+        if row["asset_class"] == UNALLOCATED["key"]:
+            row["status"] = "pending"
+            row["label"] = f"{PENDING_LABEL}{f' ({missing})' if missing else ''}"

@@ -50,6 +50,13 @@ class PortfolioOut(BaseModel):
     holdings: list[HoldingOut]
 
 
+class PortfolioSummaryOut(BaseModel):
+    slug: str
+    name: str
+    total_value: float
+    holdings_count: int
+
+
 class AssetClassOut(BaseModel):
     key: str
     label: str
@@ -61,7 +68,13 @@ class AllocationOut(BaseModel):
     group: str
     label: str
     percentile_range: str
+    # True for a group that sits inside another (the top 0.1% inside the top
+    # 1%) rather than being its own slice of the population.
+    nested: bool = False
+    nested_in: str | None = None
     period: str
+    complete: bool = True
+    unavailable: list[str] = Field(default_factory=list)
     total_assets: float
     total_liabilities: float
     net_worth: float
@@ -71,6 +84,10 @@ class AllocationOut(BaseModel):
 class BenchmarksOut(BaseModel):
     period: str
     periods: list[str]
+    latest_period: str
+    latest_complete_period: str
+    complete_periods: list[str]
+    group_order: list[str]
     investable_only: bool
     source: dict[str, Any]
     asset_classes: list[AssetClassOut]
@@ -96,6 +113,8 @@ class NearestTierOut(BaseModel):
 
 class AnalysisOut(BaseModel):
     period: str
+    period_complete: bool = True
+    period_unavailable: list[str] = Field(default_factory=list)
     benchmark_group: str
     benchmark_label: str
     investable_only: bool

@@ -37,4 +37,5 @@ export const STATUS_LABEL = {
   overweight: 'Overweight',
   underweight: 'Underweight',
   in_line: 'In line',
+  pending: 'Not yet published',
 }
