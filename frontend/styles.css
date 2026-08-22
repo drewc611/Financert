@@ -284,6 +284,18 @@ button {
   display: flex;
   align-items: center;
   gap: 6px;
+  /* A select sizes itself to its widest option, so without these a long
+     option name stretches the whole page on a narrow viewport. */
+  max-width: 100%;
+  min-width: 0;
+}
+
+.controls select,
+.controls input[type="text"] {
+  max-width: 100%;
+  min-width: 0;
+  flex: 0 1 auto;
+  text-overflow: ellipsis;
 }
 
 select,
@@ -384,6 +396,59 @@ tbody tr:last-child td {
 
 .pill[data-status="in_line"] {
   color: var(--text-secondary);
+}
+
+.pill[data-status="pending"] {
+  color: var(--text-muted);
+  border-style: dashed;
+}
+
+td.muted {
+  color: var(--text-muted);
+}
+
+.th-note {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-muted);
+}
+
+/* A nested tier is a subset of another, not a peer -- set back visually so it
+   does not read as another slice of the population. */
+.tile[data-nested="true"] {
+  border-style: dashed;
+  background: transparent;
+}
+
+/* --- notice --------------------------------------------------------------- */
+
+.notice {
+  border: 1px solid color-mix(in srgb, var(--warning) 45%, transparent);
+  background: color-mix(in srgb, var(--warning) 10%, var(--surface));
+  border-radius: var(--radius);
+  padding: 12px 15px;
+  margin-bottom: var(--gap);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.notice strong {
+  color: var(--text-primary);
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--series-you);
+  cursor: pointer;
+  font-size: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 /* --- charts --------------------------------------------------------------- */
@@ -549,4 +614,34 @@ tbody tr:last-child td {
 .saved-note {
   font-size: 13px;
   color: var(--good);
+}
+
+.token-box {
+  margin-top: 26px;
+  padding-top: 16px;
+  border-top: 1px solid var(--grid);
+}
+
+.token-box summary {
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.token-box code {
+  font-size: 12px;
+  background: var(--page);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+input[type="password"],
+input[type="text"] {
+  font: inherit;
+  font-size: 14px;
+  color: var(--text-primary);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 9px;
 }

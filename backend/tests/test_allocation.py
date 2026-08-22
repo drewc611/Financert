@@ -59,7 +59,7 @@ def test_missing_class_counts_as_fully_underweight():
 
 
 def test_analyse_against_real_snapshot():
-    result = allocation.analyse({"corporate_equities": 60_000, "deposits": 40_000}, group="top1")
+    result = allocation.analyse({"corporate_equities": 60_000, "deposits": 40_000}, group="top1", period="complete")
     assert result["benchmark_group"] == "top1"
     assert result["portfolio_total"] == pytest.approx(100_000)
     assert 0.0 <= result["similarity"] <= 1.0
@@ -99,8 +99,41 @@ def test_investable_view_excludes_durables_from_both_sides():
 
 
 def test_investable_view_drops_consumer_durables():
-    full = allocation.analyse({"corporate_equities": 100}, group="top1", investable_only=False)
-    investable = allocation.analyse({"corporate_equities": 100}, group="top1", investable_only=True)
+    full = allocation.analyse({"corporate_equities": 100}, group="top1", period="complete", investable_only=False)
+    investable = allocation.analyse({"corporate_equities": 100}, group="top1", period="complete", investable_only=True)
     assert full["benchmark_weights"]["consumer_durables"] > 0
     assert "consumer_durables" not in investable["benchmark_weights"]
+    # The residual is only safe to drop in a fully published quarter.
     assert "unallocated" not in investable["benchmark_weights"]
+
+
+def test_incomplete_quarter_keeps_the_residual():
+    """In a quarter missing a lagging class, the residual holds it and must
+    survive the investable filter -- otherwise the rest renormalises upward."""
+    latest = allocation.analyse({"corporate_equities": 100}, group="top1", period="latest")
+    assert latest["period_complete"] is False
+    assert "private_business" in latest["period_unavailable"]
+    assert "unallocated" in latest["benchmark_weights"]
+
+    complete = allocation.analyse({"corporate_equities": 100}, group="top1", period="complete")
+    assert complete["period_complete"] is True
+    # Keeping the residual stops the published classes being overstated.
+    assert latest["benchmark_weights"]["corporate_equities"] < 0.60
+    assert complete["benchmark_weights"]["corporate_equities"] < 0.60
+
+
+def test_nearest_tier_excludes_the_nested_group():
+    """The top 0.1% sits inside the top 1%; ranking them together would mix
+    two overlapping populations."""
+    result = allocation.analyse({"corporate_equities": 90, "deposits": 10}, group="top1")
+    ranked = {r["group"] for r in result["nearest_tier"]["ranked"]}
+    assert ranked == {"top1", "next9", "next40", "bottom50"}
+    assert "top01" not in ranked
+
+
+def test_can_compare_against_the_nested_group():
+    """Even though it is excluded from ranking, it is a valid benchmark."""
+    result = allocation.analyse({"corporate_equities": 100}, group="top01", period="complete")
+    assert result["benchmark_group"] == "top01"
+    assert result["benchmark_label"] == "Top 0.1%"
+    assert sum(result["benchmark_weights"].values()) == pytest.approx(1.0, abs=1e-6)

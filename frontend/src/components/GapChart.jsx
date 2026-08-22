@@ -15,7 +15,11 @@ const PAD_B = 26
 export default function GapChart({ gaps, benchmarkLabel }) {
   const { tip, show, hide } = useTooltip()
 
-  const rows = gaps.filter((g) => g.status !== 'in_line' || Math.abs(g.gap_pp) > 0.05)
+  // "Pending" rows have no verdict to plot -- a bar on a diverging over/under
+  // axis would assert a gap the data cannot support. They stay in the table.
+  const rows = gaps.filter(
+    (g) => g.status !== 'pending' && (g.status !== 'in_line' || Math.abs(g.gap_pp) > 0.05),
+  )
   if (!rows.length) return <p className="empty">Every asset class is in line with {benchmarkLabel}.</p>
 
   const height = PAD_T + rows.length * ROW_H + PAD_B

@@ -6,7 +6,17 @@ import GapChart from '../components/GapChart'
 import { pct, pp, quarterLabel, usd, STATUS_LABEL } from '../lib/format'
 
 export default function Compare() {
-  const { benchmarks, holdings, groupKey, setGroupKey, investableOnly, setInvestableOnly } = useAppData()
+  const {
+    benchmarks,
+    activeGroups,
+    periodMode,
+    setPeriodMode,
+    holdings,
+    groupKey,
+    setGroupKey,
+    investableOnly,
+    setInvestableOnly,
+  } = useAppData()
 
   const labels = useMemo(
     () => Object.fromEntries(benchmarks.assetClasses.map((a) => [a.key, a.label])),
@@ -14,35 +24,41 @@ export default function Compare() {
   )
 
   const result = useMemo(
-    () => analyse(holdings, { groups: benchmarks.groups, groupKey, investableOnly, labels }),
-    [holdings, benchmarks, groupKey, investableOnly, labels],
+    () => analyse(holdings, { groups: activeGroups, groupKey, investableOnly, labels }),
+    [holdings, activeGroups, groupKey, investableOnly, labels],
   )
 
   const hasHoldings = Object.keys(holdings).length > 0
 
   const chartRows = useMemo(() => {
     const keys = [...new Set([...Object.keys(result.user_weights), ...Object.keys(result.benchmark_weights)])]
+    // The residual carries a different meaning in an incomplete quarter, and
+    // analyse() has already worked out the right wording for it.
+    const pending = result.gaps.find((g) => g.status === 'pending')
     return keys
       .map((key) => ({
         key,
-        label: labels[key] || key,
+        label: pending && key === pending.asset_class ? pending.label : labels[key] || key,
         user: result.user_weights[key] || 0,
         benchmark: result.benchmark_weights[key] || 0,
       }))
       .sort((a, b) => Math.max(b.user, b.benchmark) - Math.max(a.user, a.benchmark))
   }, [result, labels])
 
-  const benchmarkLabel = benchmarks.groups[groupKey].label
+  const benchmarkLabel = activeGroups[groupKey].label
 
   if (!hasHoldings) {
     return (
       <>
         <TierControls
-          groups={benchmarks.groups}
+          groups={activeGroups}
           groupKey={groupKey}
           setGroupKey={setGroupKey}
           investableOnly={investableOnly}
           setInvestableOnly={setInvestableOnly}
+          periodMode={periodMode}
+          setPeriodMode={setPeriodMode}
+          benchmarks={benchmarks}
         />
         <div className="card">
           <h2>Nothing to compare yet</h2>
@@ -66,11 +82,21 @@ export default function Compare() {
   return (
     <>
       <TierControls
-        groups={benchmarks.groups}
+        groups={activeGroups}
         groupKey={groupKey}
         setGroupKey={setGroupKey}
         investableOnly={investableOnly}
         setInvestableOnly={setInvestableOnly}
+        periodMode={periodMode}
+        setPeriodMode={setPeriodMode}
+        benchmarks={benchmarks}
+      />
+
+      <PendingNotice
+        result={result}
+        labels={labels}
+        completePeriod={benchmarks.completePeriod}
+        onUseComplete={() => setPeriodMode('complete')}
       />
 
       <div className="tiles">
@@ -140,10 +166,12 @@ export default function Compare() {
                 <td>{g.label}</td>
                 <td className="num">{pct(g.user_pct / 100)}</td>
                 <td className="num">{pct(g.benchmark_pct / 100)}</td>
-                <td className="num">{pp(g.gap_pp)}</td>
+                <td className={g.status === 'pending' ? 'num muted' : 'num'}>
+                  {g.status === 'pending' ? '\u2014' : pp(g.gap_pp)}
+                </td>
                 <td>
                   <span className="pill" data-status={g.status}>
-                    {STATUS_LABEL[g.status]}
+                    {STATUS_LABEL[g.status] || 'Not yet published'}
                   </span>
                 </td>
               </tr>
@@ -156,7 +184,16 @@ export default function Compare() {
   )
 }
 
-function TierControls({ groups, groupKey, setGroupKey, investableOnly, setInvestableOnly }) {
+function TierControls({
+  groups,
+  groupKey,
+  setGroupKey,
+  investableOnly,
+  setInvestableOnly,
+  periodMode,
+  setPeriodMode,
+  benchmarks,
+}) {
   return (
     <div className="controls">
       <label>
@@ -165,14 +202,41 @@ function TierControls({ groups, groupKey, setGroupKey, investableOnly, setInvest
           {Object.values(groups).map((g) => (
             <option key={g.key} value={g.key}>
               {g.label} ({g.percentile_range})
+              {g.nested ? ' \u2014 inside the top 1%' : ''}
             </option>
           ))}
+        </select>
+      </label>
+      <label>
+        Quarter
+        <select value={periodMode} onChange={(e) => setPeriodMode(e.target.value)}>
+          <option value="latest">{quarterLabel(benchmarks.latestPeriod)} (most recent)</option>
+          <option value="complete">{quarterLabel(benchmarks.completePeriod)} (fully published)</option>
         </select>
       </label>
       <label>
         <input type="checkbox" checked={investableOnly} onChange={(e) => setInvestableOnly(e.target.checked)} />
         Investable assets only
       </label>
+    </div>
+  )
+}
+
+/** Shown when the selected quarter is missing a class the Fed publishes late.
+ *  The other percentages are still correct -- the denominator is the Fed's own
+ *  asset total, which already includes whatever has not been broken out. */
+function PendingNotice({ result, labels, onUseComplete, completePeriod }) {
+  if (result.period_complete) return null
+  const missing = result.period_unavailable.map((k) => labels[k] || k).join(', ')
+  return (
+    <div className="notice" role="status">
+      <strong>{quarterLabel(result.period)} is not fully published yet.</strong> The Federal Reserve
+      releases {missing} later than the rest of the balance sheet, so it appears as
+      &ldquo;not yet published&rdquo; below rather than as a number. Every other share is still
+      correct.{' '}
+      <button className="link-btn" onClick={onUseComplete}>
+        Use {quarterLabel(completePeriod)} instead
+      </button>
     </div>
   )
 }

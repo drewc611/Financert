@@ -28,6 +28,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from app.constants import (
+    ALL_GROUPS,
     ASSET_CLASSES,
     CONTROL_OFFSETS,
     DFA_UNITS_MULTIPLIER,
@@ -35,7 +36,7 @@ from app.constants import (
     GROUP_ORDER,
     UNALLOCATED,
     WEALTH_GROUPS,
-    legacy_series_id,
+    control_series_id,
     series_ids_for,
 )
 
@@ -119,52 +120,59 @@ def _sum_series(data: dict[str, dict[str, float]], ids: list[str], period: str) 
 
 def build_snapshot(since_year: int) -> dict:
     wanted: list[str] = []
-    for group_key in GROUP_ORDER:
+    for group_key in ALL_GROUPS:
         for asset in ASSET_CLASSES:
             wanted.extend(series_ids_for(group_key, asset["key"]))
-        for offset in CONTROL_OFFSETS.values():
-            wanted.append(legacy_series_id(group_key, offset))
+        for control in CONTROL_OFFSETS:
+            wanted.append(control_series_id(group_key, control))
 
     data = fetch_all(wanted)
 
-    # Only keep periods every series covers, so a quarter is never assembled
-    # from a mix of populated and missing buckets.
+    # Periods are driven by the *control totals*, which every group publishes
+    # on time. Individual buckets can lag behind them -- notably equity in
+    # noncorporate business, which currently trails by several quarters -- so a
+    # recent quarter is kept and marked incomplete rather than dropped. Every
+    # published bucket's share is still correct in those quarters, because the
+    # denominator is the Fed's own asset total and already includes whatever
+    # has not been broken out yet.
+    control_ids = [control_series_id(g, c) for g in ALL_GROUPS for c in CONTROL_OFFSETS]
     common: set[str] | None = None
-    for sid in set(wanted):
-        periods = set(data[sid])
-        common = periods if common is None else (common & periods)
+    for sid in set(control_ids):
+        seen = set(data[sid])
+        common = seen if common is None else (common & seen)
     periods = sorted(p for p in (common or set()) if int(p[:4]) >= since_year)
     if not periods:
-        raise FetchError("no periods common to every series")
-    print(f"{len(periods)} common quarters: {periods[0]} .. {periods[-1]}", file=sys.stderr)
+        raise FetchError("no periods common to every control series")
 
     problems: list[str] = []
     groups: dict[str, dict] = {}
 
-    for group_key in GROUP_ORDER:
+    for group_key in ALL_GROUPS:
         meta = WEALTH_GROUPS[group_key]
         history: list[dict] = []
         for period in periods:
             assets: dict[str, float] = {}
+            unavailable: list[str] = []
             for asset in ASSET_CLASSES:
                 value = _sum_series(data, series_ids_for(group_key, asset["key"]), period)
                 if value is None:
-                    break
-                assets[asset["key"]] = value * DFA_UNITS_MULTIPLIER
-            if len(assets) != len(ASSET_CLASSES):
-                continue
+                    unavailable.append(asset["key"])
+                else:
+                    assets[asset["key"]] = value * DFA_UNITS_MULTIPLIER
 
             controls = {
-                name: data[legacy_series_id(group_key, offset)][period] * DFA_UNITS_MULTIPLIER
-                for name, offset in CONTROL_OFFSETS.items()
+                name: data[control_series_id(group_key, name)][period] * DFA_UNITS_MULTIPLIER
+                for name in CONTROL_OFFSETS
             }
             reported_total = controls["nonfinancial_assets"] + controls["financial_assets"]
             summed_total = sum(assets.values())
+            complete = not unavailable
 
-            # Validate the taxonomy against the Fed's own total assets. A large
-            # shortfall means a bucket is missing; any real overcount means a
-            # sub-item is being summed alongside its parent.
-            if reported_total > 0:
+            # Validate the taxonomy against the Fed's own total assets. Only
+            # complete quarters can be checked: an incomplete one is short by
+            # exactly the buckets the Fed has not published, which is expected
+            # rather than a mapping bug.
+            if reported_total > 0 and complete:
                 drift = (summed_total - reported_total) / reported_total
                 if drift > OVERCOUNT_TOLERANCE:
                     problems.append(
@@ -179,14 +187,17 @@ def build_snapshot(since_year: int) -> dict:
                     )
 
             # Close the remaining gap explicitly rather than letting it distort
-            # a real bucket. Negative residuals would mean double counting, so
-            # they are floored at zero and caught by the drift check above.
+            # a real bucket. In a complete quarter this is the small definitional
+            # residual; in an incomplete one it also holds the unpublished
+            # buckets, which is why `unavailable` travels with it.
             assets[UNALLOCATED["key"]] = max(reported_total - summed_total, 0.0)
 
             history.append(
                 {
                     "period": period,
                     "assets": {k: round(v, 2) for k, v in assets.items()},
+                    "unavailable": unavailable,
+                    "complete": complete,
                     "total_assets": round(reported_total, 2),
                     "total_liabilities": round(controls["total_liabilities"], 2),
                     "net_worth": round(controls["net_worth"], 2),
@@ -198,8 +209,21 @@ def build_snapshot(since_year: int) -> dict:
             "label": meta["label"],
             "percentile_range": meta["percentile_range"],
             "population_share": meta["population_share"],
+            "nested": bool(meta.get("nested")),
+            "nested_in": meta.get("nested_in"),
             "history": history,
         }
+
+    complete_periods = [
+        p for i, p in enumerate(periods) if all(groups[g]["history"][i]["complete"] for g in ALL_GROUPS)
+    ]
+    if not complete_periods:
+        raise FetchError("no quarter has every asset class published")
+    print(
+        f"{len(periods)} quarters {periods[0]} .. {periods[-1]} "
+        f"({len(complete_periods)} complete, latest complete {complete_periods[-1]})",
+        file=sys.stderr,
+    )
 
     if problems:
         for p in problems[:10]:
@@ -220,13 +244,20 @@ def build_snapshot(since_year: int) -> dict:
         },
         "periods": periods,
         "latest_period": periods[-1],
+        # The newest quarter in which every asset class is published. Callers
+        # that need a full breakdown should prefer this; callers that want
+        # recency can take `latest_period` and read each row's `unavailable`.
+        "latest_complete_period": complete_periods[-1],
+        "complete_periods": complete_periods,
+        "group_order": GROUP_ORDER,
+        "all_groups": ALL_GROUPS,
         "asset_classes": [
             {
                 "key": a["key"],
                 "label": a["label"],
                 "liquid": a["liquid"],
                 "blurb": a["blurb"],
-                "series": {g: series_ids_for(g, a["key"]) for g in GROUP_ORDER},
+                "series": {g: series_ids_for(g, a["key"]) for g in ALL_GROUPS},
             }
             for a in ASSET_CLASSES
         ]
@@ -247,14 +278,25 @@ def main() -> int:
         print(f"error: {exc}", file=sys.stderr)
         return 1
 
-    latest = snapshot["latest_period"]
-    top1 = snapshot["groups"]["top1"]["history"][-1]
-    total = top1["total_assets"]
-    print(f"\nlatest period {latest} -- top 1% composition:", file=sys.stderr)
-    for asset in [*ASSET_CLASSES, UNALLOCATED]:
-        share = top1["assets"][asset["key"]] / total * 100 if total else 0.0
-        print(f"  {asset['label']:<26} {share:5.1f}%", file=sys.stderr)
-    print(f"  {'TOTAL ASSETS':<26} ${total / 1e12:,.1f}T", file=sys.stderr)
+    for group_key in ("top01", "top1"):
+        row = next(
+            r for r in snapshot["groups"][group_key]["history"] if r["period"] == snapshot["latest_complete_period"]
+        )
+        total = row["total_assets"]
+        label = WEALTH_GROUPS[group_key]["label"]
+        print(f"\n{row['period']} -- {label} composition:", file=sys.stderr)
+        for asset in [*ASSET_CLASSES, UNALLOCATED]:
+            share = row["assets"].get(asset["key"], 0.0) / total * 100 if total else 0.0
+            print(f"  {asset['label']:<26} {share:5.1f}%", file=sys.stderr)
+        print(f"  {'TOTAL ASSETS':<26} ${total / 1e12:,.1f}T", file=sys.stderr)
+
+    newest = snapshot["groups"]["top1"]["history"][-1]
+    if not newest["complete"]:
+        missing = ", ".join(newest["unavailable"])
+        print(
+            f"\nnewest quarter {newest['period']} is incomplete -- not yet published: {missing}",
+            file=sys.stderr,
+        )
 
     if args.check:
         print("\n--check: snapshot validated, nothing written", file=sys.stderr)

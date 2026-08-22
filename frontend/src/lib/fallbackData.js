@@ -10,11 +10,12 @@ export const fallbackData = {
     "publisher": "Board of Governors of the Federal Reserve System",
     "retrieved_via": "FRED (fred.stlouisfed.org)",
     "url": "https://www.federalreserve.gov/releases/z1/dataviz/dfa/",
-    "retrieved_at": "2026-08-17T06:10:46+00:00",
+    "retrieved_at": "2026-08-22T17:37:39+00:00",
     "units": "US dollars, not seasonally adjusted"
   },
-  "latest_period": "2024-07-01",
-  "periods": [
+  "latest_period": "2026-01-01",
+  "latest_complete_period": "2024-07-01",
+  "complete_periods": [
     "2014-10-01",
     "2015-01-01",
     "2015-04-01",
@@ -55,6 +56,54 @@ export const fallbackData = {
     "2024-01-01",
     "2024-04-01",
     "2024-07-01"
+  ],
+  "group_order": [
+    "top1",
+    "next9",
+    "next40",
+    "bottom50"
+  ],
+  "periods": [
+    "2016-04-01",
+    "2016-07-01",
+    "2016-10-01",
+    "2017-01-01",
+    "2017-04-01",
+    "2017-07-01",
+    "2017-10-01",
+    "2018-01-01",
+    "2018-04-01",
+    "2018-07-01",
+    "2018-10-01",
+    "2019-01-01",
+    "2019-04-01",
+    "2019-07-01",
+    "2019-10-01",
+    "2020-01-01",
+    "2020-04-01",
+    "2020-07-01",
+    "2020-10-01",
+    "2021-01-01",
+    "2021-04-01",
+    "2021-07-01",
+    "2021-10-01",
+    "2022-01-01",
+    "2022-04-01",
+    "2022-07-01",
+    "2022-10-01",
+    "2023-01-01",
+    "2023-04-01",
+    "2023-07-01",
+    "2023-10-01",
+    "2024-01-01",
+    "2024-04-01",
+    "2024-07-01",
+    "2024-10-01",
+    "2025-01-01",
+    "2025-04-01",
+    "2025-07-01",
+    "2025-10-01",
+    "2026-01-01"
   ],
   "asset_classes": [
     {
@@ -131,101 +180,399 @@ export const fallbackData = {
     }
   ],
   "groups": {
+    "top01": {
+      "key": "top01",
+      "label": "Top 0.1%",
+      "percentile_range": "99.9th-100th",
+      "nested": true,
+      "nested_in": "top1",
+      "period": "2026-01-01",
+      "complete": false,
+      "unavailable": [
+        "private_business"
+      ],
+      "total_assets": 25311992000000.0,
+      "total_liabilities": 239711000000.0,
+      "net_worth": 25072282000000.0,
+      "assets": {
+        "corporate_equities": 13331518000000.0,
+        "pension": 453454000000.0,
+        "real_estate": 1937284000000.0,
+        "deposits": 1473775000000.0,
+        "money_market": 1006257000000.0,
+        "debt_securities": 1104402000000.0,
+        "consumer_durables": 712377000000.0,
+        "life_insurance": 232477000000.0,
+        "loans_assets": 265014000000.0,
+        "misc_assets": 44806000000.0,
+        "unallocated": 4750628000000.0
+      },
+      "complete_snapshot": {
+        "period": "2024-07-01",
+        "assets": {
+          "corporate_equities": 11433106000000.0,
+          "private_business": 4385246000000.0,
+          "pension": 436106000000.0,
+          "real_estate": 1886606000000.0,
+          "deposits": 1362909000000.0,
+          "money_market": 745769000000.0,
+          "debt_securities": 1051775000000.0,
+          "consumer_durables": 622289000000.0,
+          "life_insurance": 230710000000.0,
+          "loans_assets": 313101000000.0,
+          "misc_assets": 42100000000.0,
+          "unallocated": 165353000000.0
+        },
+        "total_assets": 22675070000000.0,
+        "total_liabilities": 233758000000.0,
+        "net_worth": 22441312000000.0
+      }
+    },
     "top1": {
       "key": "top1",
       "label": "Top 1%",
       "percentile_range": "99th-100th",
-      "period": "2024-07-01",
-      "total_assets": 50667755000000.0,
-      "total_liabilities": 1058617000000.0,
-      "net_worth": 49609139000000.0,
+      "nested": false,
+      "nested_in": null,
+      "period": "2026-01-01",
+      "complete": false,
+      "unavailable": [
+        "private_business"
+      ],
+      "total_assets": 56042476000000.0,
+      "total_liabilities": 1009477000000.0,
+      "net_worth": 55033000000000.0,
       "assets": {
-        "corporate_equities": 23862978000000.0,
-        "private_business": 8218524000000.0,
-        "pension": 2600227000000.0,
-        "real_estate": 6295344000000.0,
-        "deposits": 3180282000000.0,
-        "money_market": 1522005000000.0,
-        "debt_securities": 2156826000000.0,
-        "consumer_durables": 1008502000000.0,
-        "life_insurance": 617874000000.0,
-        "loans_assets": 587618000000.0,
-        "misc_assets": 131699000000.0,
-        "unallocated": 485876000000.0
+        "corporate_equities": 27643648000000.0,
+        "pension": 2758346000000.0,
+        "real_estate": 6484137000000.0,
+        "deposits": 3420010000000.0,
+        "money_market": 1991774000000.0,
+        "debt_securities": 2255117000000.0,
+        "consumer_durables": 1129619000000.0,
+        "life_insurance": 622086000000.0,
+        "loans_assets": 549701000000.0,
+        "misc_assets": 139399000000.0,
+        "unallocated": 9048639000000.0
+      },
+      "complete_snapshot": {
+        "period": "2024-07-01",
+        "assets": {
+          "corporate_equities": 23862978000000.0,
+          "private_business": 8218524000000.0,
+          "pension": 2600227000000.0,
+          "real_estate": 6295344000000.0,
+          "deposits": 3180282000000.0,
+          "money_market": 1522005000000.0,
+          "debt_securities": 2156826000000.0,
+          "consumer_durables": 1008502000000.0,
+          "life_insurance": 617874000000.0,
+          "loans_assets": 587618000000.0,
+          "misc_assets": 131699000000.0,
+          "unallocated": 485876000000.0
+        },
+        "total_assets": 50667755000000.0,
+        "total_liabilities": 1058617000000.0,
+        "net_worth": 49609139000000.0
       }
     },
     "next9": {
       "key": "next9",
       "label": "Next 9%",
       "percentile_range": "90th-99th",
-      "period": "2024-07-01",
-      "total_assets": 62481853000000.0,
-      "total_liabilities": 3894046000000.0,
-      "net_worth": 58587807000000.0,
+      "nested": false,
+      "nested_in": null,
+      "period": "2026-01-01",
+      "complete": false,
+      "unavailable": [
+        "private_business"
+      ],
+      "total_assets": 67334132000000.0,
+      "total_liabilities": 4108736000000.0,
+      "net_worth": 63225396000000.0,
       "assets": {
-        "corporate_equities": 17853033000000.0,
-        "private_business": 4911358000000.0,
-        "pension": 12073949000000.0,
-        "real_estate": 14321436000000.0,
-        "deposits": 4786840000000.0,
-        "money_market": 1693655000000.0,
-        "debt_securities": 2288025000000.0,
-        "consumer_durables": 1721449000000.0,
-        "life_insurance": 662445000000.0,
-        "loans_assets": 379916000000.0,
-        "misc_assets": 367997000000.0,
-        "unallocated": 1421750000000.0
+        "corporate_equities": 20514327000000.0,
+        "pension": 12784682000000.0,
+        "real_estate": 14762255000000.0,
+        "deposits": 5054244000000.0,
+        "money_market": 2055926000000.0,
+        "debt_securities": 2386708000000.0,
+        "consumer_durables": 1886084000000.0,
+        "life_insurance": 667332000000.0,
+        "loans_assets": 282903000000.0,
+        "misc_assets": 389386000000.0,
+        "unallocated": 6550285000000.0
+      },
+      "complete_snapshot": {
+        "period": "2024-07-01",
+        "assets": {
+          "corporate_equities": 17853033000000.0,
+          "private_business": 4911358000000.0,
+          "pension": 12073949000000.0,
+          "real_estate": 14321436000000.0,
+          "deposits": 4786840000000.0,
+          "money_market": 1693655000000.0,
+          "debt_securities": 2288025000000.0,
+          "consumer_durables": 1721449000000.0,
+          "life_insurance": 662445000000.0,
+          "loans_assets": 379916000000.0,
+          "misc_assets": 367997000000.0,
+          "unallocated": 1421750000000.0
+        },
+        "total_assets": 62481853000000.0,
+        "total_liabilities": 3894046000000.0,
+        "net_worth": 58587807000000.0
       }
     },
     "next40": {
       "key": "next40",
       "label": "Next 40%",
       "percentile_range": "50th-90th",
-      "period": "2024-07-01",
-      "total_assets": 57041170000000.0,
-      "total_liabilities": 8570021000000.0,
-      "net_worth": 48471149000000.0,
+      "nested": false,
+      "nested_in": null,
+      "period": "2026-01-01",
+      "complete": false,
+      "unavailable": [
+        "private_business"
+      ],
+      "total_assets": 60280256000000.0,
+      "total_liabilities": 8795392000000.0,
+      "net_worth": 51484864000000.0,
       "assets": {
-        "corporate_equities": 5647158000000.0,
-        "private_business": 2264464000000.0,
-        "pension": 14021695000000.0,
-        "real_estate": 21919258000000.0,
-        "deposits": 4876393000000.0,
-        "money_market": 937618000000.0,
-        "debt_securities": 1145066000000.0,
-        "consumer_durables": 3397182000000.0,
-        "life_insurance": 702634000000.0,
-        "loans_assets": 159336000000.0,
-        "misc_assets": 828860000000.0,
-        "unallocated": 1141506000000.0
+        "corporate_equities": 6400950000000.0,
+        "pension": 14761048000000.0,
+        "real_estate": 22650205000000.0,
+        "deposits": 5185020000000.0,
+        "money_market": 1104304000000.0,
+        "debt_securities": 1193186000000.0,
+        "consumer_durables": 3773624000000.0,
+        "life_insurance": 709094000000.0,
+        "loans_assets": 126781000000.0,
+        "misc_assets": 879571000000.0,
+        "unallocated": 3496473000000.0
+      },
+      "complete_snapshot": {
+        "period": "2024-07-01",
+        "assets": {
+          "corporate_equities": 5647158000000.0,
+          "private_business": 2264464000000.0,
+          "pension": 14021695000000.0,
+          "real_estate": 21919258000000.0,
+          "deposits": 4876393000000.0,
+          "money_market": 937618000000.0,
+          "debt_securities": 1145066000000.0,
+          "consumer_durables": 3397182000000.0,
+          "life_insurance": 702634000000.0,
+          "loans_assets": 159336000000.0,
+          "misc_assets": 828860000000.0,
+          "unallocated": 1141506000000.0
+        },
+        "total_assets": 57041170000000.0,
+        "total_liabilities": 8570021000000.0,
+        "net_worth": 48471149000000.0
       }
     },
     "bottom50": {
       "key": "bottom50",
       "label": "Bottom 50%",
       "percentile_range": "0-50th",
-      "period": "2024-07-01",
-      "total_assets": 9828692000000.0,
-      "total_liabilities": 5942374000000.0,
-      "net_worth": 3886317000000.0,
+      "nested": false,
+      "nested_in": null,
+      "period": "2026-01-01",
+      "complete": false,
+      "unavailable": [
+        "private_business"
+      ],
+      "total_assets": 10348948000000.0,
+      "total_liabilities": 6082588000000.0,
+      "net_worth": 4266359000000.0,
       "assets": {
-        "corporate_equities": 501544000000.0,
-        "private_business": 166192000000.0,
-        "pension": 1102829000000.0,
-        "real_estate": 4779469000000.0,
-        "deposits": 742640000000.0,
-        "money_market": 41326000000.0,
-        "debt_securities": 28630000000.0,
-        "consumer_durables": 1886247000000.0,
-        "life_insurance": 167808000000.0,
-        "loans_assets": 3539000000.0,
-        "misc_assets": 353155000000.0,
-        "unallocated": 55313000000.0
+        "corporate_equities": 587223000000.0,
+        "pension": 1175379000000.0,
+        "real_estate": 4826745000000.0,
+        "deposits": 793232000000.0,
+        "money_market": 54257000000.0,
+        "debt_securities": 28583000000.0,
+        "consumer_durables": 2110476000000.0,
+        "life_insurance": 169417000000.0,
+        "loans_assets": 2728000000.0,
+        "misc_assets": 375549000000.0,
+        "unallocated": 225359000000.0
+      },
+      "complete_snapshot": {
+        "period": "2024-07-01",
+        "assets": {
+          "corporate_equities": 501544000000.0,
+          "private_business": 166192000000.0,
+          "pension": 1102829000000.0,
+          "real_estate": 4779469000000.0,
+          "deposits": 742640000000.0,
+          "money_market": 41326000000.0,
+          "debt_securities": 28630000000.0,
+          "consumer_durables": 1886247000000.0,
+          "life_insurance": 167808000000.0,
+          "loans_assets": 3539000000.0,
+          "misc_assets": 353155000000.0,
+          "unallocated": 55313000000.0
+        },
+        "total_assets": 9828692000000.0,
+        "total_liabilities": 5942374000000.0,
+        "net_worth": 3886317000000.0
       }
     }
   },
   "trends": {
     "corporate_equities": {
+      "top01": [
+        {
+          "period": "1989-07-01",
+          "share": 0.16942
+        },
+        {
+          "period": "1990-07-01",
+          "share": 0.11984
+        },
+        {
+          "period": "1991-07-01",
+          "share": 0.18896
+        },
+        {
+          "period": "1992-07-01",
+          "share": 0.24224
+        },
+        {
+          "period": "1993-07-01",
+          "share": 0.27371
+        },
+        {
+          "period": "1994-07-01",
+          "share": 0.23965
+        },
+        {
+          "period": "1995-07-01",
+          "share": 0.26148
+        },
+        {
+          "period": "1996-07-01",
+          "share": 0.29461
+        },
+        {
+          "period": "1997-07-01",
+          "share": 0.36603
+        },
+        {
+          "period": "1998-07-01",
+          "share": 0.36496
+        },
+        {
+          "period": "1999-07-01",
+          "share": 0.39217
+        },
+        {
+          "period": "2000-07-01",
+          "share": 0.41281
+        },
+        {
+          "period": "2001-07-01",
+          "share": 0.26277
+        },
+        {
+          "period": "2002-07-01",
+          "share": 0.22596
+        },
+        {
+          "period": "2003-07-01",
+          "share": 0.29979
+        },
+        {
+          "period": "2004-07-01",
+          "share": 0.3228
+        },
+        {
+          "period": "2005-07-01",
+          "share": 0.34362
+        },
+        {
+          "period": "2006-07-01",
+          "share": 0.36626
+        },
+        {
+          "period": "2007-07-01",
+          "share": 0.39639
+        },
+        {
+          "period": "2008-07-01",
+          "share": 0.31193
+        },
+        {
+          "period": "2009-07-01",
+          "share": 0.33235
+        },
+        {
+          "period": "2010-07-01",
+          "share": 0.34963
+        },
+        {
+          "period": "2011-07-01",
+          "share": 0.33274
+        },
+        {
+          "period": "2012-07-01",
+          "share": 0.37822
+        },
+        {
+          "period": "2013-07-01",
+          "share": 0.42185
+        },
+        {
+          "period": "2014-07-01",
+          "share": 0.44472
+        },
+        {
+          "period": "2015-07-01",
+          "share": 0.41738
+        },
+        {
+          "period": "2016-07-01",
+          "share": 0.4368
+        },
+        {
+          "period": "2017-07-01",
+          "share": 0.45618
+        },
+        {
+          "period": "2018-07-01",
+          "share": 0.46753
+        },
+        {
+          "period": "2019-07-01",
+          "share": 0.45071
+        },
+        {
+          "period": "2020-07-01",
+          "share": 0.4552
+        },
+        {
+          "period": "2021-07-01",
+          "share": 0.50807
+        },
+        {
+          "period": "2022-07-01",
+          "share": 0.41523
+        },
+        {
+          "period": "2023-07-01",
+          "share": 0.44134
+        },
+        {
+          "period": "2024-07-01",
+          "share": 0.50421
+        },
+        {
+          "period": "2025-07-01",
+          "share": 0.53265
+        }
+      ],
       "top1": [
         {
           "period": "1989-07-01",
@@ -370,6 +717,10 @@ export const fallbackData = {
         {
           "period": "2024-07-01",
           "share": 0.47097
+        },
+        {
+          "period": "2025-07-01",
+          "share": 0.49778
         }
       ],
       "next9": [
@@ -516,6 +867,10 @@ export const fallbackData = {
         {
           "period": "2024-07-01",
           "share": 0.28573
+        },
+        {
+          "period": "2025-07-01",
+          "share": 0.30705
         }
       ],
       "next40": [
@@ -662,6 +1017,10 @@ export const fallbackData = {
         {
           "period": "2024-07-01",
           "share": 0.099
+        },
+        {
+          "period": "2025-07-01",
+          "share": 0.10738
         }
       ],
       "bottom50": [
@@ -808,10 +1167,160 @@ export const fallbackData = {
         {
           "period": "2024-07-01",
           "share": 0.05103
+        },
+        {
+          "period": "2025-07-01",
+          "share": 0.05736
         }
       ]
     },
     "private_business": {
+      "top01": [
+        {
+          "period": "1989-07-01",
+          "share": 0.32802
+        },
+        {
+          "period": "1990-07-01",
+          "share": 0.33946
+        },
+        {
+          "period": "1991-07-01",
+          "share": 0.30421
+        },
+        {
+          "period": "1992-07-01",
+          "share": 0.28622
+        },
+        {
+          "period": "1993-07-01",
+          "share": 0.25605
+        },
+        {
+          "period": "1994-07-01",
+          "share": 0.25754
+        },
+        {
+          "period": "1995-07-01",
+          "share": 0.24576
+        },
+        {
+          "period": "1996-07-01",
+          "share": 0.2341
+        },
+        {
+          "period": "1997-07-01",
+          "share": 0.2282
+        },
+        {
+          "period": "1998-07-01",
+          "share": 0.23419
+        },
+        {
+          "period": "1999-07-01",
+          "share": 0.23002
+        },
+        {
+          "period": "2000-07-01",
+          "share": 0.23326
+        },
+        {
+          "period": "2001-07-01",
+          "share": 0.27986
+        },
+        {
+          "period": "2002-07-01",
+          "share": 0.28554
+        },
+        {
+          "period": "2003-07-01",
+          "share": 0.25417
+        },
+        {
+          "period": "2004-07-01",
+          "share": 0.25446
+        },
+        {
+          "period": "2005-07-01",
+          "share": 0.26838
+        },
+        {
+          "period": "2006-07-01",
+          "share": 0.26924
+        },
+        {
+          "period": "2007-07-01",
+          "share": 0.25026
+        },
+        {
+          "period": "2008-07-01",
+          "share": 0.23411
+        },
+        {
+          "period": "2009-07-01",
+          "share": 0.17246
+        },
+        {
+          "period": "2010-07-01",
+          "share": 0.17603
+        },
+        {
+          "period": "2011-07-01",
+          "share": 0.19449
+        },
+        {
+          "period": "2012-07-01",
+          "share": 0.20479
+        },
+        {
+          "period": "2013-07-01",
+          "share": 0.22783
+        },
+        {
+          "period": "2014-07-01",
+          "share": 0.22445
+        },
+        {
+          "period": "2015-07-01",
+          "share": 0.24241
+        },
+        {
+          "period": "2016-07-01",
+          "share": 0.23634
+        },
+        {
+          "period": "2017-07-01",
+          "share": 0.24253
+        },
+        {
+          "period": "2018-07-01",
+          "share": 0.24701
+        },
+        {
+          "period": "2019-07-01",
+          "share": 0.26273
+        },
+        {
+          "period": "2020-07-01",
+          "share": 0.24739
+        },
+        {
+          "period": "2021-07-01",
+          "share": 0.22456
+        },
+        {
+          "period": "2022-07-01",
+          "share": 0.26424
+        },
+        {
+          "period": "2023-07-01",
+          "share": 0.23515
+        },
+        {
+          "period": "2024-07-01",
+          "share": 0.1934
+        }
+      ],
       "top1": [
         {
           "period": "1989-07-01",
@@ -1398,6 +1907,156 @@ export const fallbackData = {
       ]
     },
     "real_estate": {
+      "top01": [
+        {
+          "period": "1989-07-01",
+          "share": 0.07726
+        },
+        {
+          "period": "1990-07-01",
+          "share": 0.10277
+        },
+        {
+          "period": "1991-07-01",
+          "share": 0.11489
+        },
+        {
+          "period": "1992-07-01",
+          "share": 0.13307
+        },
+        {
+          "period": "1993-07-01",
+          "share": 0.10756
+        },
+        {
+          "period": "1994-07-01",
+          "share": 0.08923
+        },
+        {
+          "period": "1995-07-01",
+          "share": 0.06945
+        },
+        {
+          "period": "1996-07-01",
+          "share": 0.06914
+        },
+        {
+          "period": "1997-07-01",
+          "share": 0.06597
+        },
+        {
+          "period": "1998-07-01",
+          "share": 0.0703
+        },
+        {
+          "period": "1999-07-01",
+          "share": 0.07708
+        },
+        {
+          "period": "2000-07-01",
+          "share": 0.08425
+        },
+        {
+          "period": "2001-07-01",
+          "share": 0.1101
+        },
+        {
+          "period": "2002-07-01",
+          "share": 0.12744
+        },
+        {
+          "period": "2003-07-01",
+          "share": 0.1253
+        },
+        {
+          "period": "2004-07-01",
+          "share": 0.11746
+        },
+        {
+          "period": "2005-07-01",
+          "share": 0.11208
+        },
+        {
+          "period": "2006-07-01",
+          "share": 0.0993
+        },
+        {
+          "period": "2007-07-01",
+          "share": 0.08047
+        },
+        {
+          "period": "2008-07-01",
+          "share": 0.09406
+        },
+        {
+          "period": "2009-07-01",
+          "share": 0.10191
+        },
+        {
+          "period": "2010-07-01",
+          "share": 0.10105
+        },
+        {
+          "period": "2011-07-01",
+          "share": 0.09282
+        },
+        {
+          "period": "2012-07-01",
+          "share": 0.08245
+        },
+        {
+          "period": "2013-07-01",
+          "share": 0.0812
+        },
+        {
+          "period": "2014-07-01",
+          "share": 0.07862
+        },
+        {
+          "period": "2015-07-01",
+          "share": 0.08149
+        },
+        {
+          "period": "2016-07-01",
+          "share": 0.08025
+        },
+        {
+          "period": "2017-07-01",
+          "share": 0.08178
+        },
+        {
+          "period": "2018-07-01",
+          "share": 0.08197
+        },
+        {
+          "period": "2019-07-01",
+          "share": 0.08044
+        },
+        {
+          "period": "2020-07-01",
+          "share": 0.08138
+        },
+        {
+          "period": "2021-07-01",
+          "share": 0.07936
+        },
+        {
+          "period": "2022-07-01",
+          "share": 0.09733
+        },
+        {
+          "period": "2023-07-01",
+          "share": 0.09324
+        },
+        {
+          "period": "2024-07-01",
+          "share": 0.0832
+        },
+        {
+          "period": "2025-07-01",
+          "share": 0.07695
+        }
+      ],
       "top1": [
         {
           "period": "1989-07-01",
@@ -1542,6 +2201,10 @@ export const fallbackData = {
         {
           "period": "2024-07-01",
           "share": 0.12425
+        },
+        {
+          "period": "2025-07-01",
+          "share": 0.11592
         }
       ],
       "next9": [
@@ -1688,6 +2351,10 @@ export const fallbackData = {
         {
           "period": "2024-07-01",
           "share": 0.22921
+        },
+        {
+          "period": "2025-07-01",
+          "share": 0.21933
         }
       ],
       "next40": [
@@ -1834,6 +2501,10 @@ export const fallbackData = {
         {
           "period": "2024-07-01",
           "share": 0.38427
+        },
+        {
+          "period": "2025-07-01",
+          "share": 0.37523
         }
       ],
       "bottom50": [
@@ -1980,6 +2651,10 @@ export const fallbackData = {
         {
           "period": "2024-07-01",
           "share": 0.48628
+        },
+        {
+          "period": "2025-07-01",
+          "share": 0.47222
         }
       ]
     }

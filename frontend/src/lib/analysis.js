@@ -6,12 +6,19 @@
 export const NON_INVESTABLE = new Set(['consumer_durables'])
 export const UNALLOCATED = 'unallocated'
 export const GAP_TOLERANCE_PP = 1.5
+// In an incomplete quarter the residual holds the classes the Fed has not
+// released, so it is relabelled and given no over/underweight verdict.
+export const PENDING_LABEL = 'Not yet published'
 export const SIMILARITY_FLOOR = 0.5
 
 export function benchmarkWeights(group, { investableOnly = true } = {}) {
   const assets = { ...group.assets }
   if (investableOnly) {
-    for (const key of [...NON_INVESTABLE, UNALLOCATED]) delete assets[key]
+    for (const key of NON_INVESTABLE) delete assets[key]
+    // The residual is only safe to drop in a fully published quarter. In an
+    // incomplete one it also holds the classes the Fed has not released yet,
+    // so dropping it would renormalise the rest upward and overstate them.
+    if (group.complete !== false) delete assets[UNALLOCATED]
   }
   const total = Object.values(assets).reduce((a, b) => a + b, 0)
   if (total <= 0) return {}
@@ -73,7 +80,11 @@ export function analyse(holdings, { groups, groupKey = 'top1', investableOnly = 
     .filter(([k, v]) => !(k in considered) && v > 0)
     .reduce((a, [, v]) => a + v, 0)
 
+  // Ranked over the tiers that partition the population. A nested tier (the
+  // top 0.1% inside the top 1%) would put two overlapping populations in one
+  // ranking, so it is excluded here even though it is a valid benchmark.
   const ranked = Object.keys(groups)
+    .filter((key) => !groups[key].nested)
     .map((key) => ({
       group: key,
       label: groups[key].label,
@@ -82,9 +93,24 @@ export function analyse(holdings, { groups, groupKey = 'top1', investableOnly = 
     .sort((a, b) => b.similarity - a.similarity)
 
   const hasHoldings = Object.keys(user).length > 0
+  const complete = groups[groupKey].complete !== false
+  const unavailable = groups[groupKey].unavailable || []
+  const gapRows = hasHoldings ? computeGaps(user, bench, labels) : []
+
+  if (!complete) {
+    const missing = unavailable.map((k) => labels[k] || k).join(', ')
+    for (const row of gapRows) {
+      if (row.asset_class === UNALLOCATED) {
+        row.status = 'pending'
+        row.label = missing ? `${PENDING_LABEL} (${missing})` : PENDING_LABEL
+      }
+    }
+  }
 
   return {
     period: groups[groupKey].period,
+    period_complete: complete,
+    period_unavailable: unavailable,
     benchmark_group: groupKey,
     benchmark_label: groups[groupKey].label,
     investable_only: investableOnly,
@@ -92,7 +118,7 @@ export function analyse(holdings, { groups, groupKey = 'top1', investableOnly = 
     excluded_value: excluded,
     user_weights: user,
     benchmark_weights: bench,
-    gaps: hasHoldings ? computeGaps(user, bench, labels) : [],
+    gaps: gapRows,
     similarity: hasHoldings ? round4(cosineSimilarity(user, bench)) : 0,
     nearest_tier: hasHoldings
       ? {

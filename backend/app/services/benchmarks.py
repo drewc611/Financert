@@ -11,7 +11,7 @@ from functools import lru_cache
 from typing import Any
 
 from ..config import SNAPSHOT_PATH
-from ..constants import GROUP_ORDER, NON_INVESTABLE, UNALLOCATED
+from ..constants import ALL_GROUPS, NON_INVESTABLE, UNALLOCATED
 
 
 class SnapshotError(RuntimeError):
@@ -24,7 +24,7 @@ def load_snapshot() -> dict[str, Any]:
         raise SnapshotError(f"DFA snapshot missing at {SNAPSHOT_PATH}. Run `python fetch_dfa.py` to build it.")
     with SNAPSHOT_PATH.open() as fh:
         snapshot = json.load(fh)
-    missing = [g for g in GROUP_ORDER if g not in snapshot.get("groups", {})]
+    missing = [g for g in ALL_GROUPS if g not in snapshot.get("groups", {})]
     if missing:
         raise SnapshotError(f"snapshot is missing wealth groups: {', '.join(missing)}")
     return snapshot
@@ -42,14 +42,29 @@ def latest_period() -> str:
     return load_snapshot()["latest_period"]
 
 
+def latest_complete_period() -> str:
+    """Newest quarter in which every asset class is published."""
+    return load_snapshot()["latest_complete_period"]
+
+
+def complete_periods() -> list[str]:
+    return load_snapshot()["complete_periods"]
+
+
 def source_meta() -> dict[str, Any]:
     return load_snapshot()["source"]
 
 
 def resolve_period(period: str | None) -> str:
-    """Map a requested period (or None/'latest') onto a real snapshot period."""
+    """Map a requested period onto a real snapshot period.
+
+    ``None`` and ``"latest"`` give the newest quarter, which may be missing a
+    lagging asset class; ``"complete"`` gives the newest fully published one.
+    """
     if period in (None, "", "latest"):
         return latest_period()
+    if period == "complete":
+        return latest_complete_period()
     if period not in periods():
         raise KeyError(period)
     return period
@@ -77,8 +92,14 @@ def weights(group_key: str, period: str, *, investable_only: bool = False) -> di
     row = _entry(group_key, period)
     assets = dict(row["assets"])
     if investable_only:
-        for key in (*NON_INVESTABLE, UNALLOCATED["key"]):
+        for key in NON_INVESTABLE:
             assets.pop(key, None)
+        # The residual is only safe to drop when the quarter is complete. In an
+        # incomplete one it also holds the buckets the Fed has not published
+        # yet -- private business equity, which is very much investable -- so
+        # dropping it would renormalise the rest upward and overstate them.
+        if row.get("complete", True):
+            assets.pop(UNALLOCATED["key"], None)
     total = sum(assets.values())
     if total <= 0:
         return {k: 0.0 for k in assets}
@@ -94,7 +115,11 @@ def allocation(group_key: str, period: str, *, investable_only: bool = False) ->
         "group": group_key,
         "label": group["label"],
         "percentile_range": group["percentile_range"],
+        "nested": group.get("nested", False),
+        "nested_in": group.get("nested_in"),
         "period": period,
+        "complete": row.get("complete", True),
+        "unavailable": row.get("unavailable", []),
         "total_assets": row["total_assets"],
         "total_liabilities": row["total_liabilities"],
         "net_worth": row["net_worth"],
@@ -103,19 +128,28 @@ def allocation(group_key: str, period: str, *, investable_only: bool = False) ->
 
 
 def all_allocations(period: str, *, investable_only: bool = False) -> list[dict[str, Any]]:
-    return [allocation(g, period, investable_only=investable_only) for g in GROUP_ORDER]
+    return [allocation(g, period, investable_only=investable_only) for g in ALL_GROUPS]
 
 
 def trend(group_key: str, asset_key: str) -> list[dict[str, Any]]:
-    """One asset class's share of a group's assets over the full history."""
+    """One asset class's share of a group's assets over the full history.
+
+    Quarters where this class has not been published yet are omitted rather
+    than plotted as zero, so a lagging series ends its line early instead of
+    falling off a cliff.
+    """
     group = load_snapshot()["groups"].get(group_key)
     if group is None:
         raise KeyError(group_key)
+    known = {a["key"] for a in asset_classes()}
+    if asset_key not in known:
+        raise KeyError(asset_key)
+
     out = []
     for row in group["history"]:
-        total = sum(row["assets"].values())
         if asset_key not in row["assets"]:
-            raise KeyError(asset_key)
+            continue
+        total = row["total_assets"] or sum(row["assets"].values())
         out.append(
             {
                 "period": row["period"],
