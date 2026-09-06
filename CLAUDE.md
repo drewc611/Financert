@@ -104,6 +104,18 @@ Series lookup is therefore per-group (`series_ids_for`), not one formula. The
 modern scheme even orders its parts differently for the top 1%
 (`WFRBLTOP1DE`) than for everyone else (`WFRBLDEN09`).
 
+> **FRED is probably the wrong source, and the code's own comments overstate
+> one thing.** The Fed publishes the whole DFA as a single zip
+> (`releases/z1/dataviz/download/zips/dfa.zip`) covering six dimensions, with a
+> finer taxonomy and no missing recent quarters.
+>
+> In particular: comments in `constants.py` and `fetch_dfa.py` describe equity
+> in noncorporate business as *published* with a longer lag. That is wrong —
+> it is a FRED artifact. In the Fed's own file the column is populated for
+> every quarter with no blanks, and matches FRED exactly where both have data.
+> Treat the incomplete-quarter machinery as working around a source we chose,
+> not a limitation of the DFA. See `BACKLOG.md` (F1–F3).
+
 Refreshing the data:
 
 ```bash
