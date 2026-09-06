@@ -207,13 +207,18 @@ function TierControls({
           ))}
         </select>
       </label>
-      <label>
-        Quarter
-        <select value={periodMode} onChange={(e) => setPeriodMode(e.target.value)}>
-          <option value="latest">{quarterLabel(benchmarks.latestPeriod)} (most recent)</option>
-          <option value="complete">{quarterLabel(benchmarks.completePeriod)} (fully published)</option>
-        </select>
-      </label>
+      {/* Only meaningful when the newest quarter is missing a class. With the
+          bulk DFA source every quarter is complete, so the two options would
+          be the same date and the control would be noise. */}
+      {benchmarks.latestPeriod !== benchmarks.completePeriod && (
+        <label>
+          Quarter
+          <select value={periodMode} onChange={(e) => setPeriodMode(e.target.value)}>
+            <option value="latest">{quarterLabel(benchmarks.latestPeriod)} (most recent)</option>
+            <option value="complete">{quarterLabel(benchmarks.completePeriod)} (fully published)</option>
+          </select>
+        </label>
+      )}
       <label>
         <input type="checkbox" checked={investableOnly} onChange={(e) => setInvestableOnly(e.target.checked)} />
         Investable assets only

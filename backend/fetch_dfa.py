@@ -1,60 +1,62 @@
 """Refresh the bundled Federal Reserve DFA snapshot.
 
-Pulls every series named in ``app/constants.py`` from FRED, folds them into
-the Financert asset taxonomy, checks the taxonomy actually reconciles against
-the Fed's own totals, and writes ``data/dfa_snapshot.json``.
+Downloads the Fed's bulk DFA zip, folds the wealth-percentile detail file into
+the Financert asset taxonomy, checks the taxonomy reconciles against the Fed's
+own published totals, and writes ``data/dfa_snapshot.json``.
 
     python fetch_dfa.py                 # refresh the snapshot in place
     python fetch_dfa.py --check         # fetch and validate, write nothing
     python fetch_dfa.py --since 2000    # trim history (default: 1989)
 
-No API key is required -- FRED serves the CSV download endpoint anonymously.
-The snapshot is committed to the repo so the app runs without network access;
-this script exists so the data can be brought forward when the Fed publishes
-a new quarter (the DFA lands about ten weeks after quarter end).
+One request, no API key. The snapshot is committed to the repo so the app runs
+without network access; this script exists so the data can be brought forward
+when the Fed publishes a new quarter (roughly ten weeks after quarter end).
+
+Run ``tools/build_fallback.py`` afterwards, or the offline dashboard drifts
+from the API.
 """
 
 from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import io
 import json
 import sys
 import urllib.error
 import urllib.request
-from concurrent.futures import ThreadPoolExecutor
+import zipfile
 from datetime import UTC, datetime
 from pathlib import Path
 
 from app.constants import (
     ALL_GROUPS,
     ASSET_CLASSES,
-    CONTROL_OFFSETS,
+    CONTROL_COLUMNS,
+    DFA_MEMBER,
     DFA_UNITS_MULTIPLIER,
-    FRED_CSV_URL,
+    DFA_ZIP_URL,
+    EXTRA_COLUMNS,
     GROUP_ORDER,
     UNALLOCATED,
     WEALTH_GROUPS,
-    control_series_id,
-    series_ids_for,
+    categories_for,
+    columns_for,
+    parse_period,
 )
 
 SNAPSHOT_PATH = Path(__file__).parent / "data" / "dfa_snapshot.json"
 
-# The mapped buckets always fall a little short of the Fed's own asset totals
-# -- see constants.ASSET_CLASSES for the two measured reasons. The observed
-# shortfall runs about 1% (top 1%) to 3% (next 9%) and is reported as
-# `unallocated`, so the failure bound sits above that with headroom.
-#
-# The two bounds are deliberately asymmetric. A shortfall is expected and only
-# suspicious when large. An *overcount* has no benign explanation: it means a
-# sub-item is being summed alongside the bucket that already contains it, so
-# it trips almost immediately.
-UNDERCOUNT_TOLERANCE = 0.06  # buckets may sum to 6% less than the DFA total
-OVERCOUNT_TOLERANCE = 0.005  # but essentially never more
+# With the full column set the components reconcile to the Fed's published
+# `Assets` total to within 0.0002% across every row, so the bound is tight
+# enough to catch a real mapping error. The two directions are still separated:
+# an overcount can only mean a sub-item is being summed alongside the parent
+# that already contains it, which is never benign.
+UNDERCOUNT_TOLERANCE = 0.005
+OVERCOUNT_TOLERANCE = 0.005
 
-TIMEOUT = 60
+TIMEOUT = 180
 RETRIES = 3
 
 
@@ -62,145 +64,140 @@ class FetchError(RuntimeError):
     pass
 
 
-def fetch_series(series_id: str) -> dict[str, float]:
-    """Download one FRED series as {ISO date: value}. Values in $ millions."""
-    url = FRED_CSV_URL.format(series_id=series_id)
+# federalreserve.gov returns 403 to urllib's default user agent. Identify the
+# client honestly rather than impersonating a browser.
+USER_AGENT = "Financert/0.1 (+https://github.com/drewc611/Financert) Python-urllib"
+
+
+def download_zip(url: str = DFA_ZIP_URL) -> bytes:
     last_err: Exception | None = None
+    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     for attempt in range(RETRIES):
         try:
-            with urllib.request.urlopen(url, timeout=TIMEOUT) as resp:
-                body = resp.read().decode("utf-8-sig")
-            break
+            with urllib.request.urlopen(request, timeout=TIMEOUT) as resp:
+                return resp.read()
         except (urllib.error.URLError, TimeoutError, OSError) as exc:
             last_err = exc
             if attempt == RETRIES - 1:
-                raise FetchError(f"{series_id}: {exc}") from exc
-    else:  # pragma: no cover - loop always breaks or raises
-        raise FetchError(f"{series_id}: {last_err}")
-
-    reader = csv.reader(io.StringIO(body))
-    header = next(reader, None)
-    if not header or len(header) < 2:
-        raise FetchError(f"{series_id}: unexpected CSV header {header!r}")
-
-    out: dict[str, float] = {}
-    for row in reader:
-        if len(row) < 2:
-            continue
-        raw = row[1].strip()
-        if not raw or raw == ".":  # FRED's missing-value marker
-            continue
-        try:
-            out[row[0].strip()] = float(raw)
-        except ValueError:
-            continue
-    if not out:
-        raise FetchError(f"{series_id}: no observations returned")
-    return out
+                raise FetchError(f"downloading {url}: {exc}") from exc
+    raise FetchError(f"downloading {url}: {last_err}")  # pragma: no cover
 
 
-def fetch_all(series_ids: list[str]) -> dict[str, dict[str, float]]:
-    """Fetch many series concurrently, preserving a stable id -> data mapping."""
-    unique = sorted(set(series_ids))
-    print(f"fetching {len(unique)} FRED series...", file=sys.stderr)
-    with ThreadPoolExecutor(max_workers=8) as pool:
-        results = list(pool.map(fetch_series, unique))
-    return dict(zip(unique, results, strict=True))
+def read_member(blob: bytes, member: str = DFA_MEMBER) -> list[dict[str, str]]:
+    """Extract one CSV from the zip as a list of row dicts."""
+    try:
+        archive = zipfile.ZipFile(io.BytesIO(blob))
+    except zipfile.BadZipFile as exc:
+        raise FetchError(f"downloaded file is not a zip: {exc}") from exc
+
+    if member not in archive.namelist():
+        raise FetchError(
+            f"{member} missing from the DFA zip; the Fed may have renamed it. "
+            f"Members: {', '.join(sorted(archive.namelist())[:8])}..."
+        )
+
+    with archive.open(member) as fh:
+        rows = list(csv.DictReader(io.TextIOWrapper(fh, encoding="utf-8-sig")))
+    if not rows:
+        raise FetchError(f"{member} is empty")
+    return rows
 
 
-def _sum_series(data: dict[str, dict[str, float]], ids: list[str], period: str) -> float | None:
-    total = 0.0
-    for sid in ids:
-        value = data[sid].get(period)
-        if value is None:
-            return None
-        total += value
-    return total
+def _num(row: dict[str, str], column: str) -> float:
+    """Read one cell. Blank means the Fed published no value."""
+    try:
+        raw = row[column]
+    except KeyError:
+        raise FetchError(
+            f"column {column!r} missing from {DFA_MEMBER}; the Fed may have "
+            "renamed it -- check app/constants.py against the file header"
+        ) from None
+    raw = (raw or "").strip()
+    if not raw:
+        return 0.0
+    try:
+        return float(raw)
+    except ValueError:
+        return 0.0
 
 
-def build_snapshot(since_year: int) -> dict:
-    wanted: list[str] = []
-    for group_key in ALL_GROUPS:
-        for asset in ASSET_CLASSES:
-            wanted.extend(series_ids_for(group_key, asset["key"]))
-        for control in CONTROL_OFFSETS:
-            wanted.append(control_series_id(group_key, control))
+def _sum_columns(rows: list[dict[str, str]], columns: list[str]) -> float:
+    return sum(_num(row, column) for row in rows for column in columns)
 
-    data = fetch_all(wanted)
 
-    # Periods are driven by the *control totals*, which every group publishes
-    # on time. Individual buckets can lag behind them -- notably equity in
-    # noncorporate business, which currently trails by several quarters -- so a
-    # recent quarter is kept and marked incomplete rather than dropped. Every
-    # published bucket's share is still correct in those quarters, because the
-    # denominator is the Fed's own asset total and already includes whatever
-    # has not been broken out yet.
-    control_ids = [control_series_id(g, c) for g in ALL_GROUPS for c in CONTROL_OFFSETS]
-    common: set[str] | None = None
-    for sid in set(control_ids):
-        seen = set(data[sid])
-        common = seen if common is None else (common & seen)
-    periods = sorted(p for p in (common or set()) if int(p[:4]) >= since_year)
-    if not periods:
-        raise FetchError("no periods common to every control series")
+def build_snapshot(since_year: int, *, blob: bytes | None = None) -> dict:
+    if blob is None:
+        print(f"downloading {DFA_ZIP_URL} ...", file=sys.stderr)
+        blob = download_zip()
+        print(f"  {len(blob) / 1024:.0f} KB", file=sys.stderr)
+
+    rows = read_member(blob)
+
+    # Index by (period, category) so a wealth group can be assembled from one
+    # row or several -- the top 1% is split at the 99.9th percentile.
+    by_key: dict[tuple[str, str], dict[str, str]] = {}
+    for row in rows:
+        by_key[(row["Date"], row["Category"])] = row
+
+    periods_raw = sorted({row["Date"] for row in rows}, key=lambda p: parse_period(p))
+    periods_raw = [p for p in periods_raw if int(p.split(":")[0]) >= since_year]
+    if not periods_raw:
+        raise FetchError("no periods at or after the requested start year")
 
     problems: list[str] = []
     groups: dict[str, dict] = {}
 
     for group_key in ALL_GROUPS:
         meta = WEALTH_GROUPS[group_key]
+        categories = categories_for(group_key)
         history: list[dict] = []
-        for period in periods:
-            assets: dict[str, float] = {}
-            unavailable: list[str] = []
-            for asset in ASSET_CLASSES:
-                value = _sum_series(data, series_ids_for(group_key, asset["key"]), period)
-                if value is None:
-                    unavailable.append(asset["key"])
-                else:
-                    assets[asset["key"]] = value * DFA_UNITS_MULTIPLIER
 
-            controls = {
-                name: data[control_series_id(group_key, name)][period] * DFA_UNITS_MULTIPLIER
-                for name in CONTROL_OFFSETS
+        for period_raw in periods_raw:
+            parts = [by_key.get((period_raw, cat)) for cat in categories]
+            if any(part is None for part in parts):
+                missing = [c for c, p in zip(categories, parts, strict=True) if p is None]
+                raise FetchError(f"{period_raw}: category rows missing: {', '.join(missing)}")
+
+            assets = {
+                asset["key"]: _sum_columns(parts, columns_for(asset["key"])) * DFA_UNITS_MULTIPLIER
+                for asset in ASSET_CLASSES
             }
-            reported_total = controls["nonfinancial_assets"] + controls["financial_assets"]
-            summed_total = sum(assets.values())
-            complete = not unavailable
+            controls = {
+                name: _sum_columns(parts, [column]) * DFA_UNITS_MULTIPLIER for name, column in CONTROL_COLUMNS.items()
+            }
+            extras = {name: _sum_columns(parts, [column]) for name, column in EXTRA_COLUMNS.items()}
 
-            # Validate the taxonomy against the Fed's own total assets. Only
-            # complete quarters can be checked: an incomplete one is short by
-            # exactly the buckets the Fed has not published, which is expected
-            # rather than a mapping bug.
-            if reported_total > 0 and complete:
+            reported_total = controls["total_assets"]
+            summed_total = sum(assets.values())
+
+            # Validate the taxonomy against the Fed's own published total. A
+            # shortfall means a bucket is missing; an overcount means a
+            # sub-item is being summed alongside its parent.
+            if reported_total > 0:
                 drift = (summed_total - reported_total) / reported_total
                 if drift > OVERCOUNT_TOLERANCE:
                     problems.append(
-                        f"{group_key} {period}: taxonomy OVERCOUNTS -- sums to "
-                        f"{summed_total:,.0f} vs DFA total {reported_total:,.0f} "
-                        f"(+{drift:.2%}); a bucket is likely double counted"
+                        f"{group_key} {period_raw}: taxonomy OVERCOUNTS -- sums to "
+                        f"{summed_total:,.0f} vs published {reported_total:,.0f} "
+                        f"(+{drift:.4%}); a bucket is likely double counted"
                     )
                 elif -drift > UNDERCOUNT_TOLERANCE:
                     problems.append(
-                        f"{group_key} {period}: taxonomy sums to {summed_total:,.0f} "
-                        f"but DFA totals {reported_total:,.0f} ({-drift:.2%} short)"
+                        f"{group_key} {period_raw}: taxonomy sums to {summed_total:,.0f} "
+                        f"but published total is {reported_total:,.0f} ({-drift:.4%} short)"
                     )
 
-            # Close the remaining gap explicitly rather than letting it distort
-            # a real bucket. In a complete quarter this is the small definitional
-            # residual; in an incomplete one it also holds the unpublished
-            # buckets, which is why `unavailable` travels with it.
+            # Rounding only, now that the taxonomy covers every component.
             assets[UNALLOCATED["key"]] = max(reported_total - summed_total, 0.0)
 
             history.append(
                 {
-                    "period": period,
+                    "period": parse_period(period_raw),
                     "assets": {k: round(v, 2) for k, v in assets.items()},
-                    "unavailable": unavailable,
-                    "complete": complete,
                     "total_assets": round(reported_total, 2),
                     "total_liabilities": round(controls["total_liabilities"], 2),
                     "net_worth": round(controls["net_worth"], 2),
+                    "household_count": round(extras["household_count"], 2),
                 }
             )
 
@@ -214,41 +211,38 @@ def build_snapshot(since_year: int) -> dict:
             "history": history,
         }
 
-    complete_periods = [
-        p for i, p in enumerate(periods) if all(groups[g]["history"][i]["complete"] for g in ALL_GROUPS)
-    ]
-    if not complete_periods:
-        raise FetchError("no quarter has every asset class published")
-    print(
-        f"{len(periods)} quarters {periods[0]} .. {periods[-1]} "
-        f"({len(complete_periods)} complete, latest complete {complete_periods[-1]})",
-        file=sys.stderr,
-    )
-
     if problems:
-        for p in problems[:10]:
-            print(f"  RECONCILE FAIL {p}", file=sys.stderr)
+        for problem in problems[:10]:
+            print(f"  RECONCILE FAIL {problem}", file=sys.stderr)
         raise FetchError(
             f"{len(problems)} period(s) failed taxonomy reconciliation -- "
             "the asset taxonomy in constants.py does not match the DFA totals"
         )
 
+    periods = [parse_period(p) for p in periods_raw]
+    print(f"{len(periods)} quarters: {periods[0]} .. {periods[-1]}", file=sys.stderr)
+
     return {
         "source": {
             "name": "Federal Reserve Distributional Financial Accounts",
             "publisher": "Board of Governors of the Federal Reserve System",
-            "retrieved_via": "FRED (fred.stlouisfed.org)",
+            "retrieved_via": f"bulk download, {DFA_MEMBER}",
             "url": "https://www.federalreserve.gov/releases/z1/dataviz/dfa/",
+            "download_url": DFA_ZIP_URL,
             "retrieved_at": datetime.now(UTC).isoformat(timespec="seconds"),
+            # Pins exactly which publication this snapshot was built from, so a
+            # refresh that changes numbers can be told from one that does not.
+            "archive_sha256": hashlib.sha256(blob).hexdigest(),
+            "archive_bytes": len(blob),
             "units": "US dollars, not seasonally adjusted",
         },
         "periods": periods,
         "latest_period": periods[-1],
-        # The newest quarter in which every asset class is published. Callers
-        # that need a full breakdown should prefer this; callers that want
-        # recency can take `latest_period` and read each row's `unavailable`.
-        "latest_complete_period": complete_periods[-1],
-        "complete_periods": complete_periods,
+        # Every quarter carries every asset class in this source. The fields
+        # are kept so the API contract is stable and so a genuine future gap
+        # has somewhere to be reported.
+        "latest_complete_period": periods[-1],
+        "complete_periods": periods,
         "group_order": GROUP_ORDER,
         "all_groups": ALL_GROUPS,
         "asset_classes": [
@@ -257,11 +251,11 @@ def build_snapshot(since_year: int) -> dict:
                 "label": a["label"],
                 "liquid": a["liquid"],
                 "blurb": a["blurb"],
-                "series": {g: series_ids_for(g, a["key"]) for g in ALL_GROUPS},
+                "columns": columns_for(a["key"]),
             }
             for a in ASSET_CLASSES
         ]
-        + [{**UNALLOCATED, "series": {}}],
+        + [{**UNALLOCATED, "columns": []}],
         "groups": groups,
     }
 
@@ -279,24 +273,15 @@ def main() -> int:
         return 1
 
     for group_key in ("top01", "top1"):
-        row = next(
-            r for r in snapshot["groups"][group_key]["history"] if r["period"] == snapshot["latest_complete_period"]
-        )
+        row = snapshot["groups"][group_key]["history"][-1]
         total = row["total_assets"]
         label = WEALTH_GROUPS[group_key]["label"]
         print(f"\n{row['period']} -- {label} composition:", file=sys.stderr)
         for asset in [*ASSET_CLASSES, UNALLOCATED]:
             share = row["assets"].get(asset["key"], 0.0) / total * 100 if total else 0.0
-            print(f"  {asset['label']:<26} {share:5.1f}%", file=sys.stderr)
+            print(f"  {asset['label']:<26} {share:5.2f}%", file=sys.stderr)
         print(f"  {'TOTAL ASSETS':<26} ${total / 1e12:,.1f}T", file=sys.stderr)
-
-    newest = snapshot["groups"]["top1"]["history"][-1]
-    if not newest["complete"]:
-        missing = ", ".join(newest["unavailable"])
-        print(
-            f"\nnewest quarter {newest['period']} is incomplete -- not yet published: {missing}",
-            file=sys.stderr,
-        )
+        print(f"  {'HOUSEHOLDS':<26} {row['household_count']:,.0f}", file=sys.stderr)
 
     if args.check:
         print("\n--check: snapshot validated, nothing written", file=sys.stderr)
@@ -304,8 +289,7 @@ def main() -> int:
 
     SNAPSHOT_PATH.parent.mkdir(parents=True, exist_ok=True)
     SNAPSHOT_PATH.write_text(json.dumps(snapshot, indent=2) + "\n")
-    size_kb = SNAPSHOT_PATH.stat().st_size / 1024
-    print(f"\nwrote {SNAPSHOT_PATH} ({size_kb:.0f} KB)", file=sys.stderr)
+    print(f"\nwrote {SNAPSHOT_PATH} ({SNAPSHOT_PATH.stat().st_size / 1024:.0f} KB)", file=sys.stderr)
     return 0
 
 

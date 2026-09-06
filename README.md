@@ -17,16 +17,15 @@ household balance sheet split by wealth percentile every quarter back to 1989.
 
 ### What the data says
 
-Share of investable assets, Q3 2024 (the newest quarter with every class
-published):
+Share of investable assets, Q1 2026:
 
 | Asset class | Top 0.1% | Top 1% | Next 9% | Next 40% | Bottom 50% |
 |---|---:|---:|---:|---:|---:|
-| Stocks & mutual funds | 50.4% | 48.5% | 30.1% | 10.8% | 6.4% |
-| Private business equity | 19.3% | 16.7% | 8.3% | 4.3% | 2.1% |
-| Real estate | 8.3% | 12.8% | 24.1% | 41.7% | 60.6% |
-| Pensions & retirement | 1.9% | 5.3% | 20.3% | 26.7% | 14.0% |
-| Cash & deposits | 6.0% | 6.5% | 8.1% | 9.3% | 9.4% |
+| Stocks & mutual funds | 54.2% | 50.3% | 31.3% | 11.3% | 7.1% |
+| Private business equity | 19.0% | 16.0% | 8.0% | 4.2% | 2.0% |
+| Real estate | 7.9% | 11.8% | 22.6% | 40.1% | 58.6% |
+| Pensions & retirement | 1.8% | 5.0% | 19.5% | 26.1% | 14.3% |
+| Cash & deposits | 6.0% | 6.2% | 7.7% | 9.2% | 9.6% |
 
 The headline is the first three rows: the wealthiest hold their wealth in
 businesses and equities, and the bottom half hold theirs in a house. The
@@ -71,8 +70,8 @@ standalone — the badge in the header shows which mode it's in.
 ## How it works
 
 ```
-  FRED (Federal Reserve DFA)
-        │  fetch_dfa.py — 80 series, validated against the Fed's own totals
+  Fed bulk DFA download (one zip, six dimensions)
+        │  fetch_dfa.py — validated against the Fed's own totals
         ▼
   backend/data/dfa_snapshot.json   ← committed; the app never needs the network
         │
@@ -117,37 +116,32 @@ python fetch_dfa.py --check    # pull and validate, write nothing
 python tools/build_fallback.py # regenerate the frontend's embedded copy
 ```
 
-`fetch_dfa.py` pulls 80 series from FRED (no API key needed) and checks that the
-asset taxonomy reconciles against the Fed's own published totals before writing
-anything. A double-counted or missing bucket fails the refresh instead of
-silently skewing every percentage on the site.
+`fetch_dfa.py` downloads the Fed's bulk DFA zip (one request, no API key) and
+checks that the asset taxonomy reconciles against the Fed's own published
+totals before writing anything. A double-counted or missing bucket fails the
+refresh instead of silently skewing every percentage on the site. The snapshot
+records the archive's SHA-256, so a refresh that changes numbers can be told
+from one that does not.
 
-### Two things the source data makes awkward
+### One thing worth knowing about the source
 
-Both are handled explicitly rather than papered over — see the comments in
-[`backend/app/constants.py`](backend/app/constants.py).
+The Fed splits the top 1% at the 99.9th percentile — `TopPt1` and
+`RemainingTop1` — so the combined tier is summed from both rows, and the top
+0.1% is available as its own (nested) benchmark.
 
-- **Recent quarters are incomplete.** *Equity in noncorporate business* is
-  published with a longer lag than everything else, and it is roughly a sixth
-  of the top 1%'s assets. Rather than either truncating the data or quietly
-  showing an allocation missing its second-largest component, those quarters
-  are kept and **marked**: the missing class reads "not yet published" instead
-  of a number, and gets no over/underweight verdict. Every other share in
-  those quarters is still correct, because the denominator is the Fed's own
-  asset total and already includes whatever has not been broken out yet.
+Two earlier caveats are **gone**, both because the app used to read FRED rather
+than the Fed's own file:
 
-  The dashboard defaults to the newest quarter and offers a one-click switch
-  to the newest fully published one. The API mirrors this: `period=latest`
-  (default) versus `period=complete`, with `complete` and `unavailable` on
-  every allocation so a client never has to guess.
-- **An `unallocated` residual of ~1–3%.** The DFA's published components don't
-  quite sum to its published totals, and the modern pension series don't quite
-  match the legacy ones they replaced. Rather than hide the difference inside a
-  bucket it doesn't belong to, it gets its own line, and percentages are taken
-  against the Fed's control total so they still sum to 100%. In an incomplete
-  quarter that residual also holds the unpublished classes, so it is relabelled
-  and its verdict suppressed rather than reported as a category you are
-  "underweight" in.
+- The data no longer stops short of the current quarter. FRED's mirror of
+  noncorporate business equity lagged by six quarters; the Fed's file has no
+  such gap, so the newest quarter is complete.
+- The `unallocated` residual fell from 1–3% to **0.00%**. Most of it was
+  `Annuities`, a column FRED does not expose in the block the app used. It is
+  now its own asset class, and the remainder is rounding.
+
+The plumbing for an incomplete quarter is still there (`complete`,
+`unavailable`, `period=complete`) in case the Fed ever does lag a series — it
+simply has nothing to act on today.
 
 ## Layout
 

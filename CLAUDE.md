@@ -11,7 +11,7 @@ compare?* Enter holdings by asset class; see them beside the real allocation of
 five wealth tiers, and which tier the mix most resembles.
 
 The benchmark is the Federal Reserve's **Distributional Financial Accounts**
-(DFA), pulled from FRED. Early prototype, two parts:
+(DFA), taken from the Fed's bulk download. Early prototype, two parts:
 
 - `backend/` — FastAPI + SQLite. Almost all the logic. Reads a committed data
   snapshot; the app never needs the network at runtime.
@@ -70,8 +70,8 @@ docker compose up --build   # dashboard :8080, API :8000
 ## Architecture
 
 ```
-  FRED (Federal Reserve DFA)
-        │  fetch_dfa.py — 80 series, reconciled against the Fed's own totals
+  Fed bulk DFA zip
+        │  fetch_dfa.py — one download, reconciled against the Fed's own totals
         ▼
   backend/data/dfa_snapshot.json   ← committed
         │
@@ -82,51 +82,67 @@ docker compose up --build   # dashboard :8080, API :8000
 ```
 
 `constants.py` is the single place a "where does this number come from" answer
-lives — the asset taxonomy and every FRED series id. Start there.
+lives — the asset taxonomy and the CSV column each bucket reads. Start there.
 `services/allocation.py` is pure functions over dicts (no I/O, no framework)
 because it is the code that encodes what the product actually *claims*.
 
 `frontend/src/lib/analysis.js` deliberately **mirrors** `allocation.py` so the
 dashboard works offline. Change a rule in one, change it in the other.
 
-## The DFA data, and why it is awkward
+## The DFA data
 
-Most of the difficulty in this repo is the source data. Three FRED naming
-schemes coexist and all three are needed:
+The data is the Federal Reserve's Distributional Financial Accounts, taken
+from the Fed's bulk zip:
 
-| Scheme | Example | Used for |
-|---|---|---|
-| Legacy block | `WFRBLT01014` | top1 / next9 / next40 / bottom50, offset arithmetic within a 27-slot block |
-| Modern | `WFRBLTOP1DE`, `WFRBLDEN09` | deposits + pensions, whose legacy slots were discontinued in 2022 |
-| Alphabetical block | `WFRBLTP1232` | the top 0.1%, ordered alphabetically — listed explicitly, not computed |
+    https://www.federalreserve.gov/releases/z1/dataviz/download/zips/dfa.zip
 
-Series lookup is therefore per-group (`series_ids_for`), not one formula. The
-modern scheme even orders its parts differently for the top 1%
-(`WFRBLTOP1DE`) than for everyone else (`WFRBLDEN09`).
+`fetch_dfa.py` downloads it, reads `dfa-networth-levels-detail.csv`, folds the
+columns into the taxonomy in `constants.py`, and checks the result against the
+Fed's own published `Assets` total before writing anything. The components
+reconcile to within 0.0002%, so the tolerance is tight enough to catch a real
+mapping error.
 
-> **FRED is probably the wrong source, and the code's own comments overstate
-> one thing.** The Fed publishes the whole DFA as a single zip
-> (`releases/z1/dataviz/download/zips/dfa.zip`) covering six dimensions, with a
-> finer taxonomy and no missing recent quarters.
->
-> In particular: comments in `constants.py` and `fetch_dfa.py` describe equity
-> in noncorporate business as *published* with a longer lag. That is wrong —
-> it is a FRED artifact. In the Fed's own file the column is populated for
-> every quarter with no blanks, and matches FRED exactly where both have data.
-> Treat the incomplete-quarter machinery as working around a source we chose,
-> not a limitation of the DFA. See `BACKLOG.md` (F1–F3).
+Two things about the file worth knowing:
 
-Refreshing the data:
+- **The top 1% is not a row.** The file splits it at the 99.9th percentile
+  into `TopPt1` and `RemainingTop1`; the combined tier is summed from both.
+  See `categories_for`.
+- **Names differ between the summary and detail files.** The detail file calls
+  noncorporate business equity `Miscellaneous other equity`; the summary calls
+  it `Unincorporated businesses`. Same column, verified equal on every row.
+
+Refreshing:
 
 ```bash
 cd backend
-python fetch_dfa.py --check    # pull + validate, write nothing
+python fetch_dfa.py --check    # download + validate, write nothing
 python fetch_dfa.py            # ...and rewrite the snapshot
 python tools/build_fallback.py # regenerate the frontend's embedded copy
 ```
 
 Always run `build_fallback.py` after `fetch_dfa.py`, or the offline dashboard
 drifts from the API.
+
+`federalreserve.gov` returns **403 to urllib's default user agent**, which is
+why `fetch_dfa.py` sets one. Don't remove it, and don't replace it with a
+browser string — identify the client honestly.
+
+### History: this used to read FRED
+
+The app previously pulled ~80 individual series from FRED, which forced three
+awkward workarounds now gone. Kept here because the shape of the code still
+carries their marks:
+
+- FRED exposes the DFA under **three incompatible naming schemes** (legacy
+  offset blocks, a modern scheme for deposits/pensions re-cut in 2022, and an
+  alphabetical block for the top 0.1%). Hence per-group series lookup.
+- FRED's block layout has **no `Annuities` column**, which is most of why the
+  old taxonomy left 1–3% of assets unexplained. It is now its own class and
+  the residual is 0.00%.
+- FRED's mirror of noncorporate business equity **stopped at 2024-07-01**,
+  which is what the incomplete-quarter machinery was built for. The Fed's own
+  file has no such gap. The machinery is still present and still correct — see
+  invariants 2 and 3 — it simply has nothing to act on in this source.
 
 ## Invariants — do not break these
 
@@ -155,8 +171,9 @@ These are load-bearing. Each one was a bug at some point, and each has tests.
    iterate `GROUP_ORDER`, never `ALL_GROUPS`.
 
 5. **The taxonomy must reconcile against the Fed's own totals**, and
-   `fetch_dfa.py` fails the refresh if it doesn't. The bounds are deliberately
-   asymmetric: a ~1–3% *shortfall* is expected and documented, but an
+   `fetch_dfa.py` fails the refresh if it doesn't. Components now reconcile to
+   within 0.0002%, so the bound is tight. The two directions are still kept
+   separate: a small shortfall is rounding, but an
    *overcount* has no benign explanation — it means a sub-item is being summed
    alongside the parent that already contains it. Several block offsets are
    sub-items of others (8/9 roll into 7; 19–24 roll into 18); including them

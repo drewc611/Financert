@@ -65,6 +65,7 @@ def main() -> None:
             "total_liabilities": row["total_liabilities"],
             "net_worth": row["net_worth"],
             "assets": row["assets"],
+            "household_count": row.get("household_count"),
             # The newest fully published quarter, so the offline dashboard can
             # still show a complete breakdown when the latest one lags.
             "complete_snapshot": {

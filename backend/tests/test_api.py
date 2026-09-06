@@ -48,13 +48,16 @@ def test_top01_is_more_concentrated_than_top1(client):
     assert by_group["top01"]["real_estate"] < by_group["top1"]["real_estate"]
 
 
-def test_latest_period_is_current_but_flagged_incomplete(client):
+def test_latest_period_is_current_and_complete(client):
+    """The bulk source has no lagging class, so the newest quarter is also the
+    newest fully published one."""
     body = client.get("/api/benchmarks").json()
     assert body["period"] == body["latest_period"]
-    assert body["latest_period"] > body["latest_complete_period"]
-    top1 = next(a for a in body["allocations"] if a["group"] == "top1")
-    assert top1["complete"] is False
-    assert "private_business" in top1["unavailable"]
+    assert body["latest_period"] == body["latest_complete_period"]
+    assert body["complete_periods"] == body["periods"]
+    for alloc in body["allocations"]:
+        assert alloc["complete"] is True
+        assert alloc["unavailable"] == []
 
 
 def test_complete_period_has_every_class(client):
@@ -87,11 +90,13 @@ def test_top1_holds_more_equity_than_bottom50(client):
     assert by_group["bottom50"]["real_estate"] > by_group["top1"]["real_estate"]
 
 
-def test_trend_omits_unpublished_quarters(client):
-    """A lagging class ends its line early rather than dropping to zero."""
+def test_no_class_lags_another(client):
+    """Every class runs the full history. The trend code still skips quarters a
+    class is missing from -- it just has nothing to skip in this source."""
     equities = client.get("/api/benchmarks/trend", params={"group": "top1", "asset_class": "corporate_equities"}).json()
     business = client.get("/api/benchmarks/trend", params={"group": "top1", "asset_class": "private_business"}).json()
-    assert len(business["points"]) < len(equities["points"])
+    assert len(business["points"]) == len(equities["points"])
+    assert business["points"][-1]["period"] == equities["points"][-1]["period"]
     assert all(p["share"] > 0 for p in business["points"])
 
 

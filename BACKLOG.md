@@ -10,8 +10,8 @@ list rather than invent features one at a time.
 
 ## Finding that reshapes this list
 
-The app currently pulls 80 individual series from FRED. The Fed also publishes
-the **entire DFA as one 891 KB zip**:
+The app *used to* pull 80 individual series from FRED. The Fed also publishes
+the **entire DFA as one 891 KB zip**, which it now reads instead:
 
 ```
 https://www.federalreserve.gov/releases/z1/dataviz/download/zips/dfa.zip
@@ -27,7 +27,7 @@ It is better than the FRED path in four ways, all verified against the file:
 3. **One request instead of eighty.** Faster, and far less to go wrong.
 4. **No publication lag.** This is the important one.
 
-### Correction: the Q3 2024 cutoff is not a source limitation
+### Correction: the Q3 2024 cutoff was not a source limitation
 
 The README, `CLAUDE.md` and both merged PRs say equity in noncorporate business
 "is published with a longer lag than everything else." That is wrong, and I
@@ -49,15 +49,19 @@ much cheaper or disappear once it lands.
 
 ## Phase 0 — data source (do first)
 
+**F1–F5 and F7 are done** — shipped in the commit that added this line. The
+snapshot now comes from the bulk zip, covers every quarter through 2026 Q1
+with no lagging class, and the unallocated residual fell from 1–3% to 0.00%.
+
 | # | Feature | Size |
 |---|---|---|
-| F1 | Fetch from the DFA bulk zip instead of 80 FRED series; keep the reconciliation check | L |
-| F2 | Parse the `-detail` CSVs into the existing asset taxonomy; map `Miscellaneous other equity` → `private_business` | M |
-| F3 | Retire the incomplete-quarter path once F1 proves every quarter is complete (keep the *code* for genuine future gaps, drop the UI compromise) | M |
-| F4 | Add `Annuities` as its own asset class (currently invisible) | S |
-| F5 | Ingest `Household count` per category — enables every per-household figure below | S |
+| ~~F1~~ ✅ | Fetch from the DFA bulk zip instead of 80 FRED series; keep the reconciliation check | L |
+| ~~F2~~ ✅ | Parse the `-detail` CSVs into the existing asset taxonomy; map `Miscellaneous other equity` → `private_business` | M |
+| ~~F3~~ ✅ | Retire the incomplete-quarter path once F1 proves every quarter is complete (keep the *code* for genuine future gaps, drop the UI compromise) | M |
+| ~~F4~~ ✅ | Add `Annuities` as its own asset class (currently invisible) | S |
+| ~~F5~~ ✅ | Ingest `Household count` per category — enables every per-household figure below | S |
 | F6 | Ingest `Minimum Wealth Cutoff` where populated: "what net worth puts you in the top 1%?" | S |
-| F7 | Pin the source: record the zip's published date and checksum in the snapshot | S |
+| ~~F7~~ ✅ | Pin the source: record the zip's published date and checksum in the snapshot | S |
 | F8 | Keep FRED as a documented fallback path if the zip fetch fails | M |
 | F9 | Golden-file test: assert the parsed snapshot matches a committed fixture, so a Fed format change fails loudly | M |
 | F10 | Split the snapshot per dimension so the payload stays small | M |
