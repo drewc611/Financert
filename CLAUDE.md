@@ -183,6 +183,22 @@ These are load-bearing. Each one was a bug at some point, and each has tests.
    maths.** Routers stay thin. The database holds *only* user portfolios —
    never reference data, so a wiped DB costs nothing but holdings.
 
+## Security
+
+[`SECURITY-AUDIT.md`](SECURITY-AUDIT.md) records what has been checked, what
+was fixed, and which risks are accepted deliberately. Read it before changing
+the ingestion path or the auth path — several non-obvious guards are there for
+reasons that are not visible from the code alone.
+
+Two that are easy to undo by accident:
+
+- **`fetch_dfa.py` bounds the download, the declared member size and the row
+  count.** Without them a 161 KB zip expands to gigabytes and OOMs the
+  process. Don't remove them when the Fed's file grows — raise them.
+- **The token is compared as bytes, not str.** `secrets.compare_digest` raises
+  `TypeError` on non-ASCII `str`, and header values are latin-1 on the wire,
+  so comparing the str form turns a hostile token into a 500.
+
 ## Gotchas
 
 - **`.gitignore` swallows `frontend/src/lib/`.** The repo uses GitHub's Python

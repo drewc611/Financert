@@ -36,7 +36,10 @@ def require_token(authorization: str = Header(default="")) -> None:
             headers={"WWW-Authenticate": "Bearer"},
         )
     # Constant-time, so a wrong token cannot be recovered by timing the reply.
-    if not secrets.compare_digest(credential, config.API_TOKEN):
+    # Compared as bytes: secrets.compare_digest raises TypeError on non-ASCII
+    # str input, and the credential is attacker-controlled -- comparing the
+    # str form turns a bad token into a 500 instead of a 401.
+    if not secrets.compare_digest(credential.encode("utf-8"), config.API_TOKEN.encode("utf-8")):
         raise HTTPException(
             status_code=401,
             detail="invalid token",

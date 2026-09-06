@@ -59,6 +59,16 @@ OVERCOUNT_TOLERANCE = 0.005
 TIMEOUT = 180
 RETRIES = 3
 
+# The archive is ~0.9 MB and the member ~0.16 MB. These caps are ~20x headroom
+# for growth while still bounding a decompression bomb: without them a 161 KB
+# zip can expand to gigabytes and take the process out. The URL is hardcoded
+# and HTTPS, so reaching this needs a compromised federalreserve.gov or a
+# broken TLS chain -- unlikely, but the guard is nearly free and the failure
+# mode without it is an OOM kill rather than an error.
+MAX_ARCHIVE_BYTES = 20 * 1024 * 1024
+MAX_MEMBER_BYTES = 200 * 1024 * 1024
+MAX_ROWS = 200_000
+
 
 class FetchError(RuntimeError):
     pass
@@ -75,7 +85,12 @@ def download_zip(url: str = DFA_ZIP_URL) -> bytes:
     for attempt in range(RETRIES):
         try:
             with urllib.request.urlopen(request, timeout=TIMEOUT) as resp:
-                return resp.read()
+                # Read one byte past the cap so an oversized body is detected
+                # rather than silently truncated into a corrupt archive.
+                blob = resp.read(MAX_ARCHIVE_BYTES + 1)
+            if len(blob) > MAX_ARCHIVE_BYTES:
+                raise FetchError(f"archive exceeds {MAX_ARCHIVE_BYTES // 1024 // 1024} MB; refusing to parse it")
+            return blob
         except (urllib.error.URLError, TimeoutError, OSError) as exc:
             last_err = exc
             if attempt == RETRIES - 1:
@@ -96,8 +111,25 @@ def read_member(blob: bytes, member: str = DFA_MEMBER) -> list[dict[str, str]]:
             f"Members: {', '.join(sorted(archive.namelist())[:8])}..."
         )
 
+    # Check the declared size before decompressing anything. `getinfo` reads
+    # the central directory, which a bomb still has to declare honestly for
+    # the archive to be valid.
+    info = archive.getinfo(member)
+    if info.file_size > MAX_MEMBER_BYTES:
+        raise FetchError(
+            f"{member} declares {info.file_size / 1024 / 1024:.0f} MB uncompressed, "
+            f"over the {MAX_MEMBER_BYTES // 1024 // 1024} MB cap; refusing to parse it"
+        )
+
+    # ...and cap the rows actually read, in case the declared size lies. The
+    # member is opened by exact name and never extracted to disk, so a crafted
+    # member name cannot escape the archive.
+    rows: list[dict[str, str]] = []
     with archive.open(member) as fh:
-        rows = list(csv.DictReader(io.TextIOWrapper(fh, encoding="utf-8-sig")))
+        for row in csv.DictReader(io.TextIOWrapper(fh, encoding="utf-8-sig")):
+            rows.append(row)
+            if len(rows) > MAX_ROWS:
+                raise FetchError(f"{member} exceeds {MAX_ROWS:,} rows; refusing to parse it")
     if not rows:
         raise FetchError(f"{member} is empty")
     return rows

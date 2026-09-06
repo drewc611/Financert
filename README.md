@@ -220,6 +220,11 @@ Tests never touch `financert.db` — `tests/conftest.py` points
 `FINANCERT_DATABASE_URL` at a throwaway temp file *before* any `app` module is
 imported, because the engine binds to the URL at import time.
 
+## Security
+
+[`SECURITY-AUDIT.md`](SECURITY-AUDIT.md) covers the audit: what was found and
+fixed, what was checked and clean, and which risks are accepted on purpose.
+
 ## Notes on scope
 
 Financert is an early prototype and single-household by design. Portfolios are
