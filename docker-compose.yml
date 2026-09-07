@@ -4,10 +4,15 @@ services:
     ports:
       - "8000:8000"
     environment:
-      # Wide open for local development. Set this to your real origin before
-      # exposing the API anywhere other than localhost.
-      FINANCERT_CORS_ORIGINS: "*"
+      # The frontend service below is the only browser origin in this stack.
+      # A wildcard here would undo the allowlist the app defaults to, and would
+      # also silently disable credentialed requests -- browsers reject
+      # wildcard-plus-credentials. Add your real origin when deploying.
+      FINANCERT_CORS_ORIGINS: "http://localhost:8080,http://127.0.0.1:8080"
       FINANCERT_DATABASE_URL: "sqlite:////data/financert.db"
+      # Uncomment to require a bearer token on every /api/portfolio* route.
+      # Generate one with: openssl rand -hex 32
+      # FINANCERT_API_TOKEN: "replace-me"
     volumes:
       - financert-db:/data
     healthcheck:

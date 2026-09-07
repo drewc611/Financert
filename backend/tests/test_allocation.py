@@ -69,8 +69,9 @@ def test_analyse_against_real_snapshot():
         "next40",
         "bottom50",
     }
-    # Benchmark weights are a distribution over the taxonomy.
-    assert sum(result["benchmark_weights"].values()) == pytest.approx(1.0, abs=1e-6)
+    # Benchmark weights are a distribution over the taxonomy (see the rounding
+    # note in test_can_compare_against_the_nested_group).
+    assert sum(result["benchmark_weights"].values()) == pytest.approx(1.0, abs=1e-5)
 
 
 def test_analyse_empty_portfolio_is_safe():
@@ -107,19 +108,25 @@ def test_investable_view_drops_consumer_durables():
     assert "unallocated" not in investable["benchmark_weights"]
 
 
-def test_incomplete_quarter_keeps_the_residual():
-    """In a quarter missing a lagging class, the residual holds it and must
-    survive the investable filter -- otherwise the rest renormalises upward."""
+def test_every_quarter_is_complete():
+    """The bulk DFA file publishes every asset class for every quarter. The
+    earlier FRED path lagged private business equity by six quarters, which is
+    what the incomplete-quarter machinery was built for."""
     latest = allocation.analyse({"corporate_equities": 100}, group="top1", period="latest")
-    assert latest["period_complete"] is False
-    assert "private_business" in latest["period_unavailable"]
-    assert "unallocated" in latest["benchmark_weights"]
-
     complete = allocation.analyse({"corporate_equities": 100}, group="top1", period="complete")
-    assert complete["period_complete"] is True
-    # Keeping the residual stops the published classes being overstated.
-    assert latest["benchmark_weights"]["corporate_equities"] < 0.60
-    assert complete["benchmark_weights"]["corporate_equities"] < 0.60
+
+    assert latest["period_complete"] is True
+    assert latest["period_unavailable"] == []
+    assert latest["period"] == complete["period"]
+    assert latest["benchmark_weights"]["private_business"] > 0
+
+
+def test_residual_is_rounding_only():
+    """With the full column set the taxonomy covers every component, so the
+    unallocated residual should be negligible rather than the 1-3% the FRED
+    taxonomy left unexplained."""
+    result = allocation.analyse({"corporate_equities": 100}, group="top1", investable_only=False)
+    assert result["benchmark_weights"].get("unallocated", 0.0) < 0.0005
 
 
 def test_nearest_tier_excludes_the_nested_group():
@@ -136,4 +143,6 @@ def test_can_compare_against_the_nested_group():
     result = allocation.analyse({"corporate_equities": 100}, group="top01", period="complete")
     assert result["benchmark_group"] == "top01"
     assert result["benchmark_label"] == "Top 0.1%"
-    assert sum(result["benchmark_weights"].values()) == pytest.approx(1.0, abs=1e-6)
+    # The payload rounds each weight to 6dp, so the sum of 13 classes can drift
+    # by a few parts per million. The unrounded weights sum to exactly 1.
+    assert sum(result["benchmark_weights"].values()) == pytest.approx(1.0, abs=1e-5)
