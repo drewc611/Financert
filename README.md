@@ -260,10 +260,21 @@ and [SUBMISSION.md](SUBMISSION.md) the listing copy and reviewer test cases.
 
 ## Security
 
+[`SECURITY.md`](SECURITY.md) is the reporting policy — report privately via
+[GitHub Security Advisories](https://github.com/drewc611/Financert/security/advisories/new),
+not a public issue. It also lists what is *not* a vulnerability, because
+several of this project's constraints (a shared token rather than per-user
+logins; unauthenticated public benchmark data) are documented decisions rather
+than oversights.
+
 [`SECURITY-AUDIT.md`](SECURITY-AUDIT.md) covers the audit: what was found and
 fixed, what was checked and clean, and which risks are accepted on purpose.
 [`PRIVACY.md`](PRIVACY.md) records what each component stores — a draft, not
 yet legally reviewed.
+
+Automated: CodeQL scans Python, JavaScript/TypeScript and the workflow files
+on every push and PR; dependency review blocks a PR introducing a
+moderate-or-worse advisory; Dependabot bumps pip, npm and Actions weekly.
 
 ## Notes on scope
 

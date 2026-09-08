@@ -251,6 +251,12 @@ Three things about the bundle are load-bearing:
 
 ## Security
 
+[`SECURITY.md`](SECURITY.md) is the disclosure policy. Its "what is *not* a
+vulnerability" list is load-bearing: the shared-token model and the open
+benchmark routes are documented decisions, and without that section every
+reader rediscovers them as bugs. Keep it in step with the code — if per-user
+accounts ever land, that entry has to go.
+
 [`SECURITY-AUDIT.md`](SECURITY-AUDIT.md) records what has been checked, what
 was fixed, and which risks are accepted deliberately. Read it before changing
 the ingestion path or the auth path — several non-obvious guards are there for

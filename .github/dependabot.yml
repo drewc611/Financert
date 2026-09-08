@@ -1,0 +1,37 @@
+# Dependency updates.
+#
+# Three ecosystems, three directories -- Dependabot resolves manifests relative
+# to `directory`, so pointing all of it at "/" would find none of them.
+version: 2
+
+updates:
+  # Backend: requirements.txt + requirements-dev.txt.
+  - package-ecosystem: pip
+    directory: /backend
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      # One PR for the routine bumps instead of five. Security fixes are
+      # deliberately not grouped -- Dependabot raises those separately and
+      # immediately, and burying one in a batch of chores is how it gets
+      # merged without being read.
+      dev-dependencies:
+        dependency-type: development
+
+  - package-ecosystem: npm
+    directory: /frontend
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      dev-dependencies:
+        dependency-type: development
+
+  # The workflows themselves. This matters more than it looks: the actions are
+  # pinned to tags rather than commit SHAs, and a tag can be moved under you.
+  # Keeping them current is the mitigation for not pinning.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
