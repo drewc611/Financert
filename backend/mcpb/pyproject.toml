@@ -1,0 +1,17 @@
+# Dependencies for the MCPB bundle, installed by the host application via UV.
+#
+# `server.type = "uv"` rather than "python" is forced, not preferred: a
+# traditional Python bundle has to vendor its dependencies into server/lib,
+# and the MCP SDK needs pydantic, which is compiled and cannot be vendored
+# portably. UV resolves it per-platform on the user's machine instead.
+#
+# Deliberately just `mcp`. The bundle serves the six read-only tools out of the
+# committed snapshot -- no FastAPI, no SQLAlchemy, no database.
+[project]
+name = "financert"
+version = "0.1.0"
+description = "Compare a portfolio against how US households at each wealth tier hold their assets"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp>=2.0",
+]

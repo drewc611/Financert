@@ -235,17 +235,21 @@ tools, so an assistant can answer "how does my portfolio compare to the top
 cd backend
 make mcp        # stdio, for a local client
 make mcp-http   # streamable HTTP, for hosting
+make mcpb       # package as a desktop extension -> dist/financert.mcpb
 ```
 
 It is deliberately the **read-only subset** — six tools, no portfolio storage,
 no auth, nothing retained. Holdings passed to `compare_allocation` are used to
 compute the answer and discarded.
 
-Listing it in the Claude or ChatGPT directories takes three documents:
-[DISTRIBUTION.md](DISTRIBUTION.md) for which channels are viable and why,
-[DEPLOY.md](DEPLOY.md) for standing up the HTTPS endpoint both require, and
-[SUBMISSION.md](SUBMISSION.md) for the listing copy and test cases. What is
-left is an account holder's to do — both portals are behind a login.
+`make mcpb` packages the same six tools as a **desktop extension** — an
+`.mcpb` bundle carrying a local stdio server. That is the distribution route
+that needs no hosting and no Team/Enterprise organisation, so it is the one to
+take first.
+
+[DISTRIBUTION.md](DISTRIBUTION.md) covers which channels are viable and why,
+[DEPLOY.md](DEPLOY.md) how to stand up the HTTPS endpoint the hosted ones need,
+and [SUBMISSION.md](SUBMISSION.md) the listing copy and reviewer test cases.
 
 ## Security
 

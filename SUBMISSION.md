@@ -8,10 +8,12 @@ under a character counter.
 This file is the payload. [DEPLOY.md](DEPLOY.md) is how to stand up the
 endpoint both forms need.
 
-**What is not here:** the submission itself. Both portals are behind an
-account login, and the Anthropic one additionally
-[requires a Team or Enterprise organisation](https://claude.com/docs/connectors/building/submission).
-Those are actions for the account holder.
+**What is not here:** the submission itself. The forms are behind an account
+login. Those are actions for the account holder.
+
+**Start with the desktop extension.** It is the one channel that needs no
+hosting and no Team/Enterprise organisation — see below. The other three all
+wait on something bought or decided.
 
 ---
 
@@ -50,19 +52,36 @@ here. Choose the nearest equivalents in the form.
 
 ---
 
-## Before either form can be submitted
+## Claude desktop extension — submit this first
 
-Four things, none of them code. Each blocks both directories.
+The `.mcpb` bundle goes through the
+[desktop extension form](https://clau.de/desktop-extention-submission), which
+does **not** use the connectors portal and therefore needs no organisation, and
+carries a local stdio server and so needs no hosting.
 
-| | Blocked on |
-|---|---|
-| A public HTTPS endpoint | Deploying. See [DEPLOY.md](DEPLOY.md) — the config exists, it needs an account to run in. |
-| A published privacy policy URL | Merging to `main`, which publishes the Pages site. The URL above is where it lands. |
-| A legal read of that policy | Someone qualified. [PRIVACY.md](PRIVACY.md) is accurate against the code and says on its face that it is a draft. |
-| A monitored contact address | A decision. The listing needs somewhere a user or a reviewer can actually reach. |
+```bash
+cd backend && make mcpb     # -> dist/financert.mcpb (~90 KB)
+```
 
-And for the Anthropic directory specifically, a Team or Enterprise
-organisation.
+The manifest is generated from the listing block above and from the running
+server, so it cannot describe a different product or advertise a tool that no
+longer exists. `tests/test_mcpb_bundle.py` runs the packed bundle as a real
+stdio server in an empty directory and calls a tool — the one failure a copied
+module closure invites is an extension that installs and then does nothing, and
+it cannot show up in any other test.
+
+Its only prerequisite is the published privacy policy URL, below.
+
+## What blocks each channel
+
+| | Blocked on | Blocks |
+|---|---|---|
+| A published privacy policy URL | **Settings → Pages → Source: GitHub Actions**, once. The workflow does the rest and fails with that instruction until it is done. | Everything |
+| A monitored contact address | A decision. The listing needs somewhere a user or reviewer can reach. | Everything |
+| A legal read of the policy | Someone qualified. [PRIVACY.md](PRIVACY.md) is accurate against the code and says on its face that it is a draft. | Everything |
+| A public HTTPS endpoint | A hosting account. The config and probes are in [DEPLOY.md](DEPLOY.md). | The two hosted channels |
+| A Team/Enterprise organisation | A purchase. | The connectors portal only |
+| A LICENSE file | A choice of terms. The repo has none, so the bundle claims none. | Nothing yet, but a reviewer may ask |
 
 ---
 

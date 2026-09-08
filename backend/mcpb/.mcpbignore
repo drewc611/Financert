@@ -1,0 +1,11 @@
+# server.type = "uv" forbids bundling server/lib or server/venv -- the host
+# resolves dependencies itself. Excluded here so a stray local venv cannot
+# make it into the archive and invalidate the bundle.
+.venv/
+server/lib/
+server/venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+*.egg-info/

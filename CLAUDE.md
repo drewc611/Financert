@@ -221,11 +221,33 @@ host/port moved to `run()` kwargs.
 
 ## Directory submission
 
-[SUBMISSION.md](SUBMISSION.md) holds the listing copy for both AI directories
-in a fenced JSON block, and `tests/test_submission_metadata.py` checks it
-against the published field limits. Edit the JSON, not a copy of it — an
-overrun listing is a mechanical rejection, and nobody counts 1,650 characters
-by hand twice.
+[SUBMISSION.md](SUBMISSION.md) holds the listing copy in a fenced JSON block,
+and `tests/test_submission_metadata.py` checks it against the published field
+limits. Edit the JSON, not a copy of it — an overrun listing is a mechanical
+rejection, and nobody counts 1,650 characters by hand twice. The MCPB manifest
+is generated from that same block, so it is the single source of truth for
+every channel.
+
+**The desktop extension is the unblocked channel.** `make mcpb` builds
+`dist/financert.mcpb` via `tools/build_mcpb.py`. The Team/Enterprise
+requirement people quote belongs to the connectors *portal* (it lives in
+organisation settings); desktop extensions use a separate form and carry a
+local stdio server, so they need neither an org nor hosting.
+
+Three things about the bundle are load-bearing:
+
+- **`server.type` must stay `"uv"`.** A `"python"` bundle has to vendor its
+  dependencies, and the MCP SDK needs pydantic, which is compiled and cannot
+  be vendored portably. The spec then forbids `server/lib` and `server/venv`.
+- **The bundle carries a *copy* of the module closure** (`MODULES` in
+  `build_mcpb.py`), assembled at pack time and never committed — same
+  arrangement as `build_fallback.py`. A module missing from that list cannot
+  fail in a normal test, because in this repo the import always resolves; it
+  fails as an extension that installs and does nothing. `test_mcpb_bundle.py`
+  runs the packed bundle as a real stdio server in an empty directory for
+  exactly that reason. Don't weaken it into an import check.
+- **The manifest is generated, never hand-edited.** Listing fields come from
+  SUBMISSION.md, the tools array from the running server.
 
 ## Security
 
