@@ -63,19 +63,33 @@ accepted:
 | | |
 |---|---|
 | [CodeQL](.github/workflows/codeql.yml) | Python, JavaScript/TypeScript, and the workflows themselves. Runs on every push and PR to `main`, plus weekly. |
-| [Dependency review](.github/workflows/dependency-review.yml) | Fails a PR that introduces a dependency with a known moderate-or-worse advisory. |
 | [Dependabot](.github/dependabot.yml) | Weekly updates for pip, npm and GitHub Actions. |
 | [CI](.github/workflows/ci.yml) | `ruff`, `pytest`, `eslint`, and a production frontend build. |
 
-Two gaps worth naming rather than hiding:
+### Not yet active — one setting each
 
-- **Actions are pinned to tags, not commit SHAs.** A SHA pin is stronger — a
-  tag can be moved under you. Dependabot watching `github-actions` is the
-  mitigation here; if you want the stronger form, pin them and let Dependabot
-  bump the SHAs.
-- **Secret scanning and push protection are repository settings**, not files,
-  so they cannot be turned on from a pull request. Both are worth enabling
-  under **Settings → Advanced Security**.
+Named here rather than left to be discovered, because a security control
+everyone assumes is running is worse than one known to be off.
+
+- **Dependency review.** [The workflow](.github/workflows/dependency-review.yml)
+  is written and ready, but the repository's **dependency graph** is off, so
+  the action exits with "Dependency review is not supported on this
+  repository". Enable it under **Settings → Advanced Security → Dependency
+  graph**, then change that workflow's trigger from `workflow_dispatch` back
+  to `pull_request`. It is parked rather than left failing on purpose: a check
+  that is red on every pull request for a reason no reviewer can act on is how
+  a team learns to ignore red CI.
+- **Secret scanning and push protection.** Repository settings, not files, so
+  no pull request can turn them on. **Settings → Advanced Security**.
+- **Private vulnerability reporting**, as above — it is what the reporting
+  link at the top of this file depends on.
+
+### A weaker control, deliberately
+
+**Actions are pinned to tags, not commit SHAs.** A SHA pin is stronger, since
+a tag can be moved under you. Dependabot watching `github-actions` is the
+mitigation. If you want the stronger form, pin them to SHAs and let Dependabot
+bump those instead.
 
 ## Supported versions
 

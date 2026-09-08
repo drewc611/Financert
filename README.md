@@ -273,8 +273,10 @@ fixed, what was checked and clean, and which risks are accepted on purpose.
 yet legally reviewed.
 
 Automated: CodeQL scans Python, JavaScript/TypeScript and the workflow files
-on every push and PR; dependency review blocks a PR introducing a
-moderate-or-worse advisory; Dependabot bumps pip, npm and Actions weekly.
+on every push and PR, and Dependabot bumps pip, npm and Actions weekly. A
+dependency-review workflow is written but parked — it needs the repository's
+dependency graph switched on; `SECURITY.md` lists that and the other
+settings-only gaps rather than leaving them to be assumed.
 
 ## Notes on scope
 
