@@ -183,6 +183,29 @@ These are load-bearing. Each one was a bug at some point, and each has tests.
    maths.** Routers stay thin. The database holds *only* user portfolios —
    never reference data, so a wiped DB costs nothing but holdings.
 
+## MCP server
+
+`backend/mcp_server.py` exposes six read-only tools over MCP (stdio or
+streamable HTTP), reusing `services/benchmarks.py` and `services/allocation.py`
+directly — no HTTP hop, no database.
+
+Two constraints here are deliberate and load-bearing for directory submission:
+
+- **Portfolio storage is not exposed, and should not be.** Adding a write tool
+  means auth, state, and a data-handling story, and would make every tool's
+  `readOnlyHint` a lie. Persistence belongs on the REST API behind its token.
+- **Every tool must stay annotated `readOnlyHint=true`.** Missing or wrong
+  annotations are the most-cited directory rejection reason. A test guards it,
+  including the camelCase wire format — the Python model is snake_case
+  (`read_only_hint`), the wire is not.
+
+The HTTP transport runs with DNS-rebinding protection on and requires
+`--allowed-origin`. Don't disable it: without Origin validation a hosted server
+answers requests forged by any page the user visits.
+
+SDK note: this is `mcp` 2.x, where `FastMCP` was renamed `MCPServer` and
+host/port moved to `run()` kwargs.
+
 ## Security
 
 [`SECURITY-AUDIT.md`](SECURITY-AUDIT.md) records what has been checked, what

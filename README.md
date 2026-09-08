@@ -220,10 +220,29 @@ Tests never touch `financert.db` — `tests/conftest.py` points
 `FINANCERT_DATABASE_URL` at a throwaway temp file *before* any `app` module is
 imported, because the engine binds to the URL at import time.
 
+## Use it from an AI assistant
+
+`backend/mcp_server.py` exposes the benchmark data and the comparison as MCP
+tools, so an assistant can answer "how does my portfolio compare to the top
+1%?" directly.
+
+```bash
+cd backend
+make mcp        # stdio, for a local client
+make mcp-http   # streamable HTTP, for hosting
+```
+
+It is deliberately the **read-only subset** — six tools, no portfolio storage,
+no auth, nothing retained. Holdings passed to `compare_allocation` are used to
+compute the answer and discarded. See [DISTRIBUTION.md](DISTRIBUTION.md) for
+what listing it in the Claude or ChatGPT directories still needs.
+
 ## Security
 
 [`SECURITY-AUDIT.md`](SECURITY-AUDIT.md) covers the audit: what was found and
 fixed, what was checked and clean, and which risks are accepted on purpose.
+[`PRIVACY.md`](PRIVACY.md) records what each component stores — a draft, not
+yet legally reviewed.
 
 ## Notes on scope
 
