@@ -1,0 +1,6 @@
+# GitHub Pages (Jekyll) config. The site exists to satisfy a hard requirement:
+# both AI directories reject a submission without a public privacy policy URL.
+title: Financert
+description: Compare a portfolio against how US households actually hold their wealth
+theme: jekyll-theme-minimal
+show_downloads: false

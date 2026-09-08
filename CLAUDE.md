@@ -183,6 +183,50 @@ These are load-bearing. Each one was a bug at some point, and each has tests.
    maths.** Routers stay thin. The database holds *only* user portfolios —
    never reference data, so a wiped DB costs nothing but holdings.
 
+## MCP server
+
+`backend/mcp_server.py` exposes six read-only tools over MCP (stdio or
+streamable HTTP), reusing `services/benchmarks.py` and `services/allocation.py`
+directly — no HTTP hop, no database.
+
+Two constraints here are deliberate and load-bearing for directory submission:
+
+- **Portfolio storage is not exposed, and should not be.** Adding a write tool
+  means auth, state, and a data-handling story, and would make every tool's
+  `readOnlyHint` a lie. Persistence belongs on the REST API behind its token.
+- **Every tool must stay annotated `readOnlyHint=true`.** Missing or wrong
+  annotations are the most-cited directory rejection reason. A test guards it,
+  including the camelCase wire format — the Python model is snake_case
+  (`read_only_hint`), the wire is not.
+
+The HTTP transport runs with DNS-rebinding protection on and requires
+`--allowed-origin`. Don't disable it: without Origin validation a hosted server
+answers requests forged by any page the user visits.
+
+**Allowed hosts default to the allowed origins' hostnames**, not to `--host`.
+A platform proxy terminates TLS and forwards the *public* domain in `Host`,
+and the SDK matches `Host` exactly — deriving it from `--host` means a
+deployment that set its origin correctly still 421s every request. Every flag
+also reads an environment variable (`PORT`, `FINANCERT_MCP_*`) because that is
+how container hosts configure a process.
+
+Deployment lives in `backend/Dockerfile.mcp` and `backend/fly.toml` (in
+`backend/` because the build context is the directory holding fly.toml), with
+a `mcp` compose profile for exercising it locally. [DEPLOY.md](DEPLOY.md) has
+three curl probes that must return 200/403/421; run them against any
+deployment before treating it as done.
+
+SDK note: this is `mcp` 2.x, where `FastMCP` was renamed `MCPServer` and
+host/port moved to `run()` kwargs.
+
+## Directory submission
+
+[SUBMISSION.md](SUBMISSION.md) holds the listing copy for both AI directories
+in a fenced JSON block, and `tests/test_submission_metadata.py` checks it
+against the published field limits. Edit the JSON, not a copy of it — an
+overrun listing is a mechanical rejection, and nobody counts 1,650 characters
+by hand twice.
+
 ## Security
 
 [`SECURITY-AUDIT.md`](SECURITY-AUDIT.md) records what has been checked, what

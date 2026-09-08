@@ -140,7 +140,7 @@ Each dimension is the same shape of work. Categories are confirmed from the file
 | F61 | Scheduled quarterly data refresh via GitHub Actions, opening a PR with the diff | M |
 | F62 | Alert when the Fed publishes a new quarter | S |
 | F63 | Snapshot diff tool: what changed between two refreshes | M |
-| F64 | Deployment config and a real deploy | M |
+| ~~F64~~ ◐ | Deployment config and a real deploy — config done (`Dockerfile.mcp`, `fly.toml`, the Pages workflow, and the verification probes in DEPLOY.md); the deploy itself needs a hosting account | M |
 | F65 | Structured request logging | S |
 | F66 | Response caching for benchmark endpoints | S |
 | F67 | OpenAPI examples on every endpoint | S |

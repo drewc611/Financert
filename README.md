@@ -148,7 +148,7 @@ simply has nothing to act on today.
 ```
 backend/
   app/
-    constants.py       asset taxonomy + the FRED series map (start here)
+    constants.py       asset taxonomy + the DFA column each bucket reads (start here)
     config.py          env-driven settings      database.py  engine/session
     models.py          Portfolio + Holding      schemas.py   API contract
     services/
@@ -157,7 +157,10 @@ backend/
     routers/           benchmarks · portfolio · health
   data/dfa_snapshot.json   committed Federal Reserve data
   dependencies.py    session + the bearer-token guard
-  fetch_dfa.py         refresh the snapshot from FRED
+  fetch_dfa.py         refresh the snapshot from the Fed's bulk zip
+  mcp_server.py        the six read-only tools, over MCP
+  Dockerfile           REST API image      Dockerfile.mcp  MCP server image
+  fly.toml             MCP server deployment (see DEPLOY.md)
   tools/build_fallback.py  regenerate the frontend's embedded copy
   seed.py              sample portfolio       tests/  pytest suite
 frontend/
@@ -185,8 +188,10 @@ Interactive docs at `http://localhost:8000/docs`.
 
 ## Deploying
 
-Two environment variables matter, and `/healthz` reports both so a live
-deployment can be checked without guessing:
+[`DEPLOY.md`](DEPLOY.md) is the full guide, including hosting the MCP server
+(`backend/Dockerfile.mcp`, `backend/fly.toml`) and publishing the privacy
+policy. For the REST API, two environment variables matter, and `/healthz`
+reports both so a live deployment can be checked without guessing:
 
 ```bash
 FINANCERT_API_TOKEN=$(openssl rand -hex 32)   # gates every /api/portfolio* route
@@ -220,10 +225,34 @@ Tests never touch `financert.db` — `tests/conftest.py` points
 `FINANCERT_DATABASE_URL` at a throwaway temp file *before* any `app` module is
 imported, because the engine binds to the URL at import time.
 
+## Use it from an AI assistant
+
+`backend/mcp_server.py` exposes the benchmark data and the comparison as MCP
+tools, so an assistant can answer "how does my portfolio compare to the top
+1%?" directly.
+
+```bash
+cd backend
+make mcp        # stdio, for a local client
+make mcp-http   # streamable HTTP, for hosting
+```
+
+It is deliberately the **read-only subset** — six tools, no portfolio storage,
+no auth, nothing retained. Holdings passed to `compare_allocation` are used to
+compute the answer and discarded.
+
+Listing it in the Claude or ChatGPT directories takes three documents:
+[DISTRIBUTION.md](DISTRIBUTION.md) for which channels are viable and why,
+[DEPLOY.md](DEPLOY.md) for standing up the HTTPS endpoint both require, and
+[SUBMISSION.md](SUBMISSION.md) for the listing copy and test cases. What is
+left is an account holder's to do — both portals are behind a login.
+
 ## Security
 
 [`SECURITY-AUDIT.md`](SECURITY-AUDIT.md) covers the audit: what was found and
 fixed, what was checked and clean, and which risks are accepted on purpose.
+[`PRIVACY.md`](PRIVACY.md) records what each component stores — a draft, not
+yet legally reviewed.
 
 ## Notes on scope
 
