@@ -297,6 +297,15 @@ Real multi-tenancy needs accounts, per-user ownership on `Portfolio`, and
 session handling — a different piece of work. Don't describe the current gate
 as isolation.
 
+## Licence
+
+MIT, from 2026. `LICENSE` at the repo root is the source of truth and three
+things track it: `backend/mcpb/pyproject.toml`, the `license` field in the
+generated MCPB manifest, and the README badge (which reads GitHub's own
+detection, so it needs the file on `main`). A test asserts the manifest and
+the file agree in *both* directions — claiming terms the repo does not carry
+is as wrong as carrying terms the manifest omits.
+
 ## Deliberately not built
 
 Price feeds, brokerage account linking, returns/performance tracking, and any

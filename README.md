@@ -1,5 +1,12 @@
 # Financert
 
+[![CI](https://github.com/drewc611/Financert/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/drewc611/Financert/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/drewc611/Financert/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/drewc611/Financert/actions/workflows/codeql.yml)
+[![License](https://img.shields.io/github/license/drewc611/Financert)](LICENSE)
+[![Python 3.11](https://img.shields.io/badge/python-3.11-3776AB?logo=python&logoColor=white)](backend/pyproject.toml)
+[![Data: Federal Reserve DFA](https://img.shields.io/badge/data-Federal%20Reserve%20DFA-1a4d2e)](https://www.federalreserve.gov/releases/z1/dataviz/dfa/)
+[![MCP: 6 read-only tools](https://img.shields.io/badge/MCP-6%20read--only%20tools-8A63D2)](backend/mcp_server.py)
+
 **Finance tracker of where to invest like the top 1%.**
 
 Financert answers one question with real data: *how do the wealthiest American

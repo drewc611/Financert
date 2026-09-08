@@ -50,14 +50,18 @@ MODULES = (
 )
 DATA = "data/dfa_snapshot.json"
 
-# Manifest fields with no home in the listing metadata. `license` is absent on
-# purpose: the repository has no LICENSE file, and inventing one here would be
-# asserting terms nobody chose.
+# Manifest fields with no home in the listing metadata. `license` must keep
+# matching the repository's actual LICENSE file -- a manifest asserting terms
+# the repo does not carry is worse than one that stays quiet. A test ties the
+# two together in both directions.
+LICENSE = "MIT"
+
 STATIC = {
     "manifest_version": "0.4",
     "author": {"name": "drewc611", "url": "https://github.com/drewc611"},
     "repository": {"type": "git", "url": "https://github.com/drewc611/Financert.git"},
     "keywords": ["finance", "wealth", "federal-reserve", "benchmark", "portfolio"],
+    "license": LICENSE,
     "compatibility": {
         "platforms": ["darwin", "linux", "win32"],
         "runtimes": {"python": ">=3.10"},

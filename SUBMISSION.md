@@ -81,7 +81,6 @@ Its only prerequisite is the published privacy policy URL, below.
 | A legal read of the policy | Someone qualified. [PRIVACY.md](PRIVACY.md) is accurate against the code and says on its face that it is a draft. | Everything |
 | A public HTTPS endpoint | A hosting account. The config and probes are in [DEPLOY.md](DEPLOY.md). | The two hosted channels |
 | A Team/Enterprise organisation | A purchase. | The connectors portal only |
-| A LICENSE file | A choice of terms. The repo has none, so the bundle claims none. | Nothing yet, but a reviewer may ask |
 
 ---
 

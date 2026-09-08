@@ -164,11 +164,22 @@ def test_privacy_policy_url_is_declared_over_https(manifest):
     assert all(url.startswith("https://") for url in manifest["privacy_policies"])
 
 
-def test_no_license_claimed_while_the_repo_has_none(manifest):
-    """The repository has no LICENSE file. Asserting terms in the manifest that
-    nobody chose would be worse than leaving the optional field out."""
-    if not (build_mcpb.REPO / "LICENSE").exists():
-        assert "license" not in manifest
+def test_declared_license_matches_the_repository(manifest):
+    """The manifest may only claim terms the repo actually carries. Checked
+    both ways: a LICENSE file with no manifest entry understates it, and a
+    manifest entry with no LICENSE file asserts terms nobody agreed to."""
+    licence_file = build_mcpb.REPO / "LICENSE"
+    if not licence_file.exists():
+        assert "license" not in manifest, "manifest claims a licence the repo does not carry"
+        return
+
+    assert manifest.get("license"), "repo has a LICENSE but the manifest does not name it"
+    text = licence_file.read_text()
+    # An SPDX identifier is not free-text: it has to be recognisable from the
+    # file, or a reviewer reading both sees two different answers.
+    assert manifest["license"] == "MIT" and text.startswith("MIT License"), (
+        f"manifest says {manifest['license']!r}; LICENSE begins {text.splitlines()[0]!r}"
+    )
 
 
 # --- the packed archive ------------------------------------------------------
