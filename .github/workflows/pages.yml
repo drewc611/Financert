@@ -36,6 +36,27 @@ jobs:
           } > docs/privacy.md
           grep -q "Privacy policy" docs/privacy.md
 
+      # configure-pages fails with a bare 404 when Pages has never been turned
+      # on, which reads like a broken workflow rather than a missing setting.
+      # Its own `enablement: true` cannot help here -- that option needs a PAT
+      # or App token, not GITHUB_TOKEN -- so say the one thing to go and do.
+      - name: Check Pages is enabled
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -uo pipefail
+          code=$(curl -s -o /dev/null -w '%{http_code}' \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/pages")
+          if [ "$code" = "404" ]; then
+            echo "::error::GitHub Pages is not enabled for this repository."
+            echo "Enable it once: Settings -> Pages -> Build and deployment -> Source: GitHub Actions."
+            echo "Then re-run this workflow. See DEPLOY.md."
+            exit 1
+          fi
+          echo "Pages API returned $code; continuing."
+
       - uses: actions/configure-pages@v5
       - uses: actions/jekyll-build-pages@v1
         with:

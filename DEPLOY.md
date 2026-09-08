@@ -129,8 +129,13 @@ handshake, not that the data snapshot shipped in the image.
 to `main`. `PRIVACY.md` is rendered into the site at publish time rather than
 copied into `docs/`, so the two cannot drift.
 
-One-time setup: **Settings → Pages → Source: GitHub Actions**. The pages land
-at:
+One-time setup: **Settings → Pages → Source: GitHub Actions**. The workflow
+checks this first and fails with that exact instruction if it has been missed,
+rather than with the bare 404 `configure-pages` would otherwise produce. It
+cannot enable Pages for you — that action's `enablement` option needs a PAT or
+App token, not the workflow's `GITHUB_TOKEN`.
+
+The pages land at:
 
 - `https://<user>.github.io/Financert/` — overview
 - `https://<user>.github.io/Financert/mcp.html` — tools and example prompts
