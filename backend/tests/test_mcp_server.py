@@ -162,3 +162,16 @@ def test_bare_hostname_origin_survives_the_split():
     """A value that isn't a URL (someone passing a hostname) must not silently
     produce an empty host entry that matches nothing."""
     assert mcp_server.hosts_for_origins(["financert.example.com"])[0] == "financert.example.com"
+
+
+def test_readme_badge_states_the_real_tool_count():
+    """The README badge is a static claim about the server. Static claims rot,
+    so it is tied to the thing it describes rather than to someone's memory of
+    it -- add a seventh tool and this fails until the badge is updated too."""
+    import re
+    from pathlib import Path
+
+    readme = (Path(__file__).resolve().parents[2] / "README.md").read_text()
+    match = re.search(r"MCP-(\d+)%20read--only%20tools", readme)
+    assert match, "the MCP tool-count badge is missing from README.md"
+    assert int(match.group(1)) == len(_tools())

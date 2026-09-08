@@ -221,6 +221,8 @@ __marimo__/
 node_modules/
 frontend/dist/
 backend/financert.db
+# Build output: the .mcpb bundle is assembled from the tree, never committed.
+backend/dist/
 backend/.venv/
 .DS_Store
 
