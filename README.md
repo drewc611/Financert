@@ -148,7 +148,7 @@ simply has nothing to act on today.
 ```
 backend/
   app/
-    constants.py       asset taxonomy + the FRED series map (start here)
+    constants.py       asset taxonomy + the DFA column each bucket reads (start here)
     config.py          env-driven settings      database.py  engine/session
     models.py          Portfolio + Holding      schemas.py   API contract
     services/
@@ -157,7 +157,10 @@ backend/
     routers/           benchmarks · portfolio · health
   data/dfa_snapshot.json   committed Federal Reserve data
   dependencies.py    session + the bearer-token guard
-  fetch_dfa.py         refresh the snapshot from FRED
+  fetch_dfa.py         refresh the snapshot from the Fed's bulk zip
+  mcp_server.py        the six read-only tools, over MCP
+  Dockerfile           REST API image      Dockerfile.mcp  MCP server image
+  fly.toml             MCP server deployment (see DEPLOY.md)
   tools/build_fallback.py  regenerate the frontend's embedded copy
   seed.py              sample portfolio       tests/  pytest suite
 frontend/
@@ -185,8 +188,10 @@ Interactive docs at `http://localhost:8000/docs`.
 
 ## Deploying
 
-Two environment variables matter, and `/healthz` reports both so a live
-deployment can be checked without guessing:
+[`DEPLOY.md`](DEPLOY.md) is the full guide, including hosting the MCP server
+(`backend/Dockerfile.mcp`, `backend/fly.toml`) and publishing the privacy
+policy. For the REST API, two environment variables matter, and `/healthz`
+reports both so a live deployment can be checked without guessing:
 
 ```bash
 FINANCERT_API_TOKEN=$(openssl rand -hex 32)   # gates every /api/portfolio* route
@@ -234,8 +239,13 @@ make mcp-http   # streamable HTTP, for hosting
 
 It is deliberately the **read-only subset** — six tools, no portfolio storage,
 no auth, nothing retained. Holdings passed to `compare_allocation` are used to
-compute the answer and discarded. See [DISTRIBUTION.md](DISTRIBUTION.md) for
-what listing it in the Claude or ChatGPT directories still needs.
+compute the answer and discarded.
+
+Listing it in the Claude or ChatGPT directories takes three documents:
+[DISTRIBUTION.md](DISTRIBUTION.md) for which channels are viable and why,
+[DEPLOY.md](DEPLOY.md) for standing up the HTTPS endpoint both require, and
+[SUBMISSION.md](SUBMISSION.md) for the listing copy and test cases. What is
+left is an account holder's to do — both portals are behind a login.
 
 ## Security
 

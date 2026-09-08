@@ -9,10 +9,14 @@ one of them is close to ready.
 
 | Channel | Wants | Status |
 |---|---|---|
-| Claude connectors directory | Remote MCP server | Server built; needs hosting + privacy URL |
-| ChatGPT apps directory | Remote MCP server | Same server; needs hosting + privacy URL |
+| Claude connectors directory | Remote MCP server | Built, configured, documented. Needs an account to deploy into. |
+| ChatGPT apps directory | Remote MCP server | Same server, same blocker. |
 | Apple App Store | Native/mobile app | **Blocked on a policy question** (below) |
 | Google Play | Native/mobile app | Needs a mobile app that doesn't exist |
+
+The listing copy and reviewer test cases for both directories are written out
+in [SUBMISSION.md](SUBMISSION.md); [DEPLOY.md](DEPLOY.md) is how to stand up
+the endpoint they point at.
 
 ---
 
@@ -59,10 +63,13 @@ policy, same hosting prerequisite.
 
 ### What is still missing for both
 
-1. **Hosting.** The server runs locally. A directory listing needs a public
-   HTTPS endpoint with a stable URL.
-2. **A published privacy policy URL.** The document exists; it needs a home and
-   a legal read.
+None of it is code — every remaining item needs an account, a decision or a
+lawyer.
+
+1. **A deployment.** The container image, the Fly config and the verification
+   probes are in [DEPLOY.md](DEPLOY.md); running them needs a hosting account.
+2. **A published privacy policy URL.** The Pages workflow publishes it on the
+   next push to `main`. It still needs a legal read.
 3. **A monitored contact address.**
 4. **A Team/Enterprise org**, for the Anthropic submission specifically.
 

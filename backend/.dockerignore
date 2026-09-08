@@ -1,0 +1,12 @@
+# The REST image builds with `COPY . .`, so without this a local
+# `financert.db` -- somebody's actual portfolio -- gets baked into the image
+# and shipped wherever the image goes. Everything else here is noise that only
+# slows the build and grows the layer.
+financert.db
+*.db
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+tests/

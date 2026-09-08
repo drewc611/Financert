@@ -1,0 +1,49 @@
+# Fly.io deployment for the MCP server:
+#
+#     cd backend && fly deploy
+#
+# It lives in backend/ rather than at the repo root because the build context
+# is the directory holding fly.toml, and Dockerfile.mcp copies paths relative
+# to backend/.
+#
+# Fly is one option among several -- the image is a plain container and runs
+# anywhere. It is here because both AI directories require a public HTTPS
+# endpoint, and this is the shortest path to one. See DEPLOY.md.
+#
+# Change `app` to your own name before deploying; app names are global.
+app = "financert-mcp"
+primary_region = "iad"
+
+[build]
+  dockerfile = "Dockerfile.mcp"
+
+[env]
+  PORT = "8080"
+  FINANCERT_MCP_HOST = "0.0.0.0"
+  # The public origin, which is also what the Host header will carry once Fly's
+  # proxy has terminated TLS. Without it the server falls back to localhost-only
+  # and refuses every real request. Must match the deployed hostname exactly.
+  FINANCERT_MCP_ALLOWED_ORIGINS = "https://financert-mcp.fly.dev"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  # Streamable HTTP holds a session open. Stopping the machine mid-session
+  # would drop it, so keep one warm rather than scaling to zero.
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+
+# TCP, not HTTP: every MCP route validates Host and Origin before answering, so
+# an HTTP probe would get a 4xx that says nothing about health. `[[http_service
+# .checks]]` only does HTTP, hence the top-level form.
+[checks.tcp]
+  type = "tcp"
+  port = 8080
+  interval = "30s"
+  timeout = "5s"
+  grace_period = "10s"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"

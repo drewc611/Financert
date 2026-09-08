@@ -1,0 +1,38 @@
+# The MCP server, over streamable HTTP, for a container host.
+#
+# Separate from `Dockerfile` (the REST API) on purpose: this image serves only
+# the six read-only tools. It never opens the database, so a host running it
+# needs no volume, no backup and no secret -- which is also what makes the
+# privacy answer for directory review a short one.
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY app ./app
+COPY data ./data
+COPY mcp_server.py .
+
+# Nothing here writes, so it has no reason to run as root.
+RUN useradd --create-home --uid 10001 financert
+USER financert
+
+# Bind to every interface: the process is behind the platform's proxy, and
+# 127.0.0.1 would be unreachable from it. Host and Origin are still validated
+# -- FINANCERT_MCP_ALLOWED_ORIGINS is what makes that binding safe, and a
+# deployment that forgets it gets localhost-only and a warning on stderr.
+ENV FINANCERT_MCP_HOST=0.0.0.0 \
+    PORT=8080 \
+    PYTHONUNBUFFERED=1
+
+EXPOSE 8080
+
+# A TCP connect, not an HTTP request: every MCP route validates Host and Origin
+# before answering, so a plain probe gets a 4xx that says nothing about health.
+# A missing snapshot is already caught -- main() exits 1 before it listens.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD python -c "import os,socket;socket.create_connection(('127.0.0.1',int(os.environ['PORT'])),3).close()"
+
+CMD ["python", "mcp_server.py", "--http"]

@@ -1,0 +1,54 @@
+name: Publish docs site
+
+# Both AI directories reject a submission without a public privacy policy URL,
+# so this site exists mainly to provide one.
+on:
+  push:
+    branches: [main]
+    paths: ["docs/**", "PRIVACY.md", ".github/workflows/pages.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two publishes race; always let the newest win.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # PRIVACY.md is the single source of truth. It is rendered into the site
+      # at publish time rather than copied into docs/, so the two cannot drift.
+      - name: Render the privacy policy into the site
+        run: |
+          set -euo pipefail
+          test -f PRIVACY.md
+          {
+            printf -- '---\ntitle: Privacy policy\n---\n\n'
+            cat PRIVACY.md
+          } > docs/privacy.md
+          grep -q "Privacy policy" docs/privacy.md
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./docs
+          destination: ./_site
+      - uses: actions/upload-pages-artifact@v3
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

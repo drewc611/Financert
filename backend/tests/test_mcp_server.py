@@ -132,3 +132,33 @@ def test_unknown_period_names_the_range():
 def test_unknown_trend_asset_class_rejected():
     with pytest.raises(ValueError, match="unknown asset class"):
         mcp_server.get_asset_class_trend(asset_class="nope")
+
+
+# --- hosting ----------------------------------------------------------------
+
+
+def test_hosted_origin_also_permits_its_host_header():
+    """A platform proxy forwards the *public* domain in `Host`, never the
+    address the process bound to. The SDK matches Host exactly, so a deployment
+    given only its origin would 421 every request."""
+    security = mcp_server.build_security("0.0.0.0", 8080, ["https://financert.example.com"], [])
+    assert "financert.example.com" in security.allowed_hosts
+    assert security.allowed_origins == ["https://financert.example.com"]
+
+
+def test_explicit_allowed_host_wins():
+    security = mcp_server.build_security("0.0.0.0", 8080, ["https://a.example"], ["b.example"])
+    assert security.allowed_hosts == ["b.example"]
+
+
+def test_protection_is_never_silently_off():
+    """Whatever the arguments, the middleware must stay armed -- the whole
+    point of the flag is that a hosted server refuses forged origins."""
+    for origins, hosts in (([], []), (["https://a.example"], []), ([], ["b.example"])):
+        assert mcp_server.build_security("127.0.0.1", 8080, origins, hosts).enable_dns_rebinding_protection
+
+
+def test_bare_hostname_origin_survives_the_split():
+    """A value that isn't a URL (someone passing a hostname) must not silently
+    produce an empty host entry that matches nothing."""
+    assert mcp_server.hosts_for_origins(["financert.example.com"])[0] == "financert.example.com"

@@ -26,8 +26,10 @@ token.
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 from typing import Any
+from urllib.parse import urlsplit
 
 from mcp.server.mcpserver import MCPServer
 from mcp.server.transport_security import TransportSecuritySettings
@@ -262,24 +264,71 @@ def get_data_source() -> dict[str, Any]:
     }
 
 
+def _env_list(name: str) -> list[str]:
+    return [item.strip() for item in os.getenv(name, "").split(",") if item.strip()]
+
+
+def hosts_for_origins(origins: list[str]) -> list[str]:
+    """The Host header values implied by a list of allowed origins.
+
+    Hosting platforms terminate TLS at a proxy and forward the request with the
+    *public* domain in `Host`, not the address the process bound to. Since the
+    SDK matches `Host` exactly, a deployment that passed only its origin would
+    reject every request with 421. Deriving the hosts from the origins keeps
+    the operator to one flag for the common case; `--allowed-host` still
+    overrides when the two genuinely differ (a CDN or a rewriting proxy).
+    """
+    hosts: list[str] = []
+    for origin in origins:
+        netloc = urlsplit(origin).netloc or origin
+        for candidate in (netloc, f"{netloc.split(':')[0]}:*"):
+            if candidate not in hosts:
+                hosts.append(candidate)
+    return hosts
+
+
+def build_security(host: str, port: int, origins: list[str], hosts: list[str]) -> TransportSecuritySettings:
+    """DNS-rebinding protection settings for the HTTP transport.
+
+    Protection is on by default in the SDK and the directory review asks for
+    Origin validation explicitly. Left implicit, a hosted server will happily
+    answer a request forged by any page the user visits.
+    """
+    origins = origins or [f"http://{host}:{port}"]
+    return TransportSecuritySettings(
+        enable_dns_rebinding_protection=True,
+        allowed_hosts=hosts or hosts_for_origins(origins) + [host, f"{host}:{port}"],
+        allowed_origins=origins,
+    )
+
+
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Run the Financert MCP server.")
+    parser = argparse.ArgumentParser(
+        description="Run the Financert MCP server.",
+        epilog=(
+            "Every flag below also reads an environment variable, because most "
+            "container hosts configure a process that way: PORT, "
+            "FINANCERT_MCP_HOST, FINANCERT_MCP_ALLOWED_ORIGINS, "
+            "FINANCERT_MCP_ALLOWED_HOSTS (the last two comma-separated)."
+        ),
+    )
     parser.add_argument("--http", action="store_true", help="serve over streamable HTTP instead of stdio")
-    parser.add_argument("--host", default="127.0.0.1")
-    parser.add_argument("--port", type=int, default=8080)
+    parser.add_argument("--host", default=os.getenv("FINANCERT_MCP_HOST", "127.0.0.1"))
+    # PORT is the convention on Fly, Render, Railway, Cloud Run and Heroku.
+    parser.add_argument("--port", type=int, default=int(os.getenv("PORT", "8080")))
     parser.add_argument(
         "--allowed-origin",
         action="append",
-        default=[],
+        default=_env_list("FINANCERT_MCP_ALLOWED_ORIGINS"),
         metavar="ORIGIN",
         help="Origin permitted to call the HTTP transport. Repeatable. Required when hosting.",
     )
     parser.add_argument(
         "--allowed-host",
         action="append",
-        default=[],
+        default=_env_list("FINANCERT_MCP_ALLOWED_HOSTS"),
         metavar="HOST",
-        help="Host header permitted on the HTTP transport. Repeatable. Defaults to --host.",
+        help="Host header permitted on the HTTP transport. Repeatable. Defaults to the allowed origins' hosts.",
     )
     args = parser.parse_args()
 
@@ -294,17 +343,9 @@ def main() -> int:
         mcp.run()
         return 0
 
-    # DNS-rebinding protection is on by default in the SDK, and the directory
-    # review asks for Origin validation explicitly. Left implicit, a hosted
-    # server will happily answer a request forged by any page the user visits.
-    security = TransportSecuritySettings(
-        enable_dns_rebinding_protection=True,
-        allowed_hosts=args.allowed_host or [args.host, f"{args.host}:{args.port}"],
-        allowed_origins=args.allowed_origin or [f"http://{args.host}:{args.port}"],
-    )
     if not args.allowed_origin:
         print(
-            "warning: no --allowed-origin given; defaulting to localhost only. "
+            "warning: no allowed origin given; defaulting to localhost only. "
             "A hosted deployment must pass its real origin.",
             file=sys.stderr,
         )
@@ -313,7 +354,7 @@ def main() -> int:
         transport="streamable-http",
         host=args.host,
         port=args.port,
-        transport_security=security,
+        transport_security=build_security(args.host, args.port, args.allowed_origin, args.allowed_host),
     )
     return 0
 

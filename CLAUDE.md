@@ -203,8 +203,29 @@ The HTTP transport runs with DNS-rebinding protection on and requires
 `--allowed-origin`. Don't disable it: without Origin validation a hosted server
 answers requests forged by any page the user visits.
 
+**Allowed hosts default to the allowed origins' hostnames**, not to `--host`.
+A platform proxy terminates TLS and forwards the *public* domain in `Host`,
+and the SDK matches `Host` exactly — deriving it from `--host` means a
+deployment that set its origin correctly still 421s every request. Every flag
+also reads an environment variable (`PORT`, `FINANCERT_MCP_*`) because that is
+how container hosts configure a process.
+
+Deployment lives in `backend/Dockerfile.mcp` and `backend/fly.toml` (in
+`backend/` because the build context is the directory holding fly.toml), with
+a `mcp` compose profile for exercising it locally. [DEPLOY.md](DEPLOY.md) has
+three curl probes that must return 200/403/421; run them against any
+deployment before treating it as done.
+
 SDK note: this is `mcp` 2.x, where `FastMCP` was renamed `MCPServer` and
 host/port moved to `run()` kwargs.
+
+## Directory submission
+
+[SUBMISSION.md](SUBMISSION.md) holds the listing copy for both AI directories
+in a fenced JSON block, and `tests/test_submission_metadata.py` checks it
+against the published field limits. Edit the JSON, not a copy of it — an
+overrun listing is a mechanical rejection, and nobody counts 1,650 characters
+by hand twice.
 
 ## Security
 
