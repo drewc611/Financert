@@ -1,0 +1,46 @@
+name: Dependency review
+
+# Catches a vulnerable dependency at the point it is proposed, which is the
+# cheapest moment to say no. Dependabot handles what is already merged; this
+# handles what is about to be.
+#
+# ---------------------------------------------------------------------------
+# NOT YET ACTIVE. This needs the repository's **dependency graph** switched on:
+#     Settings -> Advanced Security -> Dependency graph
+# Until then the action exits with "Dependency review is not supported on this
+# repository", verified on this workflow's first run.
+#
+# It is deliberately `workflow_dispatch` only rather than `pull_request`, and
+# the two alternatives were both worse. Leaving it on `pull_request` paints
+# every pull request red for a reason no reviewer can act on, which is how a
+# team learns to ignore red CI. Making it pass anyway would be the mistake
+# this repo just finished undoing in codeql.yml, where a workflow reported
+# success while scanning nothing.
+#
+# So it does not run, is documented as not running in SECURITY.md, and reports
+# no status it has not earned. Flip the setting, then change the trigger below
+# back to `pull_request` in one line.
+# ---------------------------------------------------------------------------
+on:
+  workflow_dispatch:
+
+# Read-only. This job needs nothing else, and the default token scope is
+# broader than that.
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/dependency-review-action@v4
+        with:
+          # Low-severity advisories in a dev-only dependency would block every
+          # PR without telling anyone anything. Moderate is the level where a
+          # human should actually look.
+          fail-on-severity: moderate
+          # This repo is MIT; a copyleft dependency pulled in by accident is
+          # worth catching while it is still one line of a diff.
+          deny-licenses: AGPL-3.0, GPL-2.0, GPL-3.0

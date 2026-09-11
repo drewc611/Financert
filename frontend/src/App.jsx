@@ -3,25 +3,29 @@ import { AppDataProvider, useAppData } from './context/AppDataContext'
 import Compare from './views/Compare'
 import Portfolio from './views/Portfolio'
 import Benchmarks from './views/Benchmarks'
-import { applyTheme, nextTheme, readTheme, THEME_LABEL } from './lib/theme'
-import { quarterLabel } from './lib/format'
+import { applyTheme, nextTheme, readTheme } from './lib/theme'
+import { I18nProvider, LOCALES, useI18n } from './i18n'
+import { useInstallPrompt } from './lib/install'
 
 const TABS = [
-  { key: 'compare', label: 'Compare', view: Compare },
-  { key: 'portfolio', label: 'Your portfolio', view: Portfolio },
-  { key: 'benchmarks', label: 'The tiers', view: Benchmarks },
+  { key: 'compare', view: Compare },
+  { key: 'portfolio', view: Portfolio },
+  { key: 'benchmarks', view: Benchmarks },
 ]
 
 export default function App() {
   return (
-    <AppDataProvider>
-      <Shell />
-    </AppDataProvider>
+    <I18nProvider>
+      <AppDataProvider>
+        <Shell />
+      </AppDataProvider>
+    </I18nProvider>
   )
 }
 
 function Shell() {
   const { mode, benchmarks } = useAppData()
+  const { t } = useI18n()
   const [tab, setTab] = useState('compare')
   const [theme, setTheme] = useState(readTheme)
 
@@ -35,37 +39,39 @@ function Shell() {
     <div className="shell">
       <header className="topbar">
         <div className="brand">
-          <h1>Financert</h1>
-          <span className="tag">where the top 1% actually keep their money</span>
+          <h1>{t('app.name')}</h1>
+          <span className="tag">{t('app.tagline')}</span>
         </div>
         <div className="topbar-actions">
           <span className="datasource" data-mode={mode}>
-            {mode === 'live' ? 'Live API' : mode === 'fallback' ? 'Offline snapshot' : 'Loading…'}
+            {t(`mode.${mode === 'live' ? 'live' : mode === 'fallback' ? 'fallback' : 'loading'}`)}
           </span>
+          <InstallButton />
+          <LanguagePicker />
           <button
             className="icon-btn"
             onClick={() => setTheme(nextTheme(theme))}
-            aria-label={`Theme: ${THEME_LABEL[theme]}. Click to change.`}
+            aria-label={t('theme.label', { theme: t(`theme.${theme}`) })}
           >
-            {THEME_LABEL[theme]}
+            {t(`theme.${theme}`)}
           </button>
         </div>
       </header>
 
       {mode === 'loading' || !benchmarks ? (
-        <p className="empty">Loading Federal Reserve data…</p>
+        <p className="empty">{t('app.loading')}</p>
       ) : (
         <>
           <nav className="tabs" role="tablist">
-            {TABS.map((t) => (
+            {TABS.map((item) => (
               <button
-                key={t.key}
+                key={item.key}
                 className="tab"
                 role="tab"
-                aria-selected={tab === t.key}
-                onClick={() => setTab(t.key)}
+                aria-selected={tab === item.key}
+                onClick={() => setTab(item.key)}
               >
-                {t.label}
+                {t(`tabs.${item.key}`)}
               </button>
             ))}
           </nav>
@@ -79,25 +85,64 @@ function Shell() {
   )
 }
 
+function LanguagePicker() {
+  const { locale, setLocale, t } = useI18n()
+  return (
+    <label className="lang-picker">
+      <span className="sr-only">{t('app.language')}</span>
+      <select value={locale} onChange={(e) => setLocale(e.target.value)} aria-label={t('app.language')}>
+        {LOCALES.map((l) => (
+          // `lang` on the option so a screen reader pronounces each endonym
+          // in its own language rather than the page's.
+          <option key={l.code} value={l.code} lang={l.code}>
+            {l.name}
+          </option>
+        ))}
+      </select>
+    </label>
+  )
+}
+
+/** Only rendered once the browser has offered an install prompt -- Chrome and
+ *  Edge fire `beforeinstallprompt`, Safari never does, so on iOS this button
+ *  simply never appears and the user installs via Share → Add to Home Screen. */
+function InstallButton() {
+  const { t } = useI18n()
+  const { canInstall, promptInstall } = useInstallPrompt()
+  if (!canInstall) return null
+  return (
+    <button className="icon-btn" onClick={promptInstall} title={t('app.installHint')}>
+      {t('app.install')}
+    </button>
+  )
+}
+
 function Disclaimer({ benchmarks }) {
+  const { t, fmt, locale } = useI18n()
+  const note = t('disclaimer.translationNote')
   return (
     <footer className="disclaimer">
       <p style={{ margin: '0 0 8px' }}>
-        <strong>What this is.</strong> Financert compares a portfolio against how American households in each
-        wealth tier actually hold their assets, measured by the Federal Reserve&apos;s{' '}
+        <strong>{t('disclaimer.whatTitle')}</strong> {t('disclaimer.whatBody')}{' '}
         <a href={benchmarks.source.url} target="_blank" rel="noreferrer">
-          Distributional Financial Accounts
+          {t('disclaimer.dfaLink')}
         </a>
-        . Data through {quarterLabel(benchmarks.latestPeriod)}
+        . {t('disclaimer.dataThrough', { quarter: fmt.quarter(benchmarks.latestPeriod) })}
         {benchmarks.latestPeriod !== benchmarks.completePeriod &&
-          `; the newest fully published quarter is ${quarterLabel(benchmarks.completePeriod)}`}
+          t('disclaimer.newestComplete', { quarter: fmt.quarter(benchmarks.completePeriod) })}
         .
       </p>
       <p style={{ margin: 0 }}>
-        <strong>What it is not.</strong> It is descriptive, not advice. Matching the top 1%&apos;s allocation
-        would not reproduce their returns: much of their wealth sits in private businesses they own and run,
-        and the data says nothing about risk, taxes, time horizon, or whether any allocation suits you.
+        <strong>{t('disclaimer.notTitle')}</strong> {t('disclaimer.notBody')}
       </p>
+      {/* Empty in English, where there is nothing to disclaim. Elsewhere it
+          says the English original governs -- these translations have not been
+          through legal review, and this paragraph is the one that matters. */}
+      {note && (
+        <p className="translation-note" lang={locale}>
+          {note}
+        </p>
+      )}
     </footer>
   )
 }

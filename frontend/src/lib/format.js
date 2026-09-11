@@ -1,41 +1,69 @@
-export function usd(value, { compact = false } = {}) {
-  if (value == null || Number.isNaN(value)) return '—'
-  if (compact) {
-    const abs = Math.abs(value)
-    if (abs >= 1e12) return `$${(value / 1e12).toFixed(1)}T`
-    if (abs >= 1e9) return `$${(value / 1e9).toFixed(1)}B`
-    if (abs >= 1e6) return `$${(value / 1e6).toFixed(1)}M`
-    if (abs >= 1e3) return `$${Math.round(value / 1e3)}K`
-  }
-  return value.toLocaleString('en-US', {
+/**
+ * Number and date formatting. Every function takes a `locale`, because the
+ * separators move: German writes 1.234,5 %, French puts a space before the
+ * sign, Arabic may render Eastern Arabic numerals. `Intl` knows all of that;
+ * the `toFixed` these replaced did not.
+ *
+ * Amounts stay in USD in every locale, deliberately. The underlying Federal
+ * Reserve figures are dollars, and converting them would invent an exchange
+ * rate the source has no opinion on.
+ *
+ * Call sites use the pre-bound `fmt` from `useI18n()` rather than importing
+ * these directly, so the active locale can't be forgotten at one call site.
+ */
+
+const DEFAULT_LOCALE = 'en'
+const DASH = '—'
+
+export function usd(value, { compact = false, locale = DEFAULT_LOCALE } = {}) {
+  if (value == null || Number.isNaN(value)) return DASH
+  return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: 'USD',
-    maximumFractionDigits: 0,
-  })
+    // Compact notation localises the suffix too ("Mio." in German, "mil M"
+    // in Spanish) instead of hardcoding K/M/B/T.
+    ...(compact ? { notation: 'compact', maximumFractionDigits: 1 } : { maximumFractionDigits: 0 }),
+  }).format(value)
 }
 
-export function pct(fraction, digits = 1) {
-  if (fraction == null || Number.isNaN(fraction)) return '—'
-  return `${(fraction * 100).toFixed(digits)}%`
+export function pct(fraction, { digits = 1, locale = DEFAULT_LOCALE } = {}) {
+  if (fraction == null || Number.isNaN(fraction)) return DASH
+  return new Intl.NumberFormat(locale, {
+    style: 'percent',
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  }).format(fraction)
 }
 
-export function pp(value, digits = 1) {
-  if (value == null || Number.isNaN(value)) return '—'
-  const sign = value > 0 ? '+' : ''
-  return `${sign}${value.toFixed(digits)}pp`
+/** Percentage *points* — a difference between two shares, not a percentage of
+ *  anything. Intl has no unit for it, so the number is localised and the
+ *  suffix appended. */
+export function pp(value, { digits = 1, locale = DEFAULT_LOCALE } = {}) {
+  if (value == null || Number.isNaN(value)) return DASH
+  const n = new Intl.NumberFormat(locale, {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+    signDisplay: 'exceptZero',
+  }).format(value)
+  return `${n} pp`
 }
 
-/** "2024-07-01" -> "Q3 2024" */
-export function quarterLabel(period) {
-  if (!period) return '—'
+/** Plain localised number — similarity scores and other bare figures. */
+export function num(value, { digits = 2, locale = DEFAULT_LOCALE } = {}) {
+  if (value == null || Number.isNaN(value)) return DASH
+  return new Intl.NumberFormat(locale, {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  }).format(value)
+}
+
+/** "2024-07-01" -> "Q3 2024". The quarter marker is not universal (French and
+ *  Spanish use T for trimestre), so the pattern comes from the locale file. */
+export function quarterLabel(period, { locale = DEFAULT_LOCALE, template = 'Q{q} {year}' } = {}) {
+  if (!period) return DASH
   const [year, month] = period.split('-')
   const q = Math.floor((Number(month) - 1) / 3) + 1
-  return `Q${q} ${year}`
-}
-
-export const STATUS_LABEL = {
-  overweight: 'Overweight',
-  underweight: 'Underweight',
-  in_line: 'In line',
-  pending: 'Not yet published',
+  // useGrouping: false -- a year is not 2,026.
+  const plain = (n) => new Intl.NumberFormat(locale, { useGrouping: false }).format(n)
+  return template.replace('{q}', plain(q)).replace('{year}', plain(Number(year)))
 }

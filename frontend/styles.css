@@ -312,7 +312,7 @@ input[type="text"] {
 
 input[type="number"] {
   width: 130px;
-  text-align: right;
+  text-align: end;
   font-variant-numeric: tabular-nums;
 }
 
@@ -350,7 +350,7 @@ table {
 
 th,
 td {
-  text-align: left;
+  text-align: start;
   padding: 9px 10px;
   border-bottom: 1px solid var(--grid);
 }
@@ -365,7 +365,7 @@ th {
 
 td.num,
 th.num {
-  text-align: right;
+  text-align: end;
   font-variant-numeric: tabular-nums;
 }
 
@@ -644,4 +644,45 @@ input[type="text"] {
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 6px 9px;
+}
+
+
+/* --- internationalisation -------------------------------------------------
+   `dir="rtl"` on <html> (set by src/i18n) flips the flexbox and grid layout
+   for free, and `text-align: start/end` above follows it. Two places need
+   help. */
+
+/* Chart geometry is computed in SVG user space, which `dir` does not mirror:
+   a bar drawn from x=168 rightwards stays there. Pinning the SVG to LTR keeps
+   the bars, ticks and their value labels consistent with those coordinates.
+   Arabic text inside <text> still shapes right-to-left on its own -- the bidi
+   algorithm handles the run regardless of this property. Mirroring the charts
+   properly is a geometry change, noted in the README rather than faked here. */
+.chart-svg {
+  direction: ltr;
+}
+
+/* Latin-script identifiers (portfolio slugs, the API token) stay LTR inside an
+   RTL page, or the punctuation reorders and they read as gibberish. */
+input[type="text"],
+input[type="password"],
+input[type="number"] {
+  direction: ltr;
+}
+
+.lang-picker {
+  display: inline-flex;
+  align-items: center;
+}
+
+.lang-picker select {
+  padding: 6px 9px;
+  font-size: 13px;
+}
+
+.translation-note {
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
 }

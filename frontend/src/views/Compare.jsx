@@ -3,7 +3,7 @@ import { useAppData } from '../context/AppDataContext'
 import { analyse } from '../lib/analysis'
 import AllocationChart from '../components/AllocationChart'
 import GapChart from '../components/GapChart'
-import { pct, pp, quarterLabel, usd, STATUS_LABEL } from '../lib/format'
+import { useI18n } from '../i18n'
 
 export default function Compare() {
   const {
@@ -17,10 +17,11 @@ export default function Compare() {
     investableOnly,
     setInvestableOnly,
   } = useAppData()
+  const { t, fmt, assetLabel, tierLabel } = useI18n()
 
   const labels = useMemo(
-    () => Object.fromEntries(benchmarks.assetClasses.map((a) => [a.key, a.label])),
-    [benchmarks],
+    () => Object.fromEntries(benchmarks.assetClasses.map((a) => [a.key, assetLabel(a.key, a.label)])),
+    [benchmarks, assetLabel],
   )
 
   const result = useMemo(
@@ -45,27 +46,28 @@ export default function Compare() {
       .sort((a, b) => Math.max(b.user, b.benchmark) - Math.max(a.user, a.benchmark))
   }, [result, labels])
 
-  const benchmarkLabel = activeGroups[groupKey].label
+  const benchmarkLabel = tierLabel(groupKey, activeGroups[groupKey].label)
+
+  const controls = (
+    <TierControls
+      groups={activeGroups}
+      groupKey={groupKey}
+      setGroupKey={setGroupKey}
+      investableOnly={investableOnly}
+      setInvestableOnly={setInvestableOnly}
+      periodMode={periodMode}
+      setPeriodMode={setPeriodMode}
+      benchmarks={benchmarks}
+    />
+  )
 
   if (!hasHoldings) {
     return (
       <>
-        <TierControls
-          groups={activeGroups}
-          groupKey={groupKey}
-          setGroupKey={setGroupKey}
-          investableOnly={investableOnly}
-          setInvestableOnly={setInvestableOnly}
-          periodMode={periodMode}
-          setPeriodMode={setPeriodMode}
-          benchmarks={benchmarks}
-        />
+        {controls}
         <div className="card">
-          <h2>Nothing to compare yet</h2>
-          <p className="sub">
-            Add what you hold on the <strong>Your portfolio</strong> tab and this page will show how your mix
-            compares with {benchmarkLabel}.
-          </p>
+          <h2>{t('compare.emptyTitle')}</h2>
+          <p className="sub">{t('compare.emptyBody', { tier: benchmarkLabel })}</p>
           <AllocationChart
             rows={Object.entries(result.benchmark_weights)
               .map(([key, v]) => ({ key, label: labels[key] || key, user: 0, benchmark: v }))
@@ -78,19 +80,13 @@ export default function Compare() {
   }
 
   const nearest = result.nearest_tier
+  // analysis.js calls the group key `nearest`, and the English label
+  // `nearest_label`; the key is what the translation is looked up by.
+  const nearestLabel = tierLabel(nearest.nearest, nearest.nearest_label)
 
   return (
     <>
-      <TierControls
-        groups={activeGroups}
-        groupKey={groupKey}
-        setGroupKey={setGroupKey}
-        investableOnly={investableOnly}
-        setInvestableOnly={setInvestableOnly}
-        periodMode={periodMode}
-        setPeriodMode={setPeriodMode}
-        benchmarks={benchmarks}
-      />
+      {controls}
 
       <PendingNotice
         result={result}
@@ -101,83 +97,86 @@ export default function Compare() {
 
       <div className="tiles">
         <div className="tile">
-          <div className="label">Portfolio compared</div>
-          <div className="value">{usd(result.portfolio_total, { compact: true })}</div>
+          <div className="label">{t('compare.portfolioCompared')}</div>
+          <div className="value">{fmt.usd(result.portfolio_total, { compact: true })}</div>
           <div className="note">
             {result.excluded_value > 0
-              ? `${usd(result.excluded_value, { compact: true })} excluded as non-investable`
-              : 'across all entered holdings'}
+              ? t('compare.excluded', { amount: fmt.usd(result.excluded_value, { compact: true }) })
+              : t('compare.acrossHoldings')}
           </div>
         </div>
         <div className="tile">
-          <div className="label">Closest tier</div>
-          <div className="value">{nearest.confident ? nearest.nearest_label : 'No close match'}</div>
+          <div className="label">{t('compare.closestTier')}</div>
+          <div className="value">{nearest.confident ? nearestLabel : t('compare.noCloseMatch')}</div>
           <div className="note">
             {nearest.confident
-              ? `similarity ${nearest.similarity.toFixed(2)} of 1.00`
-              : `best was ${nearest.nearest_label} at ${nearest.similarity.toFixed(2)}`}
+              ? t('compare.similarityOf', { value: fmt.num(nearest.similarity) })
+              : t('compare.bestWas', { tier: nearestLabel, value: fmt.num(nearest.similarity) })}
           </div>
         </div>
         <div className="tile">
-          <div className="label">Similarity to {benchmarkLabel}</div>
-          <div className="value">{result.similarity.toFixed(2)}</div>
-          <div className="note">1.00 would be an identical mix</div>
+          <div className="label">{t('compare.similarityTo', { tier: benchmarkLabel })}</div>
+          <div className="value">{fmt.num(result.similarity)}</div>
+          <div className="note">{t('compare.identicalMix')}</div>
         </div>
         <div className="tile">
-          <div className="label">Benchmark period</div>
-          <div className="value">{quarterLabel(result.period)}</div>
-          <div className="note">Federal Reserve DFA</div>
+          <div className="label">{t('compare.benchmarkPeriod')}</div>
+          <div className="value">{fmt.quarter(result.period)}</div>
+          <div className="note">{t('compare.source')}</div>
         </div>
       </div>
 
       <div className="card">
         <div className="card-head">
-          <h2>Your allocation vs {benchmarkLabel}</h2>
+          <h2>{t('compare.allocationTitle', { tier: benchmarkLabel })}</h2>
         </div>
-        <p className="sub">Each asset class as a share of the portfolio being compared.</p>
+        <p className="sub">{t('compare.allocationSub')}</p>
         <AllocationChart rows={chartRows} benchmarkLabel={benchmarkLabel} />
       </div>
 
       <div className="card">
         <div className="card-head">
-          <h2>Where you differ</h2>
+          <h2>{t('compare.differTitle')}</h2>
         </div>
-        <p className="sub">
-          Percentage points above or below {benchmarkLabel}. Differences under 1.5pp are treated as in line —
-          the underlying survey data is not precise enough to read more finely.
-        </p>
+        <p className="sub">{t('compare.differSub', { tier: benchmarkLabel })}</p>
         <GapChart gaps={result.gaps} benchmarkLabel={benchmarkLabel} />
 
         <div className="chart-scroll">
-        <table>
-          <caption className="sr-only">Allocation differences by asset class</caption>
-          <thead>
-            <tr>
-              <th scope="col">Asset class</th>
-              <th scope="col" className="num">You</th>
-              <th scope="col" className="num">{benchmarkLabel}</th>
-              <th scope="col" className="num">Difference</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {result.gaps.map((g) => (
-              <tr key={g.asset_class}>
-                <td>{g.label}</td>
-                <td className="num">{pct(g.user_pct / 100)}</td>
-                <td className="num">{pct(g.benchmark_pct / 100)}</td>
-                <td className={g.status === 'pending' ? 'num muted' : 'num'}>
-                  {g.status === 'pending' ? '\u2014' : pp(g.gap_pp)}
-                </td>
-                <td>
-                  <span className="pill" data-status={g.status}>
-                    {STATUS_LABEL[g.status] || 'Not yet published'}
-                  </span>
-                </td>
+          <table>
+            <caption className="sr-only">{t('compare.tableCaption')}</caption>
+            <thead>
+              <tr>
+                <th scope="col">{t('compare.colAssetClass')}</th>
+                <th scope="col" className="num">
+                  {t('compare.colYou')}
+                </th>
+                <th scope="col" className="num">
+                  {benchmarkLabel}
+                </th>
+                <th scope="col" className="num">
+                  {t('compare.colDifference')}
+                </th>
+                <th scope="col">{t('compare.colStatus')}</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {result.gaps.map((g) => (
+                <tr key={g.asset_class}>
+                  <td>{g.label}</td>
+                  <td className="num">{fmt.pct(g.user_pct / 100)}</td>
+                  <td className="num">{fmt.pct(g.benchmark_pct / 100)}</td>
+                  <td className={g.status === 'pending' ? 'num muted' : 'num'}>
+                    {g.status === 'pending' ? '—' : fmt.pp(g.gap_pp)}
+                  </td>
+                  <td>
+                    <span className="pill" data-status={g.status}>
+                      {t(`status.${g.status}`)}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </>
@@ -194,15 +193,16 @@ function TierControls({
   setPeriodMode,
   benchmarks,
 }) {
+  const { t, fmt, tierLabel, percentileRange } = useI18n()
   return (
     <div className="controls">
       <label>
-        Compare against
+        {t('controls.compareAgainst')}
         <select value={groupKey} onChange={(e) => setGroupKey(e.target.value)}>
           {Object.values(groups).map((g) => (
             <option key={g.key} value={g.key}>
-              {g.label} ({g.percentile_range})
-              {g.nested ? ' \u2014 inside the top 1%' : ''}
+              {tierLabel(g.key, g.label)} ({percentileRange(g.key, g.percentile_range)})
+              {g.nested ? t('controls.insideTop1') : ''}
             </option>
           ))}
         </select>
@@ -212,16 +212,20 @@ function TierControls({
           be the same date and the control would be noise. */}
       {benchmarks.latestPeriod !== benchmarks.completePeriod && (
         <label>
-          Quarter
+          {t('controls.quarter')}
           <select value={periodMode} onChange={(e) => setPeriodMode(e.target.value)}>
-            <option value="latest">{quarterLabel(benchmarks.latestPeriod)} (most recent)</option>
-            <option value="complete">{quarterLabel(benchmarks.completePeriod)} (fully published)</option>
+            <option value="latest">
+              {t('controls.mostRecent', { quarter: fmt.quarter(benchmarks.latestPeriod) })}
+            </option>
+            <option value="complete">
+              {t('controls.fullyPublished', { quarter: fmt.quarter(benchmarks.completePeriod) })}
+            </option>
           </select>
         </label>
       )}
       <label>
         <input type="checkbox" checked={investableOnly} onChange={(e) => setInvestableOnly(e.target.checked)} />
-        Investable assets only
+        {t('controls.investableOnly')}
       </label>
     </div>
   )
@@ -231,16 +235,15 @@ function TierControls({
  *  The other percentages are still correct -- the denominator is the Fed's own
  *  asset total, which already includes whatever has not been broken out. */
 function PendingNotice({ result, labels, onUseComplete, completePeriod }) {
+  const { t, fmt } = useI18n()
   if (result.period_complete) return null
   const missing = result.period_unavailable.map((k) => labels[k] || k).join(', ')
   return (
     <div className="notice" role="status">
-      <strong>{quarterLabel(result.period)} is not fully published yet.</strong> The Federal Reserve
-      releases {missing} later than the rest of the balance sheet, so it appears as
-      &ldquo;not yet published&rdquo; below rather than as a number. Every other share is still
-      correct.{' '}
+      <strong>{t('compare.pendingTitle', { quarter: fmt.quarter(result.period) })}</strong>{' '}
+      {t('compare.pendingBody', { classes: missing })}{' '}
       <button className="link-btn" onClick={onUseComplete}>
-        Use {quarterLabel(completePeriod)} instead
+        {t('compare.usePeriodInstead', { quarter: fmt.quarter(completePeriod) })}
       </button>
     </div>
   )
