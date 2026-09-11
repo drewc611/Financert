@@ -22,7 +22,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # PRIVACY.md is the single source of truth. It is rendered into the site
       # at publish time rather than copied into docs/, so the two cannot drift.
