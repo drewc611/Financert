@@ -1,0 +1,174 @@
+{
+  "app": {
+    "name": "Financert",
+    "tagline": "wo das reichste 1 % sein Geld tatsächlich hält",
+    "loading": "Daten der Federal Reserve werden geladen…",
+    "language": "Sprache",
+    "install": "App installieren",
+    "installHint": "Financert zum Startbildschirm hinzufügen"
+  },
+  "format": {
+    "quarter": "Q{q} {year}"
+  },
+  "mode": {
+    "live": "Live-API",
+    "fallback": "Offline-Datenstand",
+    "loading": "Wird geladen…"
+  },
+  "theme": {
+    "label": "Design: {theme}. Zum Ändern auswählen.",
+    "system": "Automatisch",
+    "light": "Hell",
+    "dark": "Dunkel"
+  },
+  "tabs": {
+    "compare": "Vergleichen",
+    "portfolio": "Ihr Portfolio",
+    "benchmarks": "Die Stufen"
+  },
+  "controls": {
+    "compareAgainst": "Vergleichen mit",
+    "quarter": "Quartal",
+    "mostRecent": "{quarter} (aktuellstes)",
+    "fullyPublished": "{quarter} (vollständig veröffentlicht)",
+    "investableOnly": "Nur investierbare Vermögenswerte",
+    "insideTop1": " — innerhalb des reichsten 1 %"
+  },
+  "compare": {
+    "emptyTitle": "Noch nichts zu vergleichen",
+    "emptyBody": "Tragen Sie im Reiter Ihr Portfolio ein, was Sie halten, und diese Seite zeigt, wie Ihre Aufteilung im Vergleich zu {tier} aussieht.",
+    "portfolioCompared": "Verglichenes Portfolio",
+    "excluded": "{amount} als nicht investierbar ausgeschlossen",
+    "acrossHoldings": "über alle eingetragenen Positionen",
+    "closestTier": "Nächstgelegene Stufe",
+    "noCloseMatch": "Keine klare Übereinstimmung",
+    "similarityOf": "Ähnlichkeit {value} von 1,00",
+    "bestWas": "am besten war {tier} mit {value}",
+    "similarityTo": "Ähnlichkeit mit {tier}",
+    "identicalMix": "1,00 wäre eine identische Aufteilung",
+    "benchmarkPeriod": "Vergleichszeitraum",
+    "source": "DFA der Federal Reserve",
+    "allocationTitle": "Ihre Aufteilung im Vergleich zu {tier}",
+    "allocationSub": "Jede Anlageklasse als Anteil des verglichenen Portfolios.",
+    "differTitle": "Wo Sie abweichen",
+    "differSub": "Prozentpunkte über oder unter {tier}. Abweichungen unter 1,5 PP gelten als im Rahmen — die zugrunde liegenden Umfragedaten sind nicht genau genug für eine feinere Lesart.",
+    "tableCaption": "Abweichungen der Aufteilung nach Anlageklasse",
+    "colAssetClass": "Anlageklasse",
+    "colYou": "Sie",
+    "colDifference": "Abweichung",
+    "colStatus": "Status",
+    "pendingTitle": "{quarter} ist noch nicht vollständig veröffentlicht.",
+    "pendingBody": "Die Federal Reserve veröffentlicht {classes} später als den Rest der Bilanz; die Position erscheint unten daher als „noch nicht veröffentlicht“ statt als Zahl. Alle anderen Anteile sind weiterhin korrekt.",
+    "usePeriodInstead": "Stattdessen {quarter} verwenden"
+  },
+  "status": {
+    "overweight": "Übergewichtet",
+    "underweight": "Untergewichtet",
+    "in_line": "Im Rahmen",
+    "pending": "Noch nicht veröffentlicht"
+  },
+  "portfolio": {
+    "title": "Ihr Portfolio",
+    "intro": "Tragen Sie ein, was Sie in jeder Kategorie halten, in Dollar. Lassen Sie leer, was Sie nicht halten. Die Werte bleiben in diesem Browser.",
+    "introLive": "Tragen Sie ein, was Sie in jeder Kategorie halten, in Dollar. Lassen Sie leer, was Sie nicht halten. Die Werte bleiben in diesem Browser und werden beim Speichern an die API übertragen.",
+    "select": "Portfolio",
+    "newPlaceholder": "neuer-portfolio-name",
+    "newAria": "Kennung des neuen Portfolios",
+    "startNew": "Neues anlegen",
+    "categoriesHint": "Die Kategorien entsprechen den Bilanzdefinitionen der Federal Reserve, sodass der Vergleich auf gleicher Grundlage erfolgt.",
+    "save": "Portfolio speichern",
+    "saving": "Wird gespeichert…",
+    "clearAll": "Alles löschen",
+    "savedApi": "In der API gespeichert.",
+    "savedLocal": "Nur in diesem Browser gespeichert — die API ist nicht erreichbar.",
+    "needsToken": "Speichern nicht möglich: Dieser Server verlangt ein API-Token. Fügen Sie es unten hinzu.",
+    "saveFailed": "Speichern nicht möglich: {message}",
+    "tokenSummary": "API-Token",
+    "tokenHelp": "Nur nötig, wenn der Server FINANCERT_API_TOKEN setzt. Wird in diesem Browser gespeichert und als Bearer-Header gesendet. Für einen lokalen Server ohne Token leer lassen.",
+    "tokenPlaceholder": "Token einfügen",
+    "tokenAria": "API-Token",
+    "saveToken": "Token speichern",
+    "tokenSaved": "Token in diesem Browser gespeichert.",
+    "tokenCleared": "Token gelöscht.",
+    "defaultName": "Mein Portfolio"
+  },
+  "benchmarks": {
+    "netWorth": "Nettovermögen, {quarter}",
+    "nestedNote": "Nettovermögen — innerhalb von {tier} gezählt, nicht daneben",
+    "tierAbove": "der Stufe darüber",
+    "holdTitle": "Wie jede Stufe ihr Vermögen hält",
+    "holdSub": "Anteil der {scope} Vermögenswerte, {quarter}. Jede Spalte ergibt 100 %. Das reichste 0,1 % ist eine Teilmenge des reichsten 1 %, keine fünfte Gruppe.",
+    "scopeInvestable": "investierbaren",
+    "scopeTotal": "gesamten",
+    "subset": "Teilmenge",
+    "overTime": "{asset} im Zeitverlauf",
+    "assetClass": "Anlageklasse",
+    "trendSub": "Anteil am Gesamtvermögen jeder Stufe seit 1989. Gezeigt werden das reichste 1 % und die unteren 50 %; die mittleren Stufen liegen dazwischen.",
+    "trendUnavailable": "Trenddaten nicht verfügbar."
+  },
+  "chart": {
+    "you": "Sie",
+    "difference": "Abweichung",
+    "allocationAria": "Aufteilung von {you} im Vergleich zu {tier}, nach Anlageklasse",
+    "gapAria": "Abweichung der Aufteilung gegenüber {tier}, in Prozentpunkten, nach Anlageklasse",
+    "trendAria": "{asset} als Anteil am Gesamtvermögen im Zeitverlauf",
+    "noAllocation": "Noch keine Aufteilung vorhanden.",
+    "moreThan": "Mehr als {tier}",
+    "lessThan": "Weniger als {tier}",
+    "allInLine": "Jede Anlageklasse liegt im Rahmen von {tier}."
+  },
+  "disclaimer": {
+    "whatTitle": "Was das hier ist.",
+    "whatBody": "Financert vergleicht ein Portfolio damit, wie US-Haushalte in jeder Vermögensstufe ihre Vermögenswerte tatsächlich halten, gemessen an den",
+    "dfaLink": "Distributional Financial Accounts",
+    "dataThrough": "Daten bis {quarter}",
+    "newestComplete": "; das aktuellste vollständig veröffentlichte Quartal ist {quarter}",
+    "notTitle": "Was es nicht ist.",
+    "notBody": "Es ist beschreibend, keine Beratung. Die Aufteilung des reichsten 1 % nachzubilden würde deren Renditen nicht reproduzieren: Ein großer Teil ihres Vermögens steckt in privaten Unternehmen, die sie besitzen und führen, und die Daten sagen nichts über Risiko, Steuern, Anlagehorizont oder darüber, ob eine Aufteilung zu Ihnen passt.",
+    "translationNote": "Maschinelle Übersetzung. Bei Abweichungen ist der englische Originaltext maßgeblich."
+  },
+  "tiers": {
+    "top01": "Reichstes 0,1 %",
+    "top1": "Reichstes 1 %",
+    "next9": "Nächste 9 %",
+    "next40": "Nächste 40 %",
+    "bottom50": "Untere 50 %"
+  },
+  "percentiles": {
+    "top01": "99,9.–100. Perzentil",
+    "top1": "99.–100. Perzentil",
+    "next9": "90.–99. Perzentil",
+    "next40": "50.–90. Perzentil",
+    "bottom50": "0.–50. Perzentil"
+  },
+  "assets": {
+    "corporate_equities": "Aktien und Investmentfonds",
+    "private_business": "Beteiligungen an Privatunternehmen",
+    "pension": "Renten und Altersvorsorge",
+    "real_estate": "Immobilien",
+    "deposits": "Bargeld und Einlagen",
+    "money_market": "Geldmarktfonds",
+    "debt_securities": "Anleihen",
+    "consumer_durables": "Langlebige Konsumgüter",
+    "annuities": "Rentenversicherungen",
+    "life_insurance": "Lebensversicherung",
+    "loans_assets": "Forderungen aus Krediten",
+    "misc_assets": "Sonstige Vermögenswerte",
+    "unallocated": "Nicht zugeordnet"
+  },
+  "assetBlurbs": {
+    "corporate_equities": "Direkt gehaltene Aktien sowie Anteile an Investmentfonds.",
+    "private_business": "Beteiligungen an nicht körperschaftlich organisierten Unternehmen — Personengesellschaften und Einzelunternehmen.",
+    "pension": "Ansprüche aus leistungs- und beitragsorientierten Altersvorsorgeplänen.",
+    "real_estate": "Selbstgenutzte Immobilien einschließlich unbebauter Grundstücke und Mobilheime.",
+    "deposits": "Sichteinlagen und Bargeld, Termin- und Spareinlagen.",
+    "money_market": "Anteile an Geldmarktfonds.",
+    "debt_securities": "Direkt gehaltene Staats-, Kommunal-, Unternehmens- und Auslandsanleihen.",
+    "consumer_durables": "Fahrzeuge, Haushaltsgeräte, Einrichtung — von der Federal Reserve als Vermögen gezählt.",
+    "annuities": "Rentenversicherungen, die Lebensversicherer direkt an Haushalte verkaufen.",
+    "life_insurance": "Rückkaufswert von Lebensversicherungsreserven.",
+    "loans_assets": "Hypotheken und andere als Vermögenswerte gehaltene Kredite.",
+    "misc_assets": "Sonstige, nicht anderweitig eingeordnete Vermögenswerte.",
+    "unallocated": "Vermögenswerte, die in den Summen der Federal Reserve enthalten, aber nicht gesondert ausgewiesen sind."
+  }
+}

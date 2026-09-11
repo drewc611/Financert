@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { useAppData } from '../context/AppDataContext'
-import { usd } from '../lib/format'
+import { useI18n } from '../i18n'
 
 export default function Portfolio() {
   const { benchmarks, holdings, setHolding, clearHoldings, save, mode, slug, setSlug, portfolios, token, updateToken } =
     useAppData()
+  const { t, fmt } = useI18n()
   const [status, setStatus] = useState(null)
   const [saving, setSaving] = useState(false)
   const [tokenDraft, setTokenDraft] = useState(token)
@@ -17,12 +18,10 @@ export default function Portfolio() {
     setStatus(null)
     try {
       const res = await save()
-      setStatus(res.ok ? 'Saved to the API.' : 'Saved in this browser only — the API is unreachable.')
+      setStatus(res.ok ? t('portfolio.savedApi') : t('portfolio.savedLocal'))
     } catch (err) {
       setStatus(
-        err.status === 401
-          ? 'Could not save: this server requires an API token. Add it below.'
-          : `Could not save: ${err.message}`,
+        err.status === 401 ? t('portfolio.needsToken') : t('portfolio.saveFailed', { message: err.message }),
       )
     } finally {
       setSaving(false)
@@ -39,18 +38,15 @@ export default function Portfolio() {
   return (
     <div className="card">
       <div className="card-head">
-        <h2>Your portfolio</h2>
-        <strong>{usd(total)}</strong>
+        <h2>{t('portfolio.title')}</h2>
+        <strong>{fmt.usd(total)}</strong>
       </div>
-      <p className="sub">
-        Enter what you hold in each category, in dollars. Leave anything you do not hold blank. Values stay in
-        this browser{mode === 'live' ? ' and are saved to the API when you press Save' : ''}.
-      </p>
+      <p className="sub">{mode === 'live' ? t('portfolio.introLive') : t('portfolio.intro')}</p>
 
       {mode === 'live' && (
         <div className="controls">
           <label>
-            Portfolio
+            {t('portfolio.select')}
             <select value={slug} onChange={(e) => switchTo(e.target.value)}>
               {[...new Set([slug, 'default', ...portfolios.map((p) => p.slug)])].map((s) => (
                 <option key={s} value={s}>
@@ -61,10 +57,10 @@ export default function Portfolio() {
           </label>
           <input
             type="text"
-            placeholder="new-portfolio-name"
+            placeholder={t('portfolio.newPlaceholder')}
             value={newSlug}
             onChange={(e) => setNewSlug(e.target.value)}
-            aria-label="New portfolio slug"
+            aria-label={t('portfolio.newAria')}
           />
           <button
             className="icon-btn"
@@ -74,16 +70,13 @@ export default function Portfolio() {
               setNewSlug('')
             }}
           >
-            Start a new one
+            {t('portfolio.startNew')}
           </button>
         </div>
       )}
 
       <div className="holdings-grid">
-        <p className="hint">
-          Categories match the Federal Reserve&apos;s own balance-sheet definitions, so the comparison is
-          like-for-like.
-        </p>
+        <p className="hint">{t('portfolio.categoriesHint')}</p>
         {benchmarks.assetClasses
           .filter((a) => a.key !== 'unallocated')
           .map((asset) => (
@@ -93,38 +86,37 @@ export default function Portfolio() {
 
       <div className="row-actions">
         <button className="btn-primary" onClick={onSave} disabled={saving || total === 0}>
-          {saving ? 'Saving…' : 'Save portfolio'}
+          {saving ? t('portfolio.saving') : t('portfolio.save')}
         </button>
         <button className="icon-btn" onClick={clearHoldings} disabled={total === 0}>
-          Clear all
+          {t('portfolio.clearAll')}
         </button>
         {status && <span className="saved-note">{status}</span>}
       </div>
 
       {mode === 'live' && (
         <details className="token-box">
-          <summary>API token</summary>
+          <summary>{t('portfolio.tokenSummary')}</summary>
           <p className="sub" style={{ margin: '10px 0' }}>
-            Only needed when the server sets <code>FINANCERT_API_TOKEN</code>. Stored in this browser and
-            sent as a bearer header. Leave blank for a local server with no token configured.
+            {t('portfolio.tokenHelp')}
           </p>
           <div className="row-actions" style={{ marginTop: 0 }}>
             <input
               type="password"
               value={tokenDraft}
-              placeholder="paste token"
+              placeholder={t('portfolio.tokenPlaceholder')}
               onChange={(e) => setTokenDraft(e.target.value)}
-              aria-label="API token"
+              aria-label={t('portfolio.tokenAria')}
               style={{ width: 260 }}
             />
             <button
               className="icon-btn"
               onClick={() => {
                 updateToken(tokenDraft.trim())
-                setStatus(tokenDraft.trim() ? 'Token saved in this browser.' : 'Token cleared.')
+                setStatus(tokenDraft.trim() ? t('portfolio.tokenSaved') : t('portfolio.tokenCleared'))
               }}
             >
-              Save token
+              {t('portfolio.saveToken')}
             </button>
           </div>
         </details>
@@ -134,13 +126,14 @@ export default function Portfolio() {
 }
 
 function Row({ asset, value, onChange }) {
+  const { assetLabel, assetBlurb } = useI18n()
   const id = `holding-${asset.key}`
   return (
     <>
       <label htmlFor={id}>
-        <strong style={{ fontWeight: 550 }}>{asset.label}</strong>
+        <strong style={{ fontWeight: 550 }}>{assetLabel(asset.key, asset.label)}</strong>
         <br />
-        <span style={{ color: 'var(--text-muted)', fontSize: 12 }}>{asset.blurb}</span>
+        <span style={{ color: 'var(--text-muted)', fontSize: 12 }}>{assetBlurb(asset.key, asset.blurb)}</span>
       </label>
       <input
         id={id}

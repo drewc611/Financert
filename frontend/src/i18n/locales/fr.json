@@ -1,0 +1,174 @@
+{
+  "app": {
+    "name": "Financert",
+    "tagline": "où les 1 % les plus riches placent réellement leur argent",
+    "loading": "Chargement des données de la Réserve fédérale…",
+    "language": "Langue",
+    "install": "Installer l'application",
+    "installHint": "Ajouter Financert à l'écran d'accueil"
+  },
+  "format": {
+    "quarter": "T{q} {year}"
+  },
+  "mode": {
+    "live": "API en direct",
+    "fallback": "Instantané hors ligne",
+    "loading": "Chargement…"
+  },
+  "theme": {
+    "label": "Thème : {theme}. Sélectionnez pour changer.",
+    "system": "Automatique",
+    "light": "Clair",
+    "dark": "Sombre"
+  },
+  "tabs": {
+    "compare": "Comparer",
+    "portfolio": "Votre portefeuille",
+    "benchmarks": "Les tranches"
+  },
+  "controls": {
+    "compareAgainst": "Comparer avec",
+    "quarter": "Trimestre",
+    "mostRecent": "{quarter} (le plus récent)",
+    "fullyPublished": "{quarter} (entièrement publié)",
+    "investableOnly": "Actifs investissables uniquement",
+    "insideTop1": " — au sein des 1 % les plus riches"
+  },
+  "compare": {
+    "emptyTitle": "Rien à comparer pour l'instant",
+    "emptyBody": "Renseignez ce que vous détenez dans l'onglet Votre portefeuille et cette page montrera comment votre répartition se compare à {tier}.",
+    "portfolioCompared": "Portefeuille comparé",
+    "excluded": "{amount} exclu car non investissable",
+    "acrossHoldings": "sur l'ensemble des positions saisies",
+    "closestTier": "Tranche la plus proche",
+    "noCloseMatch": "Aucune correspondance nette",
+    "similarityOf": "similarité {value} sur 1,00",
+    "bestWas": "la meilleure était {tier} à {value}",
+    "similarityTo": "Similarité avec {tier}",
+    "identicalMix": "1,00 correspondrait à une répartition identique",
+    "benchmarkPeriod": "Période de référence",
+    "source": "DFA de la Réserve fédérale",
+    "allocationTitle": "Votre répartition face à {tier}",
+    "allocationSub": "Chaque classe d'actifs en part du portefeuille comparé.",
+    "differTitle": "Où vous différez",
+    "differSub": "Points de pourcentage au-dessus ou en dessous de {tier}. Les écarts inférieurs à 1,5 pp sont considérés comme conformes : les données d'enquête sous-jacentes ne sont pas assez précises pour une lecture plus fine.",
+    "tableCaption": "Écarts de répartition par classe d'actifs",
+    "colAssetClass": "Classe d'actifs",
+    "colYou": "Vous",
+    "colDifference": "Écart",
+    "colStatus": "Statut",
+    "pendingTitle": "{quarter} n'est pas encore entièrement publié.",
+    "pendingBody": "La Réserve fédérale publie {classes} plus tard que le reste du bilan ; cette ligne apparaît donc ci-dessous comme « pas encore publié » plutôt que sous forme de chiffre. Toutes les autres parts restent correctes.",
+    "usePeriodInstead": "Utiliser {quarter} à la place"
+  },
+  "status": {
+    "overweight": "Surpondéré",
+    "underweight": "Sous-pondéré",
+    "in_line": "Conforme",
+    "pending": "Pas encore publié"
+  },
+  "portfolio": {
+    "title": "Votre portefeuille",
+    "intro": "Saisissez ce que vous détenez dans chaque catégorie, en dollars. Laissez vide ce que vous ne détenez pas. Les valeurs restent dans ce navigateur.",
+    "introLive": "Saisissez ce que vous détenez dans chaque catégorie, en dollars. Laissez vide ce que vous ne détenez pas. Les valeurs restent dans ce navigateur et sont enregistrées dans l'API lorsque vous cliquez sur Enregistrer.",
+    "select": "Portefeuille",
+    "newPlaceholder": "nom-du-portefeuille",
+    "newAria": "Identifiant du nouveau portefeuille",
+    "startNew": "En créer un nouveau",
+    "categoriesHint": "Les catégories reprennent les définitions de bilan de la Réserve fédérale, afin que la comparaison porte sur des éléments équivalents.",
+    "save": "Enregistrer le portefeuille",
+    "saving": "Enregistrement…",
+    "clearAll": "Tout effacer",
+    "savedApi": "Enregistré dans l'API.",
+    "savedLocal": "Enregistré dans ce navigateur uniquement — l'API est inaccessible.",
+    "needsToken": "Enregistrement impossible : ce serveur exige un jeton d'API. Ajoutez-le ci-dessous.",
+    "saveFailed": "Enregistrement impossible : {message}",
+    "tokenSummary": "Jeton d'API",
+    "tokenHelp": "Nécessaire uniquement lorsque le serveur définit FINANCERT_API_TOKEN. Stocké dans ce navigateur et envoyé comme en-tête bearer. Laissez vide pour un serveur local sans jeton configuré.",
+    "tokenPlaceholder": "collez le jeton",
+    "tokenAria": "Jeton d'API",
+    "saveToken": "Enregistrer le jeton",
+    "tokenSaved": "Jeton enregistré dans ce navigateur.",
+    "tokenCleared": "Jeton effacé.",
+    "defaultName": "Mon portefeuille"
+  },
+  "benchmarks": {
+    "netWorth": "patrimoine net, {quarter}",
+    "nestedNote": "patrimoine net — compté au sein de {tier}, et non à côté",
+    "tierAbove": "la tranche supérieure",
+    "holdTitle": "Comment chaque tranche détient ses actifs",
+    "holdSub": "Part des actifs {scope}, {quarter}. Chaque colonne totalise 100 %. Les 0,1 % les plus riches sont un sous-ensemble des 1 %, et non un cinquième groupe.",
+    "scopeInvestable": "investissables",
+    "scopeTotal": "totaux",
+    "subset": "sous-ensemble",
+    "overTime": "{asset} dans le temps",
+    "assetClass": "Classe d'actifs",
+    "trendSub": "Part des actifs totaux de chaque tranche depuis 1989. Les 1 % les plus riches et les 50 % les moins riches sont affichés ; les tranches intermédiaires se situent entre les deux.",
+    "trendUnavailable": "Données de tendance indisponibles."
+  },
+  "chart": {
+    "you": "Vous",
+    "difference": "Écart",
+    "allocationAria": "Répartition de {you} comparée à {tier}, par classe d'actifs",
+    "gapAria": "Écart de répartition par rapport à {tier}, en points de pourcentage, par classe d'actifs",
+    "trendAria": "{asset} en part des actifs totaux dans le temps",
+    "noAllocation": "Aucune répartition à afficher pour l'instant.",
+    "moreThan": "Plus que {tier}",
+    "lessThan": "Moins que {tier}",
+    "allInLine": "Toutes les classes d'actifs sont conformes à {tier}."
+  },
+  "disclaimer": {
+    "whatTitle": "Ce que c'est.",
+    "whatBody": "Financert compare un portefeuille à la façon dont les ménages américains de chaque tranche de richesse détiennent réellement leurs actifs, d'après les",
+    "dfaLink": "Comptes financiers distributifs",
+    "dataThrough": "Données jusqu'à {quarter}",
+    "newestComplete": " ; le trimestre le plus récent entièrement publié est {quarter}",
+    "notTitle": "Ce que ce n'est pas.",
+    "notBody": "Il s'agit d'une description, non d'un conseil. Reproduire la répartition des 1 % les plus riches ne reproduirait pas leurs rendements : une grande part de leur patrimoine se trouve dans des entreprises privées qu'ils détiennent et dirigent, et les données ne disent rien du risque, de la fiscalité, de l'horizon de placement, ni de l'adéquation d'une répartition à votre situation.",
+    "translationNote": "Traduction automatique. En cas de divergence, le texte original en anglais fait foi."
+  },
+  "tiers": {
+    "top01": "0,1 % les plus riches",
+    "top1": "1 % les plus riches",
+    "next9": "9 % suivants",
+    "next40": "40 % suivants",
+    "bottom50": "50 % les moins riches"
+  },
+  "percentiles": {
+    "top01": "99,9e–100e centile",
+    "top1": "99e–100e centile",
+    "next9": "90e–99e centile",
+    "next40": "50e–90e centile",
+    "bottom50": "0–50e centile"
+  },
+  "assets": {
+    "corporate_equities": "Actions et fonds communs",
+    "private_business": "Participations dans des entreprises privées",
+    "pension": "Retraites et pensions",
+    "real_estate": "Immobilier",
+    "deposits": "Liquidités et dépôts",
+    "money_market": "Fonds monétaires",
+    "debt_securities": "Obligations",
+    "consumer_durables": "Biens de consommation durables",
+    "annuities": "Rentes viagères",
+    "life_insurance": "Assurance vie",
+    "loans_assets": "Prêts à recevoir",
+    "misc_assets": "Autres actifs",
+    "unallocated": "Non réparti"
+  },
+  "assetBlurbs": {
+    "corporate_equities": "Actions détenues en direct et parts de fonds communs de placement.",
+    "private_business": "Participations dans des entreprises non constituées en société : sociétés de personnes et entreprises individuelles.",
+    "pension": "Droits à retraite à prestations définies et à cotisations définies.",
+    "real_estate": "Résidence principale, y compris terrains non bâtis et maisons mobiles.",
+    "deposits": "Dépôts à vue et espèces, dépôts à terme et d'épargne.",
+    "money_market": "Parts de fonds communs monétaires.",
+    "debt_securities": "Obligations d'État, municipales, d'entreprises et étrangères détenues en direct.",
+    "consumer_durables": "Véhicules, électroménager, mobilier — comptés comme actifs par la Réserve fédérale.",
+    "annuities": "Rentes vendues par les assureurs vie directement aux ménages.",
+    "life_insurance": "Valeur de rachat des réserves d'assurance vie.",
+    "loans_assets": "Prêts hypothécaires et autres prêts détenus comme actifs.",
+    "misc_assets": "Actifs divers non classés ailleurs.",
+    "unallocated": "Actifs inclus dans les totaux de la Réserve fédérale mais non ventilés séparément."
+  }
+}

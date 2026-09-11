@@ -1,0 +1,174 @@
+{
+  "app": {
+    "name": "Financert",
+    "tagline": "where the top 1% actually keep their money",
+    "loading": "Loading Federal Reserve data…",
+    "language": "Language",
+    "install": "Install app",
+    "installHint": "Add Financert to your home screen"
+  },
+  "format": {
+    "quarter": "Q{q} {year}"
+  },
+  "mode": {
+    "live": "Live API",
+    "fallback": "Offline snapshot",
+    "loading": "Loading…"
+  },
+  "theme": {
+    "label": "Theme: {theme}. Select to change.",
+    "system": "Auto",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "tabs": {
+    "compare": "Compare",
+    "portfolio": "Your portfolio",
+    "benchmarks": "The tiers"
+  },
+  "controls": {
+    "compareAgainst": "Compare against",
+    "quarter": "Quarter",
+    "mostRecent": "{quarter} (most recent)",
+    "fullyPublished": "{quarter} (fully published)",
+    "investableOnly": "Investable assets only",
+    "insideTop1": " — inside the top 1%"
+  },
+  "compare": {
+    "emptyTitle": "Nothing to compare yet",
+    "emptyBody": "Add what you hold on the Your portfolio tab and this page will show how your mix compares with {tier}.",
+    "portfolioCompared": "Portfolio compared",
+    "excluded": "{amount} excluded as non-investable",
+    "acrossHoldings": "across all entered holdings",
+    "closestTier": "Closest tier",
+    "noCloseMatch": "No close match",
+    "similarityOf": "similarity {value} of 1.00",
+    "bestWas": "best was {tier} at {value}",
+    "similarityTo": "Similarity to {tier}",
+    "identicalMix": "1.00 would be an identical mix",
+    "benchmarkPeriod": "Benchmark period",
+    "source": "Federal Reserve DFA",
+    "allocationTitle": "Your allocation vs {tier}",
+    "allocationSub": "Each asset class as a share of the portfolio being compared.",
+    "differTitle": "Where you differ",
+    "differSub": "Percentage points above or below {tier}. Differences under 1.5pp are treated as in line — the underlying survey data is not precise enough to read more finely.",
+    "tableCaption": "Allocation differences by asset class",
+    "colAssetClass": "Asset class",
+    "colYou": "You",
+    "colDifference": "Difference",
+    "colStatus": "Status",
+    "pendingTitle": "{quarter} is not fully published yet.",
+    "pendingBody": "The Federal Reserve releases {classes} later than the rest of the balance sheet, so it appears as “not yet published” below rather than as a number. Every other share is still correct.",
+    "usePeriodInstead": "Use {quarter} instead"
+  },
+  "status": {
+    "overweight": "Overweight",
+    "underweight": "Underweight",
+    "in_line": "In line",
+    "pending": "Not yet published"
+  },
+  "portfolio": {
+    "title": "Your portfolio",
+    "intro": "Enter what you hold in each category, in dollars. Leave anything you do not hold blank. Values stay in this browser.",
+    "introLive": "Enter what you hold in each category, in dollars. Leave anything you do not hold blank. Values stay in this browser and are saved to the API when you press Save.",
+    "select": "Portfolio",
+    "newPlaceholder": "new-portfolio-name",
+    "newAria": "New portfolio slug",
+    "startNew": "Start a new one",
+    "categoriesHint": "Categories match the Federal Reserve's own balance-sheet definitions, so the comparison is like-for-like.",
+    "save": "Save portfolio",
+    "saving": "Saving…",
+    "clearAll": "Clear all",
+    "savedApi": "Saved to the API.",
+    "savedLocal": "Saved in this browser only — the API is unreachable.",
+    "needsToken": "Could not save: this server requires an API token. Add it below.",
+    "saveFailed": "Could not save: {message}",
+    "tokenSummary": "API token",
+    "tokenHelp": "Only needed when the server sets FINANCERT_API_TOKEN. Stored in this browser and sent as a bearer header. Leave blank for a local server with no token configured.",
+    "tokenPlaceholder": "paste token",
+    "tokenAria": "API token",
+    "saveToken": "Save token",
+    "tokenSaved": "Token saved in this browser.",
+    "tokenCleared": "Token cleared.",
+    "defaultName": "My portfolio"
+  },
+  "benchmarks": {
+    "netWorth": "net worth, {quarter}",
+    "nestedNote": "net worth — counted inside the {tier}, not alongside it",
+    "tierAbove": "tier above",
+    "holdTitle": "How each tier holds its assets",
+    "holdSub": "Share of {scope} assets, {quarter}. Each column sums to 100%. The top 0.1% is a subset of the top 1%, not a fifth group.",
+    "scopeInvestable": "investable",
+    "scopeTotal": "total",
+    "subset": "subset",
+    "overTime": "{asset} over time",
+    "assetClass": "Asset class",
+    "trendSub": "Share of each tier's total assets, since 1989. Top 1% and bottom 50% shown; the middle tiers sit between them.",
+    "trendUnavailable": "Trend data unavailable."
+  },
+  "chart": {
+    "you": "You",
+    "difference": "Difference",
+    "allocationAria": "Allocation of {you} compared with {tier}, by asset class",
+    "gapAria": "Difference in allocation versus {tier}, in percentage points, by asset class",
+    "trendAria": "{asset} as a share of total assets over time",
+    "noAllocation": "No allocation to show yet.",
+    "moreThan": "More than {tier}",
+    "lessThan": "Less than {tier}",
+    "allInLine": "Every asset class is in line with {tier}."
+  },
+  "disclaimer": {
+    "whatTitle": "What this is.",
+    "whatBody": "Financert compares a portfolio against how American households in each wealth tier actually hold their assets, measured by the Federal Reserve's",
+    "dfaLink": "Distributional Financial Accounts",
+    "dataThrough": "Data through {quarter}",
+    "newestComplete": "; the newest fully published quarter is {quarter}",
+    "notTitle": "What it is not.",
+    "notBody": "It is descriptive, not advice. Matching the top 1%'s allocation would not reproduce their returns: much of their wealth sits in private businesses they own and run, and the data says nothing about risk, taxes, time horizon, or whether any allocation suits you.",
+    "translationNote": ""
+  },
+  "tiers": {
+    "top01": "Top 0.1%",
+    "top1": "Top 1%",
+    "next9": "Next 9%",
+    "next40": "Next 40%",
+    "bottom50": "Bottom 50%"
+  },
+  "percentiles": {
+    "top01": "99.9th–100th",
+    "top1": "99th–100th",
+    "next9": "90th–99th",
+    "next40": "50th–90th",
+    "bottom50": "0–50th"
+  },
+  "assets": {
+    "corporate_equities": "Stocks & Mutual Funds",
+    "private_business": "Private Business Equity",
+    "pension": "Pensions & Retirement",
+    "real_estate": "Real Estate",
+    "deposits": "Cash & Deposits",
+    "money_market": "Money Market Funds",
+    "debt_securities": "Bonds",
+    "consumer_durables": "Consumer Durables",
+    "annuities": "Annuities",
+    "life_insurance": "Life Insurance",
+    "loans_assets": "Loans Receivable",
+    "misc_assets": "Other Assets",
+    "unallocated": "Unallocated"
+  },
+  "assetBlurbs": {
+    "corporate_equities": "Directly held corporate equities plus mutual fund shares.",
+    "private_business": "Equity in noncorporate business — partnerships and sole proprietorships.",
+    "pension": "Defined benefit and defined contribution pension entitlements.",
+    "real_estate": "Owner-occupied real estate including vacant land and mobile homes.",
+    "deposits": "Checkable deposits and currency, time and savings deposits.",
+    "money_market": "Money market mutual fund shares.",
+    "debt_securities": "Treasury, municipal, corporate and foreign bonds held directly.",
+    "consumer_durables": "Vehicles, appliances, furnishings — counted as assets by the Fed.",
+    "annuities": "Annuities sold by life insurers directly to households.",
+    "life_insurance": "Cash value of life insurance reserves.",
+    "loans_assets": "Mortgages and other loans held as assets.",
+    "misc_assets": "Miscellaneous assets not classified elsewhere.",
+    "unallocated": "Assets the Fed's totals include but do not break out separately."
+  }
+}

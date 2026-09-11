@@ -1,14 +1,15 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useAppData } from '../context/AppDataContext'
 import { api } from '../lib/api'
-import { benchmarkWeights, PENDING_LABEL, UNALLOCATED } from '../lib/analysis'
+import { benchmarkWeights, UNALLOCATED } from '../lib/analysis'
 import TrendChart from '../components/TrendChart'
-import { pct, quarterLabel, usd } from '../lib/format'
+import { useI18n } from '../i18n'
 
 const TREND_ASSETS = ['corporate_equities', 'private_business', 'real_estate']
 
 export default function Benchmarks() {
   const { benchmarks, activeGroups, periodMode, mode, investableOnly } = useAppData()
+  const { t, fmt, assetLabel, tierLabel, percentileRange } = useI18n()
   const [trendAsset, setTrendAsset] = useState('corporate_equities')
   const [trend, setTrend] = useState(null)
 
@@ -37,20 +38,21 @@ export default function Benchmarks() {
     // not released, so it says so rather than reading as a real category.
     const unavailable = [...new Set(allGroups.flatMap((g) => g.unavailable || []))]
     const missing = unavailable
-      .map((k) => benchmarks.assetClasses.find((a) => a.key === k)?.label ?? k)
+      .map((k) => assetLabel(k, benchmarks.assetClasses.find((a) => a.key === k)?.label ?? k))
       .join(', ')
 
-    return keys.map((key) => ({
-      key,
-      label:
-        key === UNALLOCATED && missing
-          ? `${PENDING_LABEL} (${missing})`
-          : (benchmarks.assetClasses.find((a) => a.key === key)?.label ?? key),
-      values: Object.fromEntries(
-        allGroups.map((g) => [g.key, weightsByGroup[g.key][key] ?? null]),
-      ),
-    }))
-  }, [allGroups, benchmarks, investableOnly])
+    return keys.map((key) => {
+      const english = benchmarks.assetClasses.find((a) => a.key === key)?.label ?? key
+      return {
+        key,
+        label:
+          key === UNALLOCATED && missing
+            ? `${t('status.pending')} (${missing})`
+            : assetLabel(key, english),
+        values: Object.fromEntries(allGroups.map((g) => [g.key, weightsByGroup[g.key][key] ?? null])),
+      }
+    })
+  }, [allGroups, benchmarks, investableOnly, assetLabel, t])
 
   // Live mode fetches the full quarterly history; fallback mode uses the
   // annual samples embedded in the snapshot.
@@ -81,13 +83,21 @@ export default function Benchmarks() {
   // Nested tiers last, so the four partitioning tiers read left to right.
   const tableGroups = [...groups, ...nested]
 
-  const trendLabel = benchmarks.assetClasses.find((a) => a.key === trendAsset)?.label ?? trendAsset
+  const trendLabel = assetLabel(
+    trendAsset,
+    benchmarks.assetClasses.find((a) => a.key === trendAsset)?.label ?? trendAsset,
+  )
 
   // Two lines read clearly; four overlapping ones do not, so the trend
   // contrasts the extremes rather than plotting every tier.
   const trendSeries = useMemo(
-    () => (trend ? trend.filter((s) => s.key === 'top1' || s.key === 'bottom50') : null),
-    [trend],
+    () =>
+      trend
+        ? trend
+            .filter((s) => s.key === 'top1' || s.key === 'bottom50')
+            .map((s) => ({ ...s, label: tierLabel(s.key, s.label) }))
+        : null,
+    [trend, tierLabel],
   )
 
   return (
@@ -96,10 +106,10 @@ export default function Benchmarks() {
         {groups.map((g) => (
           <div className="tile" key={g.key}>
             <div className="label">
-              {g.label} · {g.percentile_range}
+              {tierLabel(g.key, g.label)} · {percentileRange(g.key, g.percentile_range)}
             </div>
-            <div className="value">{usd(g.net_worth, { compact: true })}</div>
-            <div className="note">net worth, {quarterLabel(g.period)}</div>
+            <div className="value">{fmt.usd(g.net_worth, { compact: true })}</div>
+            <div className="note">{t('benchmarks.netWorth', { quarter: fmt.quarter(g.period) })}</div>
           </div>
         ))}
       </div>
@@ -109,12 +119,15 @@ export default function Benchmarks() {
           {nested.map((g) => (
             <div className="tile" key={g.key} data-nested="true">
               <div className="label">
-                {g.label} · {g.percentile_range}
+                {tierLabel(g.key, g.label)} · {percentileRange(g.key, g.percentile_range)}
               </div>
-              <div className="value">{usd(g.net_worth, { compact: true })}</div>
+              <div className="value">{fmt.usd(g.net_worth, { compact: true })}</div>
               <div className="note">
-                net worth — counted inside the {activeGroups[g.nested_in]?.label ?? 'tier above'}, not
-                alongside it
+                {t('benchmarks.nestedNote', {
+                  tier: g.nested_in
+                    ? tierLabel(g.nested_in, activeGroups[g.nested_in]?.label)
+                    : t('benchmarks.tierAbove'),
+                })}
               </div>
             </div>
           ))}
@@ -123,22 +136,23 @@ export default function Benchmarks() {
 
       <div className="card">
         <div className="card-head">
-          <h2>How each tier holds its assets</h2>
+          <h2>{t('benchmarks.holdTitle')}</h2>
         </div>
         <p className="sub">
-          Share of {investableOnly ? 'investable' : 'total'} assets,{' '}
-          {quarterLabel(periodMode === 'complete' ? benchmarks.completePeriod : benchmarks.latestPeriod)}.
-          Each column sums to 100%. The top 0.1% is a subset of the top 1%, not a fifth group.
+          {t('benchmarks.holdSub', {
+            scope: investableOnly ? t('benchmarks.scopeInvestable') : t('benchmarks.scopeTotal'),
+            quarter: fmt.quarter(periodMode === 'complete' ? benchmarks.completePeriod : benchmarks.latestPeriod),
+          })}
         </p>
         <div className="chart-scroll">
           <table>
             <thead>
               <tr>
-                <th scope="col">Asset class</th>
+                <th scope="col">{t('benchmarks.assetClass')}</th>
                 {tableGroups.map((g) => (
                   <th scope="col" className="num" key={g.key}>
-                    {g.label}
-                    {g.nested && <span className="th-note">subset</span>}
+                    {tierLabel(g.key, g.label)}
+                    {g.nested && <span className="th-note">{t('benchmarks.subset')}</span>}
                   </th>
                 ))}
               </tr>
@@ -149,7 +163,7 @@ export default function Benchmarks() {
                   <td>{row.label}</td>
                   {tableGroups.map((g) => (
                     <td className={row.values[g.key] == null ? 'num muted' : 'num'} key={g.key}>
-                      {row.values[g.key] == null ? '—' : pct(row.values[g.key])}
+                      {row.values[g.key] == null ? '—' : fmt.pct(row.values[g.key])}
                     </td>
                   ))}
                 </tr>
@@ -161,26 +175,23 @@ export default function Benchmarks() {
 
       <div className="card">
         <div className="card-head">
-          <h2>{trendLabel} over time</h2>
+          <h2>{t('benchmarks.overTime', { asset: trendLabel })}</h2>
           <label style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
-            Asset class{' '}
+            {t('benchmarks.assetClass')}{' '}
             <select value={trendAsset} onChange={(e) => setTrendAsset(e.target.value)}>
               {TREND_ASSETS.map((key) => (
                 <option key={key} value={key}>
-                  {benchmarks.assetClasses.find((a) => a.key === key)?.label ?? key}
+                  {assetLabel(key, benchmarks.assetClasses.find((a) => a.key === key)?.label ?? key)}
                 </option>
               ))}
             </select>
           </label>
         </div>
-        <p className="sub">
-          Share of each tier&apos;s total assets, since 1989. Top 1% and bottom 50% shown; the middle tiers sit
-          between them.
-        </p>
+        <p className="sub">{t('benchmarks.trendSub')}</p>
         {trendSeries ? (
           <TrendChart series={trendSeries} assetLabel={trendLabel} />
         ) : (
-          <p className="empty">Trend data unavailable.</p>
+          <p className="empty">{t('benchmarks.trendUnavailable')}</p>
         )}
       </div>
     </>

@@ -1,0 +1,174 @@
+{
+  "app": {
+    "name": "Financert",
+    "tagline": "onde o 1% mais rico realmente guarda o dinheiro",
+    "loading": "Carregando dados do Federal Reserve…",
+    "language": "Idioma",
+    "install": "Instalar aplicativo",
+    "installHint": "Adicionar o Financert à tela de início"
+  },
+  "format": {
+    "quarter": "T{q} {year}"
+  },
+  "mode": {
+    "live": "API ao vivo",
+    "fallback": "Cópia off-line",
+    "loading": "Carregando…"
+  },
+  "theme": {
+    "label": "Tema: {theme}. Selecione para alterar.",
+    "system": "Automático",
+    "light": "Claro",
+    "dark": "Escuro"
+  },
+  "tabs": {
+    "compare": "Comparar",
+    "portfolio": "Sua carteira",
+    "benchmarks": "As faixas"
+  },
+  "controls": {
+    "compareAgainst": "Comparar com",
+    "quarter": "Trimestre",
+    "mostRecent": "{quarter} (mais recente)",
+    "fullyPublished": "{quarter} (totalmente publicado)",
+    "investableOnly": "Somente ativos investíveis",
+    "insideTop1": " — dentro do 1% mais rico"
+  },
+  "compare": {
+    "emptyTitle": "Ainda não há nada para comparar",
+    "emptyBody": "Informe o que você possui na aba Sua carteira e esta página mostrará como sua composição se compara com {tier}.",
+    "portfolioCompared": "Carteira comparada",
+    "excluded": "{amount} excluído por não ser investível",
+    "acrossHoldings": "em todas as posições informadas",
+    "closestTier": "Faixa mais próxima",
+    "noCloseMatch": "Sem correspondência clara",
+    "similarityOf": "similaridade {value} de 1,00",
+    "bestWas": "a melhor foi {tier} com {value}",
+    "similarityTo": "Similaridade com {tier}",
+    "identicalMix": "1,00 seria uma composição idêntica",
+    "benchmarkPeriod": "Período de referência",
+    "source": "DFA do Federal Reserve",
+    "allocationTitle": "Sua alocação frente a {tier}",
+    "allocationSub": "Cada classe de ativo como proporção da carteira comparada.",
+    "differTitle": "Onde você difere",
+    "differSub": "Pontos percentuais acima ou abaixo de {tier}. Diferenças abaixo de 1,5 p.p. são tratadas como em linha — os dados da pesquisa não são precisos o bastante para uma leitura mais fina.",
+    "tableCaption": "Diferenças de alocação por classe de ativo",
+    "colAssetClass": "Classe de ativo",
+    "colYou": "Você",
+    "colDifference": "Diferença",
+    "colStatus": "Situação",
+    "pendingTitle": "{quarter} ainda não foi totalmente publicado.",
+    "pendingBody": "O Federal Reserve publica {classes} depois do restante do balanço, então aparece abaixo como “ainda não publicado” em vez de um número. Todas as demais proporções continuam corretas.",
+    "usePeriodInstead": "Usar {quarter} em vez disso"
+  },
+  "status": {
+    "overweight": "Sobrealocado",
+    "underweight": "Subalocado",
+    "in_line": "Em linha",
+    "pending": "Ainda não publicado"
+  },
+  "portfolio": {
+    "title": "Sua carteira",
+    "intro": "Informe quanto você possui em cada categoria, em dólares. Deixe em branco o que não possui. Os valores permanecem neste navegador.",
+    "introLive": "Informe quanto você possui em cada categoria, em dólares. Deixe em branco o que não possui. Os valores permanecem neste navegador e são salvos na API ao clicar em Salvar.",
+    "select": "Carteira",
+    "newPlaceholder": "nome-da-carteira",
+    "newAria": "Identificador da nova carteira",
+    "startNew": "Criar uma nova",
+    "categoriesHint": "As categorias seguem as definições de balanço do próprio Federal Reserve, para que a comparação seja equivalente.",
+    "save": "Salvar carteira",
+    "saving": "Salvando…",
+    "clearAll": "Limpar tudo",
+    "savedApi": "Salvo na API.",
+    "savedLocal": "Salvo apenas neste navegador — a API está inacessível.",
+    "needsToken": "Não foi possível salvar: este servidor exige um token de API. Adicione-o abaixo.",
+    "saveFailed": "Não foi possível salvar: {message}",
+    "tokenSummary": "Token de API",
+    "tokenHelp": "Necessário apenas quando o servidor define FINANCERT_API_TOKEN. Armazenado neste navegador e enviado como cabeçalho bearer. Deixe em branco para um servidor local sem token configurado.",
+    "tokenPlaceholder": "cole o token",
+    "tokenAria": "Token de API",
+    "saveToken": "Salvar token",
+    "tokenSaved": "Token salvo neste navegador.",
+    "tokenCleared": "Token removido.",
+    "defaultName": "Minha carteira"
+  },
+  "benchmarks": {
+    "netWorth": "patrimônio líquido, {quarter}",
+    "nestedNote": "patrimônio líquido — contado dentro de {tier}, não ao lado",
+    "tierAbove": "a faixa acima",
+    "holdTitle": "Como cada faixa mantém seus ativos",
+    "holdSub": "Proporção dos ativos {scope}, {quarter}. Cada coluna soma 100%. O 0,1% mais rico é um subconjunto do 1% mais rico, não um quinto grupo.",
+    "scopeInvestable": "investíveis",
+    "scopeTotal": "totais",
+    "subset": "subconjunto",
+    "overTime": "{asset} ao longo do tempo",
+    "assetClass": "Classe de ativo",
+    "trendSub": "Proporção do total de ativos de cada faixa desde 1989. São mostrados o 1% mais rico e os 50% mais pobres; as faixas intermediárias ficam entre eles.",
+    "trendUnavailable": "Dados de tendência indisponíveis."
+  },
+  "chart": {
+    "you": "Você",
+    "difference": "Diferença",
+    "allocationAria": "Alocação de {you} comparada com {tier}, por classe de ativo",
+    "gapAria": "Diferença de alocação frente a {tier}, em pontos percentuais, por classe de ativo",
+    "trendAria": "{asset} como proporção do total de ativos ao longo do tempo",
+    "noAllocation": "Ainda não há alocação para mostrar.",
+    "moreThan": "Mais que {tier}",
+    "lessThan": "Menos que {tier}",
+    "allInLine": "Todas as classes de ativos estão em linha com {tier}."
+  },
+  "disclaimer": {
+    "whatTitle": "O que isto é.",
+    "whatBody": "O Financert compara uma carteira com a forma como as famílias americanas de cada faixa de riqueza realmente mantêm seus ativos, conforme as",
+    "dfaLink": "Contas Financeiras Distributivas",
+    "dataThrough": "Dados até {quarter}",
+    "newestComplete": "; o trimestre mais recente totalmente publicado é {quarter}",
+    "notTitle": "O que não é.",
+    "notBody": "É descritivo, não um conselho. Igualar a alocação do 1% mais rico não reproduziria seus retornos: boa parte da riqueza deles está em empresas privadas que possuem e administram, e os dados nada dizem sobre risco, impostos, horizonte de tempo ou se alguma alocação serve para você.",
+    "translationNote": "Tradução automática. Em caso de divergência, prevalece o texto original em inglês."
+  },
+  "tiers": {
+    "top01": "0,1% mais rico",
+    "top1": "1% mais rico",
+    "next9": "9% seguintes",
+    "next40": "40% seguintes",
+    "bottom50": "50% mais pobres"
+  },
+  "percentiles": {
+    "top01": "percentil 99,9–100",
+    "top1": "percentil 99–100",
+    "next9": "percentil 90–99",
+    "next40": "percentil 50–90",
+    "bottom50": "percentil 0–50"
+  },
+  "assets": {
+    "corporate_equities": "Ações e fundos de investimento",
+    "private_business": "Participação em empresas privadas",
+    "pension": "Previdência e aposentadoria",
+    "real_estate": "Imóveis",
+    "deposits": "Dinheiro e depósitos",
+    "money_market": "Fundos de mercado monetário",
+    "debt_securities": "Títulos de dívida",
+    "consumer_durables": "Bens de consumo duráveis",
+    "annuities": "Rendas vitalícias",
+    "life_insurance": "Seguro de vida",
+    "loans_assets": "Empréstimos a receber",
+    "misc_assets": "Outros ativos",
+    "unallocated": "Não alocado"
+  },
+  "assetBlurbs": {
+    "corporate_equities": "Ações detidas diretamente mais cotas de fundos de investimento.",
+    "private_business": "Participação em empresas não constituídas como sociedade anônima — sociedades e firmas individuais.",
+    "pension": "Direitos de previdência de benefício definido e de contribuição definida.",
+    "real_estate": "Imóvel de moradia própria, incluindo terrenos vagos e casas pré-fabricadas.",
+    "deposits": "Depósitos à vista e dinheiro em espécie, depósitos a prazo e poupança.",
+    "money_market": "Cotas de fundos de mercado monetário.",
+    "debt_securities": "Títulos do Tesouro, municipais, corporativos e estrangeiros detidos diretamente.",
+    "consumer_durables": "Veículos, eletrodomésticos, mobiliário — contados como ativos pelo Federal Reserve.",
+    "annuities": "Rendas vitalícias vendidas por seguradoras de vida diretamente às famílias.",
+    "life_insurance": "Valor de resgate das reservas de seguro de vida.",
+    "loans_assets": "Hipotecas e outros empréstimos mantidos como ativos.",
+    "misc_assets": "Ativos diversos não classificados em outra categoria.",
+    "unallocated": "Ativos incluídos nos totais do Federal Reserve, mas não detalhados separadamente."
+  }
+}

@@ -25,4 +25,6 @@ export function nextTheme(current) {
   return current === 'system' ? 'light' : current === 'light' ? 'dark' : 'system'
 }
 
-export const THEME_LABEL = { system: 'Auto', light: 'Light', dark: 'Dark' }
+// Labels live in the locale files now (`theme.system` / `.light` / `.dark`) --
+// this module only owns the state machine and the DOM attribute.
+export const THEMES = ['system', 'light', 'dark']

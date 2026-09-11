@@ -232,6 +232,35 @@ Tests never touch `financert.db` — `tests/conftest.py` points
 `FINANCERT_DATABASE_URL` at a throwaway temp file *before* any `app` module is
 imported, because the engine binds to the URL at import time.
 
+## Languages, and installing it as an app
+
+The dashboard ships in **English, Spanish, French, German, Portuguese and
+Arabic**, picked from the browser's own preference and switchable in the header.
+Asset-class names, wealth-tier names and percentile ranges are translated too,
+not just the surrounding chrome — those arrive from the API in English and are
+mapped by their stable keys. Numbers, currency and percentages are formatted per
+locale via `Intl`, so German reads `1.234,5 %` and French `1 234,5 %`. Arabic
+flips the whole layout right-to-left.
+
+> Non-English text is machine-translated and has not been through legal review.
+> Every translated page says so, and says the English original governs. The
+> "not investment advice" paragraph is the reason that note is there.
+
+Adding a language is a data change: drop a JSON file into
+`frontend/src/i18n/locales/` and add a row to `LOCALES` in
+`frontend/src/i18n/index.jsx`.
+
+It is also an **installable app** (PWA) — "Install" in the header on Chrome and
+Edge, or Share → Add to Home Screen on iOS, which has no install event of its
+own. Once installed it opens standalone and **works with no network at all**:
+the service worker caches the shell, and the app already carries an embedded
+copy of the Federal Reserve data for exactly this case. The header badge shows
+which mode it is in.
+
+This is a web app installed to a home screen, not a native store submission —
+see [DISTRIBUTION.md](DISTRIBUTION.md) for why the App Store route is still
+blocked on a licensing question.
+
 ## Use it from an AI assistant
 
 `backend/mcp_server.py` exposes the benchmark data and the comparison as MCP

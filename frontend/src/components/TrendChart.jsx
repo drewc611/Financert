@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Tooltip, TooltipRows, useTooltip } from './Tooltip'
-import { pct, quarterLabel } from '../lib/format'
+import { useI18n } from '../i18n'
 
 const W = 1000
 const H = 300
@@ -12,6 +12,7 @@ const SERIES_COLORS = ['var(--series-you)', 'var(--series-bench)']
  *  Crosshair + tooltip on hover, as line charts should have by default. */
 export default function TrendChart({ series, assetLabel }) {
   const { tip, show, hide } = useTooltip()
+  const { t, fmt } = useI18n()
   const [hoverIdx, setHoverIdx] = useState(null)
 
   const { paths, xs, maxShare, periods } = useMemo(() => {
@@ -43,8 +44,8 @@ export default function TrendChart({ series, assetLabel }) {
     show(
       event,
       <TooltipRows
-        title={quarterLabel(periods[best])}
-        rows={series.map((s) => ({ label: s.label, value: pct(s.points[best].share) }))}
+        title={fmt.quarter(periods[best])}
+        rows={series.map((s) => ({ label: s.label, value: fmt.pct(s.points[best].share) }))}
       />,
     )
   }
@@ -75,13 +76,14 @@ export default function TrendChart({ series, assetLabel }) {
           onMouseMove={onMove}
           onMouseLeave={onLeave}
           role="img"
-          aria-label={`${assetLabel} as a share of total assets over time`}
+          aria-label={t('chart.trendAria', { asset: assetLabel })}
         >
-          {yTicks.map((t, i) => (
+          {/* `tick`, not `t` -- `t` is the translation function in this scope. */}
+          {yTicks.map((tick, i) => (
             <g className="tick" key={i}>
-              <line x1={PAD.left} x2={W - PAD.right} y1={yFor(t)} y2={yFor(t)} />
-              <text x={PAD.left - 8} y={yFor(t) + 4} textAnchor="end">
-                {Math.round(t * 100)}%
+              <line x1={PAD.left} x2={W - PAD.right} y1={yFor(tick)} y2={yFor(tick)} />
+              <text x={PAD.left - 8} y={yFor(tick) + 4} textAnchor="end">
+                {fmt.pct(tick, { digits: 0 })}
               </text>
             </g>
           ))}
