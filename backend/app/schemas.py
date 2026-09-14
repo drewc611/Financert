@@ -64,6 +64,20 @@ class AssetClassOut(BaseModel):
     blurb: str
 
 
+class ShapeMetricsOut(BaseModel):
+    """Single-number descriptions of a tier's balance sheet. Every field is
+    nullable on purpose: a tier with no assets has no meaningful leverage, and
+    0.0 would read as "no debt" rather than "no answer"."""
+
+    leverage: float | None = Field(
+        default=None,
+        description="Liabilities over total assets -- always the whole balance sheet, never an investable-only subtotal",
+    )
+    concentration: float | None = Field(default=None, description="Share held in the single largest asset class")
+    concentration_class: str | None = Field(default=None, description="Which asset class that is")
+    liquidity: float | None = Field(default=None, description="Share held in classes flagged liquid in the taxonomy")
+
+
 class AllocationOut(BaseModel):
     group: str
     label: str
@@ -79,6 +93,7 @@ class AllocationOut(BaseModel):
     total_liabilities: float
     net_worth: float
     weights: dict[str, float]
+    metrics: ShapeMetricsOut
 
 
 class BenchmarksOut(BaseModel):

@@ -106,6 +106,43 @@ def weights(group_key: str, period: str, *, investable_only: bool = False) -> di
     return {k: v / total for k, v in assets.items()}
 
 
+def _liquid_keys() -> frozenset[str]:
+    return frozenset(a["key"] for a in asset_classes() if a.get("liquid"))
+
+
+def shape_metrics(row: dict[str, Any], w: dict[str, float]) -> dict[str, Any]:
+    """Three single-number descriptions of a tier's balance sheet.
+
+    Each is ``None`` rather than ``0.0`` when the inputs cannot support it --
+    a tier with no assets has no meaningful leverage, and zero would read as
+    "no debt" when the truth is "no answer".
+
+    * ``leverage`` -- liabilities over assets. Deliberately computed from the
+      row's own totals rather than from ``w``: liabilities are owed against the
+      whole balance sheet, so dividing them by an investable-only subtotal
+      would overstate the ratio for every tier.
+    * ``concentration`` -- the largest single class's share, and which class it
+      is. Follows ``w``, so it answers the question the user is actually
+      looking at.
+    * ``liquidity`` -- the share held in classes flagged ``liquid`` in the
+      taxonomy (see constants.ASSET_CLASSES). Also follows ``w``.
+    """
+    total_assets = row["total_assets"]
+    leverage = row["total_liabilities"] / total_assets if total_assets > 0 else None
+
+    largest_key, largest_share = (None, None)
+    if w:
+        largest_key, largest_share = max(w.items(), key=lambda kv: kv[1])
+
+    liquid = _liquid_keys()
+    return {
+        "leverage": leverage,
+        "concentration": largest_share,
+        "concentration_class": largest_key,
+        "liquidity": sum(share for key, share in w.items() if key in liquid) if w else None,
+    }
+
+
 def allocation(group_key: str, period: str, *, investable_only: bool = False) -> dict[str, Any]:
     """A group's full allocation record for one period."""
     row = _entry(group_key, period)
@@ -124,6 +161,7 @@ def allocation(group_key: str, period: str, *, investable_only: bool = False) ->
         "total_liabilities": row["total_liabilities"],
         "net_worth": row["net_worth"],
         "weights": w,
+        "metrics": shape_metrics(row, w),
     }
 
 

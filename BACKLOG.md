@@ -87,10 +87,18 @@ Each dimension is the same shape of work. Categories are confirmed from the file
 
 ## Phase 2 — deeper analysis on data we already hold
 
+**F24, F34 and F35 are done.** All three are pure functions over data the
+snapshot already held, surfaced together as one "shape of each balance sheet"
+table rather than three scattered numbers. They read cleanly across the tiers:
+leverage climbs from 0.9% (top 0.1%) to 58.8% (bottom 50%), the liquid share
+falls from 68.8% to 17.8%, and the largest holding flips from equities to real
+estate between the Next 9% and the Next 40%.
+
+
 | # | Feature | Size |
 |---|---|---|
 | F23 | Liabilities comparison — we fetch `total_liabilities` and only show a tile | M |
-| F24 | Leverage ratio (liabilities ÷ assets) vs each tier | S |
+| ~~F24~~ ✅ | Leverage ratio (liabilities ÷ assets) vs each tier | S |
 | F25 | Net-worth view alongside the assets view (assets less debt) | M |
 | F26 | Debt mix: home mortgages vs consumer credit vs other, per tier | M |
 | F27 | "Which tier is my *debt* like?" — the mirror of nearest-tier | M |
@@ -100,8 +108,8 @@ Each dimension is the same shape of work. Categories are confirmed from the file
 | F31 | "Your gap over time" — hold your allocation, watch the gap move as the tier changes | L |
 | F32 | Era comparison: the top 1% in 1989 vs 2000 vs 2026 | M |
 | F33 | Biggest movers: which classes shifted most for a tier over a chosen window | M |
-| F34 | Concentration measure (share in the largest class) per tier | S |
-| F35 | Liquidity score using the existing `liquid` flag on asset classes | S |
+| ~~F34~~ ✅ | Concentration measure (share in the largest class) per tier | S |
+| ~~F35~~ ✅ | Liquidity score using the existing `liquid` flag on asset classes | S |
 | F36 | Rebalancing distance: smallest set of moves to reach a tier's mix | M |
 | F37 | Dollar-terms gap: "you are $X under-allocated to equities" | S |
 | F38 | Scenario mode: edit holdings without saving and see the gap move live (the preview endpoint already exists) | M |

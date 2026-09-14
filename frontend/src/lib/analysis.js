@@ -25,6 +25,32 @@ export function benchmarkWeights(group, { investableOnly = true } = {}) {
   return Object.fromEntries(Object.entries(assets).map(([k, v]) => [k, v / total]))
 }
 
+/* Mirrors benchmarks.shape_metrics in backend/app/services/benchmarks.py.
+   Every value is null rather than 0 when the inputs cannot support it: a tier
+   with no assets has no meaningful leverage, and 0 would read as "no debt".
+
+   `liquidKeys` comes from the asset taxonomy the API (or the embedded
+   snapshot) ships, so the liquid/illiquid split is never hardcoded here. */
+export function shapeMetrics(group, weights, liquidKeys) {
+  const totalAssets = group.total_assets
+  const entries = Object.entries(weights)
+  let largest = null
+  for (const [key, share] of entries) {
+    if (!largest || share > largest[1]) largest = [key, share]
+  }
+  return {
+    // Liabilities are owed against the whole balance sheet, so this divides by
+    // the group's own total and not the investable-only subtotal the weights
+    // are renormalised over -- that would overstate every tier.
+    leverage: totalAssets > 0 ? group.total_liabilities / totalAssets : null,
+    concentration: largest ? largest[1] : null,
+    concentrationClass: largest ? largest[0] : null,
+    liquidity: entries.length
+      ? entries.reduce((sum, [key, share]) => (liquidKeys.has(key) ? sum + share : sum), 0)
+      : null,
+  }
+}
+
 export function portfolioWeights(holdings) {
   const positive = Object.entries(holdings).filter(([, v]) => v > 0)
   const total = positive.reduce((a, [, v]) => a + v, 0)

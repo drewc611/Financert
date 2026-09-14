@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useAppData } from '../context/AppDataContext'
 import { api } from '../lib/api'
-import { benchmarkWeights, UNALLOCATED } from '../lib/analysis'
+import { benchmarkWeights, shapeMetrics, UNALLOCATED } from '../lib/analysis'
 import TrendChart from '../components/TrendChart'
 import { useI18n } from '../i18n'
 
@@ -53,6 +53,37 @@ export default function Benchmarks() {
       }
     })
   }, [allGroups, benchmarks, investableOnly, assetLabel, t])
+
+  // Three single-number descriptions of each tier's balance sheet. Computed
+  // here rather than read off the API response so they are identical in
+  // offline mode, the same reason benchmarkWeights above is a client-side
+  // mirror -- see lib/analysis.shapeMetrics.
+  const metricRows = useMemo(() => {
+    const liquidKeys = new Set(benchmarks.assetClasses.filter((a) => a.liquid).map((a) => a.key))
+    const byGroup = Object.fromEntries(
+      allGroups.map((g) => [g.key, shapeMetrics(g, benchmarkWeights(g, { investableOnly }), liquidKeys)]),
+    )
+    return [
+      { key: 'leverage', label: t('benchmarks.leverage'), pick: (m) => m.leverage },
+      { key: 'liquidity', label: t('benchmarks.liquidity'), pick: (m) => m.liquidity },
+      {
+        key: 'concentration',
+        label: t('benchmarks.concentration'),
+        pick: (m) => m.concentration,
+        // The share alone is not the finding -- which class it sits in is.
+        note: (m) =>
+          m.concentrationClass
+            ? assetLabel(
+                m.concentrationClass,
+                benchmarks.assetClasses.find((a) => a.key === m.concentrationClass)?.label ?? m.concentrationClass,
+              )
+            : null,
+      },
+    ].map((row) => ({
+      ...row,
+      values: Object.fromEntries(allGroups.map((g) => [g.key, byGroup[g.key]])),
+    }))
+  }, [allGroups, benchmarks, investableOnly, t, assetLabel])
 
   // Live mode fetches the full quarterly history; fallback mode uses the
   // annual samples embedded in the snapshot.
@@ -171,6 +202,46 @@ export default function Benchmarks() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      <div className="card">
+        <div className="card-head">
+          <h2>{t('benchmarks.shapeTitle')}</h2>
+        </div>
+        <p className="sub">{t('benchmarks.shapeSub')}</p>
+        <div className="chart-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">{t('benchmarks.measure')}</th>
+                {tableGroups.map((g) => (
+                  <th scope="col" className="num" key={g.key}>
+                    {tierLabel(g.key, g.label)}
+                    {g.nested && <span className="th-note">{t('benchmarks.subset')}</span>}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {metricRows.map((row) => (
+                <tr key={row.key}>
+                  <td>{row.label}</td>
+                  {tableGroups.map((g) => {
+                    const value = row.pick(row.values[g.key])
+                    const note = row.note?.(row.values[g.key])
+                    return (
+                      <td className={value == null ? 'num muted' : 'num'} key={g.key}>
+                        {value == null ? '—' : fmt.pct(value)}
+                        {note && <span className="th-note">{note}</span>}
+                      </td>
+                    )
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p className="sub">{t('benchmarks.leverageNote')}</p>
       </div>
 
       <div className="card">

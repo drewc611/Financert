@@ -104,7 +104,14 @@
     "overTime": "{asset} a lo largo del tiempo",
     "assetClass": "Clase de activo",
     "trendSub": "Proporción de los activos totales de cada tramo desde 1989. Se muestran el 1% más rico y el 50% inferior; los tramos intermedios quedan entre ambos.",
-    "trendUnavailable": "Datos de tendencia no disponibles."
+    "trendUnavailable": "Datos de tendencia no disponibles.",
+    "shapeTitle": "La forma de cada balance",
+    "shapeSub": "Tres maneras de describir un tramo con una sola cifra cada una, a partir de los mismos datos de la Reserva Federal que la tabla anterior.",
+    "measure": "Medida",
+    "leverage": "Apalancamiento",
+    "liquidity": "Proporción líquida",
+    "concentration": "Mayor posición",
+    "leverageNote": "El apalancamiento es la deuda frente al balance completo, por lo que no cambia con el filtro de solo invertible. Las otras dos siguen lo que muestra la tabla anterior."
   },
   "chart": {
     "you": "Usted",
