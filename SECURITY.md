@@ -66,6 +66,36 @@ accepted:
 | [Dependabot](.github/dependabot.yml) | Weekly updates for pip, npm and GitHub Actions. |
 | [CI](.github/workflows/ci.yml) | `ruff`, `pytest`, `eslint`, and a production frontend build. |
 
+### Content-Security-Policy
+
+The built frontend carries a CSP, injected into `index.html` by
+[`vite.config.js`](frontend/vite.config.js). It is a `<meta>` tag rather than a
+response header because the published surface is GitHub Pages, which serves
+static files and offers no way to set headers — the one directive a meta CSP
+cannot carry is `frame-ancestors`, so that is absent rather than written and
+silently ignored.
+
+`script-src` is `'self'` alone: no `'unsafe-inline'`, no `'unsafe-eval'`, no
+external origin, and no hashes — `index.html` carries exactly one `<script>`
+and it has a `src`. That is worth preserving: an inline `<script>` added later
+will not run, and the fix is to move it into a real file rather than to add a
+hash. `style-src` does keep `'unsafe-inline'`, because the charts set style
+attributes on the elements they render and a hash cannot cover an attribute
+without `'unsafe-hashes'`; inline CSS is a far weaker sink than inline JS.
+
+`connect-src` is derived from the same `VITE_API_BASE` expression
+`src/lib/api.js` uses, so the policy and the client cannot disagree about where
+requests are allowed to go.
+
+Applied to `vite build` only. Vite's dev server injects its own inline scripts
+for HMR and React Refresh, so enforcing it under `vite dev` would break the dev
+server rather than the thing it protects.
+
+Verified against the built output in a real browser: the app renders and the
+service worker registers under it with zero violations, and an inline
+`<script>` injected into the served HTML — standing in for an XSS — is refused
+rather than executed.
+
 ### Not yet active — one setting each
 
 Named here rather than left to be discovered, because a security control
