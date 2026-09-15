@@ -21,6 +21,9 @@ export function AppDataProvider({ children }) {
   const [mode, setMode] = useState('loading')
   const [benchmarks, setBenchmarks] = useState(null)
   const [holdings, setHoldings] = useState(readStoredHoldings)
+  // Which cut of the population to benchmark against. Net worth is the axis
+  // the product is built around, so it stays the default.
+  const [dimension, setDimension] = useState('networth')
   const [groupKey, setGroupKey] = useState('top1')
   const [investableOnly, setInvestableOnly] = useState(true)
   // 'latest' is the newest quarter, which may be missing a lagging class;
@@ -33,20 +36,33 @@ export function AppDataProvider({ children }) {
   useEffect(() => {
     let cancelled = false
 
+    /* The selected group has to move with the axis -- 'top1' is not a group on
+       the generation axis -- but only once the new data is actually here.
+       Resetting it when the picker changes would leave the old allocations
+       indexed by a key they do not have until the fetch lands, and would strand
+       the app on a nonexistent group if the fetch failed instead. Both setters
+       run in one batch, so no render sees the mismatch. */
+    function swapIn(next) {
+      setBenchmarks(next)
+      setGroupKey((key) => (next.groups[key] ? key : next.groupOrder[0]))
+    }
+
     async function load() {
       try {
         // Both views are fetched once so the period toggle is instant. Asked
         // for with investable_only=false so the client can derive either view.
         const [latest, complete] = await Promise.all([
-          api.benchmarks({ period: 'latest', investableOnly: false }),
-          api.benchmarks({ period: 'complete', investableOnly: false }),
+          api.benchmarks({ period: 'latest', investableOnly: false, dimension }),
+          api.benchmarks({ period: 'complete', investableOnly: false, dimension }),
         ])
         if (cancelled) return
-        setBenchmarks(normaliseFromApi(latest, complete))
+        swapIn(normaliseFromApi(latest, complete))
         setMode('live')
       } catch {
         if (cancelled) return
-        setBenchmarks(normaliseFromFallback(fallbackData))
+        // Net worth only, so this is also what reconciles the selected group
+        // after a failed switch onto one of the other axes.
+        swapIn(normaliseFromFallback(fallbackData))
         setMode('fallback')
       }
     }
@@ -55,7 +71,7 @@ export function AppDataProvider({ children }) {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [dimension])
 
   // Holdings live in localStorage so the tool is useful with no backend at
   // all; when the API is up they are also persisted server-side.
@@ -159,6 +175,8 @@ export function AppDataProvider({ children }) {
       save,
       groupKey,
       setGroupKey,
+      dimension,
+      setDimension,
       investableOnly,
       setInvestableOnly,
     }),
@@ -176,6 +194,8 @@ export function AppDataProvider({ children }) {
       clearHoldings,
       save,
       groupKey,
+      dimension,
+      setDimension,
       investableOnly,
     ],
   )
@@ -223,6 +243,8 @@ function normaliseFromApi(latest, complete) {
     completePeriod: complete.period,
     periods: latest.periods,
     groupOrder: latest.group_order,
+    dimension: latest.dimension,
+    dimensions: latest.dimensions,
     assetClasses: latest.asset_classes,
     groups: toGroups(latest.allocations),
     groupsComplete: toGroups(complete.allocations),
@@ -253,6 +275,12 @@ function normaliseFromFallback(data) {
     completePeriod: data.latest_complete_period,
     periods: data.periods,
     groupOrder: data.group_order,
+    // The embedded snapshot carries net worth only -- shipping six axes of
+    // history to every visitor would be a 3 MB download for a fallback. null
+    // is the signal the picker reads to say why it cannot offer the others,
+    // rather than showing five axes that would all render empty.
+    dimension: 'networth',
+    dimensions: null,
     assetClasses: data.asset_classes,
     groups: data.groups,
     groupsComplete,

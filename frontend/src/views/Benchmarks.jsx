@@ -3,6 +3,7 @@ import { useAppData } from '../context/AppDataContext'
 import { api } from '../lib/api'
 import { benchmarkWeights, shapeMetrics, UNALLOCATED } from '../lib/analysis'
 import TrendChart from '../components/TrendChart'
+import DimensionPicker from '../components/DimensionPicker'
 import { useI18n } from '../i18n'
 
 const TREND_ASSETS = ['corporate_equities', 'private_business', 'real_estate']
@@ -120,24 +121,30 @@ export default function Benchmarks() {
   )
 
   // Two lines read clearly; four overlapping ones do not, so the trend
-  // contrasts the extremes rather than plotting every tier.
-  const trendSeries = useMemo(
-    () =>
-      trend
-        ? trend
-            .filter((s) => s.key === 'top1' || s.key === 'bottom50')
-            .map((s) => ({ ...s, label: tierLabel(s.key, s.label) }))
-        : null,
-    [trend, tierLabel],
-  )
+  // contrasts the ends of whichever axis is selected -- the top 1% against the
+  // bottom 50% on net worth, the oldest cohort against the youngest on
+  // generation. Taken from the published order rather than named keys, which
+  // is what left every other axis with an empty chart.
+  const extremes = useMemo(() => (groups.length ? [groups[0], groups[groups.length - 1]] : []), [groups])
+
+  const trendSeries = useMemo(() => {
+    if (!trend) return null
+    const keys = extremes.map((g) => g.key)
+    return trend.filter((s) => keys.includes(s.key)).map((s) => ({ ...s, label: tierLabel(s.key, s.label) }))
+  }, [trend, extremes, tierLabel])
 
   return (
     <>
+      <div className="controls">
+        <DimensionPicker />
+      </div>
+
       <div className="tiles">
         {groups.map((g) => (
           <div className="tile" key={g.key}>
             <div className="label">
-              {tierLabel(g.key, g.label)} · {percentileRange(g.key, g.percentile_range)}
+              {tierLabel(g.key, g.label)}
+              {g.percentile_range ? ` · ${percentileRange(g.key, g.percentile_range)}` : ''}
             </div>
             <div className="value">{fmt.usd(g.net_worth, { compact: true })}</div>
             <div className="note">{t('benchmarks.netWorth', { quarter: fmt.quarter(g.period) })}</div>
@@ -258,7 +265,12 @@ export default function Benchmarks() {
             </select>
           </label>
         </div>
-        <p className="sub">{t('benchmarks.trendSub')}</p>
+        <p className="sub">
+          {t('benchmarks.trendSub', {
+            first: extremes[0] ? tierLabel(extremes[0].key, extremes[0].label) : '',
+            last: extremes[1] ? tierLabel(extremes[1].key, extremes[1].label) : '',
+          })}
+        </p>
         {trendSeries ? (
           <TrendChart series={trendSeries} assetLabel={trendLabel} />
         ) : (

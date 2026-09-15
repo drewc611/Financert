@@ -121,6 +121,13 @@ export function I18nProvider({ children }) {
         const hit = lookup(BUNDLES[locale] || {}, `assetBlurbs.${key}`)
         return typeof hit === 'string' ? hit : (fallback ?? translate(locale, `assetBlurbs.${key}`))
       },
+      /* Axis names, keyed by the backend's stable dimension keys. Same
+         fallback rule as the others: whatever the API sent, if a locale has
+         not covered one yet. */
+      dimensionLabel: (key, fallback) => {
+        const hit = lookup(BUNDLES[locale] || {}, `dimensions.${key}`)
+        return typeof hit === 'string' ? hit : (fallback ?? translate(locale, `dimensions.${key}`))
+      },
       tierLabel: (key, fallback) => {
         const hit = lookup(BUNDLES[locale] || {}, `tiers.${key}`)
         return typeof hit === 'string' ? hit : (fallback ?? translate(locale, `tiers.${key}`))
