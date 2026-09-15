@@ -62,10 +62,28 @@ accepted:
 
 | | |
 |---|---|
-| [CodeQL](.github/workflows/codeql.yml) | Python, JavaScript/TypeScript, and the workflows themselves. Runs on every push and PR to `main`, plus weekly. |
+| [CodeQL](.github/workflows/codeql.yml) | Python, JavaScript/TypeScript, and the workflows themselves. Runs on every push and PR to `main`, plus weekly. One query is excluded — see below. |
 | [Dependabot](.github/dependabot.yml) | Weekly updates for pip, npm and GitHub Actions. |
 | [CI](.github/workflows/ci.yml) | `ruff`, `pytest`, `eslint`, and a production frontend build. |
 | [DFA source check](.github/workflows/source-check.yml) | Weekly: downloads and parses the Fed's published archive without writing, so a change in the source surfaces as a failed run rather than during the next refresh. |
+
+### The one excluded CodeQL query
+
+`js/clear-text-storage-of-sensitive-data` is turned off in
+[`.github/codeql/codeql-config.yml`](.github/codeql/codeql-config.yml). It
+decides what counts as sensitive from the names in the code, and **Financert**
+ends in *cert*: every `localStorage` key is namespaced `financert.*`, so every
+read-then-write of the reader's own holdings or cohort matched its certificate
+heuristic. Checked against the query rather than assumed — the identical flow
+under `financer.x` produces no alert, under `mycert.x` it does.
+
+Keeping a portfolio and a self-declared cohort in the reader's own browser is
+this product's design ([PRIVACY.md](PRIVACY.md)), and an encryption key stored
+beside the ciphertext would be theatre. Inline suppression comments do not work
+for JavaScript, so the exclusion is repo-wide, and the cost is real: a genuine
+clear-text-storage mistake in frontend code would not be flagged either. The
+alternative was a CodeQL check red on every PR that touches storage, which is a
+check nobody reads.
 
 ### Content-Security-Policy
 
