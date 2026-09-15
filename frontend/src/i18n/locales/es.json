@@ -115,7 +115,10 @@
     "concentration": "Mayor posición",
     "leverageNote": "El apalancamiento es la deuda frente al balance completo, por lo que no cambia con el filtro de solo invertible. Las otras dos siguen lo que muestra la tabla anterior.",
     "perHousehold": "Dólares por hogar",
-    "perHouseholdNote": "Los activos de cada tramo divididos entre el número de hogares que contiene: un promedio, no un hogar típico. La dispersión dentro de un tramo es mayor en la cima: el 0,1% más rico está dentro del 1% más rico y posee varias veces su promedio."
+    "perHouseholdNote": "Los activos de cada tramo divididos entre el número de hogares que contiene: un promedio, no un hogar típico. La dispersión dentro de un tramo es mayor en la cima: el 0,1% más rico está dentro del 1% más rico y posee varias veces su promedio.",
+    "owesTitle": "Qué debe cada tramo",
+    "debtKind": "Tipo de deuda",
+    "owesSub": "Proporción del endeudamiento de cada tramo, no de sus activos. Las hipotecas dominan en el centro; el 50% inferior soporta mucha más deuda como crédito al consumo, y el 1% más rico mucha más como préstamos de margen y de póliza."
   },
   "chart": {
     "you": "Usted",
@@ -258,5 +261,12 @@
       "minimum_wealth_cutoff": "Patrimonio desde {amount} ({quarter})",
       "minimum_income_cutoff": "Ingresos desde {amount} ({quarter})"
     }
+  },
+  "debts": {
+    "home_mortgages": "Hipotecas",
+    "consumer_credit": "Crédito al consumo",
+    "depository_loans": "Préstamos bancarios",
+    "other_loans": "Otros préstamos",
+    "deferred_premiums": "Primas de vida diferidas"
   }
 }

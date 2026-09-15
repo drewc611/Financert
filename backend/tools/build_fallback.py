@@ -52,6 +52,7 @@ def main() -> None:
         "group_order": snapshot["group_order"],
         "periods": snapshot["periods"][-40:],
         "asset_classes": [{k: a[k] for k in ("key", "label", "liquid", "blurb")} for a in snapshot["asset_classes"]],
+        "liability_classes": [{k: c[k] for k in ("key", "label", "blurb")} for c in snapshot["liability_classes"]],
         "groups": {},
         "trends": {},
     }
@@ -74,6 +75,9 @@ def main() -> None:
             "total_liabilities": row["total_liabilities"],
             "net_worth": row["net_worth"],
             "assets": row["assets"],
+            # Raw dollars, like "assets" -- the client normalises whichever it
+            # is given, so the same component works against either source.
+            "liabilities": row.get("liabilities", {}),
             "household_count": row.get("household_count"),
             # The entry threshold is triennial, so it is never on the latest
             # row -- benchmarks.threshold() reads back to the newest published

@@ -117,6 +117,11 @@ export function I18nProvider({ children }) {
         const hit = lookup(BUNDLES[locale] || {}, `assets.${key}`)
         return typeof hit === 'string' ? hit : (fallback ?? translate(locale, `assets.${key}`))
       },
+      /* Liability-class names, keyed the same way as the asset ones. */
+      debtLabel: (key, fallback) => {
+        const hit = lookup(BUNDLES[locale] || {}, `debts.${key}`)
+        return typeof hit === 'string' ? hit : (fallback ?? translate(locale, `debts.${key}`))
+      },
       assetBlurb: (key, fallback) => {
         const hit = lookup(BUNDLES[locale] || {}, `assetBlurbs.${key}`)
         return typeof hit === 'string' ? hit : (fallback ?? translate(locale, `assetBlurbs.${key}`))

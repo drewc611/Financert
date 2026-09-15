@@ -115,7 +115,10 @@
     "concentration": "Largest holding",
     "leverageNote": "Leverage is debt against the whole balance sheet, so it does not change with the investable-only switch. The other two follow whatever the table above is showing.",
     "perHousehold": "Dollars per household",
-    "perHouseholdNote": "Each tier's holdings divided by the number of households in it — an average, not a typical household. The spread inside a tier is widest at the top: the top 0.1% is inside the top 1% and holds several times its average."
+    "perHouseholdNote": "Each tier's holdings divided by the number of households in it — an average, not a typical household. The spread inside a tier is widest at the top: the top 0.1% is inside the top 1% and holds several times its average.",
+    "owesTitle": "What each tier owes",
+    "debtKind": "Kind of debt",
+    "owesSub": "Share of each tier's borrowing, not of its assets. Mortgages dominate the middle; the bottom 50% carries far more of its debt as consumer credit, and the top 1% far more as margin and policy loans."
   },
   "chart": {
     "you": "You",
@@ -258,5 +261,12 @@
       "minimum_wealth_cutoff": "Net worth from {amount} ({quarter})",
       "minimum_income_cutoff": "Income from {amount} ({quarter})"
     }
+  },
+  "debts": {
+    "home_mortgages": "Home Mortgages",
+    "consumer_credit": "Consumer Credit",
+    "depository_loans": "Bank Loans",
+    "other_loans": "Other Loans",
+    "deferred_premiums": "Deferred Life Premiums"
   }
 }

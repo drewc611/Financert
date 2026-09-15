@@ -47,6 +47,7 @@ def get_benchmarks(
         "investable_only": investable_only,
         "source": benchmarks.source_meta(),
         "asset_classes": benchmarks.asset_classes(),
+        "liability_classes": benchmarks.liability_classes(),
         "allocations": benchmarks.all_allocations(resolved, investable_only=investable_only, dimension=dimension),
     }
 

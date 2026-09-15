@@ -40,6 +40,7 @@ from app.constants import (
     DFA_ZIP_URL,
     DIMENSIONS,
     GROUP_ORDER,
+    LIABILITY_CLASSES,
     THRESHOLD_COLUMNS,
     UNALLOCATED,
     all_group_keys,
@@ -187,6 +188,29 @@ def _threshold(rows: list[dict[str, str]], column: str) -> float | None:
     return min(values) if values else None
 
 
+def _reconcile(where: str, side: str, *, summed: float, reported: float) -> list[str]:
+    """Check one side of the balance sheet against the Fed's own total.
+
+    A shortfall means a bucket is missing; an overcount means a sub-item is
+    being summed alongside the parent that already contains it, which is never
+    benign. Both sides of the sheet are published as trees, so both get this.
+    """
+    if reported <= 0:
+        return []
+    drift = (summed - reported) / reported
+    if drift > OVERCOUNT_TOLERANCE:
+        return [
+            f"{where}: {side} taxonomy OVERCOUNTS -- sums to {summed:,.0f} vs published "
+            f"{reported:,.0f} (+{drift:.4%}); a bucket is likely double counted"
+        ]
+    if -drift > UNDERCOUNT_TOLERANCE:
+        return [
+            f"{where}: {side} taxonomy sums to {summed:,.0f} but published total is "
+            f"{reported:,.0f} ({-drift:.4%} short)"
+        ]
+    return []
+
+
 def build_dimension(blob: bytes, dimension: str, since_year: int) -> tuple[dict, list[str], list[str]]:
     """Build one dimension's groups from its own member file.
 
@@ -236,25 +260,35 @@ def build_dimension(blob: bytes, dimension: str, since_year: int) -> tuple[dict,
                 for name, column in extra_columns.items()
             }
 
+            liabilities = {
+                debt["key"]: _sum_columns(parts, [debt["column"]]) * DFA_UNITS_MULTIPLIER for debt in LIABILITY_CLASSES
+            }
+
             reported_total = controls["total_assets"]
             summed_total = sum(assets.values())
 
             # Validate the taxonomy against the Fed's own published total. A
             # shortfall means a bucket is missing; an overcount means a
             # sub-item is being summed alongside its parent.
-            if reported_total > 0:
-                drift = (summed_total - reported_total) / reported_total
-                if drift > OVERCOUNT_TOLERANCE:
-                    problems.append(
-                        f"{group_key} {period_raw}: taxonomy OVERCOUNTS -- sums to "
-                        f"{summed_total:,.0f} vs published {reported_total:,.0f} "
-                        f"(+{drift:.4%}); a bucket is likely double counted"
-                    )
-                elif -drift > UNDERCOUNT_TOLERANCE:
-                    problems.append(
-                        f"{group_key} {period_raw}: taxonomy sums to {summed_total:,.0f} "
-                        f"but published total is {reported_total:,.0f} ({-drift:.4%} short)"
-                    )
+            problems.extend(
+                _reconcile(
+                    f"{group_key} {period_raw}",
+                    "asset",
+                    summed=summed_total,
+                    reported=reported_total,
+                )
+            )
+            # The debt side is published as a tree -- Liabilities = loans +
+            # deferred premiums, loans = the four loan columns -- so the same
+            # check proves the leaves were read without their parents.
+            problems.extend(
+                _reconcile(
+                    f"{group_key} {period_raw}",
+                    "liability",
+                    summed=sum(liabilities.values()),
+                    reported=controls["total_liabilities"],
+                )
+            )
 
             # Rounding only, now that the taxonomy covers every component.
             assets[UNALLOCATED["key"]] = max(reported_total - summed_total, 0.0)
@@ -263,6 +297,7 @@ def build_dimension(blob: bytes, dimension: str, since_year: int) -> tuple[dict,
                 {
                     "period": parse_period(period_raw),
                     "assets": {k: round(v, 2) for k, v in assets.items()},
+                    "liabilities": {k: round(v, 2) for k, v in liabilities.items()},
                     "total_assets": round(reported_total, 2),
                     "total_liabilities": round(controls["total_liabilities"], 2),
                     "net_worth": round(controls["net_worth"], 2),
@@ -358,6 +393,12 @@ def build_snapshot(since_year: int, *, blob: bytes | None = None) -> dict:
             for a in ASSET_CLASSES
         ]
         + [{**UNALLOCATED, "columns": []}],
+        # The debt side's taxonomy travels with the data for the same reason
+        # the asset side's does: a snapshot should describe itself.
+        "liability_classes": [
+            {"key": c["key"], "label": c["label"], "blurb": c["blurb"], "columns": [c["column"]]}
+            for c in LIABILITY_CLASSES
+        ],
         # The net-worth view, unchanged, because everything reading this file
         # today expects it at the top level.
         "groups": groups,

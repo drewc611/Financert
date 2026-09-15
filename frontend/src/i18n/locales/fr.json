@@ -115,7 +115,10 @@
     "concentration": "Plus grande position",
     "leverageNote": "Le levier rapporte la dette au bilan entier : il ne change donc pas avec le filtre « investissable uniquement ». Les deux autres suivent ce qu'affiche le tableau ci-dessus.",
     "perHousehold": "Dollars par ménage",
-    "perHouseholdNote": "Les avoirs de chaque tranche divisés par le nombre de ménages qu'elle compte : une moyenne, pas un ménage typique. La dispersion interne est la plus forte au sommet : les 0,1 % les plus riches sont inclus dans les 1 % et détiennent plusieurs fois leur moyenne."
+    "perHouseholdNote": "Les avoirs de chaque tranche divisés par le nombre de ménages qu'elle compte : une moyenne, pas un ménage typique. La dispersion interne est la plus forte au sommet : les 0,1 % les plus riches sont inclus dans les 1 % et détiennent plusieurs fois leur moyenne.",
+    "owesTitle": "Ce que doit chaque tranche",
+    "debtKind": "Type de dette",
+    "owesSub": "Part de l'endettement de chaque tranche, et non de ses actifs. Les prêts immobiliers dominent au milieu ; les 50 % les moins riches portent bien plus de dette en crédit à la consommation, et les 1 % les plus riches bien plus en prêts sur marge et sur police."
   },
   "chart": {
     "you": "Vous",
@@ -258,5 +261,12 @@
       "minimum_wealth_cutoff": "Patrimoine à partir de {amount} ({quarter})",
       "minimum_income_cutoff": "Revenu à partir de {amount} ({quarter})"
     }
+  },
+  "debts": {
+    "home_mortgages": "Prêts immobiliers",
+    "consumer_credit": "Crédit à la consommation",
+    "depository_loans": "Prêts bancaires",
+    "other_loans": "Autres prêts",
+    "deferred_premiums": "Primes d'assurance-vie différées"
   }
 }

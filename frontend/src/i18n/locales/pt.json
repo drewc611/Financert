@@ -115,7 +115,10 @@
     "concentration": "Maior posição",
     "leverageNote": "A alavancagem é a dívida sobre o balanço inteiro, por isso não muda com o filtro de apenas investível. As outras duas acompanham o que a tabela acima mostra.",
     "perHousehold": "Dólares por família",
-    "perHouseholdNote": "Os ativos de cada faixa divididos pelo número de famílias que a compõem — uma média, não uma família típica. A dispersão dentro de uma faixa é maior no topo: o 0,1% mais rico está dentro do 1% mais rico e detém várias vezes a sua média."
+    "perHouseholdNote": "Os ativos de cada faixa divididos pelo número de famílias que a compõem — uma média, não uma família típica. A dispersão dentro de uma faixa é maior no topo: o 0,1% mais rico está dentro do 1% mais rico e detém várias vezes a sua média.",
+    "owesTitle": "O que cada faixa deve",
+    "debtKind": "Tipo de dívida",
+    "owesSub": "Proporção do endividamento de cada faixa, não dos seus ativos. Os créditos à habitação dominam no meio; os 50% mais pobres suportam muito mais dívida como crédito ao consumo, e o 1% mais rico muito mais como empréstimos de margem e de apólice."
   },
   "chart": {
     "you": "Você",
@@ -258,5 +261,12 @@
       "minimum_wealth_cutoff": "Património a partir de {amount} ({quarter})",
       "minimum_income_cutoff": "Rendimento a partir de {amount} ({quarter})"
     }
+  },
+  "debts": {
+    "home_mortgages": "Créditos à habitação",
+    "consumer_credit": "Crédito ao consumo",
+    "depository_loans": "Empréstimos bancários",
+    "other_loans": "Outros empréstimos",
+    "deferred_premiums": "Prémios de vida diferidos"
   }
 }

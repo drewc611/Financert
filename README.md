@@ -159,6 +159,15 @@ The plumbing for an incomplete quarter is still there (`complete`,
 `unavailable`, `period=complete`) in case the Fed ever does lag a series — it
 simply has nothing to act on today.
 
+### Both sides of the balance sheet
+
+The debt side is published as a tree — `Liabilities` = loans + deferred life
+premiums, and loans = four columns — so the snapshot stores only the five
+leaves, and `fetch_dfa.py` reconciles their sum against the Fed's published
+`Liabilities` for every row, exactly as it does for assets. Summing a parent
+beside its children is the one mistake that would make every debt percentage
+wrong in the same direction.
+
 ## Layout
 
 ```

@@ -115,7 +115,10 @@
     "concentration": "Größte Position",
     "leverageNote": "Der Verschuldungsgrad misst Schulden gegen die gesamte Bilanz und ändert sich daher nicht mit dem Filter „nur investierbar“. Die beiden anderen folgen der Tabelle oben.",
     "perHousehold": "Dollar je Haushalt",
-    "perHouseholdNote": "Die Bestände jeder Stufe geteilt durch die Zahl ihrer Haushalte — ein Durchschnitt, kein typischer Haushalt. Die Streuung innerhalb einer Stufe ist oben am größten: Das reichste 0,1 % liegt innerhalb des reichsten 1 % und hält ein Vielfaches von dessen Durchschnitt."
+    "perHouseholdNote": "Die Bestände jeder Stufe geteilt durch die Zahl ihrer Haushalte — ein Durchschnitt, kein typischer Haushalt. Die Streuung innerhalb einer Stufe ist oben am größten: Das reichste 0,1 % liegt innerhalb des reichsten 1 % und hält ein Vielfaches von dessen Durchschnitt.",
+    "owesTitle": "Was jede Stufe schuldet",
+    "debtKind": "Art der Schuld",
+    "owesSub": "Anteil an den Schulden jeder Stufe, nicht an ihrem Vermögen. In der Mitte dominieren Hypotheken; die unteren 50 % tragen weit mehr Schulden als Konsumkredit, das reichste 1 % weit mehr als Wertpapier- und Policendarlehen."
   },
   "chart": {
     "you": "Sie",
@@ -258,5 +261,12 @@
       "minimum_wealth_cutoff": "Nettovermögen ab {amount} ({quarter})",
       "minimum_income_cutoff": "Einkommen ab {amount} ({quarter})"
     }
+  },
+  "debts": {
+    "home_mortgages": "Hypotheken",
+    "consumer_credit": "Konsumkredite",
+    "depository_loans": "Bankkredite",
+    "other_loans": "Sonstige Kredite",
+    "deferred_premiums": "Gestundete Lebensversicherungsprämien"
   }
 }

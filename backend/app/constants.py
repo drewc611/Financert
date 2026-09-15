@@ -377,6 +377,48 @@ UNALLOCATED = {
     ),
 }
 
+# The other side of the balance sheet (BACKLOG F26). The file publishes these
+# as a two-level tree -- `Liabilities` = `Loans (Liabilities)` + deferred life
+# premiums, and `Loans (Liabilities)` = the four loan columns below -- so only
+# the leaves are listed here. Summing a parent alongside its children is the
+# same double-count the asset side had to avoid, and fetch_dfa reconciles these
+# against the published `Liabilities` total for every row to prove it did not.
+LIABILITY_CLASSES = [
+    {
+        "key": "home_mortgages",
+        "label": "Home Mortgages",
+        "column": "Home mortgages",
+        "blurb": "Mortgages secured on owner-occupied property, including home equity lines.",
+    },
+    {
+        "key": "consumer_credit",
+        "label": "Consumer Credit",
+        "column": "Consumer credit",
+        "blurb": "Credit cards, car loans, student loans and other unsecured consumer borrowing.",
+    },
+    {
+        "key": "depository_loans",
+        "label": "Bank Loans",
+        "column": "Depository institutions loans n.e.c.",
+        "blurb": "Loans from banks and other depository institutions not classified elsewhere.",
+    },
+    {
+        "key": "other_loans",
+        "label": "Other Loans",
+        "column": "Other loans and advances (Liabilities)",
+        "blurb": "Margin loans, policy loans and other borrowing outside the categories above.",
+    },
+    {
+        "key": "deferred_premiums",
+        "label": "Deferred Life Premiums",
+        "column": "Deferred and unpaid life insurance premiums",
+        "blurb": "Life insurance premiums owed but not yet paid -- the one liability outside the loan tree.",
+    },
+]
+
+LIABILITY_CLASS_KEYS = [c["key"] for c in LIABILITY_CLASSES]
+LIABILITY_CLASS_BY_KEY = {c["key"]: c for c in LIABILITY_CLASSES}
+
 # Published aggregates, used to validate the taxonomy rather than to report.
 # `total_assets` is taken straight from the file rather than summed, so the
 # percentages are always shares of the Fed's own total.
