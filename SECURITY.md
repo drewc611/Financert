@@ -64,7 +64,8 @@ accepted:
 |---|---|
 | [CodeQL](.github/workflows/codeql.yml) | Python, JavaScript/TypeScript, and the workflows themselves. Runs on every push and PR to `main`, plus weekly. One query is excluded — see below. |
 | [Dependabot](.github/dependabot.yml) | Weekly updates for pip, npm and GitHub Actions. |
-| [CI](.github/workflows/ci.yml) | `ruff`, `pytest`, `eslint`, and a production frontend build. |
+| [Dependency audit](.github/workflows/audit.yml) | Weekly, and on any dependency change: `npm audit` (high and above) and `pip-audit` against the pinned requirements. Dependabot proposes updates; this says whether what is on `main` right now has a known vulnerability. |
+| [CI](.github/workflows/ci.yml) | `ruff`, `pytest` (with coverage), `eslint`, `vitest`, and a production frontend build. |
 | [DFA source check](.github/workflows/source-check.yml) | Weekly: downloads and parses the Fed's published archive without writing, so a change in the source surfaces as a failed run rather than during the next refresh. |
 
 ### The one excluded CodeQL query
