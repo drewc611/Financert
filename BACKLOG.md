@@ -64,7 +64,7 @@ with no lagging class, and the unallocated residual fell from 1–3% to 0.00%.
 | ~~F7~~ ✅ | Pin the source: record the zip's published date and checksum in the snapshot | S |
 | F8 | Keep FRED as a documented fallback path if the zip fetch fails | M |
 | F9 | Golden-file test: assert the parsed snapshot matches a committed fixture, so a Fed format change fails loudly | M |
-| F10 ⚠ | Split the snapshot per dimension so the payload stays small — **now the next thing to do**: the snapshot went 605 KB → 4.3 MB when the five axes landed | M |
+| ~~F10~~ ✅ | Split the snapshot per dimension so the payload stays small | M |
 
 ## Phase 1 — the five new dimensions
 
@@ -86,10 +86,18 @@ of its parts rather than their sum -- summing would have claimed a number about
 five times too high. Blank reaches the snapshot as null, never 0.0, which would
 read as "no wealth required".
 
-**The cost: the snapshot went from 605 KB to 4.3 MB** (5 groups to 27, each
-with 147 quarters). The frontend payload is untouched at 58 KB, since the
-embedded fallback only ships the latest period. That makes **F10 the next
-thing to do**, not a someday item.
+**F10 is done too, and this is what prompted it.** Ingesting the five axes took
+the snapshot from 605 KB to 4.3 MB (5 groups to 27, each with 147 quarters),
+and answering a question about one axis parsed all six. It is now an 11 KB
+index plus one file per dimension, read on demand:
+
+```
+serve one axis (index + networth) :  3.5 ms     637 KB
+everything (what it used to cost) : 15.2 ms   3,324 KB
+```
+
+The frontend payload was never affected -- the embedded fallback ships only the
+latest period and is still 58 KB.
 
 **F17 and F21 are done.** `constants.DIMENSIONS` now describes all six axes --
 member file, groups, categories, nesting -- and `WEALTH_GROUPS`, `GROUP_ORDER`,

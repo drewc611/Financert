@@ -49,6 +49,7 @@ MODULES = (
     "app/services/benchmarks.py",
 )
 DATA = "data/dfa_snapshot.json"
+DIMENSION_DIRNAME = "dimensions"
 
 # Manifest fields with no home in the listing metadata. `license` must keep
 # matching the repository's actual LICENSE file -- a manifest asserting terms
@@ -135,9 +136,15 @@ def stage() -> Path:
         shutil.copy2(BACKEND / rel, dest)
 
     # config.py resolves the snapshot relative to app/'s parent, which is src/.
+    # The snapshot is an index plus one file per dimension, so the whole data
+    # directory travels, not just the index -- the index alone would build a
+    # bundle that starts and then fails on its first question.
     dest = STAGE / "src" / DATA
     dest.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(BACKEND / DATA, dest)
+    dimensions = (BACKEND / DATA).parent / DIMENSION_DIRNAME
+    if dimensions.is_dir():
+        shutil.copytree(dimensions, dest.parent / DIMENSION_DIRNAME, dirs_exist_ok=True)
 
     return STAGE
 

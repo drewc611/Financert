@@ -9,6 +9,7 @@ a named failure rather than as an empty chart (F72).
 
 import csv
 import io
+import json
 import os
 import urllib.error
 import urllib.request
@@ -17,6 +18,7 @@ import zipfile
 import pytest
 
 from app import constants
+from app.services import benchmarks
 
 # What these were before the registry existed, transcribed from the commit that
 # introduced it. Written out literally on purpose -- deriving the expectation
@@ -138,3 +140,68 @@ def test_the_registry_matches_the_published_archive():
             claimed.update(constants.categories_for(key, name))
         missing = claimed - published
         assert not missing, f"{name}: registry names categories the file does not have: {sorted(missing)}"
+
+
+# ------------------------------------------------- the per-dimension split (F10)
+
+
+def test_the_index_does_not_carry_any_history():
+    """The whole point of the split: the index is what loads at import, so it
+    must stay small. Six axes of quarterly history in one document was 4.3 MB,
+    and answering a question about one axis parsed all of it."""
+    index = benchmarks.load_snapshot()
+    assert "groups" not in index
+    for name, entry in index["dimensions"].items():
+        assert "groups" not in entry, f"{name} inlined its history into the index"
+        assert entry["file"].endswith(".json"), name
+
+
+def test_every_dimension_named_by_the_index_can_be_loaded():
+    for name in benchmarks.dimension_names():
+        groups = benchmarks.groups_in(name)
+        assert set(groups) == set(constants.all_group_keys(name)), name
+
+
+def test_a_missing_side_file_is_a_named_error_not_a_key_error(tmp_path, monkeypatch):
+    """A half-copied data directory should say which file is missing and how to
+    rebuild it, rather than surfacing as a bare KeyError from somewhere deep in
+    a request."""
+    index = dict(benchmarks.load_snapshot())
+    index["dimensions"] = {"networth": {**index["dimensions"]["networth"], "file": "dimensions/gone.json"}}
+    path = tmp_path / "dfa_snapshot.json"
+    path.write_text(json.dumps(index))
+
+    monkeypatch.setattr(benchmarks, "SNAPSHOT_PATH", path)
+    benchmarks.load_snapshot.cache_clear()
+    benchmarks.groups_in.cache_clear()
+    try:
+        with pytest.raises(benchmarks.SnapshotError, match="gone.json"):
+            benchmarks.groups_in("networth")
+    finally:
+        monkeypatch.undo()
+        benchmarks.load_snapshot.cache_clear()
+        benchmarks.groups_in.cache_clear()
+
+
+def test_an_older_single_file_snapshot_still_loads(tmp_path, monkeypatch):
+    """A snapshot built before the split inlines its groups. Refusing to read
+    one would turn a routine upgrade into a required data rebuild."""
+    inline = dict(benchmarks.load_snapshot())
+    inline["dimensions"] = {
+        "networth": {
+            **{k: v for k, v in inline["dimensions"]["networth"].items() if k != "file"},
+            "groups": benchmarks.groups_in("networth"),
+        }
+    }
+    path = tmp_path / "dfa_snapshot.json"
+    path.write_text(json.dumps(inline))
+
+    monkeypatch.setattr(benchmarks, "SNAPSHOT_PATH", path)
+    benchmarks.load_snapshot.cache_clear()
+    benchmarks.groups_in.cache_clear()
+    try:
+        assert set(benchmarks.groups_in("networth")) == set(constants.ALL_GROUPS)
+    finally:
+        monkeypatch.undo()
+        benchmarks.load_snapshot.cache_clear()
+        benchmarks.groups_in.cache_clear()

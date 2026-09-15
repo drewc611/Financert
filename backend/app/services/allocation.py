@@ -94,7 +94,7 @@ def nearest_tier(user: dict[str, float], period: str, *, investable_only: bool =
         scored.append(
             {
                 "group": group_key,
-                "label": benchmarks.load_snapshot()["groups"][group_key]["label"],
+                "label": benchmarks.groups_in()[group_key]["label"],
                 "similarity": round(cosine_similarity(user, bench), 4),
             }
         )
@@ -136,7 +136,7 @@ def analyse(
         "period_complete": snapshot_row["complete"],
         "period_unavailable": snapshot_row["unavailable"],
         "benchmark_group": group,
-        "benchmark_label": benchmarks.load_snapshot()["groups"][group]["label"],
+        "benchmark_label": benchmarks.groups_in()[group]["label"],
         "investable_only": investable_only,
         "portfolio_total": round(total, 2),
         "excluded_value": round(sum(v for k, v in holdings.items() if k not in considered and v > 0), 2),

@@ -11,7 +11,7 @@ export const fallbackData = {
     "retrieved_via": "bulk download, dfa-networth-levels-detail.csv",
     "url": "https://www.federalreserve.gov/releases/z1/dataviz/dfa/",
     "download_url": "https://www.federalreserve.gov/releases/z1/dataviz/download/zips/dfa.zip",
-    "retrieved_at": "2026-09-15T06:42:57+00:00",
+    "retrieved_at": "2026-09-15T06:53:15+00:00",
     "archive_sha256": "28f708eb3707213bb0c2bc69d7efa070efd8dede8c312e754af152720f6d196f",
     "archive_bytes": 891509,
     "units": "US dollars, not seasonally adjusted"

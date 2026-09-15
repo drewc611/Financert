@@ -5,6 +5,9 @@
 The dashboard falls back to this file when the API is unreachable, so it must
 stay in step with ``data/dfa_snapshot.json``. Run it after ``fetch_dfa.py``.
 
+Reads through ``services.benchmarks`` rather than the file directly, so it does
+not need to know that the snapshot is now an index plus one file per dimension.
+
 Only the latest period's allocations and an annual sample of the trend curves
 are emitted -- enough for the UI to render truthfully without shipping the full
 quarterly history to every visitor.
@@ -13,9 +16,14 @@ quarterly history to every visitor.
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 BACKEND_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(BACKEND_DIR))
+
+from app.services import benchmarks  # noqa: E402
+
 SNAPSHOT = BACKEND_DIR / "data" / "dfa_snapshot.json"
 TARGET = BACKEND_DIR.parent / "frontend" / "src" / "lib" / "fallbackData.js"
 
@@ -33,6 +41,7 @@ export const fallbackData = """
 
 def main() -> None:
     snapshot = json.loads(SNAPSHOT.read_text())
+    networth = benchmarks.groups_in("networth")
     latest = snapshot["latest_period"]
 
     out: dict = {
@@ -49,7 +58,7 @@ def main() -> None:
 
     complete_period = snapshot["latest_complete_period"]
     for group_key in GROUPS:
-        group = snapshot["groups"][group_key]
+        group = networth[group_key]
         row = group["history"][-1]
         complete_row = next(r for r in group["history"] if r["period"] == complete_period)
         out["groups"][group_key] = {
@@ -82,7 +91,7 @@ def main() -> None:
         series = {}
         for group_key in GROUPS:
             points = []
-            for row in snapshot["groups"][group_key]["history"]:
+            for row in networth[group_key]["history"]:
                 if not row["period"].endswith("-07-01"):
                     continue
                 if asset not in row["assets"]:
