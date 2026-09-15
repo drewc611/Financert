@@ -104,7 +104,14 @@
     "overTime": "{asset} over time",
     "assetClass": "Asset class",
     "trendSub": "Share of each tier's total assets, since 1989. Top 1% and bottom 50% shown; the middle tiers sit between them.",
-    "trendUnavailable": "Trend data unavailable."
+    "trendUnavailable": "Trend data unavailable.",
+    "shapeTitle": "The shape of each balance sheet",
+    "shapeSub": "Three ways to describe a tier in one number each, from the same Federal Reserve data as the table above.",
+    "measure": "Measure",
+    "leverage": "Leverage",
+    "liquidity": "Liquid share",
+    "concentration": "Largest holding",
+    "leverageNote": "Leverage is debt against the whole balance sheet, so it does not change with the investable-only switch. The other two follow whatever the table above is showing."
   },
   "chart": {
     "you": "You",

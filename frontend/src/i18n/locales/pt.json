@@ -104,7 +104,14 @@
     "overTime": "{asset} ao longo do tempo",
     "assetClass": "Classe de ativo",
     "trendSub": "Proporção do total de ativos de cada faixa desde 1989. São mostrados o 1% mais rico e os 50% mais pobres; as faixas intermediárias ficam entre eles.",
-    "trendUnavailable": "Dados de tendência indisponíveis."
+    "trendUnavailable": "Dados de tendência indisponíveis.",
+    "shapeTitle": "O formato de cada balanço",
+    "shapeSub": "Três formas de descrever um nível com um único número cada, a partir dos mesmos dados da Reserva Federal da tabela acima.",
+    "measure": "Medida",
+    "leverage": "Alavancagem",
+    "liquidity": "Parcela líquida",
+    "concentration": "Maior posição",
+    "leverageNote": "A alavancagem é a dívida sobre o balanço inteiro, por isso não muda com o filtro de apenas investível. As outras duas acompanham o que a tabela acima mostra."
   },
   "chart": {
     "you": "Você",

@@ -104,7 +104,14 @@
     "overTime": "{asset} dans le temps",
     "assetClass": "Classe d'actifs",
     "trendSub": "Part des actifs totaux de chaque tranche depuis 1989. Les 1 % les plus riches et les 50 % les moins riches sont affichés ; les tranches intermédiaires se situent entre les deux.",
-    "trendUnavailable": "Données de tendance indisponibles."
+    "trendUnavailable": "Données de tendance indisponibles.",
+    "shapeTitle": "La forme de chaque bilan",
+    "shapeSub": "Trois façons de décrire une tranche en un seul chiffre chacune, à partir des mêmes données de la Réserve fédérale que le tableau ci-dessus.",
+    "measure": "Mesure",
+    "leverage": "Levier",
+    "liquidity": "Part liquide",
+    "concentration": "Plus grande position",
+    "leverageNote": "Le levier rapporte la dette au bilan entier : il ne change donc pas avec le filtre « investissable uniquement ». Les deux autres suivent ce qu'affiche le tableau ci-dessus."
   },
   "chart": {
     "you": "Vous",
