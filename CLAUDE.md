@@ -56,7 +56,7 @@ npm run dev       # :5173
 npm run build     # -> dist/
 npm run preview   # :4173
 npm test          # vitest, the pure functions in src/lib
-npx eslint . --ext .js,.jsx
+npx eslint .     # flat config, eslint.config.js
 ```
 
 `src/lib/analysis.js` mirrors `backend/app/services/allocation.py` and is what
@@ -64,8 +64,9 @@ the dashboard actually computes with -- offline it is the *only* implementation
 -- so it carries the frontend's tests (`src/lib/*.test.js`). Components are
 still verified by opening the app.
 
-ESLint config is `frontend/.eslintrc.cjs` — it lives beside `node_modules`
-because ESLint resolves plugins relative to the config file, not the cwd.
+ESLint config is `frontend/eslint.config.js` (flat config, ESLint 9). It lives
+beside `node_modules` because plugins resolve relative to the config file, and
+the files it lints are declared in the config rather than passed as `--ext`.
 
 ### Docker (repo root)
 

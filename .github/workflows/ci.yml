@@ -30,7 +30,11 @@ jobs:
       - name: Format check
         run: ruff format --check .
       - name: Test
-        run: pytest
+        # Coverage on the app package only -- the tests' own coverage is not a
+        # number anyone acts on. It prints a per-file table; no threshold,
+        # because a number that fails the build is a decision for whoever owns
+        # the project, not a default.
+        run: pytest --cov=app --cov-report=term-missing:skip-covered
 
   frontend:
     runs-on: ubuntu-latest
@@ -46,7 +50,9 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
       - run: npm ci
       - name: Lint
-        run: npx eslint . --ext .js,.jsx
+        # Flat config (eslint.config.js): the files it lints are declared in
+        # the config, so there is no --ext to pass.
+        run: npx eslint .
       - name: Test
         run: npm test
       - name: Build

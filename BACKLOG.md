@@ -375,6 +375,16 @@ the switch now.
 | F59 | Number formatting review — tabular figures everywhere they align | S |
 | ~~F60~~ ✅ | Explain the `unallocated` residual in the UI, not just the README | S |
 
+**F68 and F71 land with the ESLint 9 migration**, which is what made an audit
+gate possible: the last advisory on either side was `js-yaml` via ESLint 8, and
+flat config retires it. `npm audit` and `pip-audit` both report clean, so the
+workflow is a gate rather than a report -- the first thing it fails on will be
+new. It runs weekly and on any dependency change.
+
+F68 prints a per-file coverage table (96% of `app/`) with no threshold: a
+number that fails the build is a decision for whoever owns the project, not a
+default I should pick for them.
+
 **F69 is half done, and the half that was missing.** The frontend had lint and
 build; `src/lib/analysis.js` had neither, and it is what the dashboard computes
 with — offline it is the *only* implementation. Vitest now covers it and the
@@ -406,10 +416,10 @@ pre-existing advisories including a high. The one left is `js-yaml` via ESLint
 | F65 | Structured request logging | S |
 | F66 | Response caching for benchmark endpoints | S |
 | F67 | OpenAPI examples on every endpoint | S |
-| F68 | Backend coverage reporting in CI | S |
+| ~~F68~~ ✅ | Backend coverage reporting in CI | S |
 | ~~F69~~ ◐ | Frontend tests — Vitest over `src/lib`; components still browser-verified | L |
 | F70 | Visual regression snapshots for the charts | L |
-| F71 | Dependency audit workflow | S |
+| ~~F71~~ ✅ | Dependency audit workflow | S |
 | F72 ◐ | Data-source contract test hitting the live Fed zip weekly, so a format change surfaces before a refresh needs it — the test exists (`tests/test_dimensions.py`); it still needs a *scheduled* run, since it skips when the network is unreachable | M |
 
 ---

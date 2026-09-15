@@ -1,0 +1,57 @@
+name: Dependency audit
+
+# Dependabot opens PRs for updates; this says whether what is on main right now
+# has a known vulnerability, which is a different question and the one worth
+# waking up to. Both sides are clean as of this workflow landing, so it is a
+# gate rather than a report: the first thing it fails on will be new.
+on:
+  schedule:
+    - cron: "41 6 * * 2"
+  pull_request:
+    paths:
+      - "frontend/package.json"
+      - "frontend/package-lock.json"
+      - "backend/requirements*.txt"
+      - ".github/workflows/audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  npm:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      # High and above. Everything here is a build-time dependency -- nothing
+      # npm installs is served to a visitor -- so a moderate advisory in a dev
+      # tool is worth a Dependabot PR and not worth failing a scheduled run.
+      - name: Audit
+        run: npm audit --audit-level=high
+
+  pip:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+          cache: pip
+      # Audits the pinned requirements rather than an installed environment, so
+      # the answer is about what this repository asks for.
+      - name: Audit
+        run: |
+          pip install pip-audit
+          pip-audit --requirement requirements.txt --requirement requirements-dev.txt
