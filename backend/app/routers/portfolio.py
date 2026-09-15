@@ -17,7 +17,7 @@ from sqlalchemy.orm import Session
 
 from ..constants import dimension_of
 from ..dependencies import get_db, require_token
-from ..models import Holding, Portfolio
+from ..models import Debt, Holding, Portfolio
 from ..schemas import AnalysisOut, PlacementsOut, PortfolioIn, PortfolioOut, PortfolioSummaryOut
 from ..services import allocation, benchmarks
 
@@ -83,10 +83,13 @@ def upsert_portfolio(
     else:
         portfolio.name = payload.name
         portfolio.holdings.clear()
+        portfolio.debts.clear()
         db.flush()
 
     for item in payload.holdings:
         portfolio.holdings.append(Holding(asset_class=item.asset_class, value=item.value))
+    for debt in payload.debts:
+        portfolio.debts.append(Debt(liability_class=debt.liability_class, value=debt.value))
 
     db.commit()
     db.refresh(portfolio)
@@ -157,7 +160,8 @@ def preview_placements(
     answer to "whose balance sheet does this look like".
     """
     holdings = {h.asset_class: h.value for h in payload.holdings}
+    debts = {d.liability_class: d.value for d in payload.debts}
     try:
-        return allocation.placements(holdings, period=period, investable_only=investable_only)
+        return allocation.placements(holdings, debts=debts, period=period, investable_only=investable_only)
     except KeyError:
         raise HTTPException(status_code=404, detail=f"unknown period {period!r}") from None

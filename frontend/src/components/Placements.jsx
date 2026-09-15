@@ -14,7 +14,7 @@ import { useI18n } from '../i18n'
  * It says so rather than rendering an empty table.
  */
 export default function Placements() {
-  const { holdings, investableOnly, mode, dimension, groupKey, showGroup } = useAppData()
+  const { holdings, debts, investableOnly, mode, dimension, groupKey, showGroup } = useAppData()
   const { t, fmt, dimensionLabel, tierLabel } = useI18n()
   const [result, setResult] = useState(null)
   const [failed, setFailed] = useState(false)
@@ -27,7 +27,11 @@ export default function Placements() {
     setFailed(false)
     api
       .placements(
-        { name: 'current', holdings: Object.entries(holdings).map(([asset_class, value]) => ({ asset_class, value })) },
+        {
+          name: 'current',
+          holdings: Object.entries(holdings).map(([asset_class, value]) => ({ asset_class, value })),
+          debts: Object.entries(debts).map(([liability_class, value]) => ({ liability_class, value })),
+        },
         { investableOnly },
       )
       .then((data) => !cancelled && setResult(data))
@@ -35,7 +39,7 @@ export default function Placements() {
     return () => {
       cancelled = true
     }
-  }, [holdings, investableOnly, mode, hasHoldings])
+  }, [holdings, debts, investableOnly, mode, hasHoldings])
 
   if (!hasHoldings) return null
   if (mode !== 'live' || failed) {
@@ -97,6 +101,44 @@ export default function Placements() {
           </tbody>
         </table>
       </div>
+
+      {/* The same six readings for what is owed (BACKLOG F27), and a genuinely
+          different answer: a household can hold assets like the Next 9% and
+          owe like the bottom 50%, because a mortgage and a brokerage account
+          are not the same decision. Absent until the reader enters a debt
+          side, which nothing else on the page requires. */}
+      {result.debt_placements.length > 0 && (
+        <>
+          <p className="sub" style={{ marginTop: 22 }}>
+            {t('placements.debtSub', { amount: fmt.usd(result.total_debt, { compact: true }) })}
+          </p>
+          <div className="chart-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">{t('placements.axis')}</th>
+                  <th scope="col">{t('placements.nearestDebt')}</th>
+                  <th scope="col" className="num">
+                    {t('placements.similarity')}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {result.debt_placements.map((p) => (
+                  <tr key={p.dimension}>
+                    <td>{dimensionLabel(p.dimension, p.label)}</td>
+                    <td>
+                      {tierLabel(p.nearest, p.nearest_label)}
+                      {!p.confident && <span className="th-note">{t('placements.notConfident')}</span>}
+                    </td>
+                    <td className="num">{fmt.num(p.similarity)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
     </div>
   )
 }

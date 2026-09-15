@@ -92,7 +92,11 @@
     "saveToken": "Token speichern",
     "tokenSaved": "Token in diesem Browser gespeichert.",
     "tokenCleared": "Token gelöscht.",
-    "defaultName": "Mein Portfolio"
+    "defaultName": "Mein Portfolio",
+    "owedTitle": "Was Sie schulden",
+    "owedSub": "Optional. Für den Vergleich einer Aufteilung wird davon nichts gebraucht — damit kann die App Ihr Nettovermögen nennen, die Größe, über die die Stufen der Federal Reserve definiert sind.",
+    "netWorth": "Nettovermögen: {amount}.",
+    "netWorthNote": "Was Sie halten, minus was Sie schulden — dieselbe Definition wie bei den Stufen."
   },
   "benchmarks": {
     "netWorth": "Nettovermögen, {quarter}",
@@ -237,7 +241,9 @@
     "notConfident": "keine klare Entsprechung in diesem Schnitt",
     "show": "Vergleichen",
     "showing": "oben gezeigt",
-    "needsApi": "Dafür wird die API gebraucht: Eine Einordnung liest alle sechs Achsen, und der eingebettete Snapshot enthält nur das Nettovermögen."
+    "needsApi": "Dafür wird die API gebraucht: Eine Einordnung liest alle sechs Achsen, und der eingebettete Snapshot enthält nur das Nettovermögen.",
+    "nearestDebt": "Nächste nach Schulden",
+    "debtSub": "Und dieselbe Lesart für die {amount}, die Sie schulden. Ein Haushalt kann Vermögen wie die eine Stufe halten und wie eine andere schulden — eine Hypothek und ein Depot sind nicht dieselbe Entscheidung."
   },
   "placement": {
     "title": {
@@ -260,7 +266,8 @@
     "entryFrom": {
       "minimum_wealth_cutoff": "Nettovermögen ab {amount} ({quarter})",
       "minimum_income_cutoff": "Einkommen ab {amount} ({quarter})"
-    }
+    },
+    "useMine": "Meines verwenden ({amount})"
   },
   "debts": {
     "home_mortgages": "Hypotheken",
@@ -268,5 +275,12 @@
     "depository_loans": "Bankkredite",
     "other_loans": "Sonstige Kredite",
     "deferred_premiums": "Gestundete Lebensversicherungsprämien"
+  },
+  "debtBlurbs": {
+    "home_mortgages": "Hypotheken auf selbstgenutztes Wohneigentum, einschließlich Kreditlinien darauf.",
+    "consumer_credit": "Kreditkarten, Autokredite, Studienkredite und andere unbesicherte Konsumkredite.",
+    "depository_loans": "Kredite von Banken und anderen Einlageninstituten, die nirgends sonst erfasst sind.",
+    "other_loans": "Wertpapierkredite, Policendarlehen und sonstige Kredite außerhalb der obigen Kategorien.",
+    "deferred_premiums": "Fällige, aber noch nicht gezahlte Lebensversicherungsprämien — die einzige Verbindlichkeit außerhalb der Kredite."
   }
 }

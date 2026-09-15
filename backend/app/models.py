@@ -29,9 +29,25 @@ class Portfolio(Base):
         order_by="Holding.asset_class",
     )
 
+    debts: Mapped[list["Debt"]] = relationship(
+        back_populates="portfolio",
+        cascade="all, delete-orphan",
+        order_by="Debt.liability_class",
+    )
+
     @property
     def total_value(self) -> float:
         return sum(h.value for h in self.holdings)
+
+    @property
+    def total_debt(self) -> float:
+        return sum(d.value for d in self.debts)
+
+    @property
+    def net_worth(self) -> float:
+        """Assets less debts -- the figure the Fed's tiers are defined by, and
+        the one a portfolio of holdings alone cannot state (BACKLOG F25)."""
+        return self.total_value - self.total_debt
 
 
 class Holding(Base):
@@ -51,3 +67,23 @@ class Holding(Base):
     value: Mapped[float] = mapped_column(Float, default=0.0)
 
     portfolio: Mapped[Portfolio] = relationship(back_populates="holdings")
+
+
+class Debt(Base):
+    """One liability-class line in a portfolio (BACKLOG F25, F27).
+
+    A separate table rather than a column on `holdings`, so an existing
+    database picks it up from `create_all` instead of needing a migration this
+    project has no machinery for. Same granularity rule as Holding: the
+    benchmark exists per liability class, so that is what is stored.
+    """
+
+    __tablename__ = "debts"
+    __table_args__ = (UniqueConstraint("portfolio_id", "liability_class", name="uq_debt_class"),)
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    portfolio_id: Mapped[int] = mapped_column(ForeignKey("portfolios.id"), index=True)
+    liability_class: Mapped[str] = mapped_column(String(48))
+    value: Mapped[float] = mapped_column(Float, default=0.0)
+
+    portfolio: Mapped[Portfolio] = relationship(back_populates="debts")

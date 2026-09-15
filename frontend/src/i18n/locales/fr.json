@@ -92,7 +92,11 @@
     "saveToken": "Enregistrer le jeton",
     "tokenSaved": "Jeton enregistré dans ce navigateur.",
     "tokenCleared": "Jeton effacé.",
-    "defaultName": "Mon portefeuille"
+    "defaultName": "Mon portefeuille",
+    "owedTitle": "Ce que vous devez",
+    "owedSub": "Facultatif. Comparer une répartition n'en a pas besoin : cela permet à l'application d'indiquer votre patrimoine net, le chiffre qui définit les tranches de la Réserve fédérale.",
+    "netWorth": "Patrimoine net : {amount}.",
+    "netWorthNote": "Ce que vous détenez moins ce que vous devez — la définition même des tranches."
   },
   "benchmarks": {
     "netWorth": "patrimoine net, {quarter}",
@@ -237,7 +241,9 @@
     "notConfident": "aucune correspondance nette sur ce découpage",
     "show": "Comparer",
     "showing": "affiché ci-dessus",
-    "needsApi": "Ceci nécessite l'API : situer un portefeuille lit les six axes, et l'instantané embarqué ne contient que le patrimoine net."
+    "needsApi": "Ceci nécessite l'API : situer un portefeuille lit les six axes, et l'instantané embarqué ne contient que le patrimoine net.",
+    "nearestDebt": "Le plus proche par la dette",
+    "debtSub": "Et la même lecture pour les {amount} que vous devez. Un ménage peut détenir des actifs comme une tranche et s'endetter comme une autre : un prêt immobilier et un compte-titres ne sont pas la même décision."
   },
   "placement": {
     "title": {
@@ -260,7 +266,8 @@
     "entryFrom": {
       "minimum_wealth_cutoff": "Patrimoine à partir de {amount} ({quarter})",
       "minimum_income_cutoff": "Revenu à partir de {amount} ({quarter})"
-    }
+    },
+    "useMine": "Utiliser le mien ({amount})"
   },
   "debts": {
     "home_mortgages": "Prêts immobiliers",
@@ -268,5 +275,12 @@
     "depository_loans": "Prêts bancaires",
     "other_loans": "Autres prêts",
     "deferred_premiums": "Primes d'assurance-vie différées"
+  },
+  "debtBlurbs": {
+    "home_mortgages": "Prêts garantis par le logement occupé, y compris les lignes de crédit hypothécaire.",
+    "consumer_credit": "Cartes de crédit, prêts auto, prêts étudiants et autres emprunts à la consommation non garantis.",
+    "depository_loans": "Prêts de banques et autres établissements de dépôt non classés ailleurs.",
+    "other_loans": "Prêts sur marge, avances sur police et autres emprunts hors des catégories ci-dessus.",
+    "deferred_premiums": "Primes d'assurance-vie dues mais non encore payées — le seul passif hors du bloc des prêts."
   }
 }

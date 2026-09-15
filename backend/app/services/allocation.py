@@ -119,9 +119,44 @@ def nearest_tier(
     }
 
 
+def nearest_debt_tier(
+    debts: dict[str, float],
+    period: str,
+    *,
+    dimension: str = DEFAULT_DIMENSION,
+) -> dict[str, Any]:
+    """Whose *borrowing* one set of debts most resembles (BACKLOG F27).
+
+    The mirror of nearest_tier, and a genuinely different answer: a household
+    can hold assets like the Next 9% and owe like the bottom 50%, because a
+    mortgage and a brokerage account are not the same decision.
+    """
+    user = portfolio_weights(debts)
+    scored = []
+    for group_key in group_order(dimension):
+        bench = benchmarks.debt_weights(group_key, period, dimension)
+        scored.append(
+            {
+                "group": group_key,
+                "label": benchmarks.groups_in(dimension)[group_key]["label"],
+                "similarity": round(cosine_similarity(user, bench), 4),
+            }
+        )
+    scored.sort(key=lambda r: r["similarity"], reverse=True)
+    best = scored[0]
+    return {
+        "nearest": best["group"],
+        "nearest_label": best["label"],
+        "similarity": best["similarity"],
+        "confident": best["similarity"] >= SIMILARITY_FLOOR,
+        "ranked": scored,
+    }
+
+
 def placements(
     holdings: dict[str, float],
     *,
+    debts: dict[str, float] | None = None,
     period: str | None = None,
     investable_only: bool = True,
 ) -> dict[str, Any]:
@@ -138,11 +173,13 @@ def placements(
     resolved = benchmarks.resolve_period(period)
     considered = {k: v for k, v in holdings.items() if k not in NON_INVESTABLE} if investable_only else dict(holdings)
     user = portfolio_weights(considered)
+    owed = {k: v for k, v in (debts or {}).items() if v > 0}
 
     return {
         "period": resolved,
         "investable_only": investable_only,
         "portfolio_total": round(sum(v for v in considered.values() if v > 0), 2),
+        "total_debt": round(sum(owed.values()), 2),
         "placements": [
             {
                 "dimension": name,
@@ -152,6 +189,20 @@ def placements(
             for name, meta in benchmarks.dimensions().items()
         ]
         if user
+        else [],
+        # The same six readings for what is owed rather than what is held
+        # (BACKLOG F27). Empty unless the caller supplied debts: a portfolio
+        # with no debt side has no answer here, which is not the same as owing
+        # like nobody.
+        "debt_placements": [
+            {
+                "dimension": name,
+                "label": meta["label"],
+                **nearest_debt_tier(owed, resolved, dimension=name),
+            }
+            for name, meta in benchmarks.dimensions().items()
+        ]
+        if owed
         else [],
     }
 

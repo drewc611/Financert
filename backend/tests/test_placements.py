@@ -109,3 +109,65 @@ def test_the_nearest_tier_stays_on_the_compared_axis(client):
 @pytest.mark.parametrize("group", ["astrology", "", "top1x"])
 def test_an_unknown_group_is_still_404(client, group):
     assert client.post(f"/api/analysis/preview?group={group}", json=_body(EQUITY_HEAVY)).status_code == 404
+
+
+# ------------------------------------------- the debt side (F25, F27)
+
+MORTGAGE_HEAVY = {"home_mortgages": 400_000}
+CARDS_ONLY = {"consumer_credit": 25_000}
+
+
+def test_debt_placement_is_absent_until_there_is_debt():
+    """A portfolio with no debt side has no answer here, which is not the same
+    as owing like nobody."""
+    assert allocation.placements(EQUITY_HEAVY)["debt_placements"] == []
+    assert allocation.placements(EQUITY_HEAVY, debts={"home_mortgages": 0})["debt_placements"] == []
+
+
+def test_debt_placement_covers_every_axis():
+    result = allocation.placements(EQUITY_HEAVY, debts=MORTGAGE_HEAVY)
+    assert [p["dimension"] for p in result["debt_placements"]] == AXES
+    assert result["total_debt"] == 400_000
+
+
+def test_what_you_owe_places_differently_from_what_you_hold():
+    """The point of F27: a household can hold assets like one tier and owe like
+    another. Card debt is the bottom 50%'s shape; margin and policy loans are
+    the top 1%'s."""
+    assert allocation.nearest_debt_tier(CARDS_ONLY, benchmarks.latest_period())["nearest"] == "bottom50"
+    assert allocation.nearest_debt_tier({"other_loans": 300_000}, benchmarks.latest_period())["nearest"] == "top1"
+
+
+def test_the_endpoint_carries_debts_through(client):
+    body = {
+        "name": "test",
+        "holdings": [{"asset_class": k, "value": v} for k, v in EQUITY_HEAVY.items()],
+        "debts": [{"liability_class": k, "value": v} for k, v in CARDS_ONLY.items()],
+    }
+    response = client.post("/api/analysis/placements", json=body).json()
+    assert {p["dimension"] for p in response["debt_placements"]} == set(AXES)
+    assert response["total_debt"] == 25_000
+
+
+def test_an_unknown_liability_class_is_rejected(client):
+    body = {"name": "test", "holdings": [], "debts": [{"liability_class": "payday_loan", "value": 1}]}
+    assert client.post("/api/analysis/placements", json=body).status_code == 422
+
+
+def test_a_portfolio_round_trips_its_debts_and_states_its_net_worth(client):
+    body = {
+        "name": "with debt",
+        "holdings": [{"asset_class": "corporate_equities", "value": 500_000}],
+        "debts": [{"liability_class": "home_mortgages", "value": 200_000}],
+    }
+    saved = client.put("/api/portfolio?slug=debtor", json=body).json()
+    assert saved["total_debt"] == 200_000
+    assert saved["net_worth"] == 300_000
+
+    read_back = client.get("/api/portfolio?slug=debtor").json()
+    assert read_back["debts"] == [{"liability_class": "home_mortgages", "value": 200_000}]
+
+    # A replace drops the debt side too, or "I paid it off" would be unsayable.
+    cleared = client.put("/api/portfolio?slug=debtor", json={**body, "debts": []}).json()
+    assert cleared["debts"] == []
+    assert cleared["net_worth"] == 500_000
