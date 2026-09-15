@@ -113,7 +113,9 @@
     "leverage": "Apalancamiento",
     "liquidity": "Proporción líquida",
     "concentration": "Mayor posición",
-    "leverageNote": "El apalancamiento es la deuda frente al balance completo, por lo que no cambia con el filtro de solo invertible. Las otras dos siguen lo que muestra la tabla anterior."
+    "leverageNote": "El apalancamiento es la deuda frente al balance completo, por lo que no cambia con el filtro de solo invertible. Las otras dos siguen lo que muestra la tabla anterior.",
+    "perHousehold": "Dólares por hogar",
+    "perHouseholdNote": "Los activos de cada tramo divididos entre el número de hogares que contiene: un promedio, no un hogar típico. La dispersión dentro de un tramo es mayor en la cima: el 0,1% más rico está dentro del 1% más rico y posee varias veces su promedio."
   },
   "chart": {
     "you": "Usted",

@@ -113,7 +113,9 @@
     "leverage": "Levier",
     "liquidity": "Part liquide",
     "concentration": "Plus grande position",
-    "leverageNote": "Le levier rapporte la dette au bilan entier : il ne change donc pas avec le filtre « investissable uniquement ». Les deux autres suivent ce qu'affiche le tableau ci-dessus."
+    "leverageNote": "Le levier rapporte la dette au bilan entier : il ne change donc pas avec le filtre « investissable uniquement ». Les deux autres suivent ce qu'affiche le tableau ci-dessus.",
+    "perHousehold": "Dollars par ménage",
+    "perHouseholdNote": "Les avoirs de chaque tranche divisés par le nombre de ménages qu'elle compte : une moyenne, pas un ménage typique. La dispersion interne est la plus forte au sommet : les 0,1 % les plus riches sont inclus dans les 1 % et détiennent plusieurs fois leur moyenne."
   },
   "chart": {
     "you": "Vous",

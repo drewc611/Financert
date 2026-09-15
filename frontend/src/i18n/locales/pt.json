@@ -113,7 +113,9 @@
     "leverage": "Alavancagem",
     "liquidity": "Parcela líquida",
     "concentration": "Maior posição",
-    "leverageNote": "A alavancagem é a dívida sobre o balanço inteiro, por isso não muda com o filtro de apenas investível. As outras duas acompanham o que a tabela acima mostra."
+    "leverageNote": "A alavancagem é a dívida sobre o balanço inteiro, por isso não muda com o filtro de apenas investível. As outras duas acompanham o que a tabela acima mostra.",
+    "perHousehold": "Dólares por família",
+    "perHouseholdNote": "Os ativos de cada faixa divididos pelo número de famílias que a compõem — uma média, não uma família típica. A dispersão dentro de uma faixa é maior no topo: o 0,1% mais rico está dentro do 1% mais rico e detém várias vezes a sua média."
   },
   "chart": {
     "you": "Você",

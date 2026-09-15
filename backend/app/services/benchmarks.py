@@ -270,6 +270,9 @@ def allocation(
         "total_assets": row["total_assets"],
         "total_liabilities": row["total_liabilities"],
         "net_worth": row["net_worth"],
+        # How many households the totals above are spread across, so a reader
+        # can turn a share of $40 trillion into a figure that means something.
+        "household_count": row.get("household_count"),
         "weights": w,
         "metrics": shape_metrics(row, w),
     }

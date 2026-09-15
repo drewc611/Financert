@@ -221,6 +221,19 @@ It works offline (`build_fallback.py` now emits the resolved threshold) and it
 covers the income axis too, where the same column is an income floor — the tile
 label is keyed by which cutoff it is, since both sit under a net-worth figure.
 
+**F29 turns the shares into money.** A toggle on the holdings table divides each
+tier's assets by its household count: the top 1% holds $20.5M per household in
+equities where the bottom 50% holds $8.7K. It is a *mean*, and the note says so
+— the spread inside a tier is the whole story of the tier above it, and the top
+0.1% sits inside the top 1% holding roughly five times its average.
+
+The dollar figure is measured against the whole balance sheet, not the
+investable subtotal, so the investable switch changes which rows are listed and
+never how much a household holds. It reads through `benchmarkWeights()` rather
+than `group.assets` directly, because the API sends shares there and the
+embedded snapshot sends dollars — only the normalised form means the same thing
+in both, and the offline and live figures now match to the cent.
+
 
 | # | Feature | Size |
 |---|---|---|
@@ -230,7 +243,7 @@ label is keyed by which cutoff it is, since both sit under a net-worth figure.
 | F26 | Debt mix: home mortgages vs consumer credit vs other, per tier | M |
 | F27 | "Which tier is my *debt* like?" — the mirror of nearest-tier | M |
 | ~~F28~~ ✅ | Net-worth percentile placement from `Minimum Wealth Cutoff` | M |
-| F29 | Per-household dollar figures using `Household count`, not just shares | M |
+| ~~F29~~ ✅ | Per-household dollar figures using `Household count`, not just shares | M |
 | F30 | Time travel: benchmark against any quarter since 1989, not just two | M |
 | F31 | "Your gap over time" — hold your allocation, watch the gap move as the tier changes | L |
 | F32 | Era comparison: the top 1% in 1989 vs 2000 vs 2026 | M |
