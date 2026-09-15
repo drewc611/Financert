@@ -8,7 +8,26 @@ from ..services import benchmarks
 router = APIRouter(tags=["health"])
 
 
-@router.get("/healthz")
+@router.get(
+    "/healthz",
+    responses={
+        200: {
+            "content": {
+                "application/json": {
+                    "example": {
+                        "status": "ok",
+                        "snapshot_loaded": True,
+                        "latest_period": "2026-01-01",
+                        "latest_complete_period": "2026-01-01",
+                        "auth_enabled": False,
+                        "cors_wildcard": False,
+                        "cors_origins": 6,
+                    }
+                }
+            }
+        }
+    },
+)
 def healthz():
     try:
         snapshot_period = benchmarks.latest_period()

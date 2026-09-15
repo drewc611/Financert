@@ -471,14 +471,57 @@ other column of numbers already had.
 | ~~F62~~ ✅ | Alert when the Fed publishes a new quarter | S |
 | F63 | Snapshot diff tool: what changed between two refreshes | M |
 | ~~F64~~ ◐ | Deployment config and a real deploy — config done (`Dockerfile.mcp`, `fly.toml`, the Pages workflow, and the verification probes in DEPLOY.md); the deploy itself needs a hosting account | M |
-| F65 | Structured request logging | S |
-| F66 | Response caching for benchmark endpoints | S |
-| F67 | OpenAPI examples on every endpoint | S |
+| ~~F65~~ ✅ | Structured request logging | S |
+| ~~F66~~ ✅ | Response caching for benchmark endpoints | S |
+| ~~F67~~ ✅ | OpenAPI examples on every endpoint | S |
 | ~~F68~~ ✅ | Backend coverage reporting in CI | S |
 | ~~F69~~ ◐ | Frontend tests — Vitest over `src/lib`; components still browser-verified | L |
 | F70 | Visual regression snapshots for the charts | L |
 | ~~F71~~ ✅ | Dependency audit workflow | S |
-| F72 ◐ | Data-source contract test hitting the live Fed zip weekly, so a format change surfaces before a refresh needs it — the test exists (`tests/test_dimensions.py`); it still needs a *scheduled* run, since it skips when the network is unreachable | M |
+| ~~F72~~ ✅ | Data-source contract test hitting the live Fed zip weekly, so a format change surfaces before a refresh needs it | M |
+
+**F65, F66 and F67 are one pass over what the API does either side of a
+handler**, and two of them are decisions about what *not* to do.
+
+F65 logs one JSON object per request — method, route, status, duration, request
+id — and deliberately nothing else. No query string, no body, no client
+address: the query carries portfolio slugs and the body carries holdings, and
+PRIVACY.md is a claim about this code that has to stay true. The route is the
+matched template (`/api/portfolio`), not the URL, so a slug cannot arrive in a
+log line by the back door; an unmatched path is logged raw, truncated, because
+on a 404 the path is the only informative part. An inbound `X-Request-ID` is
+kept and echoed back so a line here joins to a line from whatever sits in front
+of it — bounded and character-restricted first, since it is caller-controlled
+text on its way into a log.
+
+F66 is an `ETag` over the archive checksum plus the query, which is a complete
+cache key: `/api/benchmarks*` is a pure function of the committed snapshot, so
+if both match, the body cannot have changed. A matching `If-None-Match` is
+answered 304 *before* the handler runs — 9.3 ms of assembling six quarterly
+histories becomes 0.3 ms — and `max-age` is 60 seconds rather than the quarter
+the data actually lives, because a deploy can replace it at any moment and a
+client holding a stale allocation has no way to notice. Everything else gets
+`no-store`: portfolios are per-install state behind a shared token, and nothing
+between here and the browser should be keeping a copy.
+
+The middleware order is load-bearing and is commented as such. CORS has to wrap
+the cache layer, or the 304 the cache returns by itself carries no
+`Access-Control-Allow-Origin` and the browser rejects the revalidation it just
+asked for.
+
+F67 puts a worked example on every request body and every JSON response, taken
+from real output rather than invented, with the long lists cut short and marked
+as cut. `tests/test_openapi.py` asserts the coverage, because the failure mode
+is silent — a new endpoint renders in `/docs` as an empty grey box and nobody
+notices — and it also PUTs the portfolio example back at the API, since an
+example that does not validate is worse than none: it is the first thing a
+reader pastes into the try-it box.
+
+**F72 needed the scheduled run, not the test.** The contract test skipped when
+the network was unreachable, which is right on a laptop and useless in the one
+place it was meant to run. `FINANCERT_REQUIRE_NETWORK=1` turns that skip into a
+failure, and the weekly `source-check` workflow sets it: a skip that nobody
+reads is not a check.
 
 ---
 

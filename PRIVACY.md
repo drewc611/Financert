@@ -6,7 +6,7 @@ publishing it at a public URL for a directory submission or an app store
 listing, get it reviewed — and re-check it against the code, because the
 claims below are only true while the code stays as described.
 
-Last updated: 2026-09-07
+Last updated: 2026-09-15
 
 ---
 
@@ -57,6 +57,12 @@ There are no user accounts. Access is controlled by a single shared bearer
 token, if one is configured. **Anyone holding that token can read every
 portfolio on that install** — it is not per-user isolation, and it should not
 be relied on as such.
+
+The API writes one line per request to its own standard output: the method, the
+matched route (`/api/portfolio`, never the slug that was asked for), the status,
+how long it took, and a request id. Holdings are not logged — the logger never
+reads the request body — and neither is the query string or the client's
+address. Where that output goes is the decision of whoever runs the server.
 
 ### Dashboard (`frontend/`)
 

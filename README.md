@@ -183,6 +183,7 @@ backend/
     constants.py       asset taxonomy + the DFA column each bucket reads (start here)
     config.py          env-driven settings      database.py  engine/session
     models.py          Portfolio + Holding      schemas.py   API contract
+    middleware.py      JSON request log; ETag on the reference endpoints
     services/
       benchmarks.py    reads the DFA snapshot
       allocation.py    weights, gaps, nearest tier (pure functions)
@@ -244,6 +245,28 @@ FINANCERT_CORS_ORIGINS=https://your.domain    # defaults to localhost only
 The token is a single shared secret, not a per-user login: anyone holding it
 sees every portfolio on the install. That fits a self-hosted single-household
 tool. Multi-tenant use would need real accounts — see the scope note below.
+
+### Logs and caching
+
+The API writes one JSON object per line to stdout — method, matched route,
+status, duration and a request id — at `FINANCERT_LOG_LEVEL` (default `INFO`).
+Deliberately no query string, no request body and no client address: the query
+carries portfolio slugs and the body carries holdings, and neither belongs in a
+file that outlives the request. An inbound `X-Request-ID` is kept and echoed
+back, so a line here can be matched to a line from whatever sits in front of it.
+
+```json
+{"ts":"2026-09-15T23:29:10.861Z","level":"info","event":"request","request_id":"4bcb6dc44e6d4d48","method":"GET","route":"/api/benchmarks","status":200,"duration_ms":9.28}
+```
+
+`/api/benchmarks*` is a pure function of the committed snapshot, so it carries
+an `ETag` derived from the archive checksum and the query, and answers a
+matching `If-None-Match` with a 304 *before* the handler runs — a few hundred
+kB of assembled quarterly history skipped rather than built and discarded
+(9.3 ms → 0.3 ms locally). `max-age` is only 60 seconds because a deploy can
+replace the data at any moment and a stale client has no way to notice;
+revalidating costs an empty 304. Everything else — portfolios, analyses,
+`/healthz` — is sent `no-store`.
 
 ## Development
 

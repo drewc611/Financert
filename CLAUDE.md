@@ -96,6 +96,14 @@ because it is the code that encodes what the product actually *claims*.
 `frontend/src/lib/analysis.js` deliberately **mirrors** `allocation.py` so the
 dashboard works offline. Change a rule in one, change it in the other.
 
+`app/middleware.py` wraps every response: one JSON log line per request, and an
+`ETag` over the snapshot checksum on `/api/benchmarks*` with `no-store` on
+everything else. Two constraints if you touch it — the log line must never grow
+a query string or a body (PRIVACY.md says it has neither, and that claim has to
+stay true), and CORS must stay *outside* the cache layer, or the 304 the cache
+returns by itself carries no `Access-Control-Allow-Origin` and the browser
+rejects the revalidation it just asked for.
+
 ## The DFA data
 
 The data is the Federal Reserve's Distributional Financial Accounts, taken
