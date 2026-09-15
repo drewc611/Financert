@@ -298,6 +298,22 @@ button {
   text-overflow: ellipsis;
 }
 
+/* The axis picker carries a line saying what the chosen cut of the population
+   is, so it stacks instead of sitting inline with the other controls. */
+.axis-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.axis-note {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  max-width: 68ch;
+}
+
 select,
 input[type="number"],
 input[type="text"] {

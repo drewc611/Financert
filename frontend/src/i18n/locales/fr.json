@@ -128,12 +128,12 @@
   },
   "disclaimer": {
     "whatTitle": "Ce que c'est.",
-    "whatBody": "Financert compare un portefeuille à la façon dont les ménages américains de chaque tranche de richesse détiennent réellement leurs actifs, d'après les",
+    "whatBody": "Financert compare un portefeuille à la façon dont les ménages américains détiennent réellement leurs actifs, regroupés par patrimoine net et cinq autres découpages des mêmes ménages, mesurée par les",
     "dfaLink": "Comptes financiers distributifs",
     "dataThrough": "Données jusqu'à {quarter}",
     "newestComplete": " ; le trimestre le plus récent entièrement publié est {quarter}",
     "notTitle": "Ce que ce n'est pas.",
-    "notBody": "Il s'agit d'une description, non d'un conseil. Reproduire la répartition des 1 % les plus riches ne reproduirait pas leurs rendements : une grande part de leur patrimoine se trouve dans des entreprises privées qu'ils détiennent et dirigent, et les données ne disent rien du risque, de la fiscalité, de l'horizon de placement, ni de l'adéquation d'une répartition à votre situation.",
+    "notBody": "C'est descriptif, pas un conseil. Reproduire la répartition des 1 % les plus riches ne reproduirait pas leurs rendements : une grande part de leur patrimoine est constituée d'entreprises privées qu'ils détiennent et dirigent, et les données ne disent rien du risque, de la fiscalité, de l'horizon de placement ni de ce qui vous convient. Lorsque les groupes diffèrent, ce qui diffère, c'est ce qu'ils détiennent ; ces données le consignent et n'en expliquent pas la raison.",
     "translationNote": "Traduction automatique. En cas de divergence, le texte original en anglais fait foi."
   },
   "tiers": {
@@ -209,5 +209,13 @@
     "income": "Revenu",
     "race": "Origine ethnique",
     "age": "Âge"
+  },
+  "dimensionNotes": {
+    "networth": "Ménages regroupés selon la position de leur patrimoine net dans la distribution nationale.",
+    "generation": "Ménages regroupés selon la cohorte de naissance de la personne de référence, d'après les cohortes de la Réserve fédérale.",
+    "education": "Ménages regroupés selon le niveau d'études le plus élevé achevé par la personne de référence.",
+    "income": "Ménages regroupés selon la position de leurs revenus dans la distribution nationale — un découpage distinct du patrimoine, car ce qui est gagné et ce qui est détenu diffèrent.",
+    "race": "Ménages regroupés selon l'origine déclarée pour la personne de référence, dans les catégories publiées par la Réserve fédérale.",
+    "age": "Ménages regroupés selon l'âge de la personne de référence."
   }
 }

@@ -128,12 +128,12 @@
   },
   "disclaimer": {
     "whatTitle": "Was das hier ist.",
-    "whatBody": "Financert vergleicht ein Portfolio damit, wie US-Haushalte in jeder Vermögensstufe ihre Vermögenswerte tatsächlich halten, gemessen an den",
+    "whatBody": "Financert vergleicht ein Portfolio damit, wie US-Haushalte ihre Vermögenswerte tatsächlich halten – gruppiert nach Nettovermögen und fünf weiteren Schnitten derselben Haushalte, gemessen an den",
     "dfaLink": "Distributional Financial Accounts",
     "dataThrough": "Daten bis {quarter}",
     "newestComplete": "; das aktuellste vollständig veröffentlichte Quartal ist {quarter}",
     "notTitle": "Was es nicht ist.",
-    "notBody": "Es ist beschreibend, keine Beratung. Die Aufteilung des reichsten 1 % nachzubilden würde deren Renditen nicht reproduzieren: Ein großer Teil ihres Vermögens steckt in privaten Unternehmen, die sie besitzen und führen, und die Daten sagen nichts über Risiko, Steuern, Anlagehorizont oder darüber, ob eine Aufteilung zu Ihnen passt.",
+    "notBody": "Es ist beschreibend, keine Beratung. Die Aufteilung des reichsten 1 % nachzubilden würde deren Renditen nicht reproduzieren: Ein großer Teil ihres Vermögens steckt in privaten Unternehmen, die sie besitzen und führen, und die Daten sagen nichts über Risiko, Steuern, Anlagehorizont oder darüber, ob eine Aufteilung zu Ihnen passt. Wo Gruppen sich unterscheiden, unterscheidet sich, was sie halten; die Daten halten das fest und erklären nicht, warum.",
     "translationNote": "Maschinelle Übersetzung. Bei Abweichungen ist der englische Originaltext maßgeblich."
   },
   "tiers": {
@@ -209,5 +209,13 @@
     "income": "Einkommen",
     "race": "Herkunft und Ethnie",
     "age": "Alter"
+  },
+  "dimensionNotes": {
+    "networth": "Haushalte, gruppiert danach, wo ihr Nettovermögen in der nationalen Verteilung liegt.",
+    "generation": "Haushalte, gruppiert nach der Geburtskohorte der Referenzperson, nach den Kohorten der Federal Reserve.",
+    "education": "Haushalte, gruppiert nach dem höchsten Bildungsabschluss der Referenzperson.",
+    "income": "Haushalte, gruppiert danach, wo ihr Einkommen in der nationalen Verteilung liegt — ein anderer Schnitt als das Vermögen, denn Verdientes und Gehaltenes sind nicht dasselbe.",
+    "race": "Haushalte, gruppiert nach der für die Referenzperson angegebenen Herkunft, in den von der Federal Reserve veröffentlichten Kategorien.",
+    "age": "Haushalte, gruppiert nach dem Alter der Referenzperson."
   }
 }
