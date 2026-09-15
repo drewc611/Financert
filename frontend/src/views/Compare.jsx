@@ -4,6 +4,7 @@ import { analyse } from '../lib/analysis'
 import AllocationChart from '../components/AllocationChart'
 import GapChart from '../components/GapChart'
 import DimensionPicker from '../components/DimensionPicker'
+import CohortPicker from '../components/CohortPicker'
 import { useI18n } from '../i18n'
 
 export default function Compare() {
@@ -196,43 +197,46 @@ function TierControls({
 }) {
   const { t, fmt, tierLabel, percentileRange } = useI18n()
   return (
-    <div className="controls">
-      <DimensionPicker />
-      <label>
-        {t('controls.compareAgainst')}
-        <select value={groupKey} onChange={(e) => setGroupKey(e.target.value)}>
-          {Object.values(groups).map((g) => (
-            <option key={g.key} value={g.key}>
-              {tierLabel(g.key, g.label)}
-              {/* Only a cut defined by percentile has a range; generation,
-                  education, race and age send null rather than inventing one. */}
-              {g.percentile_range ? ` (${percentileRange(g.key, g.percentile_range)})` : ''}
-              {g.nested ? t('controls.insideTop1') : ''}
-            </option>
-          ))}
-        </select>
-      </label>
-      {/* Only meaningful when the newest quarter is missing a class. With the
-          bulk DFA source every quarter is complete, so the two options would
-          be the same date and the control would be noise. */}
-      {benchmarks.latestPeriod !== benchmarks.completePeriod && (
+    <>
+      <CohortPicker />
+      <div className="controls">
+        <DimensionPicker />
         <label>
-          {t('controls.quarter')}
-          <select value={periodMode} onChange={(e) => setPeriodMode(e.target.value)}>
-            <option value="latest">
-              {t('controls.mostRecent', { quarter: fmt.quarter(benchmarks.latestPeriod) })}
-            </option>
-            <option value="complete">
-              {t('controls.fullyPublished', { quarter: fmt.quarter(benchmarks.completePeriod) })}
-            </option>
+          {t('controls.compareAgainst')}
+          <select value={groupKey} onChange={(e) => setGroupKey(e.target.value)}>
+            {Object.values(groups).map((g) => (
+              <option key={g.key} value={g.key}>
+                {tierLabel(g.key, g.label)}
+                {/* Only a cut defined by percentile has a range; generation,
+                    education, race and age send null rather than inventing one. */}
+                {g.percentile_range ? ` (${percentileRange(g.key, g.percentile_range)})` : ''}
+                {g.nested ? t('controls.insideTop1') : ''}
+              </option>
+            ))}
           </select>
         </label>
-      )}
-      <label>
-        <input type="checkbox" checked={investableOnly} onChange={(e) => setInvestableOnly(e.target.checked)} />
-        {t('controls.investableOnly')}
-      </label>
-    </div>
+        {/* Only meaningful when the newest quarter is missing a class. With the
+            bulk DFA source every quarter is complete, so the two options would
+            be the same date and the control would be noise. */}
+        {benchmarks.latestPeriod !== benchmarks.completePeriod && (
+          <label>
+            {t('controls.quarter')}
+            <select value={periodMode} onChange={(e) => setPeriodMode(e.target.value)}>
+              <option value="latest">
+                {t('controls.mostRecent', { quarter: fmt.quarter(benchmarks.latestPeriod) })}
+              </option>
+              <option value="complete">
+                {t('controls.fullyPublished', { quarter: fmt.quarter(benchmarks.completePeriod) })}
+              </option>
+            </select>
+          </label>
+        )}
+        <label>
+          <input type="checkbox" checked={investableOnly} onChange={(e) => setInvestableOnly(e.target.checked)} />
+          {t('controls.investableOnly')}
+        </label>
+      </div>
+    </>
   )
 }
 

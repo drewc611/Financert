@@ -145,11 +145,25 @@ than separate households.
 | ~~F15~~ ✅ | **Age** axis — under 40, 40–54, 55–69, 70+ | M |
 | ~~F16~~ ✅ | Dimension picker in the UI; the whole dashboard re-benchmarks against the chosen axis | L |
 | ~~F17~~ ✅ | Generalise `WEALTH_GROUPS` into a dimension registry so a new axis is data, not code | L |
-| F18 | "Compare me to my cohort" — pick your generation/age/education, benchmark against it | M |
+| ~~F18~~ ✅ | "Compare me to my cohort" — pick your generation/age/education, benchmark against it | M |
 | F19 | Cross-dimension view: your allocation against *all six* axes at once | M |
 | ~~F20~~ ✅ | Per-dimension nesting rules (income has its own top-1% analogue; do not assume the net-worth shape) | M |
 | ~~F21~~ ✅ | Guard rail: dimensions are separate populations and must never be summed together | S |
 | ~~F22~~ ✅ | Framing review for the race axis — descriptive, sourced, no causal or prescriptive language | S |
+
+**F18 covers three of the six axes, and that is the whole design.** Generation,
+age and education are things a reader knows about themselves. Income percentile
+is a fact about the national distribution that nobody knows offhand, and race
+is a cut to browse, not a box to tick before the product will talk to you — both
+stay in the axis picker, which is where browsing belongs.
+
+The choices sit in `localStorage` and are never sent: a benchmark request
+carries which cut is being shown, never who asked. Picking one moves the whole
+dashboard onto that axis and group, and the most recent pick is where a
+returning reader lands — otherwise the product asks who you are and then opens
+on the top 1% anyway. Applying the group waits for the new axis's data (see
+`pendingGroup` in `AppDataContext`), because setting it first would index the
+axis still on screen by a key it does not have.
 
 **F22 came out as a framing pass over all six axes, not just race.** Singling
 one axis out for a caveat is its own editorial claim, and the picker had made

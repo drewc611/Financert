@@ -1,18 +1,29 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { api, getToken, setToken } from '../lib/api'
 import { fallbackData } from '../lib/fallbackData'
 
 const AppDataContext = createContext(null)
 
 const STORAGE_KEY = 'financert.holdings.v1'
+const COHORT_KEY = 'financert.cohort.v1'
 
-function readStoredHoldings() {
+function readStored(key) {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY)
+    const raw = localStorage.getItem(key)
     return raw ? JSON.parse(raw) : {}
   } catch {
     return {}
   }
+}
+
+/** `last` is which axis was chosen most recently, so a returning reader lands
+ *  on the benchmark they picked rather than back on the top 1%. Shaped
+ *  defensively because this comes out of a store anything could have written. */
+function readCohort() {
+  const stored = readStored(COHORT_KEY)
+  const groups = stored.groups && typeof stored.groups === 'object' ? stored.groups : {}
+  const last = typeof stored.last === 'string' && groups[stored.last] ? stored.last : null
+  return { groups, last }
 }
 
 export function AppDataProvider({ children }) {
@@ -20,11 +31,19 @@ export function AppDataProvider({ children }) {
   // snapshot. The badge in the topbar reads this.
   const [mode, setMode] = useState('loading')
   const [benchmarks, setBenchmarks] = useState(null)
-  const [holdings, setHoldings] = useState(readStoredHoldings)
-  // Which cut of the population to benchmark against. Net worth is the axis
-  // the product is built around, so it stays the default.
-  const [dimension, setDimension] = useState('networth')
-  const [groupKey, setGroupKey] = useState('top1')
+  const [holdings, setHoldings] = useState(() => readStored(STORAGE_KEY))
+  /* Which group of an axis the reader says they belong to, one per axis, plus
+     the one they chose last (BACKLOG F18). Kept in localStorage and never sent
+     anywhere: the benchmark request carries the axis, never who asked. */
+  const [cohort, setCohort] = useState(readCohort)
+  // Which cut of the population to benchmark against. A reader who has told us
+  // their cohort opens on it; everyone else on net worth, the axis the product
+  // is built around.
+  const [dimension, setDimension] = useState(() => cohort.last ?? 'networth')
+  const [groupKey, setGroupKey] = useState(() => cohort.groups[cohort.last] ?? 'top1')
+  // Set when a cohort choice needs an axis that is still loading; applied by
+  // swapIn once its groups are actually here.
+  const pendingGroup = useRef(null)
   const [investableOnly, setInvestableOnly] = useState(true)
   // 'latest' is the newest quarter, which may be missing a lagging class;
   // 'complete' is the newest one where everything is published.
@@ -43,8 +62,13 @@ export function AppDataProvider({ children }) {
        the app on a nonexistent group if the fetch failed instead. Both setters
        run in one batch, so no render sees the mismatch. */
     function swapIn(next) {
+      const wanted = pendingGroup.current
+      pendingGroup.current = null
       setBenchmarks(next)
-      setGroupKey((key) => (next.groups[key] ? key : next.groupOrder[0]))
+      setGroupKey((key) => {
+        const candidate = wanted ?? key
+        return next.groups[candidate] ? candidate : next.groupOrder[0]
+      })
     }
 
     async function load() {
@@ -106,7 +130,7 @@ export function AppDataProvider({ children }) {
       .getPortfolio(slug)
       .then((p) => {
         if (cancelled || !p) return
-        const stored = readStoredHoldings()
+        const stored = readStored(STORAGE_KEY)
         // Only adopt the server's copy when this browser has nothing local,
         // so a fresh device gets the saved portfolio but local edits win.
         if (Object.keys(stored).length === 0 && p.holdings.length) {
@@ -131,6 +155,36 @@ export function AppDataProvider({ children }) {
   }, [])
 
   const clearHoldings = useCallback(() => setHoldings({}), [])
+
+  /* Record the reader's own group on one axis, and benchmark against it.
+     Passing null forgets that axis and leaves the view where it is.
+
+     The group is applied through pendingGroup rather than set here whenever
+     the axis has to load first: setting it now would index the axis still on
+     screen by a key it does not have. */
+  const chooseCohort = useCallback(
+    (axis, group) => {
+      setCohort((prev) => {
+        const groups = { ...prev.groups }
+        if (group) groups[axis] = group
+        else delete groups[axis]
+        const next = { groups, last: group ? axis : prev.last === axis ? null : prev.last }
+        try {
+          localStorage.setItem(COHORT_KEY, JSON.stringify(next))
+        } catch {
+          /* storage disabled -- the choice still applies for this session */
+        }
+        return next
+      })
+      if (!group) return
+      if (axis === dimension) setGroupKey(group)
+      else {
+        pendingGroup.current = group
+        setDimension(axis)
+      }
+    },
+    [dimension],
+  )
 
   const save = useCallback(async () => {
     if (mode !== 'live') return { ok: false, reason: 'offline' }
@@ -177,6 +231,8 @@ export function AppDataProvider({ children }) {
       setGroupKey,
       dimension,
       setDimension,
+      cohort,
+      chooseCohort,
       investableOnly,
       setInvestableOnly,
     }),
@@ -195,7 +251,8 @@ export function AppDataProvider({ children }) {
       save,
       groupKey,
       dimension,
-      setDimension,
+      cohort,
+      chooseCohort,
       investableOnly,
     ],
   )

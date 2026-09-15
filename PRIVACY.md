@@ -60,8 +60,10 @@ be relied on as such.
 
 ### Dashboard (`frontend/`)
 
-Uses browser `localStorage` for your holdings, your theme choice, and the API
-token if you enter one. That data stays in your browser. No cookies are set, no
+Uses browser `localStorage` for your holdings, your theme choice, the cohort you
+pick for yourself (generation, age, education), and the API token if you enter
+one. That data stays in your browser: a benchmark request carries which cut of
+the population is being shown, never who asked for it. No cookies are set, no
 analytics or third-party scripts are loaded, and no requests go anywhere except
 the Financert API you point it at.
 

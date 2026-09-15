@@ -217,5 +217,10 @@
     "income": "Hogares agrupados según la posición de sus ingresos en la distribución nacional: un corte distinto al del patrimonio, porque lo que se gana y lo que se posee no son lo mismo.",
     "race": "Hogares agrupados por la raza y el origen étnico declarados para la persona de referencia, en las categorías que publica la Reserva Federal.",
     "age": "Hogares agrupados por la edad de la persona de referencia."
+  },
+  "cohort": {
+    "title": "Tu grupo",
+    "unset": "Sin definir",
+    "privacy": "Se queda en este navegador; nunca se envía con una consulta de referencia."
   }
 }

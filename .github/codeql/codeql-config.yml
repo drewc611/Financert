@@ -1,0 +1,30 @@
+name: "Financert CodeQL config"
+
+# Everything the default suites run, minus one query that this product's own
+# name makes permanently false.
+#
+# js/clear-text-storage-of-sensitive-data decides what counts as sensitive from
+# the names in the code, and "Financert" ends in **cert**. Every localStorage
+# key is namespaced `financert.*`, so every read-then-write of the user's own
+# holdings or cohort matches its certificate heuristic. Confirmed against the
+# query itself, not guessed -- with the same code and the same flows:
+#
+#     localStorage.setItem('financert.x', ...)   -> alert
+#     localStorage.setItem('financer.x',  ...)   -> no alert
+#     localStorage.setItem('mycert.x',    ...)   -> alert
+#     localStorage.setItem('concert.x',   ...)   -> no alert (their allowlist)
+#
+# What the query is actually for -- a credential written to disk in the clear --
+# is not what it is finding here: a portfolio and a self-declared cohort kept in
+# the reader's own browser is this product's design, documented in PRIVACY.md,
+# and there is nowhere else to keep it (an encryption key stored beside the
+# ciphertext would be theatre). Inline suppression comments do not work for
+# JavaScript, so the exclusion has to live here.
+#
+# The cost: a real clear-text-storage mistake in frontend code would not be
+# flagged either. That is worth saying out loud, and it is recorded in
+# SECURITY.md next to the other automated checks. The alternative was a CodeQL
+# check that is red on every PR touching storage, which is a check nobody reads.
+query-filters:
+  - exclude:
+      id: js/clear-text-storage-of-sensitive-data

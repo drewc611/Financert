@@ -217,5 +217,10 @@
     "income": "Ménages regroupés selon la position de leurs revenus dans la distribution nationale — un découpage distinct du patrimoine, car ce qui est gagné et ce qui est détenu diffèrent.",
     "race": "Ménages regroupés selon l'origine déclarée pour la personne de référence, dans les catégories publiées par la Réserve fédérale.",
     "age": "Ménages regroupés selon l'âge de la personne de référence."
+  },
+  "cohort": {
+    "title": "Votre groupe",
+    "unset": "Non défini",
+    "privacy": "Reste dans ce navigateur ; jamais transmis avec une requête de référence."
   }
 }

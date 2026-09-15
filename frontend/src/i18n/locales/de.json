@@ -217,5 +217,10 @@
     "income": "Haushalte, gruppiert danach, wo ihr Einkommen in der nationalen Verteilung liegt — ein anderer Schnitt als das Vermögen, denn Verdientes und Gehaltenes sind nicht dasselbe.",
     "race": "Haushalte, gruppiert nach der für die Referenzperson angegebenen Herkunft, in den von der Federal Reserve veröffentlichten Kategorien.",
     "age": "Haushalte, gruppiert nach dem Alter der Referenzperson."
+  },
+  "cohort": {
+    "title": "Ihre Gruppe",
+    "unset": "Nicht angegeben",
+    "privacy": "Bleibt in diesem Browser; wird nie mit einer Benchmark-Anfrage gesendet."
   }
 }
