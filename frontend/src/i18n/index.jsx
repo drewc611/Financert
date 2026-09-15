@@ -122,6 +122,10 @@ export function I18nProvider({ children }) {
         const hit = lookup(BUNDLES[locale] || {}, `debts.${key}`)
         return typeof hit === 'string' ? hit : (fallback ?? translate(locale, `debts.${key}`))
       },
+      debtBlurb: (key, fallback) => {
+        const hit = lookup(BUNDLES[locale] || {}, `debtBlurbs.${key}`)
+        return typeof hit === 'string' ? hit : (fallback ?? translate(locale, `debtBlurbs.${key}`))
+      },
       assetBlurb: (key, fallback) => {
         const hit = lookup(BUNDLES[locale] || {}, `assetBlurbs.${key}`)
         return typeof hit === 'string' ? hit : (fallback ?? translate(locale, `assetBlurbs.${key}`))

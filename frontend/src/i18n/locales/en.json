@@ -92,7 +92,11 @@
     "saveToken": "Save token",
     "tokenSaved": "Token saved in this browser.",
     "tokenCleared": "Token cleared.",
-    "defaultName": "My portfolio"
+    "defaultName": "My portfolio",
+    "owedTitle": "What you owe",
+    "owedSub": "Optional. Comparing an allocation needs none of this — it is what lets the app state your net worth, which is the figure the Fed's tiers are defined by.",
+    "netWorth": "Net worth: {amount}.",
+    "netWorthNote": "What you hold less what you owe — the same definition the tiers use."
   },
   "benchmarks": {
     "netWorth": "net worth, {quarter}",
@@ -237,7 +241,9 @@
     "notConfident": "no close match on this cut",
     "show": "Compare",
     "showing": "shown above",
-    "needsApi": "This one needs the API: placing a portfolio reads all six axes, and the embedded snapshot carries net worth only."
+    "needsApi": "This one needs the API: placing a portfolio reads all six axes, and the embedded snapshot carries net worth only.",
+    "nearestDebt": "Closest by debt",
+    "debtSub": "And the same reading for the {amount} you owe. A household can hold assets like one tier and owe like another — a mortgage and a brokerage account are not the same decision."
   },
   "placement": {
     "title": {
@@ -260,7 +266,8 @@
     "entryFrom": {
       "minimum_wealth_cutoff": "Net worth from {amount} ({quarter})",
       "minimum_income_cutoff": "Income from {amount} ({quarter})"
-    }
+    },
+    "useMine": "Use mine ({amount})"
   },
   "debts": {
     "home_mortgages": "Home Mortgages",
@@ -268,5 +275,12 @@
     "depository_loans": "Bank Loans",
     "other_loans": "Other Loans",
     "deferred_premiums": "Deferred Life Premiums"
+  },
+  "debtBlurbs": {
+    "home_mortgages": "Mortgages secured on owner-occupied property, including home equity lines.",
+    "consumer_credit": "Credit cards, car loans, student loans and other unsecured consumer borrowing.",
+    "depository_loans": "Loans from banks and other depository institutions not classified elsewhere.",
+    "other_loans": "Margin loans, policy loans and other borrowing outside the categories above.",
+    "deferred_premiums": "Life insurance premiums owed but not yet paid — the one liability outside the loan tree."
   }
 }

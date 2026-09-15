@@ -17,7 +17,7 @@ import { useI18n } from '../i18n'
  * as the tab is open, which is all it needs.
  */
 export default function ThresholdPlacement() {
-  const { activeGroups, dimension } = useAppData()
+  const { activeGroups, dimension, holdings, debts } = useAppData()
   const { t, fmt, tierLabel } = useI18n()
   const [raw, setRaw] = useState('')
 
@@ -25,6 +25,15 @@ export default function ThresholdPlacement() {
     () => Object.values(activeGroups).some((g) => g.threshold),
     [activeGroups],
   )
+
+  /* Only on the net-worth axis, and only once there is something to compute
+     from: the app knows what the reader holds and owes, so asking them to
+     retype the difference would be asking for an arithmetic mistake. Income is
+     not on the balance sheet, so that axis gets no shortcut. */
+  const ownNetWorth =
+    dimension === 'networth'
+      ? Object.values(holdings).reduce((a, b) => a + b, 0) - Object.values(debts).reduce((a, b) => a + b, 0)
+      : 0
 
   const value = Number(raw)
   const placement = useMemo(
@@ -58,6 +67,11 @@ export default function ThresholdPlacement() {
             placeholder="0"
           />
         </label>
+        {ownNetWorth > 0 && (
+          <button type="button" className="link-btn" onClick={() => setRaw(String(Math.round(ownNetWorth)))}>
+            {t('placement.useMine', { amount: fmt.usd(ownNetWorth, { compact: true }) })}
+          </button>
+        )}
       </div>
 
       {placement && (

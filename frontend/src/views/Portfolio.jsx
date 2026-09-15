@@ -3,8 +3,21 @@ import { useAppData } from '../context/AppDataContext'
 import { useI18n } from '../i18n'
 
 export default function Portfolio() {
-  const { benchmarks, holdings, setHolding, clearHoldings, save, mode, slug, setSlug, portfolios, token, updateToken } =
-    useAppData()
+  const {
+    benchmarks,
+    holdings,
+    setHolding,
+    debts,
+    setDebt,
+    clearHoldings,
+    save,
+    mode,
+    slug,
+    setSlug,
+    portfolios,
+    token,
+    updateToken,
+  } = useAppData()
   const { t, fmt } = useI18n()
   const [status, setStatus] = useState(null)
   const [saving, setSaving] = useState(false)
@@ -12,6 +25,7 @@ export default function Portfolio() {
   const [newSlug, setNewSlug] = useState('')
 
   const total = Object.values(holdings).reduce((a, b) => a + b, 0)
+  const owed = Object.values(debts).reduce((a, b) => a + b, 0)
 
   async function onSave() {
     setSaving(true)
@@ -84,11 +98,34 @@ export default function Portfolio() {
           ))}
       </div>
 
+      {/* Optional, and second: an allocation comparison needs no debt side at
+          all. It is what makes net worth -- the figure the Fed's tiers are
+          actually defined by -- something this app can state rather than ask
+          the reader to work out (BACKLOG F25). */}
+      <div className="card-head" style={{ marginTop: 28 }}>
+        <h2>{t('portfolio.owedTitle')}</h2>
+        <strong>{fmt.usd(owed)}</strong>
+      </div>
+      <p className="sub">{t('portfolio.owedSub')}</p>
+
+      <div className="holdings-grid">
+        {(benchmarks.liabilityClasses ?? []).map((debt) => (
+          <DebtRow key={debt.key} debt={debt} value={debts[debt.key] ?? ''} onChange={setDebt} />
+        ))}
+      </div>
+
+      {(total > 0 || owed > 0) && (
+        <p className="placement-answer">
+          <strong>{t('portfolio.netWorth', { amount: fmt.usd(total - owed) })}</strong>{' '}
+          {t('portfolio.netWorthNote')}
+        </p>
+      )}
+
       <div className="row-actions">
         <button className="btn-primary" onClick={onSave} disabled={saving || total === 0}>
           {saving ? t('portfolio.saving') : t('portfolio.save')}
         </button>
-        <button className="icon-btn" onClick={clearHoldings} disabled={total === 0}>
+        <button className="icon-btn" onClick={clearHoldings} disabled={total === 0 && owed === 0}>
           {t('portfolio.clearAll')}
         </button>
         {status && <span className="saved-note">{status}</span>}
@@ -122,6 +159,30 @@ export default function Portfolio() {
         </details>
       )}
     </div>
+  )
+}
+
+function DebtRow({ debt, value, onChange }) {
+  const { debtLabel, debtBlurb } = useI18n()
+  const id = `debt-${debt.key}`
+  return (
+    <>
+      <label htmlFor={id}>
+        <strong style={{ fontWeight: 550 }}>{debtLabel(debt.key, debt.label)}</strong>
+        <br />
+        <span style={{ color: 'var(--text-muted)', fontSize: 12 }}>{debtBlurb(debt.key, debt.blurb)}</span>
+      </label>
+      <input
+        id={id}
+        type="number"
+        min="0"
+        step="1000"
+        inputMode="decimal"
+        placeholder="0"
+        value={value}
+        onChange={(e) => onChange(debt.key, e.target.value)}
+      />
+    </>
   )
 }
 

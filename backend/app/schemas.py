@@ -6,7 +6,7 @@ from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-from .constants import ASSET_CLASS_KEYS
+from .constants import ASSET_CLASS_KEYS, LIABILITY_CLASS_KEYS
 
 
 class HoldingIn(BaseModel):
@@ -28,9 +28,31 @@ class HoldingOut(BaseModel):
     value: float
 
 
+class DebtIn(BaseModel):
+    liability_class: str = Field(description="One of the Financert liability-class keys")
+    value: float = Field(ge=0, description="Outstanding balance in dollars")
+
+    @field_validator("liability_class")
+    @classmethod
+    def known_liability_class(cls, v: str) -> str:
+        if v not in LIABILITY_CLASS_KEYS:
+            raise ValueError(f"unknown liability_class {v!r}; expected one of {', '.join(LIABILITY_CLASS_KEYS)}")
+        return v
+
+
+class DebtOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    liability_class: str
+    value: float
+
+
 class PortfolioIn(BaseModel):
     name: str = Field(default="My portfolio", max_length=120)
     holdings: list[HoldingIn] = Field(default_factory=list)
+    # Optional: a portfolio of holdings alone is a perfectly good comparison of
+    # allocation, and only net worth and the debt questions need this side.
+    debts: list[DebtIn] = Field(default_factory=list)
 
     @field_validator("holdings")
     @classmethod
@@ -40,6 +62,14 @@ class PortfolioIn(BaseModel):
             raise ValueError("duplicate asset_class entries; combine them into one holding")
         return v
 
+    @field_validator("debts")
+    @classmethod
+    def no_duplicate_debts(cls, v: list[DebtIn]) -> list[DebtIn]:
+        seen = {d.liability_class for d in v}
+        if len(seen) != len(v):
+            raise ValueError("duplicate liability_class entries; combine them into one debt")
+        return v
+
 
 class PortfolioOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -47,7 +77,10 @@ class PortfolioOut(BaseModel):
     slug: str
     name: str
     total_value: float
+    total_debt: float = 0.0
+    net_worth: float = 0.0
     holdings: list[HoldingOut]
+    debts: list[DebtOut] = Field(default_factory=list)
 
 
 class PortfolioSummaryOut(BaseModel):
@@ -180,9 +213,13 @@ class PlacementsOut(BaseModel):
     period: str
     investable_only: bool
     portfolio_total: float
+    total_debt: float = 0.0
     # Empty when there is nothing to place: no holdings is not the same answer
     # as "least like everyone".
     placements: list[PlacementOut] = Field(default_factory=list)
+    # The same readings for what is owed rather than what is held; empty unless
+    # the request carried debts.
+    debt_placements: list[PlacementOut] = Field(default_factory=list)
 
 
 class AnalysisOut(BaseModel):

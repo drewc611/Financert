@@ -236,6 +236,20 @@ but only 51% of the bottom 50%'s, who carry **43%** of their debt as consumer
 credit against 12–20% in the middle; the top 1% carries 26% as margin and
 policy loans, where no other tier is above 6%.
 
+**F25 and F27 needed the app to ask what the reader owes**, which it never
+did: a portfolio of holdings is assets, and every tier in this product is
+defined by net worth. The portfolio now carries an optional debt side (a
+separate `debts` table, so an existing database picks it up from `create_all`
+rather than needing a migration this project has no machinery for), states net
+worth as assets less debts, and offers that figure to the threshold card from
+F28 instead of asking for it to be retyped.
+
+F27 is the mirror of nearest-tier over the debt mix, and it is a genuinely
+different answer rather than a restatement: card debt places in the bottom 50%,
+margin and policy loans in the top 1%, a mortgage in the Next 9%. A household
+can hold assets like one tier and owe like another, because a mortgage and a
+brokerage account are not the same decision.
+
 **F29 turns the shares into money.** A toggle on the holdings table divides each
 tier's assets by its household count: the top 1% holds $20.5M per household in
 equities where the bottom 50% holds $8.7K. It is a *mean*, and the note says so
@@ -254,9 +268,9 @@ in both, and the offline and live figures now match to the cent.
 |---|---|---|
 | ~~F23~~ ✅ | Liabilities comparison — we fetch `total_liabilities` and only show a tile | M |
 | ~~F24~~ ✅ | Leverage ratio (liabilities ÷ assets) vs each tier | S |
-| F25 | Net-worth view alongside the assets view (assets less debt) | M |
+| ~~F25~~ ✅ | Net-worth view alongside the assets view (assets less debt) | M |
 | ~~F26~~ ✅ | Debt mix: home mortgages vs consumer credit vs other, per tier | M |
-| F27 | "Which tier is my *debt* like?" — the mirror of nearest-tier | M |
+| ~~F27~~ ✅ | "Which tier is my *debt* like?" — the mirror of nearest-tier | M |
 | ~~F28~~ ✅ | Net-worth percentile placement from `Minimum Wealth Cutoff` | M |
 | ~~F29~~ ✅ | Per-household dollar figures using `Household count`, not just shares | M |
 | F30 | Time travel: benchmark against any quarter since 1989, not just two | M |

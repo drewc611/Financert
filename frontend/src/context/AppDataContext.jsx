@@ -6,6 +6,7 @@ const AppDataContext = createContext(null)
 
 const STORAGE_KEY = 'financert.holdings.v1'
 const COHORT_KEY = 'financert.cohort.v1'
+const DEBTS_KEY = 'financert.debts.v1'
 
 function readStored(key) {
   try {
@@ -32,6 +33,10 @@ export function AppDataProvider({ children }) {
   const [mode, setMode] = useState('loading')
   const [benchmarks, setBenchmarks] = useState(null)
   const [holdings, setHoldings] = useState(() => readStored(STORAGE_KEY))
+  /* What the reader owes, by liability class (BACKLOG F25, F27). Optional:
+     comparing an allocation needs no debt side at all, and only net worth and
+     the debt questions read this. */
+  const [debts, setDebts] = useState(() => readStored(DEBTS_KEY))
   /* Which group of an axis the reader says they belong to, one per axis, plus
      the one they chose last (BACKLOG F18). Kept in localStorage and never sent
      anywhere: the benchmark request carries the axis, never who asked. */
@@ -108,6 +113,14 @@ export function AppDataProvider({ children }) {
   }, [holdings])
 
   useEffect(() => {
+    try {
+      localStorage.setItem(DEBTS_KEY, JSON.stringify(debts))
+    } catch {
+      /* storage disabled -- in-memory state still works for this session */
+    }
+  }, [debts])
+
+  useEffect(() => {
     if (mode !== 'live') return
     let cancelled = false
     api
@@ -135,6 +148,7 @@ export function AppDataProvider({ children }) {
         // so a fresh device gets the saved portfolio but local edits win.
         if (Object.keys(stored).length === 0 && p.holdings.length) {
           setHoldings(Object.fromEntries(p.holdings.map((h) => [h.asset_class, h.value])))
+          setDebts(Object.fromEntries((p.debts ?? []).map((d) => [d.liability_class, d.value])))
         }
       })
       .catch(() => {
@@ -154,7 +168,19 @@ export function AppDataProvider({ children }) {
     })
   }, [])
 
-  const clearHoldings = useCallback(() => setHoldings({}), [])
+  const setDebt = useCallback((liabilityClass, value) => {
+    setDebts((prev) => {
+      const next = { ...prev }
+      if (!value || Number(value) <= 0) delete next[liabilityClass]
+      else next[liabilityClass] = Number(value)
+      return next
+    })
+  }, [])
+
+  const clearHoldings = useCallback(() => {
+    setHoldings({})
+    setDebts({})
+  }, [])
 
   /* Point the whole dashboard at one group of one axis.
 
@@ -199,13 +225,14 @@ export function AppDataProvider({ children }) {
       {
         name: slug === 'default' ? 'My portfolio' : slug,
         holdings: Object.entries(holdings).map(([asset_class, value]) => ({ asset_class, value })),
+        debts: Object.entries(debts).map(([liability_class, value]) => ({ liability_class, value })),
       },
       slug,
     )
     const rows = await api.portfolios().catch(() => null)
     if (rows) setPortfolios(rows)
     return { ok: true }
-  }, [holdings, mode, slug])
+  }, [holdings, debts, mode, slug])
 
   const updateToken = useCallback((next) => {
     setToken(next)
@@ -232,6 +259,8 @@ export function AppDataProvider({ children }) {
       portfolios,
       holdings,
       setHolding,
+      debts,
+      setDebt,
       clearHoldings,
       save,
       groupKey,
@@ -255,6 +284,8 @@ export function AppDataProvider({ children }) {
       portfolios,
       holdings,
       setHolding,
+      debts,
+      setDebt,
       clearHoldings,
       save,
       groupKey,

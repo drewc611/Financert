@@ -92,7 +92,11 @@
     "saveToken": "Salvar token",
     "tokenSaved": "Token salvo neste navegador.",
     "tokenCleared": "Token removido.",
-    "defaultName": "Minha carteira"
+    "defaultName": "Minha carteira",
+    "owedTitle": "O que deve",
+    "owedSub": "Opcional. Comparar uma alocação não precisa disto: serve para a aplicação indicar o seu património líquido, a cifra que define as faixas da Reserva Federal.",
+    "netWorth": "Património líquido: {amount}.",
+    "netWorthNote": "O que detém menos o que deve — a mesma definição que as faixas usam."
   },
   "benchmarks": {
     "netWorth": "patrimônio líquido, {quarter}",
@@ -237,7 +241,9 @@
     "notConfident": "sem correspondência clara neste corte",
     "show": "Comparar",
     "showing": "mostrado acima",
-    "needsApi": "Isto precisa da API: situar uma carteira lê os seis eixos, e o instantâneo incorporado só inclui o património líquido."
+    "needsApi": "Isto precisa da API: situar uma carteira lê os seis eixos, e o instantâneo incorporado só inclui o património líquido.",
+    "nearestDebt": "Mais próximo por dívida",
+    "debtSub": "E a mesma leitura para os {amount} que deve. Uma família pode deter ativos como uma faixa e dever como outra: um crédito à habitação e uma conta de títulos não são a mesma decisão."
   },
   "placement": {
     "title": {
@@ -260,7 +266,8 @@
     "entryFrom": {
       "minimum_wealth_cutoff": "Património a partir de {amount} ({quarter})",
       "minimum_income_cutoff": "Rendimento a partir de {amount} ({quarter})"
-    }
+    },
+    "useMine": "Usar o meu ({amount})"
   },
   "debts": {
     "home_mortgages": "Créditos à habitação",
@@ -268,5 +275,12 @@
     "depository_loans": "Empréstimos bancários",
     "other_loans": "Outros empréstimos",
     "deferred_premiums": "Prémios de vida diferidos"
+  },
+  "debtBlurbs": {
+    "home_mortgages": "Créditos garantidos pela habitação própria, incluindo linhas de crédito com garantia hipotecária.",
+    "consumer_credit": "Cartões de crédito, crédito automóvel, crédito a estudantes e outro crédito ao consumo sem garantia.",
+    "depository_loans": "Empréstimos de bancos e outras instituições de depósito não classificados noutro local.",
+    "other_loans": "Empréstimos de margem, empréstimos sobre apólices e outro endividamento fora das categorias acima.",
+    "deferred_premiums": "Prémios de seguro de vida devidos mas ainda não pagos — o único passivo fora do bloco de empréstimos."
   }
 }

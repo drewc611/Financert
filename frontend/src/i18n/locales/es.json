@@ -92,7 +92,11 @@
     "saveToken": "Guardar token",
     "tokenSaved": "Token guardado en este navegador.",
     "tokenCleared": "Token borrado.",
-    "defaultName": "Mi cartera"
+    "defaultName": "Mi cartera",
+    "owedTitle": "Lo que debes",
+    "owedSub": "Opcional. Comparar una distribución no requiere nada de esto: sirve para que la app indique tu patrimonio neto, que es la cifra con la que se definen los tramos de la Reserva Federal.",
+    "netWorth": "Patrimonio neto: {amount}.",
+    "netWorthNote": "Lo que posees menos lo que debes, la misma definición que usan los tramos."
   },
   "benchmarks": {
     "netWorth": "patrimonio neto, {quarter}",
@@ -237,7 +241,9 @@
     "notConfident": "sin coincidencia clara en este corte",
     "show": "Comparar",
     "showing": "mostrado arriba",
-    "needsApi": "Esto necesita la API: situar una cartera lee los seis ejes, y la instantánea integrada solo incluye el patrimonio neto."
+    "needsApi": "Esto necesita la API: situar una cartera lee los seis ejes, y la instantánea integrada solo incluye el patrimonio neto.",
+    "nearestDebt": "Más cercano por deuda",
+    "debtSub": "Y la misma lectura para los {amount} que debes. Un hogar puede tener activos como un tramo y deber como otro: una hipoteca y una cuenta de valores no son la misma decisión."
   },
   "placement": {
     "title": {
@@ -260,7 +266,8 @@
     "entryFrom": {
       "minimum_wealth_cutoff": "Patrimonio desde {amount} ({quarter})",
       "minimum_income_cutoff": "Ingresos desde {amount} ({quarter})"
-    }
+    },
+    "useMine": "Usar el mío ({amount})"
   },
   "debts": {
     "home_mortgages": "Hipotecas",
@@ -268,5 +275,12 @@
     "depository_loans": "Préstamos bancarios",
     "other_loans": "Otros préstamos",
     "deferred_premiums": "Primas de vida diferidas"
+  },
+  "debtBlurbs": {
+    "home_mortgages": "Hipotecas sobre la vivienda propia, incluidas las líneas de crédito con garantía hipotecaria.",
+    "consumer_credit": "Tarjetas de crédito, préstamos de coche, préstamos estudiantiles y otro crédito al consumo sin garantía.",
+    "depository_loans": "Préstamos de bancos y otras entidades de depósito no clasificados en otro lugar.",
+    "other_loans": "Préstamos de margen, préstamos sobre pólizas y otro endeudamiento fuera de las categorías anteriores.",
+    "deferred_premiums": "Primas de seguro de vida devengadas pero aún no pagadas: el único pasivo fuera del bloque de préstamos."
   }
 }
