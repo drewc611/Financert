@@ -375,6 +375,26 @@ the switch now.
 | F59 | Number formatting review — tabular figures everywhere they align | S |
 | ~~F60~~ ✅ | Explain the `unallocated` residual in the UI, not just the README | S |
 
+**F69 is half done, and the half that was missing.** The frontend had lint and
+build; `src/lib/analysis.js` had neither, and it is what the dashboard computes
+with — offline it is the *only* implementation. Vitest now covers it and the
+formatters: 46 tests over weights, gaps, shape metrics, threshold placement,
+rebalancing, sensitivity and the locale-sensitive number formatting, wired into
+CI.
+
+Two of those tests are a bug that shipped: the API sends shares where the
+embedded snapshot sends dollars, and reading the raw field made the offline
+tables wrong by a factor of a million. "Normalises either form" is now a test
+rather than a thing to remember.
+
+Components are still verified by opening the app, which is why this is ◐ rather
+than done. That needs a DOM testing library and a judgement about how much
+component testing a five-view app earns.
+
+Vite went 5 → 8 with it (the version Vitest needs), which cleared three
+pre-existing advisories including a high. The one left is `js-yaml` via ESLint
+8, which wants the flat-config migration.
+
 ## Phase 4 — operational
 
 | # | Feature | Size |
@@ -387,7 +407,7 @@ the switch now.
 | F66 | Response caching for benchmark endpoints | S |
 | F67 | OpenAPI examples on every endpoint | S |
 | F68 | Backend coverage reporting in CI | S |
-| F69 | Frontend tests — currently lint and build only, no test runner | L |
+| ~~F69~~ ◐ | Frontend tests — Vitest over `src/lib`; components still browser-verified | L |
 | F70 | Visual regression snapshots for the charts | L |
 | F71 | Dependency audit workflow | S |
 | F72 ◐ | Data-source contract test hitting the live Fed zip weekly, so a format change surfaces before a refresh needs it — the test exists (`tests/test_dimensions.py`); it still needs a *scheduled* run, since it skips when the network is unreachable | M |
