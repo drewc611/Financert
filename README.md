@@ -130,6 +130,15 @@ refresh instead of silently skewing every percentage on the site. The snapshot
 records the archive's SHA-256, so a refresh that changes numbers can be told
 from one that does not.
 
+Two things watch that parse, from opposite ends. `tests/test_snapshot_golden.py`
+pins it to a committed slice of the real archive — three quarters, every
+dimension — so a change in what the parser produces shows up as a reviewable
+diff rather than a quietly rebuilt snapshot; adopt a deliberate one with
+`FINANCERT_UPDATE_GOLDEN=1 pytest tests/test_snapshot_golden.py`. And
+[a weekly job](.github/workflows/source-check.yml) runs `--check` against the
+*live* file, which a frozen fixture cannot: a renamed column or a moved member
+turns up as a failed run, and a newly published quarter is noted in the log.
+
 ### One thing worth knowing about the source
 
 The Fed splits the top 1% at the 99.9th percentile — `TopPt1` and

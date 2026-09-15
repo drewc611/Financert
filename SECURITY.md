@@ -65,6 +65,7 @@ accepted:
 | [CodeQL](.github/workflows/codeql.yml) | Python, JavaScript/TypeScript, and the workflows themselves. Runs on every push and PR to `main`, plus weekly. |
 | [Dependabot](.github/dependabot.yml) | Weekly updates for pip, npm and GitHub Actions. |
 | [CI](.github/workflows/ci.yml) | `ruff`, `pytest`, `eslint`, and a production frontend build. |
+| [DFA source check](.github/workflows/source-check.yml) | Weekly: downloads and parses the Fed's published archive without writing, so a change in the source surfaces as a failed run rather than during the next refresh. |
 
 ### Content-Security-Policy
 
