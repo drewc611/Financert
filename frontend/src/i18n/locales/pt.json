@@ -233,5 +233,28 @@
     "show": "Comparar",
     "showing": "mostrado acima",
     "needsApi": "Isto precisa da API: situar uma carteira lê os seis eixos, e o instantâneo incorporado só inclui o património líquido."
+  },
+  "placement": {
+    "title": {
+      "networth": "Que património líquido coloca em cada faixa",
+      "income": "Que rendimento coloca em cada banda"
+    },
+    "sub": {
+      "networth": "Um limiar, não uma composição: aqui pergunta-se quanto, enquanto o resto da página pergunta como está detido. Património líquido é tudo o que possui menos tudo o que deve.",
+      "income": "Um limiar, não uma composição: aqui pergunta-se quanto uma família ganha por ano, enquanto o resto da página pergunta como detém os seus ativos."
+    },
+    "field": {
+      "networth": "O seu património líquido",
+      "income": "O seu rendimento anual"
+    },
+    "lands": "Isso está no {tier}.",
+    "floor": "Começa em {amount}, conforme medido em {quarter}.",
+    "belowAll": "Isso está abaixo do {tier}, que começa em {amount}. A Reserva Federal não publica qualquer limiar abaixo desse.",
+    "toNext": "Mais {amount} alcançariam o {tier}.",
+    "measured": "Os limiares vêm do Survey of Consumer Finances, realizado de três em três anos; foram medidos pela última vez em {quarter}, pelo que são anteriores às alocações acima.",
+    "entryFrom": {
+      "minimum_wealth_cutoff": "Património a partir de {amount} ({quarter})",
+      "minimum_income_cutoff": "Rendimento a partir de {amount} ({quarter})"
+    }
   }
 }

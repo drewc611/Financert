@@ -233,5 +233,28 @@
     "show": "Comparer",
     "showing": "affiché ci-dessus",
     "needsApi": "Ceci nécessite l'API : situer un portefeuille lit les six axes, et l'instantané embarqué ne contient que le patrimoine net."
+  },
+  "placement": {
+    "title": {
+      "networth": "Quel patrimoine net place dans chaque tranche",
+      "income": "Quel revenu place dans chaque tranche"
+    },
+    "sub": {
+      "networth": "Un seuil, pas une répartition : ici la question est combien, alors que le reste de la page demande comment. Le patrimoine net, c'est tout ce que vous possédez moins tout ce que vous devez.",
+      "income": "Un seuil, pas une répartition : ici la question est combien un ménage gagne en un an, alors que le reste de la page demande comment ses actifs sont détenus."
+    },
+    "field": {
+      "networth": "Votre patrimoine net",
+      "income": "Votre revenu annuel"
+    },
+    "lands": "Cela se situe dans {tier}.",
+    "floor": "Elle commence à {amount}, d'après la mesure de {quarter}.",
+    "belowAll": "Cela se situe sous {tier}, qui commence à {amount}. La Réserve fédérale ne publie aucun seuil en dessous.",
+    "toNext": "Il faudrait {amount} de plus pour atteindre {tier}.",
+    "measured": "Les seuils proviennent de la Survey of Consumer Finances, menée tous les trois ans ; ils datent de {quarter} et sont donc plus anciens que les répartitions ci-dessus.",
+    "entryFrom": {
+      "minimum_wealth_cutoff": "Patrimoine à partir de {amount} ({quarter})",
+      "minimum_income_cutoff": "Revenu à partir de {amount} ({quarter})"
+    }
   }
 }

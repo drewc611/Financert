@@ -288,6 +288,9 @@ function toGroups(allocations) {
       percentile_range: alloc.percentile_range,
       nested: alloc.nested,
       nested_in: alloc.nested_in,
+      // Carries its own, older date: the cutoffs are triennial, so this is
+      // never measured in the same quarter as the allocation beside it.
+      threshold: alloc.threshold ?? null,
       period: alloc.period,
       complete: alloc.complete,
       unavailable: alloc.unavailable || [],

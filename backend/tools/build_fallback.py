@@ -75,6 +75,11 @@ def main() -> None:
             "net_worth": row["net_worth"],
             "assets": row["assets"],
             "household_count": row.get("household_count"),
+            # The entry threshold is triennial, so it is never on the latest
+            # row -- benchmarks.threshold() reads back to the newest published
+            # one and carries its own date, which is what makes it safe to put
+            # next to a 2026 balance sheet.
+            "threshold": benchmarks.threshold(group_key, latest),
             # The newest fully published quarter, so the offline dashboard can
             # still show a complete breakdown when the latest one lags.
             "complete_snapshot": {

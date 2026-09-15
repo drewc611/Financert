@@ -203,6 +203,24 @@ leverage climbs from 0.9% (top 0.1%) to 58.8% (bottom 50%), the liquid share
 falls from 68.8% to 17.8%, and the largest holding flips from equities to real
 estate between the Next 9% and the Next 40%.
 
+**F28 is done, and it is the site's own headline question** — what net worth
+puts you in the top 1% — which the product could not answer until F6 stored the
+cutoffs. $11.1M, as measured in 2022:Q3.
+
+Three things it had to get right. The cutoffs are triennial, so they never sit
+on the latest quarter: `benchmarks.threshold()` reads back to the newest
+published one and returns it **with its own date**, and every place it is shown
+prints that date, because a 2022 threshold under a 2026 balance sheet is four
+years of asset prices out of date. The figure is typed in rather than taken
+from the portfolio: holdings are assets, these are net worth cutoffs, and
+equating them would overstate anyone with a mortgage by the size of it. And the
+bottom group has no floor at all, so a figure below every threshold is told
+that, not placed in a band the source does not define.
+
+It works offline (`build_fallback.py` now emits the resolved threshold) and it
+covers the income axis too, where the same column is an income floor — the tile
+label is keyed by which cutoff it is, since both sit under a net-worth figure.
+
 
 | # | Feature | Size |
 |---|---|---|
@@ -211,7 +229,7 @@ estate between the Next 9% and the Next 40%.
 | F25 | Net-worth view alongside the assets view (assets less debt) | M |
 | F26 | Debt mix: home mortgages vs consumer credit vs other, per tier | M |
 | F27 | "Which tier is my *debt* like?" — the mirror of nearest-tier | M |
-| F28 | Net-worth percentile placement from `Minimum Wealth Cutoff` | M |
+| ~~F28~~ ✅ | Net-worth percentile placement from `Minimum Wealth Cutoff` | M |
 | F29 | Per-household dollar figures using `Household count`, not just shares | M |
 | F30 | Time travel: benchmark against any quarter since 1989, not just two | M |
 | F31 | "Your gap over time" — hold your allocation, watch the gap move as the tier changes | L |
