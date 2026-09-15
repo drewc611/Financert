@@ -121,11 +121,18 @@ def test_the_registry_matches_the_published_archive():
     This is the check that turns a Fed rename into a named failure instead of
     an empty chart. It is skipped rather than failed when the network is not
     reachable, so an offline run does not report a problem that isn't one.
+
+    Which makes it useless on a schedule, where a skip is indistinguishable
+    from a pass and the whole point is to reach the network (BACKLOG F72). The
+    scheduled run sets FINANCERT_REQUIRE_NETWORK=1, and then an unreachable
+    archive is the failure rather than a reason to say nothing.
     """
     request = urllib.request.Request(constants.DFA_ZIP_URL, headers={"User-Agent": "financert-contract-test"})
     try:
         blob = urllib.request.urlopen(request, timeout=90).read(25 * 1024 * 1024)
     except (urllib.error.URLError, TimeoutError, OSError) as exc:
+        if os.environ.get("FINANCERT_REQUIRE_NETWORK") == "1":
+            raise AssertionError(f"DFA archive not reachable: {exc}") from exc
         pytest.skip(f"DFA archive not reachable: {exc}")
 
     archive = zipfile.ZipFile(io.BytesIO(blob))

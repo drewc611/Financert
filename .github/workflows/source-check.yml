@@ -28,7 +28,16 @@ jobs:
           python-version: "3.11"
           cache: pip
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt -r requirements-dev.txt
+      # The registry names six member files and the Category values inside
+      # them; this is what turns a Fed rename into a named failure rather than
+      # an empty chart (BACKLOG F72). FINANCERT_REQUIRE_NETWORK makes an
+      # unreachable archive a failure here -- on a schedule a skip is
+      # indistinguishable from a pass, and reaching the network is the point.
+      - name: Check the registry against the published archive
+        env:
+          FINANCERT_REQUIRE_NETWORK: "1"
+        run: pytest tests/test_dimensions.py -k archive
       - name: Parse the published archive
         # Writes nothing, and reports at the end whether the live archive still
         # matches the committed snapshot -- a new quarter is news in the log,
