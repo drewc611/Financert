@@ -1,0 +1,36 @@
+name: DFA source check
+
+# The golden-file test (tests/test_snapshot_golden.py) pins the parser against
+# a committed slice of the archive, so it catches our own drift but never the
+# Fed's: the fixture is frozen, and fetch_dfa.py only runs by hand. This does
+# the other half -- fetches the live zip and parses it without writing -- so a
+# renamed column, a dropped category or a moved member turns up as a failed run
+# rather than as a broken refresh months later. It also goes red the first time
+# a new quarter would change the numbers, which is the cue to refresh.
+on:
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  parse-live-archive:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Parse the published archive
+        # Writes nothing, and reports at the end whether the live archive still
+        # matches the committed snapshot -- a new quarter is news in the log,
+        # not a red run, so that red keeps meaning "the parse broke".
+        run: python fetch_dfa.py --check

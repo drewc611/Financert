@@ -1,0 +1,2769 @@
+{
+  "source": {
+    "name": "Federal Reserve Distributional Financial Accounts",
+    "publisher": "Board of Governors of the Federal Reserve System",
+    "retrieved_via": "bulk download, dfa-networth-levels-detail.csv",
+    "url": "https://www.federalreserve.gov/releases/z1/dataviz/dfa/",
+    "download_url": "https://www.federalreserve.gov/releases/z1/dataviz/download/zips/dfa.zip",
+    "units": "US dollars, not seasonally adjusted"
+  },
+  "periods": [
+    "1989-07-01",
+    "2022-07-01",
+    "2026-01-01"
+  ],
+  "latest_period": "2026-01-01",
+  "latest_complete_period": "2026-01-01",
+  "complete_periods": [
+    "1989-07-01",
+    "2022-07-01",
+    "2026-01-01"
+  ],
+  "group_order": [
+    "top1",
+    "next9",
+    "next40",
+    "bottom50"
+  ],
+  "all_groups": [
+    "top01",
+    "top1",
+    "next9",
+    "next40",
+    "bottom50"
+  ],
+  "asset_classes": [
+    {
+      "key": "corporate_equities",
+      "label": "Stocks & Mutual Funds",
+      "liquid": true,
+      "blurb": "Directly held corporate equities plus mutual fund shares, excluding those held through a DC pension.",
+      "columns": [
+        "Corporate equities and mutual fund shares"
+      ]
+    },
+    {
+      "key": "private_business",
+      "label": "Private Business Equity",
+      "liquid": false,
+      "blurb": "Proprietors' equity in noncorporate business -- partnerships, S-corps, sole proprietorships, and property held to rent out.",
+      "columns": [
+        "Miscellaneous other equity"
+      ]
+    },
+    {
+      "key": "pension",
+      "label": "Pensions & Retirement",
+      "liquid": false,
+      "blurb": "Defined benefit and defined contribution pension entitlements.",
+      "columns": [
+        "DB pension entitlements",
+        "DC pension entitlements"
+      ]
+    },
+    {
+      "key": "real_estate",
+      "label": "Real Estate",
+      "liquid": false,
+      "blurb": "Owner-occupied real estate including vacant land and mobile homes, at market value.",
+      "columns": [
+        "Real estate"
+      ]
+    },
+    {
+      "key": "deposits",
+      "label": "Cash & Deposits",
+      "liquid": true,
+      "blurb": "Checkable deposits and currency, time deposits and short-term investments.",
+      "columns": [
+        "Deposits"
+      ]
+    },
+    {
+      "key": "money_market",
+      "label": "Money Market Funds",
+      "liquid": true,
+      "blurb": "Money market mutual fund shares.",
+      "columns": [
+        "Money market fund shares"
+      ]
+    },
+    {
+      "key": "debt_securities",
+      "label": "Bonds",
+      "liquid": true,
+      "blurb": "Treasury, municipal, corporate and foreign bonds held directly.",
+      "columns": [
+        "Debt securities"
+      ]
+    },
+    {
+      "key": "consumer_durables",
+      "label": "Consumer Durables",
+      "liquid": false,
+      "blurb": "Vehicles, appliances, furnishings -- counted as assets by the Fed, not as investments.",
+      "columns": [
+        "Consumer durables"
+      ]
+    },
+    {
+      "key": "annuities",
+      "label": "Annuities",
+      "liquid": false,
+      "blurb": "Annuities sold by life insurers directly to households, outside a pension.",
+      "columns": [
+        "Annuities"
+      ]
+    },
+    {
+      "key": "life_insurance",
+      "label": "Life Insurance",
+      "liquid": false,
+      "blurb": "Cash value of life insurance reserves.",
+      "columns": [
+        "Life insurance reserves"
+      ]
+    },
+    {
+      "key": "loans_assets",
+      "label": "Loans Receivable",
+      "liquid": false,
+      "blurb": "Mortgages and other loans held as assets.",
+      "columns": [
+        "Loans (Assets)"
+      ]
+    },
+    {
+      "key": "misc_assets",
+      "label": "Other Assets",
+      "liquid": false,
+      "blurb": "Miscellaneous assets not classified elsewhere.",
+      "columns": [
+        "Miscellaneous assets"
+      ]
+    },
+    {
+      "key": "unallocated",
+      "label": "Unallocated",
+      "liquid": false,
+      "blurb": "Residual between the Fed's published asset total and the categories above. Rounding only, since the taxonomy now covers every component.",
+      "columns": []
+    }
+  ],
+  "groups": {
+    "top01": {
+      "key": "top01",
+      "label": "Top 0.1%",
+      "percentile_range": "99.9th-100th",
+      "population_share": 0.001,
+      "nested": true,
+      "nested_in": "top1",
+      "history": [
+        {
+          "period": "1989-07-01",
+          "assets": {
+            "corporate_equities": 305340000000.0,
+            "private_business": 586079000000.0,
+            "pension": 37110000000.0,
+            "real_estate": 139254000000.0,
+            "deposits": 132471000000.0,
+            "money_market": 36459000000.0,
+            "debt_securities": 276018000000.0,
+            "consumer_durables": 195557000000.0,
+            "annuities": 1442000000.0,
+            "life_insurance": 13646000000.0,
+            "loans_assets": 74254000000.0,
+            "misc_assets": 4671000000.0,
+            "unallocated": 1000000.0
+          },
+          "total_assets": 1802302000000.0,
+          "total_liabilities": 45133000000.0,
+          "net_worth": 1757168000000.0,
+          "household_count": 103864.0,
+          "minimum_wealth_cutoff": 7794573.0
+        },
+        {
+          "period": "2022-07-01",
+          "assets": {
+            "corporate_equities": 7443771000000.0,
+            "private_business": 4636851000000.0,
+            "pension": 391474000000.0,
+            "real_estate": 1744742000000.0,
+            "deposits": 1507251000000.0,
+            "money_market": 399432000000.0,
+            "debt_securities": 577150000000.0,
+            "consumer_durables": 570142000000.0,
+            "annuities": 78442000000.0,
+            "life_insurance": 209642000000.0,
+            "loans_assets": 330843000000.0,
+            "misc_assets": 37049000000.0,
+            "unallocated": 0.0
+          },
+          "total_assets": 17926788000000.0,
+          "total_liabilities": 208598000000.0,
+          "net_worth": 17718190000000.0,
+          "household_count": 132240.0,
+          "minimum_wealth_cutoff": 46369052.0
+        },
+        {
+          "period": "2026-01-01",
+          "assets": {
+            "corporate_equities": 13331518000000.0,
+            "private_business": 4679452000000.0,
+            "pension": 453454000000.0,
+            "real_estate": 1937284000000.0,
+            "deposits": 1473775000000.0,
+            "money_market": 1006257000000.0,
+            "debt_securities": 1104402000000.0,
+            "consumer_durables": 712377000000.0,
+            "annuities": 71175000000.0,
+            "life_insurance": 232477000000.0,
+            "loans_assets": 265014000000.0,
+            "misc_assets": 44806000000.0,
+            "unallocated": 1000000.0
+          },
+          "total_assets": 25311992000000.0,
+          "total_liabilities": 239711000000.0,
+          "net_worth": 25072282000000.0,
+          "household_count": 136095.0,
+          "minimum_wealth_cutoff": null
+        }
+      ]
+    },
+    "top1": {
+      "key": "top1",
+      "label": "Top 1%",
+      "percentile_range": "99th-100th",
+      "population_share": 0.01,
+      "nested": false,
+      "nested_in": null,
+      "history": [
+        {
+          "period": "1989-07-01",
+          "assets": {
+            "corporate_equities": 895538000000.0,
+            "private_business": 1309673000000.0,
+            "pension": 253817000000.0,
+            "real_estate": 618359000000.0,
+            "deposits": 534789000000.0,
+            "money_market": 109477000000.0,
+            "debt_securities": 504032000000.0,
+            "consumer_durables": 358887000000.0,
+            "annuities": 14391000000.0,
+            "life_insurance": 47417000000.0,
+            "loans_assets": 125935000000.0,
+            "misc_assets": 19024000000.0,
+            "unallocated": 3000000.0
+          },
+          "total_assets": 4791342000000.0,
+          "total_liabilities": 129899000000.0,
+          "net_worth": 4661441000000.0,
+          "household_count": 928699.0,
+          "minimum_wealth_cutoff": 2306199.0
+        },
+        {
+          "period": "2022-07-01",
+          "assets": {
+            "corporate_equities": 15909397000000.0,
+            "private_business": 8660471000000.0,
+            "pension": 2192069000000.0,
+            "real_estate": 5760329000000.0,
+            "deposits": 3482718000000.0,
+            "money_market": 886403000000.0,
+            "debt_securities": 1257480000000.0,
+            "consumer_durables": 941868000000.0,
+            "annuities": 280581000000.0,
+            "life_insurance": 556191000000.0,
+            "loans_assets": 597125000000.0,
+            "misc_assets": 117565000000.0,
+            "unallocated": 0.0
+          },
+          "total_assets": 40642197000000.0,
+          "total_liabilities": 1045058000000.0,
+          "net_worth": 39597139000000.0,
+          "household_count": 1310101.0,
+          "minimum_wealth_cutoff": 11146846.0
+        },
+        {
+          "period": "2026-01-01",
+          "assets": {
+            "corporate_equities": 27643648000000.0,
+            "private_business": 8762892000000.0,
+            "pension": 2758346000000.0,
+            "real_estate": 6484137000000.0,
+            "deposits": 3420010000000.0,
+            "money_market": 1991774000000.0,
+            "debt_securities": 2255117000000.0,
+            "consumer_durables": 1129619000000.0,
+            "annuities": 285746000000.0,
+            "life_insurance": 622086000000.0,
+            "loans_assets": 549701000000.0,
+            "misc_assets": 139399000000.0,
+            "unallocated": 1000000.0
+          },
+          "total_assets": 56042476000000.0,
+          "total_liabilities": 1009477000000.0,
+          "net_worth": 55033000000000.0,
+          "household_count": 1348292.0,
+          "minimum_wealth_cutoff": null
+        }
+      ]
+    },
+    "next9": {
+      "key": "next9",
+      "label": "Next 9%",
+      "percentile_range": "90th-99th",
+      "population_share": 0.09,
+      "nested": false,
+      "nested_in": null,
+      "history": [
+        {
+          "period": "1989-07-01",
+          "assets": {
+            "corporate_equities": 811434000000.0,
+            "private_business": 1015740000000.0,
+            "pension": 1868407000000.0,
+            "real_estate": 2023859000000.0,
+            "deposits": 1121868000000.0,
+            "money_market": 147549000000.0,
+            "debt_securities": 388728000000.0,
+            "consumer_durables": 418759000000.0,
+            "annuities": 158738000000.0,
+            "life_insurance": 106088000000.0,
+            "loans_assets": 127271000000.0,
+            "misc_assets": 58576000000.0,
+            "unallocated": 0.0
+          },
+          "total_assets": 8247017000000.0,
+          "total_liabilities": 481153000000.0,
+          "net_worth": 7765864000000.0,
+          "household_count": 8368077.0,
+          "minimum_wealth_cutoff": 486991.0
+        },
+        {
+          "period": "2022-07-01",
+          "assets": {
+            "corporate_equities": 12245795000000.0,
+            "private_business": 5196880000000.0,
+            "pension": 10410550000000.0,
+            "real_estate": 13115866000000.0,
+            "deposits": 5072766000000.0,
+            "money_market": 1171161000000.0,
+            "debt_securities": 1376878000000.0,
+            "consumer_durables": 1646017000000.0,
+            "annuities": 970232000000.0,
+            "life_insurance": 600056000000.0,
+            "loans_assets": 418536000000.0,
+            "misc_assets": 328785000000.0,
+            "unallocated": 1000000.0
+          },
+          "total_assets": 52553523000000.0,
+          "total_liabilities": 3557193000000.0,
+          "net_worth": 48996329000000.0,
+          "household_count": 11796660.0,
+          "minimum_wealth_cutoff": 2148339.0
+        },
+        {
+          "period": "2026-01-01",
+          "assets": {
+            "corporate_equities": 20514327000000.0,
+            "private_business": 5252870000000.0,
+            "pension": 12784682000000.0,
+            "real_estate": 14762255000000.0,
+            "deposits": 5054244000000.0,
+            "money_market": 2055926000000.0,
+            "debt_securities": 2386708000000.0,
+            "consumer_durables": 1886084000000.0,
+            "annuities": 1297415000000.0,
+            "life_insurance": 667332000000.0,
+            "loans_assets": 282903000000.0,
+            "misc_assets": 389386000000.0,
+            "unallocated": 0.0
+          },
+          "total_assets": 67334132000000.0,
+          "total_liabilities": 4108736000000.0,
+          "net_worth": 63225396000000.0,
+          "household_count": 12140540.0,
+          "minimum_wealth_cutoff": null
+        }
+      ]
+    },
+    "next40": {
+      "key": "next40",
+      "label": "Next 40%",
+      "percentile_range": "50th-90th",
+      "population_share": 0.4,
+      "nested": false,
+      "nested_in": null,
+      "history": [
+        {
+          "period": "1989-07-01",
+          "assets": {
+            "corporate_equities": 359529000000.0,
+            "private_business": 603923000000.0,
+            "pension": 1876506000000.0,
+            "real_estate": 3425336000000.0,
+            "deposits": 1137171000000.0,
+            "money_market": 98226000000.0,
+            "debt_securities": 141004000000.0,
+            "consumer_durables": 754279000000.0,
+            "annuities": 141556000000.0,
+            "life_insurance": 163427000000.0,
+            "loans_assets": 39241000000.0,
+            "misc_assets": 109496000000.0,
+            "unallocated": 2000000.0
+          },
+          "total_assets": 8849696000000.0,
+          "total_liabilities": 1554867000000.0,
+          "net_worth": 7294829000000.0,
+          "household_count": 37209575.0,
+          "minimum_wealth_cutoff": 66091.0
+        },
+        {
+          "period": "2022-07-01",
+          "assets": {
+            "corporate_equities": 4054170000000.0,
+            "private_business": 2338028000000.0,
+            "pension": 12284227000000.0,
+            "real_estate": 19282099000000.0,
+            "deposits": 5233301000000.0,
+            "money_market": 687363000000.0,
+            "debt_securities": 698795000000.0,
+            "consumer_durables": 3209625000000.0,
+            "annuities": 1025586000000.0,
+            "life_insurance": 649380000000.0,
+            "loans_assets": 172270000000.0,
+            "misc_assets": 735021000000.0,
+            "unallocated": 0.0
+          },
+          "total_assets": 50369864000000.0,
+          "total_liabilities": 8103453000000.0,
+          "net_worth": 42266410000000.0,
+          "household_count": 52539904.0,
+          "minimum_wealth_cutoff": 241362.0
+        },
+        {
+          "period": "2026-01-01",
+          "assets": {
+            "corporate_equities": 6400950000000.0,
+            "private_business": 2376896000000.0,
+            "pension": 14761048000000.0,
+            "real_estate": 22650205000000.0,
+            "deposits": 5185020000000.0,
+            "money_market": 1104304000000.0,
+            "debt_securities": 1193186000000.0,
+            "consumer_durables": 3773624000000.0,
+            "annuities": 1119576000000.0,
+            "life_insurance": 709094000000.0,
+            "loans_assets": 126781000000.0,
+            "misc_assets": 879571000000.0,
+            "unallocated": 2000000.0
+          },
+          "total_assets": 60280257000000.0,
+          "total_liabilities": 8795392000000.0,
+          "net_worth": 51484864000000.0,
+          "household_count": 54071475.0,
+          "minimum_wealth_cutoff": null
+        }
+      ]
+    },
+    "bottom50": {
+      "key": "bottom50",
+      "label": "Bottom 50%",
+      "percentile_range": "0-50th",
+      "population_share": 0.5,
+      "nested": false,
+      "nested_in": null,
+      "history": [
+        {
+          "period": "1989-07-01",
+          "assets": {
+            "corporate_equities": 23943000000.0,
+            "private_business": 40285000000.0,
+            "pension": 168791000000.0,
+            "real_estate": 825615000000.0,
+            "deposits": 162639000000.0,
+            "money_market": 7390000000.0,
+            "debt_securities": 12715000000.0,
+            "consumer_durables": 364255000000.0,
+            "annuities": 14147000000.0,
+            "life_insurance": 43260000000.0,
+            "loans_assets": 1418000000.0,
+            "misc_assets": 40252000000.0,
+            "unallocated": 0.0
+          },
+          "total_assets": 1704710000000.0,
+          "total_liabilities": 986854000000.0,
+          "net_worth": 717856000000.0,
+          "household_count": 46513751.0,
+          "minimum_wealth_cutoff": null
+        },
+        {
+          "period": "2022-07-01",
+          "assets": {
+            "corporate_equities": 321613000000.0,
+            "private_business": 162307000000.0,
+            "pension": 909414000000.0,
+            "real_estate": 4763162000000.0,
+            "deposits": 803500000000.0,
+            "money_market": 23865000000.0,
+            "debt_securities": 27071000000.0,
+            "consumer_durables": 1773982000000.0,
+            "annuities": 57837000000.0,
+            "life_insurance": 155764000000.0,
+            "loans_assets": 3882000000.0,
+            "misc_assets": 311457000000.0,
+            "unallocated": 0.0
+          },
+          "total_assets": 9313854000000.0,
+          "total_liabilities": 5720998000000.0,
+          "net_worth": 3592857000000.0,
+          "household_count": 65659790.0,
+          "minimum_wealth_cutoff": null
+        },
+        {
+          "period": "2026-01-01",
+          "assets": {
+            "corporate_equities": 587223000000.0,
+            "private_business": 166766000000.0,
+            "pension": 1175379000000.0,
+            "real_estate": 4826745000000.0,
+            "deposits": 793232000000.0,
+            "money_market": 54257000000.0,
+            "debt_securities": 28583000000.0,
+            "consumer_durables": 2110476000000.0,
+            "annuities": 58593000000.0,
+            "life_insurance": 169417000000.0,
+            "loans_assets": 2728000000.0,
+            "misc_assets": 375549000000.0,
+            "unallocated": 0.0
+          },
+          "total_assets": 10348948000000.0,
+          "total_liabilities": 6082588000000.0,
+          "net_worth": 4266359000000.0,
+          "household_count": 67573814.0,
+          "minimum_wealth_cutoff": null
+        }
+      ]
+    }
+  },
+  "default_dimension": "networth",
+  "dimensions": {
+    "networth": {
+      "key": "networth",
+      "label": "Net worth",
+      "group_order": [
+        "top1",
+        "next9",
+        "next40",
+        "bottom50"
+      ],
+      "all_groups": [
+        "top01",
+        "top1",
+        "next9",
+        "next40",
+        "bottom50"
+      ],
+      "groups": {
+        "top01": {
+          "key": "top01",
+          "label": "Top 0.1%",
+          "percentile_range": "99.9th-100th",
+          "population_share": 0.001,
+          "nested": true,
+          "nested_in": "top1",
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 305340000000.0,
+                "private_business": 586079000000.0,
+                "pension": 37110000000.0,
+                "real_estate": 139254000000.0,
+                "deposits": 132471000000.0,
+                "money_market": 36459000000.0,
+                "debt_securities": 276018000000.0,
+                "consumer_durables": 195557000000.0,
+                "annuities": 1442000000.0,
+                "life_insurance": 13646000000.0,
+                "loans_assets": 74254000000.0,
+                "misc_assets": 4671000000.0,
+                "unallocated": 1000000.0
+              },
+              "total_assets": 1802302000000.0,
+              "total_liabilities": 45133000000.0,
+              "net_worth": 1757168000000.0,
+              "household_count": 103864.0,
+              "minimum_wealth_cutoff": 7794573.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 7443771000000.0,
+                "private_business": 4636851000000.0,
+                "pension": 391474000000.0,
+                "real_estate": 1744742000000.0,
+                "deposits": 1507251000000.0,
+                "money_market": 399432000000.0,
+                "debt_securities": 577150000000.0,
+                "consumer_durables": 570142000000.0,
+                "annuities": 78442000000.0,
+                "life_insurance": 209642000000.0,
+                "loans_assets": 330843000000.0,
+                "misc_assets": 37049000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 17926788000000.0,
+              "total_liabilities": 208598000000.0,
+              "net_worth": 17718190000000.0,
+              "household_count": 132240.0,
+              "minimum_wealth_cutoff": 46369052.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 13331518000000.0,
+                "private_business": 4679452000000.0,
+                "pension": 453454000000.0,
+                "real_estate": 1937284000000.0,
+                "deposits": 1473775000000.0,
+                "money_market": 1006257000000.0,
+                "debt_securities": 1104402000000.0,
+                "consumer_durables": 712377000000.0,
+                "annuities": 71175000000.0,
+                "life_insurance": 232477000000.0,
+                "loans_assets": 265014000000.0,
+                "misc_assets": 44806000000.0,
+                "unallocated": 1000000.0
+              },
+              "total_assets": 25311992000000.0,
+              "total_liabilities": 239711000000.0,
+              "net_worth": 25072282000000.0,
+              "household_count": 136095.0,
+              "minimum_wealth_cutoff": null
+            }
+          ]
+        },
+        "top1": {
+          "key": "top1",
+          "label": "Top 1%",
+          "percentile_range": "99th-100th",
+          "population_share": 0.01,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 895538000000.0,
+                "private_business": 1309673000000.0,
+                "pension": 253817000000.0,
+                "real_estate": 618359000000.0,
+                "deposits": 534789000000.0,
+                "money_market": 109477000000.0,
+                "debt_securities": 504032000000.0,
+                "consumer_durables": 358887000000.0,
+                "annuities": 14391000000.0,
+                "life_insurance": 47417000000.0,
+                "loans_assets": 125935000000.0,
+                "misc_assets": 19024000000.0,
+                "unallocated": 3000000.0
+              },
+              "total_assets": 4791342000000.0,
+              "total_liabilities": 129899000000.0,
+              "net_worth": 4661441000000.0,
+              "household_count": 928699.0,
+              "minimum_wealth_cutoff": 2306199.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 15909397000000.0,
+                "private_business": 8660471000000.0,
+                "pension": 2192069000000.0,
+                "real_estate": 5760329000000.0,
+                "deposits": 3482718000000.0,
+                "money_market": 886403000000.0,
+                "debt_securities": 1257480000000.0,
+                "consumer_durables": 941868000000.0,
+                "annuities": 280581000000.0,
+                "life_insurance": 556191000000.0,
+                "loans_assets": 597125000000.0,
+                "misc_assets": 117565000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 40642197000000.0,
+              "total_liabilities": 1045058000000.0,
+              "net_worth": 39597139000000.0,
+              "household_count": 1310101.0,
+              "minimum_wealth_cutoff": 11146846.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 27643648000000.0,
+                "private_business": 8762892000000.0,
+                "pension": 2758346000000.0,
+                "real_estate": 6484137000000.0,
+                "deposits": 3420010000000.0,
+                "money_market": 1991774000000.0,
+                "debt_securities": 2255117000000.0,
+                "consumer_durables": 1129619000000.0,
+                "annuities": 285746000000.0,
+                "life_insurance": 622086000000.0,
+                "loans_assets": 549701000000.0,
+                "misc_assets": 139399000000.0,
+                "unallocated": 1000000.0
+              },
+              "total_assets": 56042476000000.0,
+              "total_liabilities": 1009477000000.0,
+              "net_worth": 55033000000000.0,
+              "household_count": 1348292.0,
+              "minimum_wealth_cutoff": null
+            }
+          ]
+        },
+        "next9": {
+          "key": "next9",
+          "label": "Next 9%",
+          "percentile_range": "90th-99th",
+          "population_share": 0.09,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 811434000000.0,
+                "private_business": 1015740000000.0,
+                "pension": 1868407000000.0,
+                "real_estate": 2023859000000.0,
+                "deposits": 1121868000000.0,
+                "money_market": 147549000000.0,
+                "debt_securities": 388728000000.0,
+                "consumer_durables": 418759000000.0,
+                "annuities": 158738000000.0,
+                "life_insurance": 106088000000.0,
+                "loans_assets": 127271000000.0,
+                "misc_assets": 58576000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 8247017000000.0,
+              "total_liabilities": 481153000000.0,
+              "net_worth": 7765864000000.0,
+              "household_count": 8368077.0,
+              "minimum_wealth_cutoff": 486991.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 12245795000000.0,
+                "private_business": 5196880000000.0,
+                "pension": 10410550000000.0,
+                "real_estate": 13115866000000.0,
+                "deposits": 5072766000000.0,
+                "money_market": 1171161000000.0,
+                "debt_securities": 1376878000000.0,
+                "consumer_durables": 1646017000000.0,
+                "annuities": 970232000000.0,
+                "life_insurance": 600056000000.0,
+                "loans_assets": 418536000000.0,
+                "misc_assets": 328785000000.0,
+                "unallocated": 1000000.0
+              },
+              "total_assets": 52553523000000.0,
+              "total_liabilities": 3557193000000.0,
+              "net_worth": 48996329000000.0,
+              "household_count": 11796660.0,
+              "minimum_wealth_cutoff": 2148339.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 20514327000000.0,
+                "private_business": 5252870000000.0,
+                "pension": 12784682000000.0,
+                "real_estate": 14762255000000.0,
+                "deposits": 5054244000000.0,
+                "money_market": 2055926000000.0,
+                "debt_securities": 2386708000000.0,
+                "consumer_durables": 1886084000000.0,
+                "annuities": 1297415000000.0,
+                "life_insurance": 667332000000.0,
+                "loans_assets": 282903000000.0,
+                "misc_assets": 389386000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 67334132000000.0,
+              "total_liabilities": 4108736000000.0,
+              "net_worth": 63225396000000.0,
+              "household_count": 12140540.0,
+              "minimum_wealth_cutoff": null
+            }
+          ]
+        },
+        "next40": {
+          "key": "next40",
+          "label": "Next 40%",
+          "percentile_range": "50th-90th",
+          "population_share": 0.4,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 359529000000.0,
+                "private_business": 603923000000.0,
+                "pension": 1876506000000.0,
+                "real_estate": 3425336000000.0,
+                "deposits": 1137171000000.0,
+                "money_market": 98226000000.0,
+                "debt_securities": 141004000000.0,
+                "consumer_durables": 754279000000.0,
+                "annuities": 141556000000.0,
+                "life_insurance": 163427000000.0,
+                "loans_assets": 39241000000.0,
+                "misc_assets": 109496000000.0,
+                "unallocated": 2000000.0
+              },
+              "total_assets": 8849696000000.0,
+              "total_liabilities": 1554867000000.0,
+              "net_worth": 7294829000000.0,
+              "household_count": 37209575.0,
+              "minimum_wealth_cutoff": 66091.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 4054170000000.0,
+                "private_business": 2338028000000.0,
+                "pension": 12284227000000.0,
+                "real_estate": 19282099000000.0,
+                "deposits": 5233301000000.0,
+                "money_market": 687363000000.0,
+                "debt_securities": 698795000000.0,
+                "consumer_durables": 3209625000000.0,
+                "annuities": 1025586000000.0,
+                "life_insurance": 649380000000.0,
+                "loans_assets": 172270000000.0,
+                "misc_assets": 735021000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 50369864000000.0,
+              "total_liabilities": 8103453000000.0,
+              "net_worth": 42266410000000.0,
+              "household_count": 52539904.0,
+              "minimum_wealth_cutoff": 241362.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 6400950000000.0,
+                "private_business": 2376896000000.0,
+                "pension": 14761048000000.0,
+                "real_estate": 22650205000000.0,
+                "deposits": 5185020000000.0,
+                "money_market": 1104304000000.0,
+                "debt_securities": 1193186000000.0,
+                "consumer_durables": 3773624000000.0,
+                "annuities": 1119576000000.0,
+                "life_insurance": 709094000000.0,
+                "loans_assets": 126781000000.0,
+                "misc_assets": 879571000000.0,
+                "unallocated": 2000000.0
+              },
+              "total_assets": 60280257000000.0,
+              "total_liabilities": 8795392000000.0,
+              "net_worth": 51484864000000.0,
+              "household_count": 54071475.0,
+              "minimum_wealth_cutoff": null
+            }
+          ]
+        },
+        "bottom50": {
+          "key": "bottom50",
+          "label": "Bottom 50%",
+          "percentile_range": "0-50th",
+          "population_share": 0.5,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 23943000000.0,
+                "private_business": 40285000000.0,
+                "pension": 168791000000.0,
+                "real_estate": 825615000000.0,
+                "deposits": 162639000000.0,
+                "money_market": 7390000000.0,
+                "debt_securities": 12715000000.0,
+                "consumer_durables": 364255000000.0,
+                "annuities": 14147000000.0,
+                "life_insurance": 43260000000.0,
+                "loans_assets": 1418000000.0,
+                "misc_assets": 40252000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 1704710000000.0,
+              "total_liabilities": 986854000000.0,
+              "net_worth": 717856000000.0,
+              "household_count": 46513751.0,
+              "minimum_wealth_cutoff": null
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 321613000000.0,
+                "private_business": 162307000000.0,
+                "pension": 909414000000.0,
+                "real_estate": 4763162000000.0,
+                "deposits": 803500000000.0,
+                "money_market": 23865000000.0,
+                "debt_securities": 27071000000.0,
+                "consumer_durables": 1773982000000.0,
+                "annuities": 57837000000.0,
+                "life_insurance": 155764000000.0,
+                "loans_assets": 3882000000.0,
+                "misc_assets": 311457000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 9313854000000.0,
+              "total_liabilities": 5720998000000.0,
+              "net_worth": 3592857000000.0,
+              "household_count": 65659790.0,
+              "minimum_wealth_cutoff": null
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 587223000000.0,
+                "private_business": 166766000000.0,
+                "pension": 1175379000000.0,
+                "real_estate": 4826745000000.0,
+                "deposits": 793232000000.0,
+                "money_market": 54257000000.0,
+                "debt_securities": 28583000000.0,
+                "consumer_durables": 2110476000000.0,
+                "annuities": 58593000000.0,
+                "life_insurance": 169417000000.0,
+                "loans_assets": 2728000000.0,
+                "misc_assets": 375549000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 10348948000000.0,
+              "total_liabilities": 6082588000000.0,
+              "net_worth": 4266359000000.0,
+              "household_count": 67573814.0,
+              "minimum_wealth_cutoff": null
+            }
+          ]
+        }
+      }
+    },
+    "generation": {
+      "key": "generation",
+      "label": "Generation",
+      "group_order": [
+        "silent",
+        "boomer",
+        "genx",
+        "millennial"
+      ],
+      "all_groups": [
+        "silent",
+        "boomer",
+        "genx",
+        "millennial"
+      ],
+      "groups": {
+        "silent": {
+          "key": "silent",
+          "label": "Silent and earlier",
+          "percentile_range": null,
+          "population_share": null,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 1707411000000.0,
+                "private_business": 2202945000000.0,
+                "pension": 3558468000000.0,
+                "real_estate": 4588052000000.0,
+                "deposits": 2433384000000.0,
+                "money_market": 309822000000.0,
+                "debt_securities": 871927000000.0,
+                "consumer_durables": 1060570000000.0,
+                "annuities": 274030000000.0,
+                "life_insurance": 219472000000.0,
+                "loans_assets": 277515000000.0,
+                "misc_assets": 138991000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 17642586000000.0,
+              "total_liabilities": 1267459000000.0,
+              "net_worth": 16375126000000.0,
+              "household_count": 48553376.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 6267204000000.0,
+                "private_business": 2378210000000.0,
+                "pension": 1513055000000.0,
+                "real_estate": 5026376000000.0,
+                "deposits": 2203256000000.0,
+                "money_market": 554776000000.0,
+                "debt_securities": 669148000000.0,
+                "consumer_durables": 879977000000.0,
+                "annuities": 45031000000.0,
+                "life_insurance": 243156000000.0,
+                "loans_assets": 161790000000.0,
+                "misc_assets": 249992000000.0,
+                "unallocated": 1000000.0
+              },
+              "total_assets": 20191972000000.0,
+              "total_liabilities": 620398000000.0,
+              "net_worth": 19571574000000.0,
+              "household_count": 12931003.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 8266603000000.0,
+                "private_business": 1839356000000.0,
+                "pension": 1319299000000.0,
+                "real_estate": 4001049000000.0,
+                "deposits": 1683829000000.0,
+                "money_market": 810873000000.0,
+                "debt_securities": 869858000000.0,
+                "consumer_durables": 749172000000.0,
+                "annuities": 21075000000.0,
+                "life_insurance": 208623000000.0,
+                "loans_assets": 103338000000.0,
+                "misc_assets": 225411000000.0,
+                "unallocated": 1000000.0
+              },
+              "total_assets": 20098487000000.0,
+              "total_liabilities": 444272000000.0,
+              "net_worth": 19654215000000.0,
+              "household_count": 9558574.0
+            }
+          ]
+        },
+        "boomer": {
+          "key": "boomer",
+          "label": "Baby Boom",
+          "percentile_range": null,
+          "population_share": null,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 379142000000.0,
+                "private_business": 754594000000.0,
+                "pension": 607278000000.0,
+                "real_estate": 2260997000000.0,
+                "deposits": 510450000000.0,
+                "money_market": 52446000000.0,
+                "debt_securities": 169719000000.0,
+                "consumer_durables": 790285000000.0,
+                "annuities": 54773000000.0,
+                "life_insurance": 137861000000.0,
+                "loans_assets": 16351000000.0,
+                "misc_assets": 85324000000.0,
+                "unallocated": 1000000.0
+              },
+              "total_assets": 5819221000000.0,
+              "total_liabilities": 1831801000000.0,
+              "net_worth": 3987420000000.0,
+              "household_count": 39289625.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 17732958000000.0,
+                "private_business": 8200385000000.0,
+                "pension": 13619987000000.0,
+                "real_estate": 18045999000000.0,
+                "deposits": 6586252000000.0,
+                "money_market": 1620482000000.0,
+                "debt_securities": 1956408000000.0,
+                "consumer_durables": 2926042000000.0,
+                "annuities": 936696000000.0,
+                "life_insurance": 910521000000.0,
+                "loans_assets": 828746000000.0,
+                "misc_assets": 638881000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 74003356000000.0,
+              "total_liabilities": 4901464000000.0,
+              "net_worth": 69101892000000.0,
+              "household_count": 42078796.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 29710630000000.0,
+                "private_business": 8273143000000.0,
+                "pension": 16065128000000.0,
+                "real_estate": 19837289000000.0,
+                "deposits": 6477161000000.0,
+                "money_market": 3100103000000.0,
+                "debt_securities": 3835975000000.0,
+                "consumer_durables": 3220275000000.0,
+                "annuities": 1202380000000.0,
+                "life_insurance": 1018615000000.0,
+                "loans_assets": 676254000000.0,
+                "misc_assets": 745786000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 94162738000000.0,
+              "total_liabilities": 4320887000000.0,
+              "net_worth": 89841851000000.0,
+              "household_count": 40424053.0
+            }
+          ]
+        },
+        "genx": {
+          "key": "genx",
+          "label": "Gen X",
+          "percentile_range": null,
+          "population_share": null,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 3891000000.0,
+                "private_business": 12083000000.0,
+                "pension": 1774000000.0,
+                "real_estate": 44121000000.0,
+                "deposits": 12634000000.0,
+                "money_market": 375000000.0,
+                "debt_securities": 4833000000.0,
+                "consumer_durables": 45325000000.0,
+                "annuities": 28000000.0,
+                "life_insurance": 2859000000.0,
+                "loans_assets": 0.0,
+                "misc_assets": 3034000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 130957000000.0,
+              "total_liabilities": 53514000000.0,
+              "net_worth": 77443000000.0,
+              "household_count": 5177100.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 6442537000000.0,
+                "private_business": 3993433000000.0,
+                "pension": 8474887000000.0,
+                "real_estate": 12920750000000.0,
+                "deposits": 3828190000000.0,
+                "money_market": 490568000000.0,
+                "debt_securities": 483697000000.0,
+                "consumer_durables": 2162259000000.0,
+                "annuities": 1107710000000.0,
+                "life_insurance": 588458000000.0,
+                "loans_assets": 146225000000.0,
+                "misc_assets": 358324000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 40997037000000.0,
+              "total_liabilities": 6879906000000.0,
+              "net_worth": 34117131000000.0,
+              "household_count": 35223169.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 12229418000000.0,
+                "private_business": 4193225000000.0,
+                "pension": 10774339000000.0,
+                "real_estate": 14249459000000.0,
+                "deposits": 3882662000000.0,
+                "money_market": 1087273000000.0,
+                "debt_securities": 829363000000.0,
+                "consumer_durables": 2507377000000.0,
+                "annuities": 1219875000000.0,
+                "life_insurance": 679517000000.0,
+                "loans_assets": 148699000000.0,
+                "misc_assets": 440309000000.0,
+                "unallocated": 1000000.0
+              },
+              "total_assets": 52241517000000.0,
+              "total_liabilities": 6843387000000.0,
+              "net_worth": 45398130000000.0,
+              "household_count": 35133776.0
+            }
+          ]
+        },
+        "millennial": {
+          "key": "millennial",
+          "label": "Millennial and later",
+          "percentile_range": null,
+          "population_share": null,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 0.0,
+                "private_business": 0.0,
+                "pension": 0.0,
+                "real_estate": 0.0,
+                "deposits": 0.0,
+                "money_market": 0.0,
+                "debt_securities": 0.0,
+                "consumer_durables": 0.0,
+                "annuities": 0.0,
+                "life_insurance": 0.0,
+                "loans_assets": 0.0,
+                "misc_assets": 0.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 0.0,
+              "total_liabilities": 0.0,
+              "net_worth": 0.0,
+              "household_count": 0.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 2088275000000.0,
+                "private_business": 1785658000000.0,
+                "pension": 2188333000000.0,
+                "real_estate": 6928332000000.0,
+                "deposits": 1974588000000.0,
+                "money_market": 102966000000.0,
+                "debt_securities": 250971000000.0,
+                "consumer_durables": 1603213000000.0,
+                "annuities": 244799000000.0,
+                "life_insurance": 219256000000.0,
+                "loans_assets": 55051000000.0,
+                "misc_assets": 245630000000.0,
+                "unallocated": 1000000.0
+              },
+              "total_assets": 17687073000000.0,
+              "total_liabilities": 6024934000000.0,
+              "net_worth": 11662139000000.0,
+              "household_count": 41073488.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 4939499000000.0,
+                "private_business": 2253700000000.0,
+                "pension": 3320691000000.0,
+                "real_estate": 10635545000000.0,
+                "deposits": 2408853000000.0,
+                "money_market": 208012000000.0,
+                "debt_securities": 328398000000.0,
+                "consumer_durables": 2422977000000.0,
+                "annuities": 318000000000.0,
+                "life_insurance": 261174000000.0,
+                "loans_assets": 33823000000.0,
+                "misc_assets": 372400000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 27503071000000.0,
+              "total_liabilities": 8387648000000.0,
+              "net_worth": 19115423000000.0,
+              "household_count": 50016969.0
+            }
+          ]
+        }
+      }
+    },
+    "education": {
+      "key": "education",
+      "label": "Education",
+      "group_order": [
+        "no_hs",
+        "hs",
+        "some_college",
+        "college"
+      ],
+      "all_groups": [
+        "no_hs",
+        "hs",
+        "some_college",
+        "college"
+      ],
+      "groups": {
+        "no_hs": {
+          "key": "no_hs",
+          "label": "No high school diploma",
+          "percentile_range": null,
+          "population_share": null,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 88192000000.0,
+                "private_business": 279301000000.0,
+                "pension": 571843000000.0,
+                "real_estate": 913561000000.0,
+                "deposits": 417913000000.0,
+                "money_market": 9904000000.0,
+                "debt_securities": 28004000000.0,
+                "consumer_durables": 193244000000.0,
+                "annuities": 37476000000.0,
+                "life_insurance": 31779000000.0,
+                "loans_assets": 28603000000.0,
+                "misc_assets": 28887000000.0,
+                "unallocated": 1000000.0
+              },
+              "total_assets": 2628708000000.0,
+              "total_liabilities": 253238000000.0,
+              "net_worth": 2375470000000.0,
+              "household_count": 22565181.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 139388000000.0,
+                "private_business": 218498000000.0,
+                "pension": 263878000000.0,
+                "real_estate": 1225267000000.0,
+                "deposits": 222189000000.0,
+                "money_market": 12240000000.0,
+                "debt_securities": 25079000000.0,
+                "consumer_durables": 312713000000.0,
+                "annuities": 17543000000.0,
+                "life_insurance": 17504000000.0,
+                "loans_assets": 278000000.0,
+                "misc_assets": 70982000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 2525559000000.0,
+              "total_liabilities": 451996000000.0,
+              "net_worth": 2073563000000.0,
+              "household_count": 12035833.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 216029000000.0,
+                "private_business": 197739000000.0,
+                "pension": 275346000000.0,
+                "real_estate": 1305644000000.0,
+                "deposits": 200884000000.0,
+                "money_market": 25051000000.0,
+                "debt_securities": 0.0,
+                "consumer_durables": 343520000000.0,
+                "annuities": 22009000000.0,
+                "life_insurance": 16719000000.0,
+                "loans_assets": 147000000.0,
+                "misc_assets": 78210000000.0,
+                "unallocated": 2000000.0
+              },
+              "total_assets": 2681300000000.0,
+              "total_liabilities": 416157000000.0,
+              "net_worth": 2265142000000.0,
+              "household_count": 11352550.0
+            }
+          ]
+        },
+        "hs": {
+          "key": "hs",
+          "label": "High school diploma",
+          "percentile_range": null,
+          "population_share": null,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 266028000000.0,
+                "private_business": 533274000000.0,
+                "pension": 948966000000.0,
+                "real_estate": 1528054000000.0,
+                "deposits": 677153000000.0,
+                "money_market": 73810000000.0,
+                "debt_securities": 138557000000.0,
+                "consumer_durables": 482878000000.0,
+                "annuities": 74962000000.0,
+                "life_insurance": 72813000000.0,
+                "loans_assets": 73014000000.0,
+                "misc_assets": 55688000000.0,
+                "unallocated": 1000000.0
+              },
+              "total_assets": 4925198000000.0,
+              "total_liabilities": 715882000000.0,
+              "net_worth": 4209316000000.0,
+              "household_count": 29893093.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 1684593000000.0,
+                "private_business": 1719361000000.0,
+                "pension": 2670736000000.0,
+                "real_estate": 5333436000000.0,
+                "deposits": 1516973000000.0,
+                "money_market": 166282000000.0,
+                "debt_securities": 232970000000.0,
+                "consumer_durables": 1319619000000.0,
+                "annuities": 268676000000.0,
+                "life_insurance": 191406000000.0,
+                "loans_assets": 93598000000.0,
+                "misc_assets": 285592000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 15483242000000.0,
+              "total_liabilities": 2412372000000.0,
+              "net_worth": 13070871000000.0,
+              "household_count": 31058176.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 2933044000000.0,
+                "private_business": 1634691000000.0,
+                "pension": 3071221000000.0,
+                "real_estate": 5872700000000.0,
+                "deposits": 1421461000000.0,
+                "money_market": 234064000000.0,
+                "debt_securities": 352996000000.0,
+                "consumer_durables": 1463464000000.0,
+                "annuities": 327622000000.0,
+                "life_insurance": 197543000000.0,
+                "loans_assets": 97019000000.0,
+                "misc_assets": 330011000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 17935835000000.0,
+              "total_liabilities": 2330843000000.0,
+              "net_worth": 15604992000000.0,
+              "household_count": 30818241.0
+            }
+          ]
+        },
+        "some_college": {
+          "key": "some_college",
+          "label": "Some college",
+          "percentile_range": null,
+          "population_share": null,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 336677000000.0,
+                "private_business": 537611000000.0,
+                "pension": 766508000000.0,
+                "real_estate": 1490725000000.0,
+                "deposits": 616306000000.0,
+                "money_market": 50712000000.0,
+                "debt_securities": 239244000000.0,
+                "consumer_durables": 423526000000.0,
+                "annuities": 65408000000.0,
+                "life_insurance": 67644000000.0,
+                "loans_assets": 34696000000.0,
+                "misc_assets": 48533000000.0,
+                "unallocated": 3000000.0
+              },
+              "total_assets": 4677593000000.0,
+              "total_liabilities": 755987000000.0,
+              "net_worth": 3921606000000.0,
+              "household_count": 18948257.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 2999392000000.0,
+                "private_business": 2601102000000.0,
+                "pension": 5605506000000.0,
+                "real_estate": 7608651000000.0,
+                "deposits": 2293723000000.0,
+                "money_market": 263525000000.0,
+                "debt_securities": 301029000000.0,
+                "consumer_durables": 1574948000000.0,
+                "annuities": 531274000000.0,
+                "life_insurance": 232531000000.0,
+                "loans_assets": 70269000000.0,
+                "misc_assets": 323487000000.0,
+                "unallocated": 1000000.0
+              },
+              "total_assets": 24405438000000.0,
+              "total_liabilities": 3627188000000.0,
+              "net_worth": 20778251000000.0,
+              "household_count": 35560277.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 5021567000000.0,
+                "private_business": 2532218000000.0,
+                "pension": 6491095000000.0,
+                "real_estate": 8323907000000.0,
+                "deposits": 2204347000000.0,
+                "money_market": 493969000000.0,
+                "debt_securities": 531008000000.0,
+                "consumer_durables": 1789436000000.0,
+                "annuities": 631355000000.0,
+                "life_insurance": 245527000000.0,
+                "loans_assets": 59007000000.0,
+                "misc_assets": 374785000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 28698221000000.0,
+              "total_liabilities": 3854804000000.0,
+              "net_worth": 24843417000000.0,
+              "household_count": 36235313.0
+            }
+          ]
+        },
+        "college": {
+          "key": "college",
+          "label": "College degree",
+          "percentile_range": null,
+          "population_share": null,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 1399547000000.0,
+                "private_business": 1619435000000.0,
+                "pension": 1880203000000.0,
+                "real_estate": 2960829000000.0,
+                "deposits": 1245096000000.0,
+                "money_market": 228216000000.0,
+                "debt_securities": 640674000000.0,
+                "consumer_durables": 796532000000.0,
+                "annuities": 150984000000.0,
+                "life_insurance": 187955000000.0,
+                "loans_assets": 157552000000.0,
+                "misc_assets": 94241000000.0,
+                "unallocated": 1000000.0
+              },
+              "total_assets": 11361265000000.0,
+              "total_liabilities": 1427667000000.0,
+              "net_worth": 9933598000000.0,
+              "household_count": 21613571.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 27707602000000.0,
+                "private_business": 11818725000000.0,
+                "pension": 17256140000000.0,
+                "real_estate": 28754103000000.0,
+                "deposits": 10559401000000.0,
+                "money_market": 2326745000000.0,
+                "debt_securities": 2801146000000.0,
+                "consumer_durables": 4364212000000.0,
+                "annuities": 1516742000000.0,
+                "life_insurance": 1519950000000.0,
+                "loans_assets": 1027667000000.0,
+                "misc_assets": 812766000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 110465199000000.0,
+              "total_liabilities": 11935147000000.0,
+              "net_worth": 98530051000000.0,
+              "household_count": 52652170.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 46975508000000.0,
+                "private_business": 12194775000000.0,
+                "pension": 21641794000000.0,
+                "real_estate": 33221090000000.0,
+                "deposits": 10625814000000.0,
+                "money_market": 4453177000000.0,
+                "debt_securities": 4979590000000.0,
+                "consumer_durables": 5303383000000.0,
+                "annuities": 1780344000000.0,
+                "life_insurance": 1708140000000.0,
+                "loans_assets": 805942000000.0,
+                "misc_assets": 1000900000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 144690457000000.0,
+              "total_liabilities": 13394389000000.0,
+              "net_worth": 131296069000000.0,
+              "household_count": 56727029.0
+            }
+          ]
+        }
+      }
+    },
+    "income": {
+      "key": "income",
+      "label": "Income",
+      "group_order": [
+        "pct00to20",
+        "pct20to40",
+        "pct40to60",
+        "pct60to80",
+        "pct80to99",
+        "pct99to100"
+      ],
+      "all_groups": [
+        "pct00to20",
+        "pct20to40",
+        "pct40to60",
+        "pct60to80",
+        "pct80to99",
+        "pct99to100"
+      ],
+      "groups": {
+        "pct00to20": {
+          "key": "pct00to20",
+          "label": "Bottom 20%",
+          "percentile_range": null,
+          "population_share": 0.2,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 23550000000.0,
+                "private_business": 47747000000.0,
+                "pension": 111514000000.0,
+                "real_estate": 243317000000.0,
+                "deposits": 113774000000.0,
+                "money_market": 2168000000.0,
+                "debt_securities": 8077000000.0,
+                "consumer_durables": 75647000000.0,
+                "annuities": 966000000.0,
+                "life_insurance": 12066000000.0,
+                "loans_assets": 4486000000.0,
+                "misc_assets": 9093000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 652405000000.0,
+              "total_liabilities": 63188000000.0,
+              "net_worth": 589218000000.0,
+              "household_count": 18593339.0,
+              "minimum_income_cutoff": 0.0,
+              "maximum_income_cutoff": 10361.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 631066000000.0,
+                "private_business": 543745000000.0,
+                "pension": 288677000000.0,
+                "real_estate": 2154225000000.0,
+                "deposits": 462471000000.0,
+                "money_market": 47625000000.0,
+                "debt_securities": 72844000000.0,
+                "consumer_durables": 518978000000.0,
+                "annuities": 12212000000.0,
+                "life_insurance": 52431000000.0,
+                "loans_assets": 23136000000.0,
+                "misc_assets": 101094000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 4908504000000.0,
+              "total_liabilities": 782471000000.0,
+              "net_worth": 4126034000000.0,
+              "household_count": 26260886.0,
+              "minimum_income_cutoff": 0.0,
+              "maximum_income_cutoff": 31166.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 869449000000.0,
+                "private_business": 555783000000.0,
+                "pension": 311703000000.0,
+                "real_estate": 2486184000000.0,
+                "deposits": 477235000000.0,
+                "money_market": 57269000000.0,
+                "debt_securities": 243990000000.0,
+                "consumer_durables": 638333000000.0,
+                "annuities": 14301000000.0,
+                "life_insurance": 61141000000.0,
+                "loans_assets": 15836000000.0,
+                "misc_assets": 122003000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 5853227000000.0,
+              "total_liabilities": 816439000000.0,
+              "net_worth": 5036788000000.0,
+              "household_count": 27026408.0,
+              "minimum_income_cutoff": null,
+              "maximum_income_cutoff": null
+            }
+          ]
+        },
+        "pct20to40": {
+          "key": "pct20to40",
+          "label": "20th-40th",
+          "percentile_range": null,
+          "population_share": 0.2,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 41505000000.0,
+                "private_business": 128551000000.0,
+                "pension": 287103000000.0,
+                "real_estate": 669590000000.0,
+                "deposits": 317186000000.0,
+                "money_market": 11911000000.0,
+                "debt_securities": 32903000000.0,
+                "consumer_durables": 172218000000.0,
+                "annuities": 6687000000.0,
+                "life_insurance": 21362000000.0,
+                "loans_assets": 38974000000.0,
+                "misc_assets": 20759000000.0,
+                "unallocated": 1000000.0
+              },
+              "total_assets": 1748750000000.0,
+              "total_liabilities": 189179000000.0,
+              "net_worth": 1559571000000.0,
+              "household_count": 18612879.0,
+              "minimum_income_cutoff": 10366.0,
+              "maximum_income_cutoff": 20458.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 346017000000.0,
+                "private_business": 361091000000.0,
+                "pension": 1561727000000.0,
+                "real_estate": 3264932000000.0,
+                "deposits": 928203000000.0,
+                "money_market": 85536000000.0,
+                "debt_securities": 95850000000.0,
+                "consumer_durables": 746620000000.0,
+                "annuities": 68455000000.0,
+                "life_insurance": 64606000000.0,
+                "loans_assets": 3577000000.0,
+                "misc_assets": 189963000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 7716577000000.0,
+              "total_liabilities": 1363940000000.0,
+              "net_worth": 6352637000000.0,
+              "household_count": 26255828.0,
+              "minimum_income_cutoff": 31247.0,
+              "maximum_income_cutoff": 54417.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 573531000000.0,
+                "private_business": 369693000000.0,
+                "pension": 1702518000000.0,
+                "real_estate": 3577435000000.0,
+                "deposits": 930542000000.0,
+                "money_market": 167826000000.0,
+                "debt_securities": 137831000000.0,
+                "consumer_durables": 888839000000.0,
+                "annuities": 79955000000.0,
+                "life_insurance": 67568000000.0,
+                "loans_assets": 11157000000.0,
+                "misc_assets": 229489000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 8736384000000.0,
+              "total_liabilities": 1472134000000.0,
+              "net_worth": 7264250000000.0,
+              "household_count": 27021202.0,
+              "minimum_income_cutoff": null,
+              "maximum_income_cutoff": null
+            }
+          ]
+        },
+        "pct40to60": {
+          "key": "pct40to60",
+          "label": "40th-60th",
+          "percentile_range": null,
+          "population_share": 0.2,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 120511000000.0,
+                "private_business": 247878000000.0,
+                "pension": 668022000000.0,
+                "real_estate": 999838000000.0,
+                "deposits": 453567000000.0,
+                "money_market": 19935000000.0,
+                "debt_securities": 79930000000.0,
+                "consumer_durables": 250995000000.0,
+                "annuities": 40254000000.0,
+                "life_insurance": 33775000000.0,
+                "loans_assets": 24564000000.0,
+                "misc_assets": 33521000000.0,
+                "unallocated": 1000000.0
+              },
+              "total_assets": 2972791000000.0,
+              "total_liabilities": 425094000000.0,
+              "net_worth": 2547697000000.0,
+              "household_count": 18605233.0,
+              "minimum_income_cutoff": 20512.0,
+              "maximum_income_cutoff": 32291.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 1312533000000.0,
+                "private_business": 1134314000000.0,
+                "pension": 2807900000000.0,
+                "real_estate": 5669396000000.0,
+                "deposits": 1408576000000.0,
+                "money_market": 181483000000.0,
+                "debt_securities": 189930000000.0,
+                "consumer_durables": 1181727000000.0,
+                "annuities": 150598000000.0,
+                "life_insurance": 177680000000.0,
+                "loans_assets": 42194000000.0,
+                "misc_assets": 271724000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 14528055000000.0,
+              "total_liabilities": 2678299000000.0,
+              "net_worth": 11849756000000.0,
+              "household_count": 26267160.0,
+              "minimum_income_cutoff": 54444.0,
+              "maximum_income_cutoff": 90796.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 1921692000000.0,
+                "private_business": 1142491000000.0,
+                "pension": 3318929000000.0,
+                "real_estate": 5994139000000.0,
+                "deposits": 1389253000000.0,
+                "money_market": 289189000000.0,
+                "debt_securities": 348940000000.0,
+                "consumer_durables": 1376537000000.0,
+                "annuities": 203728000000.0,
+                "life_insurance": 196250000000.0,
+                "loans_assets": 44601000000.0,
+                "misc_assets": 328726000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 16554474000000.0,
+              "total_liabilities": 2947648000000.0,
+              "net_worth": 13606826000000.0,
+              "household_count": 27032865.0,
+              "minimum_income_cutoff": null,
+              "maximum_income_cutoff": null
+            }
+          ]
+        },
+        "pct60to80": {
+          "key": "pct60to80",
+          "label": "60th-80th",
+          "percentile_range": null,
+          "population_share": 0.2,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 227156000000.0,
+                "private_business": 281268000000.0,
+                "pension": 929812000000.0,
+                "real_estate": 1408279000000.0,
+                "deposits": 529881000000.0,
+                "money_market": 58029000000.0,
+                "debt_securities": 130248000000.0,
+                "consumer_durables": 431257000000.0,
+                "annuities": 67856000000.0,
+                "life_insurance": 76656000000.0,
+                "loans_assets": 26458000000.0,
+                "misc_assets": 50152000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 4217051000000.0,
+              "total_liabilities": 838755000000.0,
+              "net_worth": 3378296000000.0,
+              "household_count": 18601249.0,
+              "minimum_income_cutoff": 32302.0,
+              "maximum_income_cutoff": 52161.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 2148653000000.0,
+                "private_business": 1307906000000.0,
+                "pension": 5622823000000.0,
+                "real_estate": 8120230000000.0,
+                "deposits": 2111170000000.0,
+                "money_market": 326219000000.0,
+                "debt_securities": 341873000000.0,
+                "consumer_durables": 1658677000000.0,
+                "annuities": 539062000000.0,
+                "life_insurance": 282550000000.0,
+                "loans_assets": 127411000000.0,
+                "misc_assets": 323395000000.0,
+                "unallocated": 2000000.0
+              },
+              "total_assets": 22909971000000.0,
+              "total_liabilities": 4367059000000.0,
+              "net_worth": 18542912000000.0,
+              "household_count": 26259705.0,
+              "minimum_income_cutoff": 90796.0,
+              "maximum_income_cutoff": 151328.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 3807023000000.0,
+                "private_business": 1325040000000.0,
+                "pension": 6889221000000.0,
+                "real_estate": 9112194000000.0,
+                "deposits": 2112922000000.0,
+                "money_market": 512308000000.0,
+                "debt_securities": 724541000000.0,
+                "consumer_durables": 1946790000000.0,
+                "annuities": 649660000000.0,
+                "life_insurance": 309468000000.0,
+                "loans_assets": 96653000000.0,
+                "misc_assets": 384858000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 27870677000000.0,
+              "total_liabilities": 4669484000000.0,
+              "net_worth": 23201193000000.0,
+              "household_count": 27025192.0,
+              "minimum_income_cutoff": null,
+              "maximum_income_cutoff": null
+            }
+          ]
+        },
+        "pct80to99": {
+          "key": "pct80to99",
+          "label": "80th-99th",
+          "percentile_range": null,
+          "population_share": 0.19,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 926531000000.0,
+                "private_business": 1424002000000.0,
+                "pension": 1968962000000.0,
+                "real_estate": 3036663000000.0,
+                "deposits": 1223795000000.0,
+                "money_market": 172541000000.0,
+                "debt_securities": 398456000000.0,
+                "consumer_durables": 700183000000.0,
+                "annuities": 201804000000.0,
+                "life_insurance": 174315000000.0,
+                "loans_assets": 128004000000.0,
+                "misc_assets": 96796000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 10452052000000.0,
+              "total_liabilities": 1484790000000.0,
+              "net_worth": 8967262000000.0,
+              "household_count": 17675318.0,
+              "minimum_income_cutoff": 52161.0,
+              "maximum_income_cutoff": 244112.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 16188582000000.0,
+                "private_business": 6682630000000.0,
+                "pension": 13922808000000.0,
+                "real_estate": 18317067000000.0,
+                "deposits": 6677639000000.0,
+                "money_market": 1644788000000.0,
+                "debt_securities": 1657314000000.0,
+                "consumer_durables": 2682638000000.0,
+                "annuities": 1487119000000.0,
+                "life_insurance": 974557000000.0,
+                "loans_assets": 555513000000.0,
+                "misc_assets": 503314000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 71293968000000.0,
+              "total_liabilities": 7859020000000.0,
+              "net_worth": 63434948000000.0,
+              "household_count": 24948864.0,
+              "minimum_income_cutoff": 151328.0,
+              "maximum_income_cutoff": 1197734.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 26479857000000.0,
+                "private_business": 6761991000000.0,
+                "pension": 17106572000000.0,
+                "real_estate": 21357722000000.0,
+                "deposits": 6591414000000.0,
+                "money_market": 3025448000000.0,
+                "debt_securities": 2632386000000.0,
+                "consumer_durables": 3140144000000.0,
+                "annuities": 1730243000000.0,
+                "life_insurance": 1076750000000.0,
+                "loans_assets": 452905000000.0,
+                "misc_assets": 596236000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 90951668000000.0,
+              "total_liabilities": 8635648000000.0,
+              "net_worth": 82316020000000.0,
+              "household_count": 25676139.0,
+              "minimum_income_cutoff": null,
+              "maximum_income_cutoff": null
+            }
+          ]
+        },
+        "pct99to100": {
+          "key": "pct99to100",
+          "label": "Top 1%",
+          "percentile_range": null,
+          "population_share": 0.01,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 751191000000.0,
+                "private_business": 840175000000.0,
+                "pension": 202108000000.0,
+                "real_estate": 535482000000.0,
+                "deposits": 318265000000.0,
+                "money_market": 98059000000.0,
+                "debt_securities": 396865000000.0,
+                "consumer_durables": 265880000000.0,
+                "annuities": 11265000000.0,
+                "life_insurance": 42018000000.0,
+                "loans_assets": 71380000000.0,
+                "misc_assets": 17027000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 3549714000000.0,
+              "total_liabilities": 151768000000.0,
+              "net_worth": 3397946000000.0,
+              "household_count": 932085.0,
+              "minimum_income_cutoff": 244112.0,
+              "maximum_income_cutoff": 269339680.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 11904123000000.0,
+                "private_business": 6328000000000.0,
+                "pension": 1592326000000.0,
+                "real_estate": 5395607000000.0,
+                "deposits": 3004226000000.0,
+                "money_market": 483141000000.0,
+                "debt_securities": 1002414000000.0,
+                "consumer_durables": 782851000000.0,
+                "annuities": 76789000000.0,
+                "life_insurance": 409567000000.0,
+                "loans_assets": 439982000000.0,
+                "misc_assets": 103337000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 31522362000000.0,
+              "total_liabilities": 1375913000000.0,
+              "net_worth": 30146449000000.0,
+              "household_count": 1314011.0,
+              "minimum_income_cutoff": 1197734.0,
+              "maximum_income_cutoff": 9455046656.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 21494597000000.0,
+                "private_business": 6404426000000.0,
+                "pension": 2150513000000.0,
+                "real_estate": 6195668000000.0,
+                "deposits": 2951141000000.0,
+                "money_market": 1154222000000.0,
+                "debt_securities": 1775906000000.0,
+                "consumer_durables": 909158000000.0,
+                "annuities": 83444000000.0,
+                "life_insurance": 456752000000.0,
+                "loans_assets": 340961000000.0,
+                "misc_assets": 122594000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 44039382000000.0,
+              "total_liabilities": 1454839000000.0,
+              "net_worth": 42584543000000.0,
+              "household_count": 1352315.0,
+              "minimum_income_cutoff": null,
+              "maximum_income_cutoff": null
+            }
+          ]
+        }
+      }
+    },
+    "race": {
+      "key": "race",
+      "label": "Race and ethnicity",
+      "group_order": [
+        "white",
+        "black",
+        "hispanic",
+        "other"
+      ],
+      "all_groups": [
+        "white",
+        "black",
+        "hispanic",
+        "other"
+      ],
+      "groups": {
+        "white": {
+          "key": "white",
+          "label": "White, non-Hispanic",
+          "percentile_range": null,
+          "population_share": null,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 2011229000000.0,
+                "private_business": 2622251000000.0,
+                "pension": 3617627000000.0,
+                "real_estate": 5993921000000.0,
+                "deposits": 2702220000000.0,
+                "money_market": 351813000000.0,
+                "debt_securities": 1019340000000.0,
+                "consumer_durables": 1643424000000.0,
+                "annuities": 279040000000.0,
+                "life_insurance": 321870000000.0,
+                "loans_assets": 290916000000.0,
+                "misc_assets": 195270000000.0,
+                "unallocated": 2000000.0
+              },
+              "total_assets": 21048923000000.0,
+              "total_liabilities": 2587588000000.0,
+              "net_worth": 18461335000000.0,
+              "household_count": 69591129.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 28967890000000.0,
+                "private_business": 14450287000000.0,
+                "pension": 20800244000000.0,
+                "real_estate": 33663945000000.0,
+                "deposits": 12507323000000.0,
+                "money_market": 2575467000000.0,
+                "debt_securities": 3010303000000.0,
+                "consumer_durables": 5852955000000.0,
+                "annuities": 1784227000000.0,
+                "life_insurance": 1564731000000.0,
+                "loans_assets": 1025265000000.0,
+                "misc_assets": 1138169000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 127340804000000.0,
+              "total_liabilities": 13172302000000.0,
+              "net_worth": 114168502000000.0,
+              "household_count": 87725176.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 48121895000000.0,
+                "private_business": 14317062000000.0,
+                "pension": 24568911000000.0,
+                "real_estate": 36579937000000.0,
+                "deposits": 12017460000000.0,
+                "money_market": 4861511000000.0,
+                "debt_securities": 5114006000000.0,
+                "consumer_durables": 6564106000000.0,
+                "annuities": 2038887000000.0,
+                "life_insurance": 1672968000000.0,
+                "loans_assets": 802888000000.0,
+                "misc_assets": 1311983000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 157971613000000.0,
+              "total_liabilities": 13773097000000.0,
+              "net_worth": 144198516000000.0,
+              "household_count": 86146686.0
+            }
+          ]
+        },
+        "black": {
+          "key": "black",
+          "label": "Black, non-Hispanic",
+          "percentile_range": null,
+          "population_share": null,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 17098000000.0,
+                "private_business": 38230000000.0,
+                "pension": 340485000000.0,
+                "real_estate": 338491000000.0,
+                "deposits": 93538000000.0,
+                "money_market": 5343000000.0,
+                "debt_securities": 8460000000.0,
+                "consumer_durables": 110870000000.0,
+                "annuities": 30043000000.0,
+                "life_insurance": 15445000000.0,
+                "loans_assets": 311000000.0,
+                "misc_assets": 12356000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 1010669000000.0,
+              "total_liabilities": 183426000000.0,
+              "net_worth": 827243000000.0,
+              "household_count": 11845844.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 231318000000.0,
+                "private_business": 348771000000.0,
+                "pension": 1962704000000.0,
+                "real_estate": 2131363000000.0,
+                "deposits": 354531000000.0,
+                "money_market": 38996000000.0,
+                "debt_securities": 33648000000.0,
+                "consumer_durables": 537643000000.0,
+                "annuities": 234719000000.0,
+                "life_insurance": 125172000000.0,
+                "loans_assets": 40404000000.0,
+                "misc_assets": 129344000000.0,
+                "unallocated": 2000000.0
+              },
+              "total_assets": 6168615000000.0,
+              "total_liabilities": 1473331000000.0,
+              "net_worth": 4695283000000.0,
+              "household_count": 15118565.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 359654000000.0,
+                "private_business": 354504000000.0,
+                "pension": 2429626000000.0,
+                "real_estate": 2392240000000.0,
+                "deposits": 361373000000.0,
+                "money_market": 45750000000.0,
+                "debt_securities": 54632000000.0,
+                "consumer_durables": 686831000000.0,
+                "annuities": 279504000000.0,
+                "life_insurance": 138923000000.0,
+                "loans_assets": 26904000000.0,
+                "misc_assets": 159619000000.0,
+                "unallocated": 1000000.0
+              },
+              "total_assets": 7289561000000.0,
+              "total_liabilities": 1543773000000.0,
+              "net_worth": 5745788000000.0,
+              "household_count": 15331066.0
+            }
+          ]
+        },
+        "hispanic": {
+          "key": "hispanic",
+          "label": "Hispanic",
+          "percentile_range": null,
+          "population_share": null,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 14711000000.0,
+                "private_business": 56152000000.0,
+                "pension": 106415000000.0,
+                "real_estate": 263047000000.0,
+                "deposits": 84593000000.0,
+                "money_market": 806000000.0,
+                "debt_securities": 4691000000.0,
+                "consumer_durables": 67259000000.0,
+                "annuities": 9380000000.0,
+                "life_insurance": 8735000000.0,
+                "loans_assets": 23000000.0,
+                "misc_assets": 9166000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 624978000000.0,
+              "total_liabilities": 201786000000.0,
+              "net_worth": 423193000000.0,
+              "household_count": 7359603.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 206980000000.0,
+                "private_business": 280409000000.0,
+                "pension": 793834000000.0,
+                "real_estate": 1962806000000.0,
+                "deposits": 340091000000.0,
+                "money_market": 22433000000.0,
+                "debt_securities": 24121000000.0,
+                "consumer_durables": 442589000000.0,
+                "annuities": 81803000000.0,
+                "life_insurance": 43632000000.0,
+                "loans_assets": 708000000.0,
+                "misc_assets": 71590000000.0,
+                "unallocated": 1000000.0
+              },
+              "total_assets": 4270997000000.0,
+              "total_liabilities": 1148978000000.0,
+              "net_worth": 3122019000000.0,
+              "household_count": 12284804.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 384267000000.0,
+                "private_business": 316081000000.0,
+                "pension": 1058645000000.0,
+                "real_estate": 2436808000000.0,
+                "deposits": 373465000000.0,
+                "money_market": 35493000000.0,
+                "debt_securities": 37542000000.0,
+                "consumer_durables": 571443000000.0,
+                "annuities": 108186000000.0,
+                "life_insurance": 55592000000.0,
+                "loans_assets": 8000000.0,
+                "misc_assets": 94651000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 5472181000000.0,
+              "total_liabilities": 1301466000000.0,
+              "net_worth": 4170716000000.0,
+              "household_count": 13889825.0
+            }
+          ]
+        },
+        "other": {
+          "key": "other",
+          "label": "Other or multiple",
+          "percentile_range": null,
+          "population_share": null,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 47406000000.0,
+                "private_business": 252989000000.0,
+                "pension": 102993000000.0,
+                "real_estate": 297710000000.0,
+                "deposits": 76118000000.0,
+                "money_market": 4680000000.0,
+                "debt_securities": 13988000000.0,
+                "consumer_durables": 74627000000.0,
+                "annuities": 10368000000.0,
+                "life_insurance": 14142000000.0,
+                "loans_assets": 2616000000.0,
+                "misc_assets": 10556000000.0,
+                "unallocated": 1000000.0
+              },
+              "total_assets": 908194000000.0,
+              "total_liabilities": 179974000000.0,
+              "net_worth": 728220000000.0,
+              "household_count": 4223525.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 3124787000000.0,
+                "private_business": 1278219000000.0,
+                "pension": 2239479000000.0,
+                "real_estate": 5163342000000.0,
+                "deposits": 1390340000000.0,
+                "money_market": 131896000000.0,
+                "debt_securities": 292152000000.0,
+                "consumer_durables": 738304000000.0,
+                "annuities": 233487000000.0,
+                "life_insurance": 227856000000.0,
+                "loans_assets": 125436000000.0,
+                "misc_assets": 153724000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 15099022000000.0,
+              "total_liabilities": 2632091000000.0,
+              "net_worth": 12466932000000.0,
+              "household_count": 16177911.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 6280333000000.0,
+                "private_business": 1571777000000.0,
+                "pension": 3422275000000.0,
+                "real_estate": 7314358000000.0,
+                "deposits": 1700207000000.0,
+                "money_market": 263507000000.0,
+                "debt_securities": 657414000000.0,
+                "consumer_durables": 1077422000000.0,
+                "annuities": 334753000000.0,
+                "life_insurance": 300445000000.0,
+                "loans_assets": 132314000000.0,
+                "misc_assets": 217653000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 23272458000000.0,
+              "total_liabilities": 3377858000000.0,
+              "net_worth": 19894600000000.0,
+              "household_count": 19765795.0
+            }
+          ]
+        }
+      }
+    },
+    "age": {
+      "key": "age",
+      "label": "Age",
+      "group_order": [
+        "under40",
+        "age40to54",
+        "age55to69",
+        "age70plus"
+      ],
+      "all_groups": [
+        "under40",
+        "age40to54",
+        "age55to69",
+        "age70plus"
+      ],
+      "groups": {
+        "under40": {
+          "key": "under40",
+          "label": "Under 40",
+          "percentile_range": null,
+          "population_share": null,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 221402000000.0,
+                "private_business": 483030000000.0,
+                "pension": 333808000000.0,
+                "real_estate": 1513126000000.0,
+                "deposits": 363004000000.0,
+                "money_market": 36662000000.0,
+                "debt_securities": 85305000000.0,
+                "consumer_durables": 598342000000.0,
+                "annuities": 30275000000.0,
+                "life_insurance": 94025000000.0,
+                "loans_assets": 11104000000.0,
+                "misc_assets": 60757000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 3830840000000.0,
+              "total_liabilities": 1377860000000.0,
+              "net_worth": 2452980000000.0,
+              "household_count": 35622043.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 1767461000000.0,
+                "private_business": 1468114000000.0,
+                "pension": 1561959000000.0,
+                "real_estate": 5645510000000.0,
+                "deposits": 1693273000000.0,
+                "money_market": 81157000000.0,
+                "debt_securities": 230740000000.0,
+                "consumer_durables": 1385112000000.0,
+                "annuities": 148620000000.0,
+                "life_insurance": 163569000000.0,
+                "loans_assets": 48805000000.0,
+                "misc_assets": 208361000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 14402681000000.0,
+              "total_liabilities": 5111431000000.0,
+              "net_worth": 9291250000000.0,
+              "household_count": 36930277.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 3089572000000.0,
+                "private_business": 1442733000000.0,
+                "pension": 1979193000000.0,
+                "real_estate": 6059702000000.0,
+                "deposits": 1601962000000.0,
+                "money_market": 169357000000.0,
+                "debt_securities": 224928000000.0,
+                "consumer_durables": 1647863000000.0,
+                "annuities": 169913000000.0,
+                "life_insurance": 168570000000.0,
+                "loans_assets": 32963000000.0,
+                "misc_assets": 237876000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 16824632000000.0,
+              "total_liabilities": 5406463000000.0,
+              "net_worth": 11418169000000.0,
+              "household_count": 37343619.0
+            }
+          ]
+        },
+        "age40to54": {
+          "key": "age40to54",
+          "label": "40 to 54",
+          "percentile_range": null,
+          "population_share": null,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 643636000000.0,
+                "private_business": 1128801000000.0,
+                "pension": 1454569000000.0,
+                "real_estate": 2473161000000.0,
+                "deposits": 657246000000.0,
+                "money_market": 95709000000.0,
+                "debt_securities": 240294000000.0,
+                "consumer_durables": 673054000000.0,
+                "annuities": 157287000000.0,
+                "life_insurance": 130709000000.0,
+                "loans_assets": 46111000000.0,
+                "misc_assets": 81189000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 7781766000000.0,
+              "total_liabilities": 1242232000000.0,
+              "net_worth": 6539534000000.0,
+              "household_count": 24579466.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 5183254000000.0,
+                "private_business": 3461386000000.0,
+                "pension": 6502753000000.0,
+                "real_estate": 11514267000000.0,
+                "deposits": 3371993000000.0,
+                "money_market": 366804000000.0,
+                "debt_securities": 346301000000.0,
+                "consumer_durables": 1966872000000.0,
+                "annuities": 878797000000.0,
+                "life_insurance": 488397000000.0,
+                "loans_assets": 131762000000.0,
+                "misc_assets": 314474000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 34527059000000.0,
+              "total_liabilities": 6685672000000.0,
+              "net_worth": 27841388000000.0,
+              "household_count": 33200369.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 8286094000000.0,
+                "private_business": 3474170000000.0,
+                "pension": 8268806000000.0,
+                "real_estate": 12556283000000.0,
+                "deposits": 3259709000000.0,
+                "money_market": 731898000000.0,
+                "debt_securities": 519219000000.0,
+                "consumer_durables": 2190475000000.0,
+                "annuities": 1015974000000.0,
+                "life_insurance": 524027000000.0,
+                "loans_assets": 113915000000.0,
+                "misc_assets": 356396000000.0,
+                "unallocated": 1000000.0
+              },
+              "total_assets": 41296967000000.0,
+              "total_liabilities": 7250597000000.0,
+              "net_worth": 34046371000000.0,
+              "household_count": 33814834.0
+            }
+          ]
+        },
+        "age55to69": {
+          "key": "age55to69",
+          "label": "55 to 69",
+          "percentile_range": null,
+          "population_share": null,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 753803000000.0,
+                "private_business": 1016071000000.0,
+                "pension": 1891339000000.0,
+                "real_estate": 1902011000000.0,
+                "deposits": 981987000000.0,
+                "money_market": 169960000000.0,
+                "debt_securities": 356883000000.0,
+                "consumer_durables": 463509000000.0,
+                "annuities": 132425000000.0,
+                "life_insurance": 100229000000.0,
+                "loans_assets": 189728000000.0,
+                "misc_assets": 58016000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 8015961000000.0,
+              "total_liabilities": 428739000000.0,
+              "net_worth": 7587222000000.0,
+              "household_count": 19197157.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 13687637000000.0,
+                "private_business": 6986414000000.0,
+                "pension": 13004140000000.0,
+                "real_estate": 15315710000000.0,
+                "deposits": 5116377000000.0,
+                "money_market": 1267193000000.0,
+                "debt_securities": 1416122000000.0,
+                "consumer_durables": 2450794000000.0,
+                "annuities": 1225497000000.0,
+                "life_insurance": 796449000000.0,
+                "loans_assets": 557494000000.0,
+                "misc_assets": 468745000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 62292572000000.0,
+              "total_liabilities": 4905880000000.0,
+              "net_worth": 57386692000000.0,
+              "household_count": 35707576.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 21883314000000.0,
+                "private_business": 6720836000000.0,
+                "pension": 15249307000000.0,
+                "real_estate": 17106661000000.0,
+                "deposits": 4797755000000.0,
+                "money_market": 2344729000000.0,
+                "debt_securities": 2670418000000.0,
+                "consumer_durables": 2711067000000.0,
+                "annuities": 1459006000000.0,
+                "life_insurance": 836884000000.0,
+                "loans_assets": 461566000000.0,
+                "misc_assets": 526871000000.0,
+                "unallocated": 1000000.0
+              },
+              "total_assets": 76768415000000.0,
+              "total_liabilities": 5083186000000.0,
+              "net_worth": 71685229000000.0,
+              "household_count": 35091606.0
+            }
+          ]
+        },
+        "age70plus": {
+          "key": "age70plus",
+          "label": "70 and over",
+          "percentile_range": null,
+          "population_share": null,
+          "nested": false,
+          "nested_in": null,
+          "history": [
+            {
+              "period": "1989-07-01",
+              "assets": {
+                "corporate_equities": 471603000000.0,
+                "private_business": 341720000000.0,
+                "pension": 487806000000.0,
+                "real_estate": 1004870000000.0,
+                "deposits": 954231000000.0,
+                "money_market": 60313000000.0,
+                "debt_securities": 363996000000.0,
+                "consumer_durables": 161275000000.0,
+                "annuities": 8845000000.0,
+                "life_insurance": 35229000000.0,
+                "loans_assets": 46923000000.0,
+                "misc_assets": 27387000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 3964197000000.0,
+              "total_liabilities": 103943000000.0,
+              "net_worth": 3860255000000.0,
+              "household_count": 13621435.0
+            },
+            {
+              "period": "2022-07-01",
+              "assets": {
+                "corporate_equities": 11892624000000.0,
+                "private_business": 4441772000000.0,
+                "pension": 4727409000000.0,
+                "real_estate": 10445970000000.0,
+                "deposits": 4410642000000.0,
+                "money_market": 1053638000000.0,
+                "debt_securities": 1367061000000.0,
+                "consumer_durables": 1768714000000.0,
+                "annuities": 81321000000.0,
+                "life_insurance": 512977000000.0,
+                "loans_assets": 453750000000.0,
+                "misc_assets": 501247000000.0,
+                "unallocated": 1000000.0
+              },
+              "total_assets": 41657126000000.0,
+              "total_liabilities": 1723719000000.0,
+              "net_worth": 39933407000000.0,
+              "household_count": 25468234.0
+            },
+            {
+              "period": "2026-01-01",
+              "assets": {
+                "corporate_equities": 21887169000000.0,
+                "private_business": 4921685000000.0,
+                "pension": 5982149000000.0,
+                "real_estate": 13000696000000.0,
+                "deposits": 4793079000000.0,
+                "money_market": 1960277000000.0,
+                "debt_securities": 2449028000000.0,
+                "consumer_durables": 2350398000000.0,
+                "annuities": 116436000000.0,
+                "life_insurance": 638447000000.0,
+                "loans_assets": 353671000000.0,
+                "misc_assets": 662763000000.0,
+                "unallocated": 0.0
+              },
+              "total_assets": 59115798000000.0,
+              "total_liabilities": 2255947000000.0,
+              "net_worth": 56859851000000.0,
+              "household_count": 28884063.0
+            }
+          ]
+        }
+      }
+    }
+  }
+}

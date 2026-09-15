@@ -401,6 +401,34 @@ def write_snapshot(snapshot: dict) -> None:
     print(f"wrote {SNAPSHOT_PATH.name} ({SNAPSHOT_PATH.stat().st_size / 1024:.0f} KB index)", file=sys.stderr)
 
 
+def report_drift(snapshot: dict) -> None:
+    """Say whether the live archive still matches the committed snapshot.
+
+    The scheduled source check parses the published file every week; a parse
+    failure is the loud signal and fails the run. This is the quiet one -- a
+    new quarter or a re-publication of an old one is news, not a breakage, so
+    it goes in the log instead of turning the run red.
+    """
+    try:
+        committed = json.loads(SNAPSHOT_PATH.read_text())
+    except (OSError, json.JSONDecodeError) as exc:
+        print(f"  (no committed snapshot to compare against: {exc})", file=sys.stderr)
+        return
+
+    was = committed.get("source", {}).get("archive_sha256")
+    now = snapshot["source"]["archive_sha256"]
+    if was == now:
+        print(f"  archive unchanged since the committed snapshot ({committed.get('latest_period')})", file=sys.stderr)
+        return
+
+    print(
+        f"  archive has changed: committed {committed.get('latest_period')} "
+        f"({(was or '?')[:12]}...) -> published {snapshot['latest_period']} ({now[:12]}...). "
+        "Run `make fetch` and `python tools/build_fallback.py` to bring the snapshot forward.",
+        file=sys.stderr,
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="validate without writing")
@@ -426,6 +454,7 @@ def main() -> int:
 
     if args.check:
         print("\n--check: snapshot validated, nothing written", file=sys.stderr)
+        report_drift(snapshot)
         return 0
 
     write_snapshot(snapshot)

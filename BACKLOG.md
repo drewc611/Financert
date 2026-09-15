@@ -62,9 +62,31 @@ with no lagging class, and the unallocated residual fell from 1–3% to 0.00%.
 | ~~F5~~ ✅ | Ingest `Household count` per category — enables every per-household figure below | S |
 | ~~F6~~ ✅ | Ingest `Minimum Wealth Cutoff` where populated: "what net worth puts you in the top 1%?" | S |
 | ~~F7~~ ✅ | Pin the source: record the zip's published date and checksum in the snapshot | S |
-| F8 | Keep FRED as a documented fallback path if the zip fetch fails | M |
-| F9 | Golden-file test: assert the parsed snapshot matches a committed fixture, so a Fed format change fails loudly | M |
+| ~~F8~~ ✂︎ | Keep FRED as a documented fallback path if the zip fetch fails — **not building it**, see below | M |
+| ~~F9~~ ✅ | Golden-file test: assert the parsed snapshot matches a committed fixture, so a Fed format change fails loudly | M |
 | ~~F10~~ ✅ | Split the snapshot per dimension so the payload stays small | M |
+
+**F9 is done, in two halves, because a golden file only catches half of what
+F9 was asking for.** `tests/test_snapshot_golden.py` pins the parser to a
+committed slice of the real archive — three quarters (the first, the last, and
+one carrying the triennial cutoffs), every dimension, every category — so a
+changed column mapping or composite rule shows up as a diff a reviewer can
+read. But the fixture is frozen, so it can never notice the Fed changing
+anything; only running `fetch_dfa.py` does that, and that runs by hand. So a
+weekly workflow now parses the *live* archive with `--check`, which fails the
+run on a renamed column or moved member and otherwise notes in the log whether
+a new quarter has been published.
+
+**F8 is deliberately not being built.** The FRED path is not a fallback, it is
+a worse source: one dimension of six, and a mirror that stopped one series at
+2024:Q3 — the "publication lag" this repo wrongly documented twice. A fallback
+that silently produces a snapshot missing five axes, with the retired
+incomplete-quarter machinery switched back on, is more dangerous than no
+fallback. And there is no outage to protect against: the snapshot is committed,
+so a failed fetch means the data stays at last quarter until someone retries.
+What the failure actually needs is to be noticed, which is what the weekly
+source check above does. If the zip ever moves for good, the honest fix is to
+find its new home, not to fall back to a lagging mirror.
 
 ## Phase 1 — the five new dimensions
 
