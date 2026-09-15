@@ -13,6 +13,7 @@ from typing import Any
 from ..config import SNAPSHOT_PATH
 from ..constants import (
     ALL_GROUPS,
+    ASSET_CLASSES,
     DEFAULT_DIMENSION,
     DIMENSIONS,
     NON_INVESTABLE,
@@ -309,6 +310,42 @@ def all_allocations(
     period: str, *, investable_only: bool = False, dimension: str = DEFAULT_DIMENSION
 ) -> list[dict[str, Any]]:
     return [allocation(g, period, investable_only=investable_only, dimension=dimension) for g in groups_in(dimension)]
+
+
+def movers(
+    group_key: str,
+    start: str,
+    end: str,
+    *,
+    investable_only: bool = True,
+    dimension: str = DEFAULT_DIMENSION,
+) -> list[dict[str, Any]]:
+    """How one group's allocation changed between two quarters (BACKLOG F33).
+
+    Shares at both ends and the difference, biggest move first. Shares rather
+    than dollars on purpose: every tier's balance sheet grew over any long
+    window, so a dollar comparison would rank the classes by inflation and
+    asset prices instead of by what changed about the mix.
+    """
+    before = weights(group_key, start, investable_only=investable_only, dimension=dimension)
+    after = weights(group_key, end, investable_only=investable_only, dimension=dimension)
+    rows = []
+    for asset in [*ASSET_CLASSES, UNALLOCATED]:
+        key = asset["key"]
+        was, now = before.get(key, 0.0), after.get(key, 0.0)
+        if was == 0.0 and now == 0.0:
+            continue
+        rows.append(
+            {
+                "asset_class": key,
+                "label": asset["label"],
+                "from_share": was,
+                "to_share": now,
+                "change_pp": (now - was) * 100,
+            }
+        )
+    rows.sort(key=lambda r: abs(r["change_pp"]), reverse=True)
+    return rows
 
 
 def reconciliation(dimension: str = DEFAULT_DIMENSION) -> list[dict[str, Any]]:

@@ -288,3 +288,46 @@ def test_the_residual_is_rounding_on_every_axis(client, dimension):
 
 def test_an_unknown_dimension_has_no_reconciliation(client):
     assert client.get("/api/benchmarks/reconciliation?dimension=astrology").status_code == 404
+
+
+# ------------------------------------------------ what changed (F32, F33)
+
+
+def test_movers_rank_by_how_far_the_share_moved(client):
+    body = client.get("/api/benchmarks/movers?group=top1&from=earliest").json()
+    changes = [abs(r["change_pp"]) for r in body["movers"]]
+    assert changes == sorted(changes, reverse=True)
+    assert body["from_period"] == benchmarks.periods()[0]
+    assert body["to_period"] == benchmarks.latest_period()
+
+
+def test_the_shares_at_each_end_are_the_ones_the_table_shows(client):
+    """The movers view is the same numbers as the tiers table at two dates, so
+    it has to agree with them or one of the two is lying."""
+    body = client.get("/api/benchmarks/movers?group=next9&from=2009-01-01&to=2026-01-01").json()
+    then = benchmarks.weights("next9", "2009-01-01", investable_only=True)
+    now = benchmarks.weights("next9", "2026-01-01", investable_only=True)
+    for row in body["movers"]:
+        assert row["from_share"] == pytest.approx(then.get(row["asset_class"], 0.0))
+        assert row["to_share"] == pytest.approx(now.get(row["asset_class"], 0.0))
+        assert row["change_pp"] == pytest.approx((row["to_share"] - row["from_share"]) * 100)
+
+
+def test_movers_resolve_the_axis_from_the_group(client):
+    body = client.get("/api/benchmarks/movers?group=millennial&from=earliest").json()
+    assert body["dimension"] == "generation"
+    assert body["movers"]
+
+
+def test_the_crash_is_in_the_data(client):
+    """A sanity check with a known answer: the bottom 50% lost a large share of
+    real estate between 2007 and 2012. If this stops being true, something is
+    wrong with the periods rather than with history."""
+    body = client.get("/api/benchmarks/movers?group=bottom50&from=2007-07-01&to=2012-07-01").json()
+    by_class = {r["asset_class"]: r["change_pp"] for r in body["movers"]}
+    assert by_class["real_estate"] < -5
+
+
+def test_movers_reject_an_unknown_group_and_an_unknown_period(client):
+    assert client.get("/api/benchmarks/movers?group=nope&from=earliest").status_code == 404
+    assert client.get("/api/benchmarks/movers?group=top1&from=earliest&to=1066-01-01").status_code == 404

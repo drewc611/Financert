@@ -286,5 +286,12 @@
     "depository_loans": "Préstamos de bancos y otras entidades de depósito no clasificados en otro lugar.",
     "other_loans": "Préstamos de margen, préstamos sobre pólizas y otro endeudamiento fuera de las categorías anteriores.",
     "deferred_premiums": "Primas de seguro de vida devengadas pero aún no pagadas: el único pasivo fuera del bloque de préstamos."
+  },
+  "movers": {
+    "title": "Qué ha cambiado",
+    "since": "Desde",
+    "change": "Variación",
+    "sub": "Cómo mantenía {tier} sus activos en {from} frente a {to}, empezando por el mayor cambio. Proporciones, no dólares: el balance de cada tramo creció en cualquier periodo largo, así que en dólares esto ordenaría por precios de los activos y no por lo que cambió en la composición.",
+    "needsApi": "Esto necesita la API: compara dos trimestres, y la instantánea integrada solo incluye el último."
   }
 }

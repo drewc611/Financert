@@ -76,6 +76,17 @@ export const api = {
     request(`/api/benchmarks/trend?${new URLSearchParams({ group, asset_class: assetClass })}`, {
       timeout: 2500,
     }),
+  // What changed about one group's mix between two quarters.
+  movers: ({ group, from, to, investableOnly = true }) =>
+    request(
+      `/api/benchmarks/movers?${new URLSearchParams({
+        group,
+        from,
+        ...(to ? { to } : {}),
+        investable_only: String(investableOnly),
+      })}`,
+      { timeout: 3000 },
+    ),
   getPortfolio: (slug = 'default') => request(`/api/portfolio?slug=${encodeURIComponent(slug)}`),
   savePortfolio: (payload, slug = 'default') =>
     request(`/api/portfolio?slug=${encodeURIComponent(slug)}`, {
