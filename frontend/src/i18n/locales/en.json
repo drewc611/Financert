@@ -128,12 +128,12 @@
   },
   "disclaimer": {
     "whatTitle": "What this is.",
-    "whatBody": "Financert compares a portfolio against how American households in each wealth tier actually hold their assets, measured by the Federal Reserve's",
+    "whatBody": "Financert compares a portfolio against how American households actually hold their assets, grouped by net worth and five other cuts of the same households, measured by the Federal Reserve's",
     "dfaLink": "Distributional Financial Accounts",
     "dataThrough": "Data through {quarter}",
     "newestComplete": "; the newest fully published quarter is {quarter}",
     "notTitle": "What it is not.",
-    "notBody": "It is descriptive, not advice. Matching the top 1%'s allocation would not reproduce their returns: much of their wealth sits in private businesses they own and run, and the data says nothing about risk, taxes, time horizon, or whether any allocation suits you.",
+    "notBody": "It is descriptive, not advice. Matching the top 1%'s allocation would not reproduce their returns: much of their wealth sits in private businesses they own and run, and the data says nothing about risk, taxes, time horizon, or whether any allocation suits you. Where groups differ, what differs is what they hold; this data records that and does not explain why.",
     "translationNote": ""
   },
   "tiers": {
@@ -209,5 +209,13 @@
     "income": "Income",
     "race": "Race and ethnicity",
     "age": "Age"
+  },
+  "dimensionNotes": {
+    "networth": "Households grouped by where their net worth falls in the national distribution.",
+    "generation": "Households grouped by the birth cohort of the reference person, using the Federal Reserve's own cohorts.",
+    "education": "Households grouped by the highest level of education the reference person completed.",
+    "income": "Households grouped by where their income falls in the national distribution — a different cut from net worth, since income earned and wealth held are not the same thing.",
+    "race": "Households grouped by the race and ethnicity reported for the reference person, in the categories the Federal Reserve publishes.",
+    "age": "Households grouped by the age of the reference person."
   }
 }

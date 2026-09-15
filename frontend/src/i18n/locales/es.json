@@ -128,12 +128,12 @@
   },
   "disclaimer": {
     "whatTitle": "Qué es esto.",
-    "whatBody": "Financert compara una cartera con la forma en que los hogares estadounidenses de cada tramo de riqueza mantienen realmente sus activos, según las",
+    "whatBody": "Financert compara una cartera con la forma en que los hogares estadounidenses mantienen realmente sus activos, agrupados por patrimonio neto y otros cinco cortes de los mismos hogares, según los",
     "dfaLink": "Cuentas Financieras Distributivas",
     "dataThrough": "Datos hasta {quarter}",
     "newestComplete": "; el trimestre más reciente publicado por completo es {quarter}",
     "notTitle": "Qué no es.",
-    "notBody": "Es descriptivo, no un consejo. Igualar la asignación del 1% más rico no reproduciría sus rendimientos: gran parte de su riqueza está en negocios privados que poseen y dirigen, y los datos no dicen nada sobre riesgo, impuestos, horizonte temporal ni sobre si una asignación le conviene.",
+    "notBody": "Es descriptivo, no un consejo. Replicar la distribución del 1% más rico no reproduciría sus rendimientos: buena parte de su patrimonio está en empresas privadas que poseen y dirigen, y los datos no dicen nada sobre riesgo, impuestos, horizonte temporal ni sobre si una distribución le conviene. Cuando los grupos difieren, lo que difiere es lo que poseen; estos datos lo registran y no explican por qué.",
     "translationNote": "Traducción automática. En caso de discrepancia, prevalece el texto original en inglés."
   },
   "tiers": {
@@ -209,5 +209,13 @@
     "income": "Ingresos",
     "race": "Raza y etnia",
     "age": "Edad"
+  },
+  "dimensionNotes": {
+    "networth": "Hogares agrupados según la posición de su patrimonio neto en la distribución nacional.",
+    "generation": "Hogares agrupados por la cohorte de nacimiento de la persona de referencia, según las cohortes de la Reserva Federal.",
+    "education": "Hogares agrupados por el nivel educativo más alto completado por la persona de referencia.",
+    "income": "Hogares agrupados según la posición de sus ingresos en la distribución nacional: un corte distinto al del patrimonio, porque lo que se gana y lo que se posee no son lo mismo.",
+    "race": "Hogares agrupados por la raza y el origen étnico declarados para la persona de referencia, en las categorías que publica la Reserva Federal.",
+    "age": "Hogares agrupados por la edad de la persona de referencia."
   }
 }

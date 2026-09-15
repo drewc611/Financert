@@ -149,7 +149,20 @@ than separate households.
 | F19 | Cross-dimension view: your allocation against *all six* axes at once | M |
 | ~~F20~~ ✅ | Per-dimension nesting rules (income has its own top-1% analogue; do not assume the net-worth shape) | M |
 | ~~F21~~ ✅ | Guard rail: dimensions are separate populations and must never be summed together | S |
-| F22 | Framing review for the race axis — descriptive, sourced, no causal or prescriptive language | S |
+| ~~F22~~ ✅ | Framing review for the race axis — descriptive, sourced, no causal or prescriptive language | S |
+
+**F22 came out as a framing pass over all six axes, not just race.** Singling
+one axis out for a caveat is its own editorial claim, and the picker had made
+six very different cuts look interchangeable: "Top 1%" is a position in a
+distribution, "Baby Boom" is a birth cohort, and a reader switching between
+them has nothing telling them so. Each axis now carries a one-line definition
+under the picker — what the group is and whose definition it is, in all six
+locales — and nothing about why groups differ.
+
+The footer carries that part, because it is true of every axis: *"Where groups
+differ, what differs is what they hold; this data records that and does not
+explain why."* Its first paragraph also claimed the product compares against
+"each wealth tier", which stopped being the whole truth at F11.
 
 ## Phase 2 — deeper analysis on data we already hold
 

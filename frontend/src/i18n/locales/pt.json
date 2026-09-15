@@ -128,12 +128,12 @@
   },
   "disclaimer": {
     "whatTitle": "O que isto é.",
-    "whatBody": "O Financert compara uma carteira com a forma como as famílias americanas de cada faixa de riqueza realmente mantêm seus ativos, conforme as",
+    "whatBody": "A Financert compara uma carteira com a forma como as famílias norte-americanas detêm efetivamente os seus ativos, agrupadas por património líquido e outros cinco cortes das mesmas famílias, segundo as",
     "dfaLink": "Contas Financeiras Distributivas",
     "dataThrough": "Dados até {quarter}",
     "newestComplete": "; o trimestre mais recente totalmente publicado é {quarter}",
     "notTitle": "O que não é.",
-    "notBody": "É descritivo, não um conselho. Igualar a alocação do 1% mais rico não reproduziria seus retornos: boa parte da riqueza deles está em empresas privadas que possuem e administram, e os dados nada dizem sobre risco, impostos, horizonte de tempo ou se alguma alocação serve para você.",
+    "notBody": "É descritivo, não aconselhamento. Replicar a alocação do 1% mais rico não reproduziria os seus retornos: grande parte do seu património está em empresas privadas que possuem e dirigem, e os dados nada dizem sobre risco, impostos, horizonte temporal ou se alguma alocação lhe serve. Quando os grupos diferem, o que difere é o que detêm; estes dados registam isso e não explicam porquê.",
     "translationNote": "Tradução automática. Em caso de divergência, prevalece o texto original em inglês."
   },
   "tiers": {
@@ -209,5 +209,13 @@
     "income": "Rendimento",
     "race": "Raça e etnia",
     "age": "Idade"
+  },
+  "dimensionNotes": {
+    "networth": "Famílias agrupadas pela posição do seu património líquido na distribuição nacional.",
+    "generation": "Famílias agrupadas pela coorte de nascimento da pessoa de referência, segundo as coortes da Reserva Federal.",
+    "education": "Famílias agrupadas pelo nível de escolaridade mais alto concluído pela pessoa de referência.",
+    "income": "Famílias agrupadas pela posição do seu rendimento na distribuição nacional — um corte diferente do património, pois o que se ganha e o que se detém não são a mesma coisa.",
+    "race": "Famílias agrupadas pela raça e origem étnica declaradas para a pessoa de referência, nas categorias publicadas pela Reserva Federal.",
+    "age": "Famílias agrupadas pela idade da pessoa de referência."
   }
 }

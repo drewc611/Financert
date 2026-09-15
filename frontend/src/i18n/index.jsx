@@ -128,6 +128,11 @@ export function I18nProvider({ children }) {
         const hit = lookup(BUNDLES[locale] || {}, `dimensions.${key}`)
         return typeof hit === 'string' ? hit : (fallback ?? translate(locale, `dimensions.${key}`))
       },
+      /* What each cut of the population actually is, in one line. Kept in the
+         locale bundles rather than sent with the axis because it is editorial
+         framing, not data: the API says which cuts exist, this says what
+         reading one fairly requires. */
+      dimensionNote: (key) => translate(locale, `dimensionNotes.${key}`),
       tierLabel: (key, fallback) => {
         const hit = lookup(BUNDLES[locale] || {}, `tiers.${key}`)
         return typeof hit === 'string' ? hit : (fallback ?? translate(locale, `tiers.${key}`))
