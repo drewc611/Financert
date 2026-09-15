@@ -137,11 +137,33 @@ class NearestTierOut(BaseModel):
     ranked: list[dict[str, Any]]
 
 
+class PlacementOut(NearestTierOut):
+    """Where one mix lands on one axis."""
+
+    dimension: str
+    label: str
+
+
+class PlacementsOut(BaseModel):
+    """One portfolio read against every axis at once. Six readings of the same
+    balance sheet, not six populations -- the groups overlap, so the rows are
+    never to be added up."""
+
+    period: str
+    investable_only: bool
+    portfolio_total: float
+    # Empty when there is nothing to place: no holdings is not the same answer
+    # as "least like everyone".
+    placements: list[PlacementOut] = Field(default_factory=list)
+
+
 class AnalysisOut(BaseModel):
     period: str
     period_complete: bool = True
     period_unavailable: list[str] = Field(default_factory=list)
     benchmark_group: str
+    # Resolved from the group key, which is unique across the whole registry.
+    benchmark_dimension: str = "networth"
     benchmark_label: str
     investable_only: bool
     portfolio_total: float

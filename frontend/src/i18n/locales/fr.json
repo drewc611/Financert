@@ -222,5 +222,16 @@
     "title": "Votre groupe",
     "unset": "Non défini",
     "privacy": "Reste dans ce navigateur ; jamais transmis avec une requête de référence."
+  },
+  "placements": {
+    "title": "Où votre répartition se situe sur chaque découpage",
+    "sub": "Le groupe dont votre répartition se rapproche le plus sur chaque axe. Six lectures du même bilan, et non six populations : les groupes se recoupent, ces lignes ne s'additionnent donc pas.",
+    "axis": "Découpage",
+    "nearest": "Groupe le plus proche",
+    "similarity": "Similarité",
+    "notConfident": "aucune correspondance nette sur ce découpage",
+    "show": "Comparer",
+    "showing": "affiché ci-dessus",
+    "needsApi": "Ceci nécessite l'API : situer un portefeuille lit les six axes, et l'instantané embarqué ne contient que le patrimoine net."
   }
 }

@@ -146,7 +146,7 @@ than separate households.
 | ~~F16~~ ✅ | Dimension picker in the UI; the whole dashboard re-benchmarks against the chosen axis | L |
 | ~~F17~~ ✅ | Generalise `WEALTH_GROUPS` into a dimension registry so a new axis is data, not code | L |
 | ~~F18~~ ✅ | "Compare me to my cohort" — pick your generation/age/education, benchmark against it | M |
-| F19 | Cross-dimension view: your allocation against *all six* axes at once | M |
+| ~~F19~~ ✅ | Cross-dimension view: your allocation against *all six* axes at once | M |
 | ~~F20~~ ✅ | Per-dimension nesting rules (income has its own top-1% analogue; do not assume the net-worth shape) | M |
 | ~~F21~~ ✅ | Guard rail: dimensions are separate populations and must never be summed together | S |
 | ~~F22~~ ✅ | Framing review for the race axis — descriptive, sourced, no causal or prescriptive language | S |
@@ -164,6 +164,22 @@ returning reader lands — otherwise the product asks who you are and then opens
 on the top 1% anyway. Applying the group waits for the new axis's data (see
 `pendingGroup` in `AppDataContext`), because setting it first would index the
 axis still on screen by a key it does not have.
+
+**F19 is the half of the same question that asks the reader nothing.** Rather
+than "how do I compare with this group", it answers "whose balance sheet does
+mine look like" six times over — `POST /api/analysis/placements` ranks the mix
+against every group of every axis and returns the nearest on each. The rows
+overlap by construction (a mix can sit nearest the Next 40% *and* nearest
+college graduates), so the card says in as many words that they are six
+readings of one balance sheet and do not add up.
+
+It needed `allocation.analyse()` to stop assuming net worth: the axis is now
+resolved from the group key, so `?group=millennial` compares against
+millennials and ranks within the generation axis, where before it 404'd at the
+router and would have read the net-worth file if it had not. This is also the
+one part of the dashboard with no offline mirror — placing a portfolio reads
+all six axes, and the embedded snapshot carries one — so it says so instead of
+rendering an empty table.
 
 **F22 came out as a framing pass over all six axes, not just race.** Singling
 one axis out for a caveat is its own editorial claim, and the picker had made

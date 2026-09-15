@@ -191,14 +191,15 @@ frontend/
 | Method | Path | Auth | Notes |
 |---|---|---|---|
 | `GET` | `/healthz` | — | liveness, snapshot state, and the deployment's auth/CORS posture |
-| `GET` | `/api/benchmarks` | — | every tier for one period; `period` (`latest`/`complete`/a date), `investable_only` |
+| `GET` | `/api/benchmarks` | — | every group for one period; `dimension`, `period` (`latest`/`complete`/a date), `investable_only` |
 | `GET` | `/api/benchmarks/trend` | — | one asset class's share over time; `group`, `asset_class` |
 | `GET` | `/api/portfolios` | token | list every portfolio on this install |
 | `GET` | `/api/portfolio` | token | one portfolio; `slug` |
 | `PUT` | `/api/portfolio` | token | create or fully replace it; `slug` |
 | `DELETE` | `/api/portfolio` | token | delete it; `slug` |
-| `GET` | `/api/analysis` | token | compare a saved portfolio against a tier |
-| `POST` | `/api/analysis/preview` | token | compare unsaved holdings, for live editing |
+| `GET` | `/api/analysis` | token | compare a saved portfolio against any group of any axis; `group` |
+| `POST` | `/api/analysis/preview` | token | the same for unsaved holdings, for live editing |
+| `POST` | `/api/analysis/placements` | token | where unsaved holdings land on all six axes at once |
 
 Interactive docs at `http://localhost:8000/docs`.
 

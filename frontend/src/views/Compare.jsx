@@ -5,6 +5,7 @@ import AllocationChart from '../components/AllocationChart'
 import GapChart from '../components/GapChart'
 import DimensionPicker from '../components/DimensionPicker'
 import CohortPicker from '../components/CohortPicker'
+import Placements from '../components/Placements'
 import { useI18n } from '../i18n'
 
 export default function Compare() {
@@ -181,6 +182,8 @@ export default function Compare() {
           </table>
         </div>
       </div>
+
+      <Placements />
     </>
   )
 }

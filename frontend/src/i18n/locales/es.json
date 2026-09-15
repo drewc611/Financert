@@ -222,5 +222,16 @@
     "title": "Tu grupo",
     "unset": "Sin definir",
     "privacy": "Se queda en este navegador; nunca se envía con una consulta de referencia."
+  },
+  "placements": {
+    "title": "Dónde se sitúa tu cartera en cada corte",
+    "sub": "El grupo al que más se parece tu distribución en cada eje. Seis lecturas del mismo balance, no seis poblaciones: los grupos se solapan, así que estas filas no suman nada.",
+    "axis": "Corte",
+    "nearest": "Grupo más cercano",
+    "similarity": "Similitud",
+    "notConfident": "sin coincidencia clara en este corte",
+    "show": "Comparar",
+    "showing": "mostrado arriba",
+    "needsApi": "Esto necesita la API: situar una cartera lee los seis ejes, y la instantánea integrada solo incluye el patrimonio neto."
   }
 }
