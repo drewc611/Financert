@@ -93,6 +93,40 @@ function round2(n) {
   return Math.round(n * 100) / 100
 }
 
+/** Which band a net worth falls in, by the Fed's published entry thresholds
+ *  (BACKLOG F28) -- a different question from `analyse`, which asks whose mix
+ *  yours resembles. Someone can hold exactly the top 1%'s allocation with a
+ *  thousandth of their money.
+ *
+ *  Returns the band with the highest threshold the figure clears, plus the
+ *  next one up and what it would take to reach it. The band is null below
+ *  every threshold: the bottom group publishes no floor, so there is nothing
+ *  to place against, and inventing one would be inventing a fact.
+ */
+export function placeByThreshold(groups, netWorth) {
+  const bands = Object.values(groups)
+    .filter((g) => g.threshold && typeof g.threshold.value === 'number')
+    .sort((a, b) => a.threshold.value - b.threshold.value)
+  if (!bands.length || !(netWorth > 0)) return null
+
+  let index = -1
+  for (let i = 0; i < bands.length; i += 1) {
+    if (netWorth >= bands[i].threshold.value) index = i
+  }
+  const group = index >= 0 ? bands[index] : null
+  const next = bands[index + 1] ?? null
+  return {
+    group,
+    next,
+    // What it would take to clear the next threshold. Only meaningful while
+    // there is a next one -- above the top band there is nothing to reach.
+    toNext: next ? next.threshold.value - netWorth : null,
+    // Every band is measured by the same triennial survey, so one date
+    // describes the whole placement.
+    measured: (group ?? bands[0]).threshold.period,
+  }
+}
+
 /** Full comparison, mirroring the backend's /api/analysis response shape. */
 export function analyse(holdings, { groups, groupKey = 'top1', investableOnly = true, labels = {} }) {
   const considered = investableOnly

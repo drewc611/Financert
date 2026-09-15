@@ -11,7 +11,15 @@ from functools import lru_cache
 from typing import Any
 
 from ..config import SNAPSHOT_PATH
-from ..constants import ALL_GROUPS, DEFAULT_DIMENSION, DIMENSIONS, NON_INVESTABLE, UNALLOCATED
+from ..constants import (
+    ALL_GROUPS,
+    DEFAULT_DIMENSION,
+    DIMENSIONS,
+    NON_INVESTABLE,
+    THRESHOLD_COLUMNS,
+    UNALLOCATED,
+    extra_columns_for,
+)
 
 
 class SnapshotError(RuntimeError):
@@ -212,6 +220,36 @@ def shape_metrics(row: dict[str, Any], w: dict[str, float]) -> dict[str, Any]:
     }
 
 
+def threshold(group_key: str, period: str, dimension: str = DEFAULT_DIMENSION) -> dict[str, Any] | None:
+    """What it takes to be in this group, and when that was last measured.
+
+    The cutoffs come from the triennial Survey of Consumer Finances, so they
+    exist for a twelfth of the quarters and never for the most recent one.
+    Reading back to the newest populated value at or before the period is what
+    makes them usable at all -- and it is only honest if the answer carries the
+    date it came from, because a 2022 threshold against a 2026 balance sheet is
+    four years of asset prices out of date.
+
+    None where the source publishes nothing: the bottom group has no floor, and
+    no amount of interpolation would give it one.
+    """
+    columns = [c for c in extra_columns_for(dimension) if c in THRESHOLD_COLUMNS]
+    if not columns:
+        return None
+
+    group = groups_in(dimension).get(group_key)
+    if group is None:
+        raise KeyError(group_key)
+
+    for row in reversed(group["history"]):
+        if row["period"] > period:
+            continue
+        for column in columns:
+            if row.get(column) is not None:
+                return {"field": column, "value": row[column], "period": row["period"]}
+    return None
+
+
 def allocation(
     group_key: str, period: str, *, investable_only: bool = False, dimension: str = DEFAULT_DIMENSION
 ) -> dict[str, Any]:
@@ -220,6 +258,7 @@ def allocation(
     group = groups_in(dimension)[group_key]
     w = weights(group_key, period, investable_only=investable_only, dimension=dimension)
     return {
+        "threshold": threshold(group_key, period, dimension),
         "group": group_key,
         "label": group["label"],
         "percentile_range": group["percentile_range"],

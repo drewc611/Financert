@@ -217,6 +217,11 @@ export const fallbackData = {
         "unallocated": 1000000.0
       },
       "household_count": 136095.0,
+      "threshold": {
+        "field": "minimum_wealth_cutoff",
+        "value": 46369052.0,
+        "period": "2022-07-01"
+      },
       "complete_snapshot": {
         "period": "2026-01-01",
         "assets": {
@@ -267,6 +272,11 @@ export const fallbackData = {
         "unallocated": 1000000.0
       },
       "household_count": 1348292.0,
+      "threshold": {
+        "field": "minimum_wealth_cutoff",
+        "value": 11146846.0,
+        "period": "2022-07-01"
+      },
       "complete_snapshot": {
         "period": "2026-01-01",
         "assets": {
@@ -317,6 +327,11 @@ export const fallbackData = {
         "unallocated": 0.0
       },
       "household_count": 12140540.0,
+      "threshold": {
+        "field": "minimum_wealth_cutoff",
+        "value": 2148339.0,
+        "period": "2022-07-01"
+      },
       "complete_snapshot": {
         "period": "2026-01-01",
         "assets": {
@@ -367,6 +382,11 @@ export const fallbackData = {
         "unallocated": 2000000.0
       },
       "household_count": 54071475.0,
+      "threshold": {
+        "field": "minimum_wealth_cutoff",
+        "value": 241362.0,
+        "period": "2022-07-01"
+      },
       "complete_snapshot": {
         "period": "2026-01-01",
         "assets": {
@@ -417,6 +437,7 @@ export const fallbackData = {
         "unallocated": 0.0
       },
       "household_count": 67573814.0,
+      "threshold": null,
       "complete_snapshot": {
         "period": "2026-01-01",
         "assets": {

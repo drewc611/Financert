@@ -4,6 +4,7 @@ import { api } from '../lib/api'
 import { benchmarkWeights, shapeMetrics, UNALLOCATED } from '../lib/analysis'
 import TrendChart from '../components/TrendChart'
 import DimensionPicker from '../components/DimensionPicker'
+import ThresholdPlacement from '../components/ThresholdPlacement'
 import { useI18n } from '../i18n'
 
 const TREND_ASSETS = ['corporate_equities', 'private_business', 'real_estate']
@@ -148,9 +149,25 @@ export default function Benchmarks() {
             </div>
             <div className="value">{fmt.usd(g.net_worth, { compact: true })}</div>
             <div className="note">{t('benchmarks.netWorth', { quarter: fmt.quarter(g.period) })}</div>
+            {/* What it takes to be in this group at all, which is a different
+                number from what the group holds -- and carries its own, older
+                date, because the cutoffs are triennial. */}
+            {g.threshold && (
+              <div className="note">
+                {/* Keyed by which cutoff it is: a net-worth floor and an income
+                    floor are different facts, and this line sits directly under
+                    a net-worth figure on both axes. */}
+                {t(`placement.entryFrom.${g.threshold.field}`, {
+                  amount: fmt.usd(g.threshold.value, { compact: true }),
+                  quarter: fmt.quarter(g.threshold.period),
+                })}
+              </div>
+            )}
           </div>
         ))}
       </div>
+
+      <ThresholdPlacement />
 
       {nested.length > 0 && (
         <div className="tiles">

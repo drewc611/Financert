@@ -233,5 +233,28 @@
     "show": "Compare",
     "showing": "shown above",
     "needsApi": "This one needs the API: placing a portfolio reads all six axes, and the embedded snapshot carries net worth only."
+  },
+  "placement": {
+    "title": {
+      "networth": "What net worth puts you in each tier",
+      "income": "What income puts you in each band"
+    },
+    "sub": {
+      "networth": "A threshold, not a shape: this asks how much, where the rest of the page asks how it is held. Net worth means everything you own less everything you owe.",
+      "income": "A threshold, not a shape: this asks how much a household earns in a year, where the rest of the page asks how its assets are held."
+    },
+    "field": {
+      "networth": "Your net worth",
+      "income": "Your annual income"
+    },
+    "lands": "That is in the {tier}.",
+    "floor": "It begins at {amount}, as measured in {quarter}.",
+    "belowAll": "That is below the {tier}, which begins at {amount}. The Fed publishes no floor below it.",
+    "toNext": "Another {amount} would reach the {tier}.",
+    "measured": "Thresholds come from the Survey of Consumer Finances, which runs every three years; these were last measured in {quarter}, so they are older than the allocations above.",
+    "entryFrom": {
+      "minimum_wealth_cutoff": "Net worth from {amount} ({quarter})",
+      "minimum_income_cutoff": "Income from {amount} ({quarter})"
+    }
   }
 }

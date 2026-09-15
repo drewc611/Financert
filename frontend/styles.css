@@ -736,3 +736,9 @@ input[type="number"] {
   color: var(--text-muted);
   font-style: italic;
 }
+
+.placement-answer {
+  margin: 4px 0 10px;
+  font-size: 14.5px;
+  line-height: 1.55;
+}

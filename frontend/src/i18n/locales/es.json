@@ -233,5 +233,28 @@
     "show": "Comparar",
     "showing": "mostrado arriba",
     "needsApi": "Esto necesita la API: situar una cartera lee los seis ejes, y la instantánea integrada solo incluye el patrimonio neto."
+  },
+  "placement": {
+    "title": {
+      "networth": "Qué patrimonio neto sitúa en cada tramo",
+      "income": "Qué ingresos sitúan en cada banda"
+    },
+    "sub": {
+      "networth": "Un umbral, no una forma: aquí se pregunta cuánto, mientras el resto de la página pregunta cómo se mantiene. El patrimonio neto es todo lo que posees menos todo lo que debes.",
+      "income": "Un umbral, no una forma: aquí se pregunta cuánto gana un hogar al año, mientras el resto de la página pregunta cómo mantiene sus activos."
+    },
+    "field": {
+      "networth": "Tu patrimonio neto",
+      "income": "Tus ingresos anuales"
+    },
+    "lands": "Eso está en el {tier}.",
+    "floor": "Empieza en {amount}, según la medición de {quarter}.",
+    "belowAll": "Eso está por debajo del {tier}, que empieza en {amount}. La Reserva Federal no publica ningún umbral inferior.",
+    "toNext": "Otros {amount} alcanzarían el {tier}.",
+    "measured": "Los umbrales proceden de la Survey of Consumer Finances, que se realiza cada tres años; se midieron por última vez en {quarter}, por lo que son anteriores a las distribuciones de arriba.",
+    "entryFrom": {
+      "minimum_wealth_cutoff": "Patrimonio desde {amount} ({quarter})",
+      "minimum_income_cutoff": "Ingresos desde {amount} ({quarter})"
+    }
   }
 }

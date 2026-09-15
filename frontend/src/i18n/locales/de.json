@@ -233,5 +233,28 @@
     "show": "Vergleichen",
     "showing": "oben gezeigt",
     "needsApi": "Dafür wird die API gebraucht: Eine Einordnung liest alle sechs Achsen, und der eingebettete Snapshot enthält nur das Nettovermögen."
+  },
+  "placement": {
+    "title": {
+      "networth": "Welches Nettovermögen in welche Stufe führt",
+      "income": "Welches Einkommen in welches Band führt"
+    },
+    "sub": {
+      "networth": "Eine Schwelle, keine Aufteilung: Hier geht es um wie viel, im Rest der Seite um wie gehalten. Nettovermögen ist alles, was Sie besitzen, minus allem, was Sie schulden.",
+      "income": "Eine Schwelle, keine Aufteilung: Hier geht es darum, wie viel ein Haushalt im Jahr verdient, im Rest der Seite darum, wie sein Vermögen gehalten wird."
+    },
+    "field": {
+      "networth": "Ihr Nettovermögen",
+      "income": "Ihr Jahreseinkommen"
+    },
+    "lands": "Das liegt in der Gruppe {tier}.",
+    "floor": "Sie beginnt bei {amount}, gemessen in {quarter}.",
+    "belowAll": "Das liegt unter {tier}, die bei {amount} beginnt. Darunter veröffentlicht die Federal Reserve keine Schwelle.",
+    "toNext": "Weitere {amount} würden {tier} erreichen.",
+    "measured": "Die Schwellen stammen aus der alle drei Jahre erhobenen Survey of Consumer Finances; zuletzt gemessen in {quarter} und damit älter als die Aufteilungen darüber.",
+    "entryFrom": {
+      "minimum_wealth_cutoff": "Nettovermögen ab {amount} ({quarter})",
+      "minimum_income_cutoff": "Einkommen ab {amount} ({quarter})"
+    }
   }
 }

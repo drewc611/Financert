@@ -78,9 +78,24 @@ class ShapeMetricsOut(BaseModel):
     liquidity: float | None = Field(default=None, description="Share held in classes flagged liquid in the taxonomy")
 
 
+class ThresholdOut(BaseModel):
+    """What it takes to be in a group, and when that was last measured.
+
+    Triennial Survey of Consumer Finances data, so the period is almost never
+    the period of the allocation beside it -- which is exactly why it travels
+    with its own date rather than inheriting one."""
+
+    field: str
+    value: float
+    period: str
+
+
 class AllocationOut(BaseModel):
     group: str
     label: str
+    # None where the source publishes no floor -- the bottom group has none,
+    # and the five non-percentile axes have no cutoff column at all.
+    threshold: ThresholdOut | None = None
     # Only meaningful where the cut is defined by percentile. Generation,
     # education, race and age have no such range, so this is None for them.
     percentile_range: str | None = None

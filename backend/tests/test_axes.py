@@ -103,6 +103,43 @@ def test_the_bottom_group_has_no_floor():
     assert _cutoffs("bottom50", "networth", "minimum_wealth_cutoff") == []
 
 
+def test_the_entry_threshold_reads_back_to_the_newest_published_one():
+    """F28: the cutoffs are triennial, so the latest quarter never carries one.
+    A threshold visible only on the quarters that have it would be invisible in
+    every view the product actually shows."""
+    latest = benchmarks.latest_period()
+    resolved = benchmarks.threshold("top1", latest)
+    assert resolved["period"] < latest
+    assert resolved["field"] == "minimum_wealth_cutoff"
+    # ...and it is the newest published one, not merely some earlier one.
+    assert (resolved["period"], resolved["value"]) == _cutoffs("top1", "networth", "minimum_wealth_cutoff")[-1]
+
+
+def test_asking_about_an_older_period_gets_that_era_s_threshold():
+    """Otherwise every historical view would date its thresholds to today."""
+    then = benchmarks.threshold("top1", "2005-01-01")
+    now = benchmarks.threshold("top1", benchmarks.latest_period())
+    assert then["period"] < now["period"]
+    assert then["value"] < now["value"]
+
+
+def test_the_thresholds_rank_the_way_the_tiers_do():
+    period = benchmarks.latest_period()
+    values = [benchmarks.threshold(g, period)["value"] for g in ["next40", "next9", "top1", "top01"]]
+    assert values == sorted(values)
+
+
+def test_the_bottom_tier_has_no_threshold_to_resolve():
+    assert benchmarks.threshold("bottom50", benchmarks.latest_period()) is None
+
+
+@pytest.mark.parametrize("dimension", ["generation", "education", "race", "age"])
+def test_an_axis_with_no_cutoff_column_has_no_threshold(dimension):
+    period = benchmarks.latest_period()
+    for alloc in benchmarks.all_allocations(period, dimension=dimension):
+        assert alloc["threshold"] is None, alloc["group"]
+
+
 def test_only_the_income_axis_carries_income_cutoffs():
     assert _cutoffs("pct99to100", "income", "minimum_income_cutoff")
     period = benchmarks.latest_complete_period()
@@ -133,6 +170,20 @@ def test_the_api_offers_the_axes_for_a_picker(client):
     assert {d["key"] for d in body["dimensions"]} == set(AXES)
     for entry in body["dimensions"]:
         assert entry["label"] and entry["group_order"]
+
+
+def test_the_api_serves_the_threshold_with_its_own_date(client):
+    body = client.get("/api/benchmarks").json()
+    by_group = {a["group"]: a["threshold"] for a in body["allocations"]}
+    assert by_group["bottom50"] is None
+    assert by_group["top1"]["value"] > 0
+    # The whole point: it is dated separately from the allocation it sits on.
+    assert by_group["top1"]["period"] != body["period"]
+
+
+def test_the_income_axis_serves_income_thresholds(client):
+    body = client.get("/api/benchmarks?dimension=income").json()
+    assert {a["threshold"]["field"] for a in body["allocations"]} == {"minimum_income_cutoff"}
 
 
 def test_an_unknown_dimension_is_404_not_a_silent_default(client):
