@@ -11,7 +11,7 @@ from functools import lru_cache
 from typing import Any
 
 from ..config import SNAPSHOT_PATH
-from ..constants import ALL_GROUPS, NON_INVESTABLE, UNALLOCATED
+from ..constants import ALL_GROUPS, DEFAULT_DIMENSION, DIMENSIONS, NON_INVESTABLE, UNALLOCATED
 
 
 class SnapshotError(RuntimeError):
@@ -70,8 +70,41 @@ def resolve_period(period: str | None) -> str:
     return period
 
 
-def _entry(group_key: str, period: str) -> dict[str, Any]:
-    group = load_snapshot()["groups"].get(group_key)
+def dimensions() -> dict[str, Any]:
+    """Every dimension in the snapshot, keyed by name.
+
+    A snapshot built before dimensions existed carries only the net-worth map
+    at the top level, so that is synthesised into the same shape rather than
+    treated as an error -- the API should degrade to "one axis" rather than
+    500 on an older file.
+    """
+    snapshot = load_snapshot()
+    if "dimensions" in snapshot:
+        return snapshot["dimensions"]
+    return {
+        DEFAULT_DIMENSION: {
+            "key": DEFAULT_DIMENSION,
+            "label": DIMENSIONS[DEFAULT_DIMENSION]["label"],
+            "group_order": snapshot["group_order"],
+            "all_groups": snapshot["all_groups"],
+            "groups": snapshot["groups"],
+        }
+    }
+
+
+def dimension_names() -> list[str]:
+    return list(dimensions())
+
+
+def groups_in(dimension: str = DEFAULT_DIMENSION) -> dict[str, Any]:
+    try:
+        return dimensions()[dimension]["groups"]
+    except KeyError:
+        raise KeyError(dimension) from None
+
+
+def _entry(group_key: str, period: str, dimension: str = DEFAULT_DIMENSION) -> dict[str, Any]:
+    group = groups_in(dimension).get(group_key)
     if group is None:
         raise KeyError(group_key)
     for row in group["history"]:
@@ -80,7 +113,9 @@ def _entry(group_key: str, period: str) -> dict[str, Any]:
     raise KeyError(period)
 
 
-def weights(group_key: str, period: str, *, investable_only: bool = False) -> dict[str, float]:
+def weights(
+    group_key: str, period: str, *, investable_only: bool = False, dimension: str = DEFAULT_DIMENSION
+) -> dict[str, float]:
     """Return a wealth group's allocation as fractions summing to 1.
 
     With ``investable_only``, categories nobody chooses as an investment
@@ -89,7 +124,7 @@ def weights(group_key: str, period: str, *, investable_only: bool = False) -> di
     top 1% would be silently competing against the Fed's estimate of everyone's
     used cars.
     """
-    row = _entry(group_key, period)
+    row = _entry(group_key, period, dimension)
     assets = dict(row["assets"])
     if investable_only:
         for key in NON_INVESTABLE:
@@ -143,11 +178,13 @@ def shape_metrics(row: dict[str, Any], w: dict[str, float]) -> dict[str, Any]:
     }
 
 
-def allocation(group_key: str, period: str, *, investable_only: bool = False) -> dict[str, Any]:
+def allocation(
+    group_key: str, period: str, *, investable_only: bool = False, dimension: str = DEFAULT_DIMENSION
+) -> dict[str, Any]:
     """A group's full allocation record for one period."""
-    row = _entry(group_key, period)
-    group = load_snapshot()["groups"][group_key]
-    w = weights(group_key, period, investable_only=investable_only)
+    row = _entry(group_key, period, dimension)
+    group = groups_in(dimension)[group_key]
+    w = weights(group_key, period, investable_only=investable_only, dimension=dimension)
     return {
         "group": group_key,
         "label": group["label"],
@@ -165,18 +202,20 @@ def allocation(group_key: str, period: str, *, investable_only: bool = False) ->
     }
 
 
-def all_allocations(period: str, *, investable_only: bool = False) -> list[dict[str, Any]]:
-    return [allocation(g, period, investable_only=investable_only) for g in ALL_GROUPS]
+def all_allocations(
+    period: str, *, investable_only: bool = False, dimension: str = DEFAULT_DIMENSION
+) -> list[dict[str, Any]]:
+    return [allocation(g, period, investable_only=investable_only, dimension=dimension) for g in groups_in(dimension)]
 
 
-def trend(group_key: str, asset_key: str) -> list[dict[str, Any]]:
+def trend(group_key: str, asset_key: str, dimension: str = DEFAULT_DIMENSION) -> list[dict[str, Any]]:
     """One asset class's share of a group's assets over the full history.
 
     Quarters where this class has not been published yet are omitted rather
     than plotted as zero, so a lagging series ends its line early instead of
     falling off a cliff.
     """
-    group = load_snapshot()["groups"].get(group_key)
+    group = groups_in(dimension).get(group_key)
     if group is None:
         raise KeyError(group_key)
     known = {a["key"] for a in asset_classes()}

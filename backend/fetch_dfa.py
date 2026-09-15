@@ -34,15 +34,20 @@ from app.constants import (
     ALL_GROUPS,
     ASSET_CLASSES,
     CONTROL_COLUMNS,
+    DEFAULT_DIMENSION,
     DFA_MEMBER,
     DFA_UNITS_MULTIPLIER,
     DFA_ZIP_URL,
-    EXTRA_COLUMNS,
+    DIMENSIONS,
     GROUP_ORDER,
+    THRESHOLD_COLUMNS,
     UNALLOCATED,
-    WEALTH_GROUPS,
+    all_group_keys,
     categories_for,
     columns_for,
+    extra_columns_for,
+    group_order,
+    groups_of,
     parse_period,
 )
 
@@ -157,13 +162,41 @@ def _sum_columns(rows: list[dict[str, str]], columns: list[str]) -> float:
     return sum(_num(row, column) for row in rows for column in columns)
 
 
-def build_snapshot(since_year: int, *, blob: bytes | None = None) -> dict:
-    if blob is None:
-        print(f"downloading {DFA_ZIP_URL} ...", file=sys.stderr)
-        blob = download_zip()
-        print(f"  {len(blob) / 1024:.0f} KB", file=sys.stderr)
+def _threshold(rows: list[dict[str, str]], column: str) -> float | None:
+    """A band edge, for the columns that are a boundary rather than a quantity.
 
-    rows = read_member(blob)
+    Summing these is meaningless -- the floor of the combined top 1% is where
+    its lowest constituent begins, not TopPt1's floor plus RemainingTop1's. So
+    composites take the minimum of whichever parts are populated.
+
+    Returns None when the file publishes nothing, which is most of the time:
+    these come from the triennial Survey of Consumer Finances, so they exist
+    for a twelfth of the quarters and never for the bottom group, which has no
+    floor at all.
+    """
+    values = []
+    for row in rows:
+        raw = (row.get(column) or "").strip()
+        if not raw:
+            continue
+        try:
+            values.append(float(raw))
+        except ValueError:
+            continue
+    return min(values) if values else None
+
+
+def build_dimension(blob: bytes, dimension: str, since_year: int) -> tuple[dict, list[str], list[str]]:
+    """Build one dimension's groups from its own member file.
+
+    Returns (groups, periods, problems). Every dimension shares the same asset
+    taxonomy -- verified against the published headers -- so the only things
+    that vary are the member, the group definitions, and which non-balance-sheet
+    columns that file carries.
+    """
+    member = DIMENSIONS[dimension]["member"]
+    extra_columns = extra_columns_for(dimension)
+    rows = read_member(blob, member)
 
     # Index by (period, category) so a wealth group can be assembled from one
     # row or several -- the top 1% is split at the 99.9th percentile.
@@ -179,9 +212,9 @@ def build_snapshot(since_year: int, *, blob: bytes | None = None) -> dict:
     problems: list[str] = []
     groups: dict[str, dict] = {}
 
-    for group_key in ALL_GROUPS:
-        meta = WEALTH_GROUPS[group_key]
-        categories = categories_for(group_key)
+    for group_key in all_group_keys(dimension):
+        meta = groups_of(dimension)[group_key]
+        categories = categories_for(group_key, dimension)
         history: list[dict] = []
 
         for period_raw in periods_raw:
@@ -197,7 +230,10 @@ def build_snapshot(since_year: int, *, blob: bytes | None = None) -> dict:
             controls = {
                 name: _sum_columns(parts, [column]) * DFA_UNITS_MULTIPLIER for name, column in CONTROL_COLUMNS.items()
             }
-            extras = {name: _sum_columns(parts, [column]) for name, column in EXTRA_COLUMNS.items()}
+            extras = {
+                name: _threshold(parts, column) if name in THRESHOLD_COLUMNS else _sum_columns(parts, [column])
+                for name, column in extra_columns.items()
+            }
 
             reported_total = controls["total_assets"]
             summed_total = sum(assets.values())
@@ -229,18 +265,51 @@ def build_snapshot(since_year: int, *, blob: bytes | None = None) -> dict:
                     "total_assets": round(reported_total, 2),
                     "total_liabilities": round(controls["total_liabilities"], 2),
                     "net_worth": round(controls["net_worth"], 2),
-                    "household_count": round(extras["household_count"], 2),
+                    # Every extra this file carries, not just the household
+                    # count: the wealth cutoff was read and then dropped before
+                    # (BACKLOG F6), which is what made "what net worth puts me
+                    # in this group?" unanswerable from the snapshot.
+                    **{name: None if value is None else round(value, 2) for name, value in extras.items()},
                 }
             )
 
         groups[group_key] = {
             "key": group_key,
             "label": meta["label"],
-            "percentile_range": meta["percentile_range"],
-            "population_share": meta["population_share"],
+            # Only meaningful where the cut is defined by percentile; None for
+            # generation, education, race and age (see constants.DIMENSIONS).
+            "percentile_range": meta.get("percentile_range"),
+            "population_share": meta.get("population_share"),
             "nested": bool(meta.get("nested")),
             "nested_in": meta.get("nested_in"),
             "history": history,
+        }
+
+    return groups, [parse_period(p) for p in periods_raw], problems
+
+
+def build_snapshot(since_year: int, *, blob: bytes | None = None) -> dict:
+    if blob is None:
+        print(f"downloading {DFA_ZIP_URL} ...", file=sys.stderr)
+        blob = download_zip()
+        print(f"  {len(blob) / 1024:.0f} KB", file=sys.stderr)
+
+    dimensions: dict[str, dict] = {}
+    problems: list[str] = []
+    periods: list[str] = []
+
+    for name in DIMENSIONS:
+        built, built_periods, dimension_problems = build_dimension(blob, name, since_year)
+        problems.extend(dimension_problems)
+        print(f"  {name}: {len(built)} groups, {len(built_periods)} quarters", file=sys.stderr)
+        if name == DEFAULT_DIMENSION:
+            periods = built_periods
+        dimensions[name] = {
+            "key": name,
+            "label": DIMENSIONS[name]["label"],
+            "group_order": group_order(name),
+            "all_groups": all_group_keys(name),
+            "groups": built,
         }
 
     if problems:
@@ -251,7 +320,7 @@ def build_snapshot(since_year: int, *, blob: bytes | None = None) -> dict:
             "the asset taxonomy in constants.py does not match the DFA totals"
         )
 
-    periods = [parse_period(p) for p in periods_raw]
+    groups = dimensions[DEFAULT_DIMENSION]["groups"]
     print(f"{len(periods)} quarters: {periods[0]} .. {periods[-1]}", file=sys.stderr)
 
     return {
@@ -288,7 +357,11 @@ def build_snapshot(since_year: int, *, blob: bytes | None = None) -> dict:
             for a in ASSET_CLASSES
         ]
         + [{**UNALLOCATED, "columns": []}],
+        # The net-worth view, unchanged, because everything reading this file
+        # today expects it at the top level.
         "groups": groups,
+        "default_dimension": DEFAULT_DIMENSION,
+        "dimensions": dimensions,
     }
 
 
@@ -307,7 +380,7 @@ def main() -> int:
     for group_key in ("top01", "top1"):
         row = snapshot["groups"][group_key]["history"][-1]
         total = row["total_assets"]
-        label = WEALTH_GROUPS[group_key]["label"]
+        label = groups_of()[group_key]["label"]
         print(f"\n{row['period']} -- {label} composition:", file=sys.stderr)
         for asset in [*ASSET_CLASSES, UNALLOCATED]:
             share = row["assets"].get(asset["key"], 0.0) / total * 100 if total else 0.0

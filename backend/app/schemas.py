@@ -81,7 +81,9 @@ class ShapeMetricsOut(BaseModel):
 class AllocationOut(BaseModel):
     group: str
     label: str
-    percentile_range: str
+    # Only meaningful where the cut is defined by percentile. Generation,
+    # education, race and age have no such range, so this is None for them.
+    percentile_range: str | None = None
     # True for a group that sits inside another (the top 0.1% inside the top
     # 1%) rather than being its own slice of the population.
     nested: bool = False
@@ -96,12 +98,21 @@ class AllocationOut(BaseModel):
     metrics: ShapeMetricsOut
 
 
+class DimensionOut(BaseModel):
+    key: str
+    label: str
+    group_order: list[str]
+
+
 class BenchmarksOut(BaseModel):
     period: str
     periods: list[str]
     latest_period: str
     latest_complete_period: str
     complete_periods: list[str]
+    dimension: str = "networth"
+    # Offered so a client can build a picker without hardcoding the axes.
+    dimensions: list[DimensionOut] = Field(default_factory=list)
     group_order: list[str]
     investable_only: bool
     source: dict[str, Any]
@@ -150,5 +161,7 @@ class TrendPointOut(BaseModel):
 
 class TrendOut(BaseModel):
     group: str
+    # Resolved from the group key, which is unique across the whole registry.
+    dimension: str = "networth"
     asset_class: str
     points: list[TrendPointOut]

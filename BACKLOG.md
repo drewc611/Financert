@@ -60,15 +60,36 @@ with no lagging class, and the unallocated residual fell from 1–3% to 0.00%.
 | ~~F3~~ ✅ | Retire the incomplete-quarter path once F1 proves every quarter is complete (keep the *code* for genuine future gaps, drop the UI compromise) | M |
 | ~~F4~~ ✅ | Add `Annuities` as its own asset class (currently invisible) | S |
 | ~~F5~~ ✅ | Ingest `Household count` per category — enables every per-household figure below | S |
-| F6 | Ingest `Minimum Wealth Cutoff` where populated: "what net worth puts you in the top 1%?" | S |
+| ~~F6~~ ✅ | Ingest `Minimum Wealth Cutoff` where populated: "what net worth puts you in the top 1%?" | S |
 | ~~F7~~ ✅ | Pin the source: record the zip's published date and checksum in the snapshot | S |
 | F8 | Keep FRED as a documented fallback path if the zip fetch fails | M |
 | F9 | Golden-file test: assert the parsed snapshot matches a committed fixture, so a Fed format change fails loudly | M |
-| F10 | Split the snapshot per dimension so the payload stays small | M |
+| F10 ⚠ | Split the snapshot per dimension so the payload stays small — **now the next thing to do**: the snapshot went 605 KB → 4.3 MB when the five axes landed | M |
 
 ## Phase 1 — the five new dimensions
 
 Each dimension is the same shape of work. Categories are confirmed from the file.
+
+**F6 and F11-F15 are done, and F20 with them.** All five axes are ingested
+and served: `GET /api/benchmarks?dimension=generation|education|income|race|age`,
+with net worth still the default. Every one reconciled against the Fed's own
+published totals on the first run, because they share the same 31 asset columns
+-- checked before writing any of it, not discovered afterwards.
+
+Two things the real files taught us. `Minimum Wealth Cutoff` (F6) was already
+being read and then dropped, which is what made "what net worth puts you in the
+top 1%?" unanswerable; it is stored now, but it is triennial Survey of Consumer
+Finances data, so it exists for 12 of 147 quarters and never for the bottom
+50%, which has no floor. And it is a *threshold*, not a quantity: the top 1%'s
+floor is where its lowest constituent begins, so a composite takes the minimum
+of its parts rather than their sum -- summing would have claimed a number about
+five times too high. Blank reaches the snapshot as null, never 0.0, which would
+read as "no wealth required".
+
+**The cost: the snapshot went from 605 KB to 4.3 MB** (5 groups to 27, each
+with 147 quarters). The frontend payload is untouched at 58 KB, since the
+embedded fallback only ships the latest period. That makes **F10 the next
+thing to do**, not a someday item.
 
 **F17 and F21 are done.** `constants.DIMENSIONS` now describes all six axes --
 member file, groups, categories, nesting -- and `WEALTH_GROUPS`, `GROUP_ORDER`,
@@ -87,16 +108,16 @@ than separate households.
 
 | # | Feature | Size |
 |---|---|---|
-| F11 | **Generation** axis — Silent, Baby Boom, Gen X, Millennial | M |
-| F12 | **Education** axis — No HS, HS, Some college, College | M |
-| F13 | **Income** axis — 0–20, 20–40, 40–60, 60–80, 80–99, 99–100 percentile | M |
-| F14 | **Race** axis — White, Black, Hispanic, Other | M |
-| F15 | **Age** axis — under 40, 40–54, 55–69, 70+ | M |
+| ~~F11~~ ✅ | **Generation** axis — Silent, Baby Boom, Gen X, Millennial | M |
+| ~~F12~~ ✅ | **Education** axis — No HS, HS, Some college, College | M |
+| ~~F13~~ ✅ | **Income** axis — 0–20, 20–40, 40–60, 60–80, 80–99, 99–100 percentile | M |
+| ~~F14~~ ✅ | **Race** axis — White, Black, Hispanic, Other | M |
+| ~~F15~~ ✅ | **Age** axis — under 40, 40–54, 55–69, 70+ | M |
 | F16 | Dimension picker in the UI; the whole dashboard re-benchmarks against the chosen axis | L |
 | ~~F17~~ ✅ | Generalise `WEALTH_GROUPS` into a dimension registry so a new axis is data, not code | L |
 | F18 | "Compare me to my cohort" — pick your generation/age/education, benchmark against it | M |
 | F19 | Cross-dimension view: your allocation against *all six* axes at once | M |
-| F20 | Per-dimension nesting rules (income has its own top-1% analogue; do not assume the net-worth shape) | M |
+| ~~F20~~ ✅ | Per-dimension nesting rules (income has its own top-1% analogue; do not assume the net-worth shape) | M |
 | ~~F21~~ ✅ | Guard rail: dimensions are separate populations and must never be summed together | S |
 | F22 | Framing review for the race axis — descriptive, sourced, no causal or prescriptive language | S |
 
