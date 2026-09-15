@@ -242,7 +242,7 @@ tool. Multi-tenant use would need real accounts — see the scope note below.
 
 ```bash
 cd backend  && make test && make lint     # pytest + ruff
-cd frontend && npx eslint . --ext .js,.jsx && npm run build
+cd frontend && npx eslint . --ext .js,.jsx && npm test && npm run build
 ```
 
 CI runs both on every push and pull request.
