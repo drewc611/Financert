@@ -286,5 +286,12 @@
     "depository_loans": "Loans from banks and other depository institutions not classified elsewhere.",
     "other_loans": "Margin loans, policy loans and other borrowing outside the categories above.",
     "deferred_premiums": "Life insurance premiums owed but not yet paid — the one liability outside the loan tree."
+  },
+  "movers": {
+    "title": "What changed",
+    "since": "Since",
+    "change": "Change",
+    "sub": "How {tier} held its assets in {from} against {to}, biggest move first. Shares, not dollars: every tier's balance sheet grew over any long window, so dollars would rank these by asset prices rather than by what changed about the mix.",
+    "needsApi": "This one needs the API: it compares two quarters, and the embedded snapshot carries the latest one only."
   }
 }

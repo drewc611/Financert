@@ -286,5 +286,12 @@
     "depository_loans": "Prêts de banques et autres établissements de dépôt non classés ailleurs.",
     "other_loans": "Prêts sur marge, avances sur police et autres emprunts hors des catégories ci-dessus.",
     "deferred_premiums": "Primes d'assurance-vie dues mais non encore payées — le seul passif hors du bloc des prêts."
+  },
+  "movers": {
+    "title": "Ce qui a changé",
+    "since": "Depuis",
+    "change": "Évolution",
+    "sub": "Comment {tier} détenait ses actifs en {from} par rapport à {to}, plus grand écart d'abord. Des parts, pas des dollars : le bilan de chaque tranche a grossi sur toute longue période, si bien qu'en dollars le classement refléterait les prix des actifs plutôt que l'évolution de la répartition.",
+    "needsApi": "Ceci nécessite l'API : il compare deux trimestres, et l'instantané embarqué ne contient que le dernier."
   }
 }

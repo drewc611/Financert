@@ -3,7 +3,7 @@
 from fastapi import APIRouter, HTTPException, Query
 
 from ..constants import DEFAULT_DIMENSION, dimension_of
-from ..schemas import BenchmarksOut, ReconciliationOut, TrendOut
+from ..schemas import BenchmarksOut, MoversOut, ReconciliationOut, TrendOut
 from ..services import benchmarks
 
 router = APIRouter(prefix="/api", tags=["benchmarks"])
@@ -64,6 +64,38 @@ def get_reconciliation(dimension: str = Query(DEFAULT_DIMENSION)):
         "dimension": dimension,
         "worst_ever": max((r["worst"] for r in rows), default=0.0),
         "periods": rows,
+    }
+
+
+@router.get("/benchmarks/movers", response_model=MoversOut)
+def get_movers(
+    group: str = Query("top1", description="Any group of any axis"),
+    from_period: str = Query(..., alias="from", description="Quarter start date, or 'earliest'"),
+    to_period: str | None = Query(None, alias="to", description="Quarter start date; defaults to the latest"),
+    investable_only: bool = Query(True),
+):
+    """Which classes moved most for one group between two quarters (F33), and
+    what its mix looked like at each end (F32)."""
+    try:
+        dimension = dimension_of(group)
+    except KeyError:
+        raise HTTPException(status_code=404, detail=f"unknown group {group!r}") from None
+
+    start = benchmarks.periods()[0] if from_period == "earliest" else from_period
+    try:
+        end = benchmarks.resolve_period(to_period)
+        rows = benchmarks.movers(group, start, end, investable_only=investable_only, dimension=dimension)
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail=f"unknown period {exc.args[0]!r}") from None
+
+    return {
+        "group": group,
+        "label": benchmarks.groups_in(dimension)[group]["label"],
+        "dimension": dimension,
+        "investable_only": investable_only,
+        "from_period": start,
+        "to_period": end,
+        "movers": rows,
     }
 
 

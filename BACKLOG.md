@@ -275,8 +275,8 @@ in both, and the offline and live figures now match to the cent.
 | ~~F29~~ ✅ | Per-household dollar figures using `Household count`, not just shares | M |
 | ~~F30~~ ✅ | Time travel: benchmark against any quarter since 1989, not just two | M |
 | F31 | "Your gap over time" — hold your allocation, watch the gap move as the tier changes | L |
-| F32 | Era comparison: the top 1% in 1989 vs 2000 vs 2026 | M |
-| F33 | Biggest movers: which classes shifted most for a tier over a chosen window | M |
+| ~~F32~~ ✅ | Era comparison: the top 1% in 1989 vs 2000 vs 2026 | M |
+| ~~F33~~ ✅ | Biggest movers: which classes shifted most for a tier over a chosen window | M |
 | ~~F34~~ ✅ | Concentration measure (share in the largest class) per tier | S |
 | ~~F35~~ ✅ | Liquidity score using the existing `liquid` flag on asset classes | S |
 | F36 | Rebalancing distance: smallest set of moves to reach a tier's mix | M |
@@ -299,6 +299,21 @@ previous answer stays on screen while a new one loads. The cached answer is
 tagged with the axis it came from: clearing it when the axis changes instead
 raced the main fetch, and half the time the wipe landed after the answer --
 caught in the browser, switching to the generation axis with 2000 selected.
+
+**F33 and F32 are one card**, because the biggest movers *are* the era
+comparison: a "What changed" table showing one group's shares at two quarters
+and the difference, biggest move first. The top 1% went from 20.2% to 50.3% in
+equities since 1989 while private business equity fell 13.6 points; the bottom
+50% lost 11.2 points of real estate share between 2007 and 2026.
+
+Shares rather than dollars, deliberately: every tier's balance sheet grew over
+any long window, so a dollar ranking would sort the classes by asset prices
+instead of by what changed about the mix.
+
+F32 asked for three eras side by side and this shows two at a time. A third
+column doubles the width of a table that already scrolls on a phone, and the
+pairwise difference is what carries the finding -- with F30's period control,
+any pair of the 147 quarters is reachable.
 
 **F37, F41 and F60 are done together**, because they are the same idea at three
 scales: say what the number means in terms a reader can act on or check.

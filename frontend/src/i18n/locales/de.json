@@ -286,5 +286,12 @@
     "depository_loans": "Kredite von Banken und anderen Einlageninstituten, die nirgends sonst erfasst sind.",
     "other_loans": "Wertpapierkredite, Policendarlehen und sonstige Kredite außerhalb der obigen Kategorien.",
     "deferred_premiums": "Fällige, aber noch nicht gezahlte Lebensversicherungsprämien — die einzige Verbindlichkeit außerhalb der Kredite."
+  },
+  "movers": {
+    "title": "Was sich verändert hat",
+    "since": "Seit",
+    "change": "Veränderung",
+    "sub": "Wie {tier} sein Vermögen in {from} gegenüber {to} hielt, größte Veränderung zuerst. Anteile, keine Dollar: Die Bilanz jeder Stufe ist über jeden langen Zeitraum gewachsen, in Dollar würde die Reihenfolge also Vermögenspreise abbilden statt der Veränderung der Aufteilung.",
+    "needsApi": "Dafür wird die API gebraucht: Hier werden zwei Quartale verglichen, und der eingebettete Snapshot enthält nur das letzte."
   }
 }

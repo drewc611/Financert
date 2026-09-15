@@ -286,5 +286,12 @@
     "depository_loans": "Empréstimos de bancos e outras instituições de depósito não classificados noutro local.",
     "other_loans": "Empréstimos de margem, empréstimos sobre apólices e outro endividamento fora das categorias acima.",
     "deferred_premiums": "Prémios de seguro de vida devidos mas ainda não pagos — o único passivo fora do bloco de empréstimos."
+  },
+  "movers": {
+    "title": "O que mudou",
+    "since": "Desde",
+    "change": "Variação",
+    "sub": "Como {tier} detinha os seus ativos em {from} face a {to}, começando pela maior variação. Proporções, não dólares: o balanço de cada faixa cresceu em qualquer período longo, pelo que em dólares a ordenação refletiria os preços dos ativos e não o que mudou na composição.",
+    "needsApi": "Isto precisa da API: compara dois trimestres, e o instantâneo incorporado só inclui o último."
   }
 }

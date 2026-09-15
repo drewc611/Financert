@@ -6,6 +6,7 @@ import TrendChart from '../components/TrendChart'
 import DimensionPicker from '../components/DimensionPicker'
 import ThresholdPlacement from '../components/ThresholdPlacement'
 import PeriodPicker from '../components/PeriodPicker'
+import Movers from '../components/Movers'
 import { useI18n } from '../i18n'
 
 const TREND_ASSETS = ['corporate_equities', 'private_business', 'real_estate']
@@ -387,6 +388,8 @@ export default function Benchmarks() {
         </div>
         <p className="sub">{t('benchmarks.leverageNote')}</p>
       </div>
+
+      <Movers />
 
       <div className="card">
         <div className="card-head">

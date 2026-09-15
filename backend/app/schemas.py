@@ -255,6 +255,28 @@ class ReconciliationOut(BaseModel):
     periods: list[ReconciliationPeriodOut]
 
 
+class MoverOut(BaseModel):
+    asset_class: str
+    label: str
+    from_share: float
+    to_share: float
+    change_pp: float
+
+
+class MoversOut(BaseModel):
+    """What changed about one group's mix between two quarters, biggest move
+    first. Shares, not dollars: every tier's balance sheet grew over any long
+    window, so dollars would rank the classes by asset prices instead."""
+
+    group: str
+    label: str
+    dimension: str
+    investable_only: bool
+    from_period: str
+    to_period: str
+    movers: list[MoverOut]
+
+
 class TrendPointOut(BaseModel):
     period: str
     share: float
