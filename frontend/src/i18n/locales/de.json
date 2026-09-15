@@ -34,7 +34,8 @@
     "investableOnly": "Nur investierbare Vermögenswerte",
     "insideTop1": " — innerhalb des reichsten 1 %",
     "dimension": "Vergleichen nach",
-    "dimensionOffline": "weitere Achsen brauchen die API"
+    "dimensionOffline": "weitere Achsen brauchen die API",
+    "historyOffline": "der Verlauf braucht die API"
   },
   "compare": {
     "emptyTitle": "Noch nichts zu vergleichen",

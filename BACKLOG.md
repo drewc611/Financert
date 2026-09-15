@@ -273,7 +273,7 @@ in both, and the offline and live figures now match to the cent.
 | ~~F27~~ ✅ | "Which tier is my *debt* like?" — the mirror of nearest-tier | M |
 | ~~F28~~ ✅ | Net-worth percentile placement from `Minimum Wealth Cutoff` | M |
 | ~~F29~~ ✅ | Per-household dollar figures using `Household count`, not just shares | M |
-| F30 | Time travel: benchmark against any quarter since 1989, not just two | M |
+| ~~F30~~ ✅ | Time travel: benchmark against any quarter since 1989, not just two | M |
 | F31 | "Your gap over time" — hold your allocation, watch the gap move as the tier changes | L |
 | F32 | Era comparison: the top 1% in 1989 vs 2000 vs 2026 | M |
 | F33 | Biggest movers: which classes shifted most for a tier over a chosen window | M |
@@ -285,6 +285,20 @@ in both, and the offline and live figures now match to the cent.
 | F39 | Save named scenarios and compare two side by side | L |
 | F40 | Sensitivity: which single holding change most moves your nearest-tier | M |
 | ~~F41~~ ✅ | Aggregate check endpoint exposing the reconciliation residual per period | S |
+
+**F30 is done.** The dashboard held two quarters -- the newest and the newest
+fully published one -- which is what the comparison needs and none of what 147
+quarters of history are for. Any of them can be selected now, on both views and
+on every axis; the top 1% held $15.3T in Q1 2009 against $55T today, and the
+threshold beside it resolves to that era's survey (Q3 2007) rather than to
+2022.
+
+A historical quarter is fetched on demand and kept beside the two the dashboard
+always holds, so coming back to the current quarter costs no request and the
+previous answer stays on screen while a new one loads. The cached answer is
+tagged with the axis it came from: clearing it when the axis changes instead
+raced the main fetch, and half the time the wipe landed after the answer --
+caught in the browser, switching to the generation axis with 2000 selected.
 
 **F37, F41 and F60 are done together**, because they are the same idea at three
 scales: say what the number means in terms a reader can act on or check.

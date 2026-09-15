@@ -50,9 +50,14 @@ export function AppDataProvider({ children }) {
   // swapIn once its groups are actually here.
   const pendingGroup = useRef(null)
   const [investableOnly, setInvestableOnly] = useState(true)
-  // 'latest' is the newest quarter, which may be missing a lagging class;
-  // 'complete' is the newest one where everything is published.
+  /* 'latest' is the newest quarter, which may be missing a lagging class;
+     'complete' is the newest one where everything is published; anything else
+     is an ISO date -- any quarter back to 1989 (BACKLOG F30). */
   const [periodMode, setPeriodMode] = useState('latest')
+  // Whatever historical quarter was last fetched, kept beside the two the
+  // dashboard always holds rather than replacing them: the period control has
+  // to be able to come back to 'latest' without another request.
+  const [historical, setHistorical] = useState(null)
   const [token, setTokenState] = useState(getToken)
   const [slug, setSlug] = useState('default')
   const [portfolios, setPortfolios] = useState([])
@@ -101,6 +106,31 @@ export function AppDataProvider({ children }) {
       cancelled = true
     }
   }, [dimension])
+
+  /* A historical quarter is fetched on demand and only when one is asked for
+     -- 147 quarters is a lot to ship to a reader who wants the current one.
+     The previous answer stays on screen while this runs, so switching periods
+     does not blank the page. */
+  useEffect(() => {
+    const isDate = periodMode !== 'latest' && periodMode !== 'complete'
+    if (!isDate || mode !== 'live') return
+    let cancelled = false
+    api
+      .benchmarks({ period: periodMode, investableOnly: false, dimension })
+      .then((data) => {
+        // Tagged with the axis it came from. Clearing it when the axis changes
+        // instead would race the main fetch: whichever landed last would win,
+        // and half the time that is a wipe of the answer just fetched.
+        if (!cancelled) setHistorical({ dimension, period: data.period, groups: toGroups(data.allocations) })
+      })
+      .catch(() => {
+        // Leave the last good answer up; the control still reads as selected,
+        // and the period shown beside every figure says which one it is.
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [periodMode, dimension, mode])
 
   // Holdings live in localStorage so the tool is useful with no backend at
   // all; when the API is up they are also persisted server-side.
@@ -242,8 +272,14 @@ export function AppDataProvider({ children }) {
   // The group actually being shown, resolved against the selected period.
   const activeGroups = useMemo(() => {
     if (!benchmarks) return null
-    return periodMode === 'complete' ? benchmarks.groupsComplete : benchmarks.groups
-  }, [benchmarks, periodMode])
+    if (periodMode === 'complete') return benchmarks.groupsComplete
+    // A historical answer from another axis is stale by definition; fall back
+    // to the current quarter until this axis's fetch lands.
+    if (periodMode !== 'latest') {
+      return historical?.dimension === dimension ? historical.groups : benchmarks.groups
+    }
+    return benchmarks.groups
+  }, [benchmarks, periodMode, historical, dimension])
 
   const value = useMemo(
     () => ({
