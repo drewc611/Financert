@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useAppData } from '../context/AppDataContext'
 import { api } from '../lib/api'
-import { benchmarkWeights, shapeMetrics, UNALLOCATED } from '../lib/analysis'
+import { benchmarkWeights, debtWeights, shapeMetrics, UNALLOCATED } from '../lib/analysis'
 import TrendChart from '../components/TrendChart'
 import DimensionPicker from '../components/DimensionPicker'
 import ThresholdPlacement from '../components/ThresholdPlacement'
@@ -11,7 +11,7 @@ const TREND_ASSETS = ['corporate_equities', 'private_business', 'real_estate']
 
 export default function Benchmarks() {
   const { benchmarks, activeGroups, periodMode, mode, investableOnly } = useAppData()
-  const { t, fmt, assetLabel, tierLabel, percentileRange } = useI18n()
+  const { t, fmt, assetLabel, debtLabel, tierLabel, percentileRange } = useI18n()
   const [trendAsset, setTrendAsset] = useState('corporate_equities')
   const [trend, setTrend] = useState(null)
   // Shares answer "how is it held"; dollars per household answer "how much"
@@ -78,6 +78,29 @@ export default function Benchmarks() {
       }
     })
   }, [allGroups, benchmarks, investableOnly, assetLabel, t])
+
+  /* The other side of the balance sheet (BACKLOG F26). Shares of what each
+     tier owes, not of what it holds -- the two have nothing in common but the
+     household, and mixing them into one table would invite exactly that
+     reading. Same per-household treatment as the asset rows. */
+  const debtRows = useMemo(() => {
+    const byGroup = Object.fromEntries(allGroups.map((g) => [g.key, debtWeights(g)]))
+    return (benchmarks.liabilityClasses ?? [])
+      .filter((c) => allGroups.some((g) => (byGroup[g.key][c.key] ?? 0) > 0))
+      .map((c) => ({
+        key: c.key,
+        label: debtLabel(c.key, c.label),
+        values: Object.fromEntries(allGroups.map((g) => [g.key, byGroup[g.key][c.key] ?? null])),
+        perHousehold: Object.fromEntries(
+          allGroups.map((g) => [
+            g.key,
+            g.household_count > 0
+              ? ((byGroup[g.key][c.key] ?? 0) * g.total_liabilities) / g.household_count
+              : null,
+          ]),
+        ),
+      }))
+  }, [allGroups, benchmarks, debtLabel])
 
   // Three single-number descriptions of each tier's balance sheet. Computed
   // here rather than read off the API response so they are identical in
@@ -271,6 +294,45 @@ export default function Benchmarks() {
           </table>
         </div>
       </div>
+
+      {debtRows.length > 0 && (
+        <div className="card">
+          <div className="card-head">
+            <h2>{t('benchmarks.owesTitle')}</h2>
+          </div>
+          <p className="sub">{t('benchmarks.owesSub')}</p>
+          <div className="chart-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">{t('benchmarks.debtKind')}</th>
+                  {tableGroups.map((g) => (
+                    <th scope="col" className="num" key={g.key}>
+                      {tierLabel(g.key, g.label)}
+                      {g.nested && <span className="th-note">{t('benchmarks.subset')}</span>}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {debtRows.map((row) => (
+                  <tr key={row.key}>
+                    <td>{row.label}</td>
+                    {tableGroups.map((g) => {
+                      const value = perHousehold ? row.perHousehold[g.key] : row.values[g.key]
+                      return (
+                        <td className={value == null ? 'num muted' : 'num'} key={g.key}>
+                          {value == null ? '—' : perHousehold ? fmt.usd(value, { compact: true }) : fmt.pct(value)}
+                        </td>
+                      )
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
 
       <div className="card">
         <div className="card-head">

@@ -223,3 +223,45 @@ def test_the_nested_tier_is_counted_inside_its_parent_not_beside_it():
     top01 = benchmarks.allocation("top01", period)["household_count"]
     top1 = benchmarks.allocation("top1", period)["household_count"]
     assert 0 < top01 < top1
+
+
+# ---------------------------------------------------- the other side (F26)
+
+
+@pytest.mark.parametrize("dimension", AXES)
+def test_the_debt_leaves_sum_to_the_published_liability_total(dimension):
+    """The file publishes liabilities as a tree -- Liabilities = loans +
+    deferred premiums, loans = four columns -- so reading a parent alongside
+    its children would double count exactly the way the asset side could."""
+    period = benchmarks.latest_period()
+    for key in benchmarks.groups_in(dimension):
+        row = benchmarks._entry(key, period, dimension)
+        assert sum(row["liabilities"].values()) == pytest.approx(row["total_liabilities"], rel=0.005), (
+            f"{dimension}.{key}"
+        )
+
+
+def test_debt_shares_sum_to_one_for_every_group():
+    period = benchmarks.latest_period()
+    for key in benchmarks.groups_in("networth"):
+        shares = benchmarks.debt_weights(key, period)
+        assert sum(shares.values()) == pytest.approx(1.0), key
+
+
+def test_the_debt_mix_is_not_the_same_in_every_tier():
+    """A breakdown that reads the same everywhere would not be worth showing.
+    The bottom 50% carries far more of its debt as consumer credit than the
+    tiers above it."""
+    period = benchmarks.latest_period()
+    bottom = benchmarks.debt_weights("bottom50", period)
+    next40 = benchmarks.debt_weights("next40", period)
+    assert bottom["consumer_credit"] > next40["consumer_credit"] * 1.5
+
+
+def test_the_api_serves_the_debt_mix_and_its_taxonomy(client):
+    body = client.get("/api/benchmarks").json()
+    keys = {c["key"] for c in body["liability_classes"]}
+    assert keys == set(constants.LIABILITY_CLASS_KEYS)
+    for alloc in body["allocations"]:
+        assert set(alloc["debt_weights"]) <= keys, alloc["group"]
+        assert sum(alloc["debt_weights"].values()) == pytest.approx(1.0), alloc["group"]

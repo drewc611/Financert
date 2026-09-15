@@ -90,6 +90,12 @@ class ThresholdOut(BaseModel):
     period: str
 
 
+class LiabilityClassOut(BaseModel):
+    key: str
+    label: str
+    blurb: str
+
+
 class AllocationOut(BaseModel):
     group: str
     label: str
@@ -113,6 +119,9 @@ class AllocationOut(BaseModel):
     # every dimension carries one today.
     household_count: float | None = None
     weights: dict[str, float]
+    # Shares of what the group owes. Empty for a group that owes nothing --
+    # which is not the same statement as owing nothing of any one kind.
+    debt_weights: dict[str, float] = Field(default_factory=dict)
     metrics: ShapeMetricsOut
 
 
@@ -135,6 +144,7 @@ class BenchmarksOut(BaseModel):
     investable_only: bool
     source: dict[str, Any]
     asset_classes: list[AssetClassOut]
+    liability_classes: list[LiabilityClassOut] = Field(default_factory=list)
     allocations: list[AllocationOut]
 
 

@@ -221,6 +221,21 @@ It works offline (`build_fallback.py` now emits the resolved threshold) and it
 covers the income axis too, where the same column is an income floor — the tile
 label is keyed by which cutoff it is, since both sit under a net-worth figure.
 
+**F26 and F23 are done together, because the debt mix is the liabilities
+comparison.** The snapshot carried one number for the whole of what a tier
+owed; it now carries the five columns the Fed publishes, and the tiers view has
+a second table for them. The file publishes liabilities as a tree
+(`Liabilities` = loans + deferred life premiums, loans = four columns), so only
+the leaves are stored and `fetch_dfa.py` reconciles their sum against the
+published total for every row of every axis — summing a parent beside its
+children is the one mistake that would make every debt percentage wrong in the
+same direction, and the same check already guards the asset side.
+
+What it shows is worth the work: mortgages are 82% of the Next 9%'s borrowing
+but only 51% of the bottom 50%'s, who carry **43%** of their debt as consumer
+credit against 12–20% in the middle; the top 1% carries 26% as margin and
+policy loans, where no other tier is above 6%.
+
 **F29 turns the shares into money.** A toggle on the holdings table divides each
 tier's assets by its household count: the top 1% holds $20.5M per household in
 equities where the bottom 50% holds $8.7K. It is a *mean*, and the note says so
@@ -237,10 +252,10 @@ in both, and the offline and live figures now match to the cent.
 
 | # | Feature | Size |
 |---|---|---|
-| F23 | Liabilities comparison — we fetch `total_liabilities` and only show a tile | M |
+| ~~F23~~ ✅ | Liabilities comparison — we fetch `total_liabilities` and only show a tile | M |
 | ~~F24~~ ✅ | Leverage ratio (liabilities ÷ assets) vs each tier | S |
 | F25 | Net-worth view alongside the assets view (assets less debt) | M |
-| F26 | Debt mix: home mortgages vs consumer credit vs other, per tier | M |
+| ~~F26~~ ✅ | Debt mix: home mortgages vs consumer credit vs other, per tier | M |
 | F27 | "Which tier is my *debt* like?" — the mirror of nearest-tier | M |
 | ~~F28~~ ✅ | Net-worth percentile placement from `Minimum Wealth Cutoff` | M |
 | ~~F29~~ ✅ | Per-household dollar figures using `Household count`, not just shares | M |

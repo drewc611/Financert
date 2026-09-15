@@ -11,7 +11,7 @@ export const fallbackData = {
     "retrieved_via": "bulk download, dfa-networth-levels-detail.csv",
     "url": "https://www.federalreserve.gov/releases/z1/dataviz/dfa/",
     "download_url": "https://www.federalreserve.gov/releases/z1/dataviz/download/zips/dfa.zip",
-    "retrieved_at": "2026-09-15T06:53:15+00:00",
+    "retrieved_at": "2026-09-15T08:10:36+00:00",
     "archive_sha256": "28f708eb3707213bb0c2bc69d7efa070efd8dede8c312e754af152720f6d196f",
     "archive_bytes": 891509,
     "units": "US dollars, not seasonally adjusted"
@@ -188,6 +188,33 @@ export const fallbackData = {
       "blurb": "Residual between the Fed's published asset total and the categories above. Rounding only, since the taxonomy now covers every component."
     }
   ],
+  "liability_classes": [
+    {
+      "key": "home_mortgages",
+      "label": "Home Mortgages",
+      "blurb": "Mortgages secured on owner-occupied property, including home equity lines."
+    },
+    {
+      "key": "consumer_credit",
+      "label": "Consumer Credit",
+      "blurb": "Credit cards, car loans, student loans and other unsecured consumer borrowing."
+    },
+    {
+      "key": "depository_loans",
+      "label": "Bank Loans",
+      "blurb": "Loans from banks and other depository institutions not classified elsewhere."
+    },
+    {
+      "key": "other_loans",
+      "label": "Other Loans",
+      "blurb": "Margin loans, policy loans and other borrowing outside the categories above."
+    },
+    {
+      "key": "deferred_premiums",
+      "label": "Deferred Life Premiums",
+      "blurb": "Life insurance premiums owed but not yet paid -- the one liability outside the loan tree."
+    }
+  ],
   "groups": {
     "top01": {
       "key": "top01",
@@ -215,6 +242,13 @@ export const fallbackData = {
         "loans_assets": 265014000000.0,
         "misc_assets": 44806000000.0,
         "unallocated": 1000000.0
+      },
+      "liabilities": {
+        "home_mortgages": 117541000000.0,
+        "consumer_credit": 53586000000.0,
+        "depository_loans": 2617000000.0,
+        "other_loans": 63021000000.0,
+        "deferred_premiums": 2946000000.0
       },
       "household_count": 136095.0,
       "threshold": {
@@ -271,6 +305,13 @@ export const fallbackData = {
         "misc_assets": 139399000000.0,
         "unallocated": 1000000.0
       },
+      "liabilities": {
+        "home_mortgages": 557111000000.0,
+        "consumer_credit": 162672000000.0,
+        "depository_loans": 11221000000.0,
+        "other_loans": 266248000000.0,
+        "deferred_premiums": 12225000000.0
+      },
       "household_count": 1348292.0,
       "threshold": {
         "field": "minimum_wealth_cutoff",
@@ -325,6 +366,13 @@ export const fallbackData = {
         "loans_assets": 282903000000.0,
         "misc_assets": 389386000000.0,
         "unallocated": 0.0
+      },
+      "liabilities": {
+        "home_mortgages": 3377823000000.0,
+        "consumer_credit": 514428000000.0,
+        "depository_loans": 3086000000.0,
+        "other_loans": 198922000000.0,
+        "deferred_premiums": 14477000000.0
       },
       "household_count": 12140540.0,
       "threshold": {
@@ -381,6 +429,13 @@ export const fallbackData = {
         "misc_assets": 879571000000.0,
         "unallocated": 2000000.0
       },
+      "liabilities": {
+        "home_mortgages": 6773937000000.0,
+        "consumer_credit": 1769340000000.0,
+        "depository_loans": 4897000000.0,
+        "other_loans": 232135000000.0,
+        "deferred_premiums": 15083000000.0
+      },
       "household_count": 54071475.0,
       "threshold": {
         "field": "minimum_wealth_cutoff",
@@ -435,6 +490,13 @@ export const fallbackData = {
         "loans_assets": 2728000000.0,
         "misc_assets": 375549000000.0,
         "unallocated": 0.0
+      },
+      "liabilities": {
+        "home_mortgages": 3112114000000.0,
+        "consumer_credit": 2626591000000.0,
+        "depository_loans": 17687000000.0,
+        "other_loans": 322319000000.0,
+        "deferred_premiums": 3879000000.0
       },
       "household_count": 67573814.0,
       "threshold": null,

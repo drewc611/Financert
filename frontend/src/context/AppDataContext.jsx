@@ -301,6 +301,7 @@ function toGroups(allocations) {
       // Requested with investable_only=false, so these weights span the full
       // taxonomy and the client can derive either view.
       assets: alloc.weights,
+      liabilities: alloc.debt_weights ?? {},
     }
   }
   return groups
@@ -316,6 +317,7 @@ function normaliseFromApi(latest, complete) {
     dimension: latest.dimension,
     dimensions: latest.dimensions,
     assetClasses: latest.asset_classes,
+    liabilityClasses: latest.liability_classes ?? [],
     groups: toGroups(latest.allocations),
     groupsComplete: toGroups(complete.allocations),
     trends: null,
@@ -352,6 +354,7 @@ function normaliseFromFallback(data) {
     dimension: 'networth',
     dimensions: null,
     assetClasses: data.asset_classes,
+    liabilityClasses: data.liability_classes ?? [],
     groups: data.groups,
     groupsComplete,
     trends: data.trends,

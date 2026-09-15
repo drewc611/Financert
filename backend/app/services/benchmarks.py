@@ -46,9 +46,19 @@ def verify_snapshot() -> None:
     if missing:
         raise SnapshotError(f"snapshot is missing wealth groups: {', '.join(missing)}")
 
+    # A snapshot built before the debt side was ingested still answers every
+    # asset question, so it would serve empty debt tables all day without
+    # anything looking wrong. Refuse to boot on it instead.
+    if "liability_classes" not in load_snapshot():
+        raise SnapshotError("snapshot predates the liability taxonomy; rebuild it with `python fetch_dfa.py`")
+
 
 def asset_classes() -> list[dict[str, Any]]:
     return load_snapshot()["asset_classes"]
+
+
+def liability_classes() -> list[dict[str, Any]]:
+    return load_snapshot()["liability_classes"]
 
 
 def periods() -> list[str]:
@@ -183,6 +193,22 @@ def weights(
     return {k: v / total for k, v in assets.items()}
 
 
+def debt_weights(group_key: str, period: str, dimension: str = DEFAULT_DIMENSION) -> dict[str, float]:
+    """A group's borrowing as fractions of what it owes (BACKLOG F26).
+
+    No investable-only switch here: every liability is a real debt, and there
+    is no equivalent of a consumer durable to exclude. Empty rather than zeroed
+    when a group owes nothing at all, which is a different statement from
+    "owes nothing of any particular kind".
+    """
+    row = _entry(group_key, period, dimension)
+    debts = row.get("liabilities") or {}
+    total = sum(debts.values())
+    if total <= 0:
+        return {}
+    return {k: v / total for k, v in debts.items()}
+
+
 def _liquid_keys() -> frozenset[str]:
     return frozenset(a["key"] for a in asset_classes() if a.get("liquid"))
 
@@ -274,6 +300,7 @@ def allocation(
         # can turn a share of $40 trillion into a figure that means something.
         "household_count": row.get("household_count"),
         "weights": w,
+        "debt_weights": debt_weights(group_key, period, dimension),
         "metrics": shape_metrics(row, w),
     }
 

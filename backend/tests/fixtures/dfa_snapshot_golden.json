@@ -150,6 +150,48 @@
       "columns": []
     }
   ],
+  "liability_classes": [
+    {
+      "key": "home_mortgages",
+      "label": "Home Mortgages",
+      "blurb": "Mortgages secured on owner-occupied property, including home equity lines.",
+      "columns": [
+        "Home mortgages"
+      ]
+    },
+    {
+      "key": "consumer_credit",
+      "label": "Consumer Credit",
+      "blurb": "Credit cards, car loans, student loans and other unsecured consumer borrowing.",
+      "columns": [
+        "Consumer credit"
+      ]
+    },
+    {
+      "key": "depository_loans",
+      "label": "Bank Loans",
+      "blurb": "Loans from banks and other depository institutions not classified elsewhere.",
+      "columns": [
+        "Depository institutions loans n.e.c."
+      ]
+    },
+    {
+      "key": "other_loans",
+      "label": "Other Loans",
+      "blurb": "Margin loans, policy loans and other borrowing outside the categories above.",
+      "columns": [
+        "Other loans and advances (Liabilities)"
+      ]
+    },
+    {
+      "key": "deferred_premiums",
+      "label": "Deferred Life Premiums",
+      "blurb": "Life insurance premiums owed but not yet paid -- the one liability outside the loan tree.",
+      "columns": [
+        "Deferred and unpaid life insurance premiums"
+      ]
+    }
+  ],
   "groups": {
     "top01": {
       "key": "top01",
@@ -176,6 +218,13 @@
             "misc_assets": 4671000000.0,
             "unallocated": 1000000.0
           },
+          "liabilities": {
+            "home_mortgages": 14499000000.0,
+            "consumer_credit": 21065000000.0,
+            "depository_loans": 361000000.0,
+            "other_loans": 8742000000.0,
+            "deferred_premiums": 467000000.0
+          },
           "total_assets": 1802302000000.0,
           "total_liabilities": 45133000000.0,
           "net_worth": 1757168000000.0,
@@ -199,6 +248,13 @@
             "misc_assets": 37049000000.0,
             "unallocated": 0.0
           },
+          "liabilities": {
+            "home_mortgages": 91659000000.0,
+            "consumer_credit": 46620000000.0,
+            "depository_loans": 9547000000.0,
+            "other_loans": 58356000000.0,
+            "deferred_premiums": 2416000000.0
+          },
           "total_assets": 17926788000000.0,
           "total_liabilities": 208598000000.0,
           "net_worth": 17718190000000.0,
@@ -221,6 +277,13 @@
             "loans_assets": 265014000000.0,
             "misc_assets": 44806000000.0,
             "unallocated": 1000000.0
+          },
+          "liabilities": {
+            "home_mortgages": 117541000000.0,
+            "consumer_credit": 53586000000.0,
+            "depository_loans": 2617000000.0,
+            "other_loans": 63021000000.0,
+            "deferred_premiums": 2946000000.0
           },
           "total_assets": 25311992000000.0,
           "total_liabilities": 239711000000.0,
@@ -255,6 +318,13 @@
             "misc_assets": 19024000000.0,
             "unallocated": 3000000.0
           },
+          "liabilities": {
+            "home_mortgages": 80412000000.0,
+            "consumer_credit": 26185000000.0,
+            "depository_loans": 1178000000.0,
+            "other_loans": 20148000000.0,
+            "deferred_premiums": 1977000000.0
+          },
           "total_assets": 4791342000000.0,
           "total_liabilities": 129899000000.0,
           "net_worth": 4661441000000.0,
@@ -278,6 +348,13 @@
             "misc_assets": 117565000000.0,
             "unallocated": 0.0
           },
+          "liabilities": {
+            "home_mortgages": 537441000000.0,
+            "consumer_credit": 150069000000.0,
+            "depository_loans": 108945000000.0,
+            "other_loans": 239091000000.0,
+            "deferred_premiums": 9511000000.0
+          },
           "total_assets": 40642197000000.0,
           "total_liabilities": 1045058000000.0,
           "net_worth": 39597139000000.0,
@@ -300,6 +377,13 @@
             "loans_assets": 549701000000.0,
             "misc_assets": 139399000000.0,
             "unallocated": 1000000.0
+          },
+          "liabilities": {
+            "home_mortgages": 557111000000.0,
+            "consumer_credit": 162672000000.0,
+            "depository_loans": 11221000000.0,
+            "other_loans": 266248000000.0,
+            "deferred_premiums": 12225000000.0
           },
           "total_assets": 56042476000000.0,
           "total_liabilities": 1009477000000.0,
@@ -334,6 +418,13 @@
             "misc_assets": 58576000000.0,
             "unallocated": 0.0
           },
+          "liabilities": {
+            "home_mortgages": 373967000000.0,
+            "consumer_credit": 58994000000.0,
+            "depository_loans": 1273000000.0,
+            "other_loans": 42174000000.0,
+            "deferred_premiums": 4746000000.0
+          },
           "total_assets": 8247017000000.0,
           "total_liabilities": 481153000000.0,
           "net_worth": 7765864000000.0,
@@ -357,6 +448,13 @@
             "misc_assets": 328785000000.0,
             "unallocated": 1000000.0
           },
+          "liabilities": {
+            "home_mortgages": 2922079000000.0,
+            "consumer_credit": 471189000000.0,
+            "depository_loans": 36448000000.0,
+            "other_loans": 114872000000.0,
+            "deferred_premiums": 12606000000.0
+          },
           "total_assets": 52553523000000.0,
           "total_liabilities": 3557193000000.0,
           "net_worth": 48996329000000.0,
@@ -379,6 +477,13 @@
             "loans_assets": 282903000000.0,
             "misc_assets": 389386000000.0,
             "unallocated": 0.0
+          },
+          "liabilities": {
+            "home_mortgages": 3377823000000.0,
+            "consumer_credit": 514428000000.0,
+            "depository_loans": 3086000000.0,
+            "other_loans": 198922000000.0,
+            "deferred_premiums": 14477000000.0
           },
           "total_assets": 67334132000000.0,
           "total_liabilities": 4108736000000.0,
@@ -413,6 +518,13 @@
             "misc_assets": 109496000000.0,
             "unallocated": 2000000.0
           },
+          "liabilities": {
+            "home_mortgages": 1149188000000.0,
+            "consumer_credit": 355269000000.0,
+            "depository_loans": 1334000000.0,
+            "other_loans": 41763000000.0,
+            "deferred_premiums": 7313000000.0
+          },
           "total_assets": 8849696000000.0,
           "total_liabilities": 1554867000000.0,
           "net_worth": 7294829000000.0,
@@ -436,6 +548,13 @@
             "misc_assets": 735021000000.0,
             "unallocated": 0.0
           },
+          "liabilities": {
+            "home_mortgages": 6187564000000.0,
+            "consumer_credit": 1640883000000.0,
+            "depository_loans": 84856000000.0,
+            "other_loans": 176314000000.0,
+            "deferred_premiums": 13836000000.0
+          },
           "total_assets": 50369864000000.0,
           "total_liabilities": 8103453000000.0,
           "net_worth": 42266410000000.0,
@@ -458,6 +577,13 @@
             "loans_assets": 126781000000.0,
             "misc_assets": 879571000000.0,
             "unallocated": 2000000.0
+          },
+          "liabilities": {
+            "home_mortgages": 6773937000000.0,
+            "consumer_credit": 1769340000000.0,
+            "depository_loans": 4897000000.0,
+            "other_loans": 232135000000.0,
+            "deferred_premiums": 15083000000.0
           },
           "total_assets": 60280257000000.0,
           "total_liabilities": 8795392000000.0,
@@ -492,6 +618,13 @@
             "misc_assets": 40252000000.0,
             "unallocated": 0.0
           },
+          "liabilities": {
+            "home_mortgages": 607588000000.0,
+            "consumer_credit": 343758000000.0,
+            "depository_loans": 748000000.0,
+            "other_loans": 32819000000.0,
+            "deferred_premiums": 1940000000.0
+          },
           "total_assets": 1704710000000.0,
           "total_liabilities": 986854000000.0,
           "net_worth": 717856000000.0,
@@ -515,6 +648,13 @@
             "misc_assets": 311457000000.0,
             "unallocated": 0.0
           },
+          "liabilities": {
+            "home_mortgages": 2863105000000.0,
+            "consumer_credit": 2492146000000.0,
+            "depository_loans": 112761000000.0,
+            "other_loans": 249535000000.0,
+            "deferred_premiums": 3450000000.0
+          },
           "total_assets": 9313854000000.0,
           "total_liabilities": 5720998000000.0,
           "net_worth": 3592857000000.0,
@@ -537,6 +677,13 @@
             "loans_assets": 2728000000.0,
             "misc_assets": 375549000000.0,
             "unallocated": 0.0
+          },
+          "liabilities": {
+            "home_mortgages": 3112114000000.0,
+            "consumer_credit": 2626591000000.0,
+            "depository_loans": 17687000000.0,
+            "other_loans": 322319000000.0,
+            "deferred_premiums": 3879000000.0
           },
           "total_assets": 10348948000000.0,
           "total_liabilities": 6082588000000.0,
@@ -591,6 +738,13 @@
                 "misc_assets": 4671000000.0,
                 "unallocated": 1000000.0
               },
+              "liabilities": {
+                "home_mortgages": 14499000000.0,
+                "consumer_credit": 21065000000.0,
+                "depository_loans": 361000000.0,
+                "other_loans": 8742000000.0,
+                "deferred_premiums": 467000000.0
+              },
               "total_assets": 1802302000000.0,
               "total_liabilities": 45133000000.0,
               "net_worth": 1757168000000.0,
@@ -614,6 +768,13 @@
                 "misc_assets": 37049000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 91659000000.0,
+                "consumer_credit": 46620000000.0,
+                "depository_loans": 9547000000.0,
+                "other_loans": 58356000000.0,
+                "deferred_premiums": 2416000000.0
+              },
               "total_assets": 17926788000000.0,
               "total_liabilities": 208598000000.0,
               "net_worth": 17718190000000.0,
@@ -636,6 +797,13 @@
                 "loans_assets": 265014000000.0,
                 "misc_assets": 44806000000.0,
                 "unallocated": 1000000.0
+              },
+              "liabilities": {
+                "home_mortgages": 117541000000.0,
+                "consumer_credit": 53586000000.0,
+                "depository_loans": 2617000000.0,
+                "other_loans": 63021000000.0,
+                "deferred_premiums": 2946000000.0
               },
               "total_assets": 25311992000000.0,
               "total_liabilities": 239711000000.0,
@@ -670,6 +838,13 @@
                 "misc_assets": 19024000000.0,
                 "unallocated": 3000000.0
               },
+              "liabilities": {
+                "home_mortgages": 80412000000.0,
+                "consumer_credit": 26185000000.0,
+                "depository_loans": 1178000000.0,
+                "other_loans": 20148000000.0,
+                "deferred_premiums": 1977000000.0
+              },
               "total_assets": 4791342000000.0,
               "total_liabilities": 129899000000.0,
               "net_worth": 4661441000000.0,
@@ -693,6 +868,13 @@
                 "misc_assets": 117565000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 537441000000.0,
+                "consumer_credit": 150069000000.0,
+                "depository_loans": 108945000000.0,
+                "other_loans": 239091000000.0,
+                "deferred_premiums": 9511000000.0
+              },
               "total_assets": 40642197000000.0,
               "total_liabilities": 1045058000000.0,
               "net_worth": 39597139000000.0,
@@ -715,6 +897,13 @@
                 "loans_assets": 549701000000.0,
                 "misc_assets": 139399000000.0,
                 "unallocated": 1000000.0
+              },
+              "liabilities": {
+                "home_mortgages": 557111000000.0,
+                "consumer_credit": 162672000000.0,
+                "depository_loans": 11221000000.0,
+                "other_loans": 266248000000.0,
+                "deferred_premiums": 12225000000.0
               },
               "total_assets": 56042476000000.0,
               "total_liabilities": 1009477000000.0,
@@ -749,6 +938,13 @@
                 "misc_assets": 58576000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 373967000000.0,
+                "consumer_credit": 58994000000.0,
+                "depository_loans": 1273000000.0,
+                "other_loans": 42174000000.0,
+                "deferred_premiums": 4746000000.0
+              },
               "total_assets": 8247017000000.0,
               "total_liabilities": 481153000000.0,
               "net_worth": 7765864000000.0,
@@ -772,6 +968,13 @@
                 "misc_assets": 328785000000.0,
                 "unallocated": 1000000.0
               },
+              "liabilities": {
+                "home_mortgages": 2922079000000.0,
+                "consumer_credit": 471189000000.0,
+                "depository_loans": 36448000000.0,
+                "other_loans": 114872000000.0,
+                "deferred_premiums": 12606000000.0
+              },
               "total_assets": 52553523000000.0,
               "total_liabilities": 3557193000000.0,
               "net_worth": 48996329000000.0,
@@ -794,6 +997,13 @@
                 "loans_assets": 282903000000.0,
                 "misc_assets": 389386000000.0,
                 "unallocated": 0.0
+              },
+              "liabilities": {
+                "home_mortgages": 3377823000000.0,
+                "consumer_credit": 514428000000.0,
+                "depository_loans": 3086000000.0,
+                "other_loans": 198922000000.0,
+                "deferred_premiums": 14477000000.0
               },
               "total_assets": 67334132000000.0,
               "total_liabilities": 4108736000000.0,
@@ -828,6 +1038,13 @@
                 "misc_assets": 109496000000.0,
                 "unallocated": 2000000.0
               },
+              "liabilities": {
+                "home_mortgages": 1149188000000.0,
+                "consumer_credit": 355269000000.0,
+                "depository_loans": 1334000000.0,
+                "other_loans": 41763000000.0,
+                "deferred_premiums": 7313000000.0
+              },
               "total_assets": 8849696000000.0,
               "total_liabilities": 1554867000000.0,
               "net_worth": 7294829000000.0,
@@ -851,6 +1068,13 @@
                 "misc_assets": 735021000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 6187564000000.0,
+                "consumer_credit": 1640883000000.0,
+                "depository_loans": 84856000000.0,
+                "other_loans": 176314000000.0,
+                "deferred_premiums": 13836000000.0
+              },
               "total_assets": 50369864000000.0,
               "total_liabilities": 8103453000000.0,
               "net_worth": 42266410000000.0,
@@ -873,6 +1097,13 @@
                 "loans_assets": 126781000000.0,
                 "misc_assets": 879571000000.0,
                 "unallocated": 2000000.0
+              },
+              "liabilities": {
+                "home_mortgages": 6773937000000.0,
+                "consumer_credit": 1769340000000.0,
+                "depository_loans": 4897000000.0,
+                "other_loans": 232135000000.0,
+                "deferred_premiums": 15083000000.0
               },
               "total_assets": 60280257000000.0,
               "total_liabilities": 8795392000000.0,
@@ -907,6 +1138,13 @@
                 "misc_assets": 40252000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 607588000000.0,
+                "consumer_credit": 343758000000.0,
+                "depository_loans": 748000000.0,
+                "other_loans": 32819000000.0,
+                "deferred_premiums": 1940000000.0
+              },
               "total_assets": 1704710000000.0,
               "total_liabilities": 986854000000.0,
               "net_worth": 717856000000.0,
@@ -930,6 +1168,13 @@
                 "misc_assets": 311457000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 2863105000000.0,
+                "consumer_credit": 2492146000000.0,
+                "depository_loans": 112761000000.0,
+                "other_loans": 249535000000.0,
+                "deferred_premiums": 3450000000.0
+              },
               "total_assets": 9313854000000.0,
               "total_liabilities": 5720998000000.0,
               "net_worth": 3592857000000.0,
@@ -952,6 +1197,13 @@
                 "loans_assets": 2728000000.0,
                 "misc_assets": 375549000000.0,
                 "unallocated": 0.0
+              },
+              "liabilities": {
+                "home_mortgages": 3112114000000.0,
+                "consumer_credit": 2626591000000.0,
+                "depository_loans": 17687000000.0,
+                "other_loans": 322319000000.0,
+                "deferred_premiums": 3879000000.0
               },
               "total_assets": 10348948000000.0,
               "total_liabilities": 6082588000000.0,
@@ -1004,6 +1256,13 @@
                 "misc_assets": 138991000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 831943000000.0,
+                "consumer_credit": 308962000000.0,
+                "depository_loans": 2354000000.0,
+                "other_loans": 114516000000.0,
+                "deferred_premiums": 9684000000.0
+              },
               "total_assets": 17642586000000.0,
               "total_liabilities": 1267459000000.0,
               "net_worth": 16375126000000.0,
@@ -1026,6 +1285,13 @@
                 "misc_assets": 249992000000.0,
                 "unallocated": 1000000.0
               },
+              "liabilities": {
+                "home_mortgages": 454908000000.0,
+                "consumer_credit": 112983000000.0,
+                "depository_loans": 20059000000.0,
+                "other_loans": 28093000000.0,
+                "deferred_premiums": 4355000000.0
+              },
               "total_assets": 20191972000000.0,
               "total_liabilities": 620398000000.0,
               "net_worth": 19571574000000.0,
@@ -1047,6 +1313,13 @@
                 "loans_assets": 103338000000.0,
                 "misc_assets": 225411000000.0,
                 "unallocated": 1000000.0
+              },
+              "liabilities": {
+                "home_mortgages": 330090000000.0,
+                "consumer_credit": 78366000000.0,
+                "depository_loans": 1377000000.0,
+                "other_loans": 30501000000.0,
+                "deferred_premiums": 3938000000.0
               },
               "total_assets": 20098487000000.0,
               "total_liabilities": 444272000000.0,
@@ -1080,6 +1353,13 @@
                 "misc_assets": 85324000000.0,
                 "unallocated": 1000000.0
               },
+              "liabilities": {
+                "home_mortgages": 1355516000000.0,
+                "consumer_credit": 445778000000.0,
+                "depository_loans": 2171000000.0,
+                "other_loans": 22173000000.0,
+                "deferred_premiums": 6164000000.0
+              },
               "total_assets": 5819221000000.0,
               "total_liabilities": 1831801000000.0,
               "net_worth": 3987420000000.0,
@@ -1102,6 +1382,13 @@
                 "misc_assets": 638881000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 3095441000000.0,
+                "consumer_credit": 1053260000000.0,
+                "depository_loans": 134027000000.0,
+                "other_loans": 600871000000.0,
+                "deferred_premiums": 17865000000.0
+              },
               "total_assets": 74003356000000.0,
               "total_liabilities": 4901464000000.0,
               "net_worth": 69101892000000.0,
@@ -1123,6 +1410,13 @@
                 "loans_assets": 676254000000.0,
                 "misc_assets": 745786000000.0,
                 "unallocated": 0.0
+              },
+              "liabilities": {
+                "home_mortgages": 2517497000000.0,
+                "consumer_credit": 976492000000.0,
+                "depository_loans": 22593000000.0,
+                "other_loans": 783924000000.0,
+                "deferred_premiums": 20380000000.0
               },
               "total_assets": 94162738000000.0,
               "total_liabilities": 4320887000000.0,
@@ -1156,6 +1450,13 @@
                 "misc_assets": 3034000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 23697000000.0,
+                "consumer_credit": 29467000000.0,
+                "depository_loans": 7000000.0,
+                "other_loans": 215000000.0,
+                "deferred_premiums": 128000000.0
+              },
               "total_assets": 130957000000.0,
               "total_liabilities": 53514000000.0,
               "net_worth": 77443000000.0,
@@ -1178,6 +1479,13 @@
                 "misc_assets": 358324000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 4968292000000.0,
+                "consumer_credit": 1684967000000.0,
+                "depository_loans": 116708000000.0,
+                "other_loans": 97585000000.0,
+                "deferred_premiums": 12354000000.0
+              },
               "total_assets": 40997037000000.0,
               "total_liabilities": 6879906000000.0,
               "net_worth": 34117131000000.0,
@@ -1199,6 +1507,13 @@
                 "loans_assets": 148699000000.0,
                 "misc_assets": 440309000000.0,
                 "unallocated": 1000000.0
+              },
+              "liabilities": {
+                "home_mortgages": 5043868000000.0,
+                "consumer_credit": 1678432000000.0,
+                "depository_loans": 8708000000.0,
+                "other_loans": 96918000000.0,
+                "deferred_premiums": 15460000000.0
               },
               "total_assets": 52241517000000.0,
               "total_liabilities": 6843387000000.0,
@@ -1232,6 +1547,13 @@
                 "misc_assets": 0.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 0.0,
+                "consumer_credit": 0.0,
+                "depository_loans": 0.0,
+                "other_loans": 0.0,
+                "deferred_premiums": 0.0
+              },
               "total_assets": 0.0,
               "total_liabilities": 0.0,
               "net_worth": 0.0,
@@ -1254,6 +1576,13 @@
                 "misc_assets": 245630000000.0,
                 "unallocated": 1000000.0
               },
+              "liabilities": {
+                "home_mortgages": 3991549000000.0,
+                "consumer_credit": 1903077000000.0,
+                "depository_loans": 72216000000.0,
+                "other_loans": 53263000000.0,
+                "deferred_premiums": 4829000000.0
+              },
               "total_assets": 17687073000000.0,
               "total_liabilities": 6024934000000.0,
               "net_worth": 11662139000000.0,
@@ -1275,6 +1604,13 @@
                 "loans_assets": 33823000000.0,
                 "misc_assets": 372400000000.0,
                 "unallocated": 0.0
+              },
+              "liabilities": {
+                "home_mortgages": 5929528000000.0,
+                "consumer_credit": 2339742000000.0,
+                "depository_loans": 4211000000.0,
+                "other_loans": 108281000000.0,
+                "deferred_premiums": 5886000000.0
               },
               "total_assets": 27503071000000.0,
               "total_liabilities": 8387648000000.0,
@@ -1326,6 +1662,13 @@
                 "misc_assets": 28887000000.0,
                 "unallocated": 1000000.0
               },
+              "liabilities": {
+                "home_mortgages": 158941000000.0,
+                "consumer_credit": 88690000000.0,
+                "depository_loans": 334000000.0,
+                "other_loans": 3852000000.0,
+                "deferred_premiums": 1421000000.0
+              },
               "total_assets": 2628708000000.0,
               "total_liabilities": 253238000000.0,
               "net_worth": 2375470000000.0,
@@ -1348,6 +1691,13 @@
                 "misc_assets": 70982000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 268457000000.0,
+                "consumer_credit": 166711000000.0,
+                "depository_loans": 14593000000.0,
+                "other_loans": 1866000000.0,
+                "deferred_premiums": 370000000.0
+              },
               "total_assets": 2525559000000.0,
               "total_liabilities": 451996000000.0,
               "net_worth": 2073563000000.0,
@@ -1369,6 +1719,13 @@
                 "loans_assets": 147000000.0,
                 "misc_assets": 78210000000.0,
                 "unallocated": 2000000.0
+              },
+              "liabilities": {
+                "home_mortgages": 242779000000.0,
+                "consumer_credit": 165232000000.0,
+                "depository_loans": 2573000000.0,
+                "other_loans": 5183000000.0,
+                "deferred_premiums": 390000000.0
               },
               "total_assets": 2681300000000.0,
               "total_liabilities": 416157000000.0,
@@ -1402,6 +1759,13 @@
                 "misc_assets": 55688000000.0,
                 "unallocated": 1000000.0
               },
+              "liabilities": {
+                "home_mortgages": 463003000000.0,
+                "consumer_credit": 228662000000.0,
+                "depository_loans": 787000000.0,
+                "other_loans": 20178000000.0,
+                "deferred_premiums": 3254000000.0
+              },
               "total_assets": 4925198000000.0,
               "total_liabilities": 715882000000.0,
               "net_worth": 4209316000000.0,
@@ -1424,6 +1788,13 @@
                 "misc_assets": 285592000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 1515827000000.0,
+                "consumer_credit": 798886000000.0,
+                "depository_loans": 66002000000.0,
+                "other_loans": 27702000000.0,
+                "deferred_premiums": 3954000000.0
+              },
               "total_assets": 15483242000000.0,
               "total_liabilities": 2412372000000.0,
               "net_worth": 13070871000000.0,
@@ -1445,6 +1816,13 @@
                 "loans_assets": 97019000000.0,
                 "misc_assets": 330011000000.0,
                 "unallocated": 0.0
+              },
+              "liabilities": {
+                "home_mortgages": 1470567000000.0,
+                "consumer_credit": 830369000000.0,
+                "depository_loans": 0.0,
+                "other_loans": 25659000000.0,
+                "deferred_premiums": 4248000000.0
               },
               "total_assets": 17935835000000.0,
               "total_liabilities": 2330843000000.0,
@@ -1478,6 +1856,13 @@
                 "misc_assets": 48533000000.0,
                 "unallocated": 3000000.0
               },
+              "liabilities": {
+                "home_mortgages": 539019000000.0,
+                "consumer_credit": 192197000000.0,
+                "depository_loans": 848000000.0,
+                "other_loans": 20904000000.0,
+                "deferred_premiums": 3019000000.0
+              },
               "total_assets": 4677593000000.0,
               "total_liabilities": 755987000000.0,
               "net_worth": 3921606000000.0,
@@ -1500,6 +1885,13 @@
                 "misc_assets": 323487000000.0,
                 "unallocated": 1000000.0
               },
+              "liabilities": {
+                "home_mortgages": 2439414000000.0,
+                "consumer_credit": 1102782000000.0,
+                "depository_loans": 43599000000.0,
+                "other_loans": 36542000000.0,
+                "deferred_premiums": 4850000000.0
+              },
               "total_assets": 24405438000000.0,
               "total_liabilities": 3627188000000.0,
               "net_worth": 20778251000000.0,
@@ -1521,6 +1913,13 @@
                 "loans_assets": 59007000000.0,
                 "misc_assets": 374785000000.0,
                 "unallocated": 0.0
+              },
+              "liabilities": {
+                "home_mortgages": 2631526000000.0,
+                "consumer_credit": 1140195000000.0,
+                "depository_loans": 15071000000.0,
+                "other_loans": 63002000000.0,
+                "deferred_premiums": 5009000000.0
               },
               "total_assets": 28698221000000.0,
               "total_liabilities": 3854804000000.0,
@@ -1554,6 +1953,13 @@
                 "misc_assets": 94241000000.0,
                 "unallocated": 1000000.0
               },
+              "liabilities": {
+                "home_mortgages": 1050193000000.0,
+                "consumer_credit": 274658000000.0,
+                "depository_loans": 2564000000.0,
+                "other_loans": 91971000000.0,
+                "deferred_premiums": 8281000000.0
+              },
               "total_assets": 11361265000000.0,
               "total_liabilities": 1427667000000.0,
               "net_worth": 9933598000000.0,
@@ -1576,6 +1982,13 @@
                 "misc_assets": 812766000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 8286492000000.0,
+                "consumer_credit": 2685908000000.0,
+                "depository_loans": 218816000000.0,
+                "other_loans": 713701000000.0,
+                "deferred_premiums": 30230000000.0
+              },
               "total_assets": 110465199000000.0,
               "total_liabilities": 11935147000000.0,
               "net_worth": 98530051000000.0,
@@ -1597,6 +2010,13 @@
                 "loans_assets": 805942000000.0,
                 "misc_assets": 1000900000000.0,
                 "unallocated": 0.0
+              },
+              "liabilities": {
+                "home_mortgages": 9476111000000.0,
+                "consumer_credit": 2937235000000.0,
+                "depository_loans": 19246000000.0,
+                "other_loans": 925780000000.0,
+                "deferred_premiums": 36017000000.0
               },
               "total_assets": 144690457000000.0,
               "total_liabilities": 13394389000000.0,
@@ -1652,6 +2072,13 @@
                 "misc_assets": 9093000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 24249000000.0,
+                "consumer_credit": 32719000000.0,
+                "depository_loans": 154000000.0,
+                "other_loans": 5526000000.0,
+                "deferred_premiums": 540000000.0
+              },
               "total_assets": 652405000000.0,
               "total_liabilities": 63188000000.0,
               "net_worth": 589218000000.0,
@@ -1676,6 +2103,13 @@
                 "misc_assets": 101094000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 371833000000.0,
+                "consumer_credit": 365261000000.0,
+                "depository_loans": 32582000000.0,
+                "other_loans": 11686000000.0,
+                "deferred_premiums": 1109000000.0
+              },
               "total_assets": 4908504000000.0,
               "total_liabilities": 782471000000.0,
               "net_worth": 4126034000000.0,
@@ -1699,6 +2133,13 @@
                 "loans_assets": 15836000000.0,
                 "misc_assets": 122003000000.0,
                 "unallocated": 0.0
+              },
+              "liabilities": {
+                "home_mortgages": 449158000000.0,
+                "consumer_credit": 364523000000.0,
+                "depository_loans": 1204000000.0,
+                "other_loans": 293000000.0,
+                "deferred_premiums": 1261000000.0
               },
               "total_assets": 5853227000000.0,
               "total_liabilities": 816439000000.0,
@@ -1734,6 +2175,13 @@
                 "misc_assets": 20759000000.0,
                 "unallocated": 1000000.0
               },
+              "liabilities": {
+                "home_mortgages": 113386000000.0,
+                "consumer_credit": 69864000000.0,
+                "depository_loans": 249000000.0,
+                "other_loans": 4724000000.0,
+                "deferred_premiums": 956000000.0
+              },
               "total_assets": 1748750000000.0,
               "total_liabilities": 189179000000.0,
               "net_worth": 1559571000000.0,
@@ -1758,6 +2206,13 @@
                 "misc_assets": 189963000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 729455000000.0,
+                "consumer_credit": 598967000000.0,
+                "depository_loans": 27196000000.0,
+                "other_loans": 6955000000.0,
+                "deferred_premiums": 1367000000.0
+              },
               "total_assets": 7716577000000.0,
               "total_liabilities": 1363940000000.0,
               "net_worth": 6352637000000.0,
@@ -1781,6 +2236,13 @@
                 "loans_assets": 11157000000.0,
                 "misc_assets": 229489000000.0,
                 "unallocated": 0.0
+              },
+              "liabilities": {
+                "home_mortgages": 810271000000.0,
+                "consumer_credit": 658969000000.0,
+                "depository_loans": 0.0,
+                "other_loans": 1421000000.0,
+                "deferred_premiums": 1473000000.0
               },
               "total_assets": 8736384000000.0,
               "total_liabilities": 1472134000000.0,
@@ -1816,6 +2278,13 @@
                 "misc_assets": 33521000000.0,
                 "unallocated": 1000000.0
               },
+              "liabilities": {
+                "home_mortgages": 258913000000.0,
+                "consumer_credit": 159522000000.0,
+                "depository_loans": 730000000.0,
+                "other_loans": 4417000000.0,
+                "deferred_premiums": 1512000000.0
+              },
               "total_assets": 2972791000000.0,
               "total_liabilities": 425094000000.0,
               "net_worth": 2547697000000.0,
@@ -1840,6 +2309,13 @@
                 "misc_assets": 271724000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 1690426000000.0,
+                "consumer_credit": 892061000000.0,
+                "depository_loans": 34840000000.0,
+                "other_loans": 57215000000.0,
+                "deferred_premiums": 3757000000.0
+              },
               "total_assets": 14528055000000.0,
               "total_liabilities": 2678299000000.0,
               "net_worth": 11849756000000.0,
@@ -1863,6 +2339,13 @@
                 "loans_assets": 44601000000.0,
                 "misc_assets": 328726000000.0,
                 "unallocated": 0.0
+              },
+              "liabilities": {
+                "home_mortgages": 1922458000000.0,
+                "consumer_credit": 955031000000.0,
+                "depository_loans": 2200000000.0,
+                "other_loans": 64232000000.0,
+                "deferred_premiums": 3726000000.0
               },
               "total_assets": 16554474000000.0,
               "total_liabilities": 2947648000000.0,
@@ -1898,6 +2381,13 @@
                 "misc_assets": 50152000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 565700000000.0,
+                "consumer_credit": 244684000000.0,
+                "depository_loans": 386000000.0,
+                "other_loans": 24554000000.0,
+                "deferred_premiums": 3431000000.0
+              },
               "total_assets": 4217051000000.0,
               "total_liabilities": 838755000000.0,
               "net_worth": 3378296000000.0,
@@ -1922,6 +2412,13 @@
                 "misc_assets": 323395000000.0,
                 "unallocated": 2000000.0
               },
+              "liabilities": {
+                "home_mortgages": 3025715000000.0,
+                "consumer_credit": 1233533000000.0,
+                "depository_loans": 51326000000.0,
+                "other_loans": 50456000000.0,
+                "deferred_premiums": 6029000000.0
+              },
               "total_assets": 22909971000000.0,
               "total_liabilities": 4367059000000.0,
               "net_worth": 18542912000000.0,
@@ -1945,6 +2442,13 @@
                 "loans_assets": 96653000000.0,
                 "misc_assets": 384858000000.0,
                 "unallocated": 0.0
+              },
+              "liabilities": {
+                "home_mortgages": 3286353000000.0,
+                "consumer_credit": 1313192000000.0,
+                "depository_loans": 7017000000.0,
+                "other_loans": 56366000000.0,
+                "deferred_premiums": 6558000000.0
               },
               "total_assets": 27870677000000.0,
               "total_liabilities": 4669484000000.0,
@@ -1980,6 +2484,13 @@
                 "misc_assets": 96796000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 1149679000000.0,
+                "consumer_credit": 250302000000.0,
+                "depository_loans": 1680000000.0,
+                "other_loans": 75329000000.0,
+                "deferred_premiums": 7801000000.0
+              },
               "total_assets": 10452052000000.0,
               "total_liabilities": 1484790000000.0,
               "net_worth": 8967262000000.0,
@@ -2004,6 +2515,13 @@
                 "misc_assets": 503314000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 5762923000000.0,
+                "consumer_credit": 1514518000000.0,
+                "depository_loans": 95425000000.0,
+                "other_loans": 465589000000.0,
+                "deferred_premiums": 20565000000.0
+              },
               "total_assets": 71293968000000.0,
               "total_liabilities": 7859020000000.0,
               "net_worth": 63434948000000.0,
@@ -2027,6 +2545,13 @@
                 "loans_assets": 452905000000.0,
                 "misc_assets": 596236000000.0,
                 "unallocated": 0.0
+              },
+              "liabilities": {
+                "home_mortgages": 6293920000000.0,
+                "consumer_credit": 1606719000000.0,
+                "depository_loans": 9709000000.0,
+                "other_loans": 701998000000.0,
+                "deferred_premiums": 23302000000.0
               },
               "total_assets": 90951668000000.0,
               "total_liabilities": 8635648000000.0,
@@ -2062,6 +2587,13 @@
                 "misc_assets": 17027000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 99228000000.0,
+                "consumer_credit": 27117000000.0,
+                "depository_loans": 1333000000.0,
+                "other_loans": 22354000000.0,
+                "deferred_premiums": 1736000000.0
+              },
               "total_assets": 3549714000000.0,
               "total_liabilities": 151768000000.0,
               "net_worth": 3397946000000.0,
@@ -2086,6 +2618,13 @@
                 "misc_assets": 103337000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 929839000000.0,
+                "consumer_credit": 149948000000.0,
+                "depository_loans": 101641000000.0,
+                "other_loans": 187910000000.0,
+                "deferred_premiums": 6576000000.0
+              },
               "total_assets": 31522362000000.0,
               "total_liabilities": 1375913000000.0,
               "net_worth": 30146449000000.0,
@@ -2109,6 +2648,13 @@
                 "loans_assets": 340961000000.0,
                 "misc_assets": 122594000000.0,
                 "unallocated": 0.0
+              },
+              "liabilities": {
+                "home_mortgages": 1058824000000.0,
+                "consumer_credit": 174597000000.0,
+                "depository_loans": 16760000000.0,
+                "other_loans": 195314000000.0,
+                "deferred_premiums": 9344000000.0
               },
               "total_assets": 44039382000000.0,
               "total_liabilities": 1454839000000.0,
@@ -2162,6 +2708,13 @@
                 "misc_assets": 195270000000.0,
                 "unallocated": 2000000.0
               },
+              "liabilities": {
+                "home_mortgages": 1831010000000.0,
+                "consumer_credit": 620287000000.0,
+                "depository_loans": 4225000000.0,
+                "other_loans": 117803000000.0,
+                "deferred_premiums": 14262000000.0
+              },
               "total_assets": 21048923000000.0,
               "total_liabilities": 2587588000000.0,
               "net_worth": 18461335000000.0,
@@ -2184,6 +2737,13 @@
                 "misc_assets": 1138169000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 9033559000000.0,
+                "consumer_credit": 3148099000000.0,
+                "depository_loans": 273206000000.0,
+                "other_loans": 686344000000.0,
+                "deferred_premiums": 31095000000.0
+              },
               "total_assets": 127340804000000.0,
               "total_liabilities": 13172302000000.0,
               "net_worth": 114168502000000.0,
@@ -2205,6 +2765,13 @@
                 "loans_assets": 802888000000.0,
                 "misc_assets": 1311983000000.0,
                 "unallocated": 0.0
+              },
+              "liabilities": {
+                "home_mortgages": 9613921000000.0,
+                "consumer_credit": 3209539000000.0,
+                "depository_loans": 34038000000.0,
+                "other_loans": 880954000000.0,
+                "deferred_premiums": 34646000000.0
               },
               "total_assets": 157971613000000.0,
               "total_liabilities": 13773097000000.0,
@@ -2238,6 +2805,13 @@
                 "misc_assets": 12356000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 103500000000.0,
+                "consumer_credit": 78235000000.0,
+                "depository_loans": 134000000.0,
+                "other_loans": 868000000.0,
+                "deferred_premiums": 689000000.0
+              },
               "total_assets": 1010669000000.0,
               "total_liabilities": 183426000000.0,
               "net_worth": 827243000000.0,
@@ -2260,6 +2834,13 @@
                 "misc_assets": 129344000000.0,
                 "unallocated": 2000000.0
               },
+              "liabilities": {
+                "home_mortgages": 755609000000.0,
+                "consumer_credit": 682547000000.0,
+                "depository_loans": 16302000000.0,
+                "other_loans": 16303000000.0,
+                "deferred_premiums": 2569000000.0
+              },
               "total_assets": 6168615000000.0,
               "total_liabilities": 1473331000000.0,
               "net_worth": 4695283000000.0,
@@ -2281,6 +2862,13 @@
                 "loans_assets": 26904000000.0,
                 "misc_assets": 159619000000.0,
                 "unallocated": 1000000.0
+              },
+              "liabilities": {
+                "home_mortgages": 771300000000.0,
+                "consumer_credit": 742962000000.0,
+                "depository_loans": 0.0,
+                "other_loans": 26325000000.0,
+                "deferred_premiums": 3186000000.0
               },
               "total_assets": 7289561000000.0,
               "total_liabilities": 1543773000000.0,
@@ -2314,6 +2902,13 @@
                 "misc_assets": 9166000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 140736000000.0,
+                "consumer_credit": 46590000000.0,
+                "depository_loans": 130000000.0,
+                "other_loans": 13940000000.0,
+                "deferred_premiums": 391000000.0
+              },
               "total_assets": 624978000000.0,
               "total_liabilities": 201786000000.0,
               "net_worth": 423193000000.0,
@@ -2336,6 +2931,13 @@
                 "misc_assets": 71590000000.0,
                 "unallocated": 1000000.0
               },
+              "liabilities": {
+                "home_mortgages": 824198000000.0,
+                "consumer_credit": 296519000000.0,
+                "depository_loans": 10290000000.0,
+                "other_loans": 17021000000.0,
+                "deferred_premiums": 950000000.0
+              },
               "total_assets": 4270997000000.0,
               "total_liabilities": 1148978000000.0,
               "net_worth": 3122019000000.0,
@@ -2357,6 +2959,13 @@
                 "loans_assets": 8000000.0,
                 "misc_assets": 94651000000.0,
                 "unallocated": 0.0
+              },
+              "liabilities": {
+                "home_mortgages": 943220000000.0,
+                "consumer_credit": 324824000000.0,
+                "depository_loans": 1556000000.0,
+                "other_loans": 30582000000.0,
+                "deferred_premiums": 1284000000.0
               },
               "total_assets": 5472181000000.0,
               "total_liabilities": 1301466000000.0,
@@ -2390,6 +2999,13 @@
                 "misc_assets": 10556000000.0,
                 "unallocated": 1000000.0
               },
+              "liabilities": {
+                "home_mortgages": 135909000000.0,
+                "consumer_credit": 39095000000.0,
+                "depository_loans": 44000000.0,
+                "other_loans": 4293000000.0,
+                "deferred_premiums": 633000000.0
+              },
               "total_assets": 908194000000.0,
               "total_liabilities": 179974000000.0,
               "net_worth": 728220000000.0,
@@ -2412,6 +3028,13 @@
                 "misc_assets": 153724000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 1896824000000.0,
+                "consumer_credit": 627122000000.0,
+                "depository_loans": 43212000000.0,
+                "other_loans": 60144000000.0,
+                "deferred_premiums": 4789000000.0
+              },
               "total_assets": 15099022000000.0,
               "total_liabilities": 2632091000000.0,
               "net_worth": 12466932000000.0,
@@ -2433,6 +3056,13 @@
                 "loans_assets": 132314000000.0,
                 "misc_assets": 217653000000.0,
                 "unallocated": 0.0
+              },
+              "liabilities": {
+                "home_mortgages": 2492543000000.0,
+                "consumer_credit": 795707000000.0,
+                "depository_loans": 1296000000.0,
+                "other_loans": 81764000000.0,
+                "deferred_premiums": 6548000000.0
               },
               "total_assets": 23272458000000.0,
               "total_liabilities": 3377858000000.0,
@@ -2484,6 +3114,13 @@
                 "misc_assets": 60757000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 1003997000000.0,
+                "consumer_credit": 356301000000.0,
+                "depository_loans": 1440000000.0,
+                "other_loans": 11913000000.0,
+                "deferred_premiums": 4209000000.0
+              },
               "total_assets": 3830840000000.0,
               "total_liabilities": 1377860000000.0,
               "net_worth": 2452980000000.0,
@@ -2506,6 +3143,13 @@
                 "misc_assets": 208361000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 3324650000000.0,
+                "consumer_credit": 1685619000000.0,
+                "depository_loans": 54488000000.0,
+                "other_loans": 43066000000.0,
+                "deferred_premiums": 3608000000.0
+              },
               "total_assets": 14402681000000.0,
               "total_liabilities": 5111431000000.0,
               "net_worth": 9291250000000.0,
@@ -2527,6 +3171,13 @@
                 "loans_assets": 32963000000.0,
                 "misc_assets": 237876000000.0,
                 "unallocated": 0.0
+              },
+              "liabilities": {
+                "home_mortgages": 3575403000000.0,
+                "consumer_credit": 1771801000000.0,
+                "depository_loans": 3706000000.0,
+                "other_loans": 51879000000.0,
+                "deferred_premiums": 3674000000.0
               },
               "total_assets": 16824632000000.0,
               "total_liabilities": 5406463000000.0,
@@ -2560,6 +3211,13 @@
                 "misc_assets": 81189000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 872870000000.0,
+                "consumer_credit": 300369000000.0,
+                "depository_loans": 1620000000.0,
+                "other_loans": 61548000000.0,
+                "deferred_premiums": 5824000000.0
+              },
               "total_assets": 7781766000000.0,
               "total_liabilities": 1242232000000.0,
               "net_worth": 6539534000000.0,
@@ -2582,6 +3240,13 @@
                 "misc_assets": 314474000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 4846262000000.0,
+                "consumer_credit": 1607337000000.0,
+                "depository_loans": 120657000000.0,
+                "other_loans": 101067000000.0,
+                "deferred_premiums": 10348000000.0
+              },
               "total_assets": 34527059000000.0,
               "total_liabilities": 6685672000000.0,
               "net_worth": 27841388000000.0,
@@ -2603,6 +3268,13 @@
                 "loans_assets": 113915000000.0,
                 "misc_assets": 356396000000.0,
                 "unallocated": 1000000.0
+              },
+              "liabilities": {
+                "home_mortgages": 5396557000000.0,
+                "consumer_credit": 1726661000000.0,
+                "depository_loans": 8809000000.0,
+                "other_loans": 106941000000.0,
+                "deferred_premiums": 11630000000.0
               },
               "total_assets": 41296967000000.0,
               "total_liabilities": 7250597000000.0,
@@ -2636,6 +3308,13 @@
                 "misc_assets": 58016000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 292769000000.0,
+                "consumer_credit": 91039000000.0,
+                "depository_loans": 1106000000.0,
+                "other_loans": 39433000000.0,
+                "deferred_premiums": 4391000000.0
+              },
               "total_assets": 8015961000000.0,
               "total_liabilities": 428739000000.0,
               "net_worth": 7587222000000.0,
@@ -2658,6 +3337,13 @@
                 "misc_assets": 468745000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 3218828000000.0,
+                "consumer_credit": 1086023000000.0,
+                "depository_loans": 126042000000.0,
+                "other_loans": 459139000000.0,
+                "deferred_premiums": 15848000000.0
+              },
               "total_assets": 62292572000000.0,
               "total_liabilities": 4905880000000.0,
               "net_worth": 57386692000000.0,
@@ -2679,6 +3365,13 @@
                 "loans_assets": 461566000000.0,
                 "misc_assets": 526871000000.0,
                 "unallocated": 1000000.0
+              },
+              "liabilities": {
+                "home_mortgages": 3363236000000.0,
+                "consumer_credit": 1107555000000.0,
+                "depository_loans": 17371000000.0,
+                "other_loans": 577951000000.0,
+                "deferred_premiums": 17074000000.0
               },
               "total_assets": 76768415000000.0,
               "total_liabilities": 5083186000000.0,
@@ -2712,6 +3405,13 @@
                 "misc_assets": 27387000000.0,
                 "unallocated": 0.0
               },
+              "liabilities": {
+                "home_mortgages": 41518000000.0,
+                "consumer_credit": 36498000000.0,
+                "depository_loans": 366000000.0,
+                "other_loans": 24009000000.0,
+                "deferred_premiums": 1552000000.0
+              },
               "total_assets": 3964197000000.0,
               "total_liabilities": 103943000000.0,
               "net_worth": 3860255000000.0,
@@ -2734,6 +3434,13 @@
                 "misc_assets": 501247000000.0,
                 "unallocated": 1000000.0
               },
+              "liabilities": {
+                "home_mortgages": 1120450000000.0,
+                "consumer_credit": 375307000000.0,
+                "depository_loans": 41823000000.0,
+                "other_loans": 176540000000.0,
+                "deferred_premiums": 9598000000.0
+              },
               "total_assets": 41657126000000.0,
               "total_liabilities": 1723719000000.0,
               "net_worth": 39933407000000.0,
@@ -2755,6 +3462,13 @@
                 "loans_assets": 353671000000.0,
                 "misc_assets": 662763000000.0,
                 "unallocated": 0.0
+              },
+              "liabilities": {
+                "home_mortgages": 1485788000000.0,
+                "consumer_credit": 467014000000.0,
+                "depository_loans": 7004000000.0,
+                "other_loans": 282854000000.0,
+                "deferred_premiums": 13286000000.0
               },
               "total_assets": 59115798000000.0,
               "total_liabilities": 2255947000000.0,

@@ -5,7 +5,7 @@
     "retrieved_via": "bulk download, dfa-networth-levels-detail.csv",
     "url": "https://www.federalreserve.gov/releases/z1/dataviz/dfa/",
     "download_url": "https://www.federalreserve.gov/releases/z1/dataviz/download/zips/dfa.zip",
-    "retrieved_at": "2026-09-15T06:53:15+00:00",
+    "retrieved_at": "2026-09-15T08:10:36+00:00",
     "archive_sha256": "28f708eb3707213bb0c2bc69d7efa070efd8dede8c312e754af152720f6d196f",
     "archive_bytes": 891509,
     "units": "US dollars, not seasonally adjusted"
@@ -439,6 +439,48 @@
       "liquid": false,
       "blurb": "Residual between the Fed's published asset total and the categories above. Rounding only, since the taxonomy now covers every component.",
       "columns": []
+    }
+  ],
+  "liability_classes": [
+    {
+      "key": "home_mortgages",
+      "label": "Home Mortgages",
+      "blurb": "Mortgages secured on owner-occupied property, including home equity lines.",
+      "columns": [
+        "Home mortgages"
+      ]
+    },
+    {
+      "key": "consumer_credit",
+      "label": "Consumer Credit",
+      "blurb": "Credit cards, car loans, student loans and other unsecured consumer borrowing.",
+      "columns": [
+        "Consumer credit"
+      ]
+    },
+    {
+      "key": "depository_loans",
+      "label": "Bank Loans",
+      "blurb": "Loans from banks and other depository institutions not classified elsewhere.",
+      "columns": [
+        "Depository institutions loans n.e.c."
+      ]
+    },
+    {
+      "key": "other_loans",
+      "label": "Other Loans",
+      "blurb": "Margin loans, policy loans and other borrowing outside the categories above.",
+      "columns": [
+        "Other loans and advances (Liabilities)"
+      ]
+    },
+    {
+      "key": "deferred_premiums",
+      "label": "Deferred Life Premiums",
+      "blurb": "Life insurance premiums owed but not yet paid -- the one liability outside the loan tree.",
+      "columns": [
+        "Deferred and unpaid life insurance premiums"
+      ]
     }
   ],
   "default_dimension": "networth",

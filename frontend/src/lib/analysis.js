@@ -31,6 +31,20 @@ export function benchmarkWeights(group, { investableOnly = true } = {}) {
 
    `liquidKeys` comes from the asset taxonomy the API (or the embedded
    snapshot) ships, so the liquid/illiquid split is never hardcoded here. */
+/** A group's borrowing as shares of what it owes (BACKLOG F26).
+ *
+ *  Normalises whatever it is handed, because the API sends shares in this
+ *  field and the embedded snapshot sends dollars -- the same reason
+ *  benchmarkWeights exists. Empty for a group that owes nothing, which is a
+ *  different statement from owing nothing of any one kind.
+ */
+export function debtWeights(group) {
+  const debts = group.liabilities || {}
+  const total = Object.values(debts).reduce((a, b) => a + b, 0)
+  if (total <= 0) return {}
+  return Object.fromEntries(Object.entries(debts).map(([k, v]) => [k, v / total]))
+}
+
 export function shapeMetrics(group, weights, liquidKeys) {
   const totalAssets = group.total_assets
   const entries = Object.entries(weights)
