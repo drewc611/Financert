@@ -130,6 +130,13 @@ refresh instead of silently skewing every percentage on the site. The snapshot
 records the archive's SHA-256, so a refresh that changes numbers can be told
 from one that does not.
 
+It is also automated: [a weekly workflow](.github/workflows/data-refresh.yml)
+re-parses the published archive and opens a pull request when its checksum has
+changed, so a new quarter arrives as a diff to review rather than as something
+to remember. The comparison is the checksum rather than the file contents,
+because every run rewrites `retrieved_at` and a diff-based test would open the
+same pull request every week.
+
 Two things watch that parse, from opposite ends. `tests/test_snapshot_golden.py`
 pins it to a committed slice of the real archive — three quarters, every
 dimension — so a change in what the parser produces shows up as a reviewable
