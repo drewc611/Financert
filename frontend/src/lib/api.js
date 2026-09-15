@@ -83,6 +83,14 @@ export const api = {
       body: payload,
       timeout: 4000,
     }),
+  // Where a mix lands on all six axes. Holdings travel in the body because
+  // the dashboard keeps them in the browser, saved or not.
+  placements: (payload, { investableOnly = true } = {}) =>
+    request(`/api/analysis/placements?${new URLSearchParams({ investable_only: String(investableOnly) })}`, {
+      method: 'POST',
+      body: payload,
+      timeout: 4000,
+    }),
   // Preview lets the user see a comparison before committing holdings.
   preview: (payload, { group = 'top1', investableOnly = true } = {}) =>
     request(

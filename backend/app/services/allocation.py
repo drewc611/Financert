@@ -12,12 +12,14 @@ from typing import Any
 
 from ..constants import (
     ASSET_CLASS_BY_KEY,
+    DEFAULT_DIMENSION,
     GAP_TOLERANCE_PP,
-    GROUP_ORDER,
     NON_INVESTABLE,
     PENDING_LABEL,
     SIMILARITY_FLOOR,
     UNALLOCATED,
+    dimension_of,
+    group_order,
 )
 from . import benchmarks
 
@@ -80,21 +82,27 @@ def gaps(
     return out
 
 
-def nearest_tier(user: dict[str, float], period: str, *, investable_only: bool = True) -> dict[str, Any]:
-    """Which wealth group's allocation the user's mix most resembles.
+def nearest_tier(
+    user: dict[str, float],
+    period: str,
+    *,
+    investable_only: bool = True,
+    dimension: str = DEFAULT_DIMENSION,
+) -> dict[str, Any]:
+    """Which group of one axis the user's mix most resembles.
 
-    Ranked over GROUP_ORDER, not every group: the nested top 0.1% is a subset
-    of the top 1%, so including it would put two overlapping populations in
-    one ranking and let "closest tier" land on a group that is not a distinct
-    slice of anyone.
+    Ranked over the axis's published order, not every group it has: net
+    worth's nested top 0.1% is a subset of the top 1%, so including it would
+    put two overlapping populations in one ranking and let "closest" land on
+    a group that is not a distinct slice of anyone.
     """
     scored = []
-    for group_key in GROUP_ORDER:
-        bench = benchmarks.weights(group_key, period, investable_only=investable_only)
+    for group_key in group_order(dimension):
+        bench = benchmarks.weights(group_key, period, investable_only=investable_only, dimension=dimension)
         scored.append(
             {
                 "group": group_key,
-                "label": benchmarks.groups_in()[group_key]["label"],
+                "label": benchmarks.groups_in(dimension)[group_key]["label"],
                 "similarity": round(cosine_similarity(user, bench), 4),
             }
         )
@@ -111,6 +119,43 @@ def nearest_tier(user: dict[str, float], period: str, *, investable_only: bool =
     }
 
 
+def placements(
+    holdings: dict[str, float],
+    *,
+    period: str | None = None,
+    investable_only: bool = True,
+) -> dict[str, Any]:
+    """Where one mix lands on every axis at once (BACKLOG F19).
+
+    Six answers to "whose balance sheet does this look like", one per cut of
+    the same households. They are six readings of one portfolio, not six
+    populations to add up -- a mix can sit nearest the Next 40% *and* nearest
+    college graduates, because those groups overlap.
+
+    Asking nothing of the reader is the point: this is the cut of the product
+    that works without anyone saying who they are.
+    """
+    resolved = benchmarks.resolve_period(period)
+    considered = {k: v for k, v in holdings.items() if k not in NON_INVESTABLE} if investable_only else dict(holdings)
+    user = portfolio_weights(considered)
+
+    return {
+        "period": resolved,
+        "investable_only": investable_only,
+        "portfolio_total": round(sum(v for v in considered.values() if v > 0), 2),
+        "placements": [
+            {
+                "dimension": name,
+                "label": meta["label"],
+                **nearest_tier(user, resolved, investable_only=investable_only, dimension=name),
+            }
+            for name, meta in benchmarks.dimensions().items()
+        ]
+        if user
+        else [],
+    }
+
+
 def analyse(
     holdings: dict[str, float],
     *,
@@ -118,7 +163,14 @@ def analyse(
     period: str | None = None,
     investable_only: bool = True,
 ) -> dict[str, Any]:
-    """Full comparison of a portfolio against one wealth group."""
+    """Full comparison of a portfolio against one group of any axis.
+
+    The axis is resolved from the group key, which is unique across the whole
+    registry, so a caller comparing against "millennial" does not have to say
+    which cut that came from -- and the nearest-group ranking stays on that
+    same axis rather than silently falling back to net worth.
+    """
+    dimension = dimension_of(group)
     resolved = benchmarks.resolve_period(period)
 
     # The investable view drops non-investable categories from *both* sides.
@@ -127,16 +179,17 @@ def analyse(
     considered = {k: v for k, v in holdings.items() if k not in NON_INVESTABLE} if investable_only else dict(holdings)
 
     user = portfolio_weights(considered)
-    bench = benchmarks.weights(group, resolved, investable_only=investable_only)
+    bench = benchmarks.weights(group, resolved, investable_only=investable_only, dimension=dimension)
 
     total = sum(v for v in considered.values() if v > 0)
-    snapshot_row = benchmarks.allocation(group, resolved, investable_only=investable_only)
+    snapshot_row = benchmarks.allocation(group, resolved, investable_only=investable_only, dimension=dimension)
     result = {
         "period": resolved,
         "period_complete": snapshot_row["complete"],
         "period_unavailable": snapshot_row["unavailable"],
         "benchmark_group": group,
-        "benchmark_label": benchmarks.groups_in()[group]["label"],
+        "benchmark_dimension": dimension,
+        "benchmark_label": benchmarks.groups_in(dimension)[group]["label"],
         "investable_only": investable_only,
         "portfolio_total": round(total, 2),
         "excluded_value": round(sum(v for k, v in holdings.items() if k not in considered and v > 0), 2),
@@ -145,7 +198,9 @@ def analyse(
         "gaps": gaps(user, bench) if user else [],
         "similarity": round(cosine_similarity(user, bench), 4) if user else 0.0,
     }
-    result["nearest_tier"] = nearest_tier(user, resolved, investable_only=investable_only) if user else None
+    result["nearest_tier"] = (
+        nearest_tier(user, resolved, investable_only=investable_only, dimension=dimension) if user else None
+    )
 
     if not snapshot_row["complete"]:
         _mark_pending(result["gaps"], snapshot_row["unavailable"])

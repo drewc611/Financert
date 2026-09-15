@@ -222,5 +222,16 @@
     "title": "Your cohort",
     "unset": "Not set",
     "privacy": "Stays in this browser; never sent with a benchmark request."
+  },
+  "placements": {
+    "title": "Where your mix lands on every cut",
+    "sub": "The group your allocation most resembles on each axis. Six readings of the same balance sheet, not six populations: the groups overlap, so these rows do not add up to anything.",
+    "axis": "Cut",
+    "nearest": "Closest group",
+    "similarity": "Similarity",
+    "notConfident": "no close match on this cut",
+    "show": "Compare",
+    "showing": "shown above",
+    "needsApi": "This one needs the API: placing a portfolio reads all six axes, and the embedded snapshot carries net worth only."
   }
 }

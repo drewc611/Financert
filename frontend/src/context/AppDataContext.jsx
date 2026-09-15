@@ -156,12 +156,24 @@ export function AppDataProvider({ children }) {
 
   const clearHoldings = useCallback(() => setHoldings({}), [])
 
-  /* Record the reader's own group on one axis, and benchmark against it.
-     Passing null forgets that axis and leaves the view where it is.
+  /* Point the whole dashboard at one group of one axis.
 
      The group is applied through pendingGroup rather than set here whenever
      the axis has to load first: setting it now would index the axis still on
      screen by a key it does not have. */
+  const showGroup = useCallback(
+    (axis, group) => {
+      if (axis === dimension) setGroupKey(group)
+      else {
+        pendingGroup.current = group
+        setDimension(axis)
+      }
+    },
+    [dimension],
+  )
+
+  /* Record the reader's own group on one axis, and benchmark against it.
+     Passing null forgets that axis and leaves the view where it is. */
   const chooseCohort = useCallback(
     (axis, group) => {
       setCohort((prev) => {
@@ -176,14 +188,9 @@ export function AppDataProvider({ children }) {
         }
         return next
       })
-      if (!group) return
-      if (axis === dimension) setGroupKey(group)
-      else {
-        pendingGroup.current = group
-        setDimension(axis)
-      }
+      if (group) showGroup(axis, group)
     },
-    [dimension],
+    [showGroup],
   )
 
   const save = useCallback(async () => {
@@ -233,6 +240,7 @@ export function AppDataProvider({ children }) {
       setDimension,
       cohort,
       chooseCohort,
+      showGroup,
       investableOnly,
       setInvestableOnly,
     }),
@@ -253,6 +261,7 @@ export function AppDataProvider({ children }) {
       dimension,
       cohort,
       chooseCohort,
+      showGroup,
       investableOnly,
     ],
   )

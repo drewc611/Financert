@@ -222,5 +222,16 @@
     "title": "Ihre Gruppe",
     "unset": "Nicht angegeben",
     "privacy": "Bleibt in diesem Browser; wird nie mit einer Benchmark-Anfrage gesendet."
+  },
+  "placements": {
+    "title": "Wo Ihre Aufteilung in jedem Schnitt landet",
+    "sub": "Die Gruppe, der Ihre Aufteilung auf jeder Achse am ähnlichsten ist. Sechs Lesarten derselben Bilanz, nicht sechs Bevölkerungen: Die Gruppen überschneiden sich, diese Zeilen addieren sich zu nichts.",
+    "axis": "Schnitt",
+    "nearest": "Nächste Gruppe",
+    "similarity": "Ähnlichkeit",
+    "notConfident": "keine klare Entsprechung in diesem Schnitt",
+    "show": "Vergleichen",
+    "showing": "oben gezeigt",
+    "needsApi": "Dafür wird die API gebraucht: Eine Einordnung liest alle sechs Achsen, und der eingebettete Snapshot enthält nur das Nettovermögen."
   }
 }

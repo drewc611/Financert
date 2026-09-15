@@ -15,10 +15,10 @@ import re
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from ..constants import ALL_GROUPS
+from ..constants import dimension_of
 from ..dependencies import get_db, require_token
 from ..models import Holding, Portfolio
-from ..schemas import AnalysisOut, PortfolioIn, PortfolioOut, PortfolioSummaryOut
+from ..schemas import AnalysisOut, PlacementsOut, PortfolioIn, PortfolioOut, PortfolioSummaryOut
 from ..services import allocation, benchmarks
 
 router = APIRouter(prefix="/api", tags=["portfolio"], dependencies=[Depends(require_token)])
@@ -100,16 +100,24 @@ def delete_portfolio(slug: str = Query(DEFAULT_SLUG), db: Session = Depends(get_
     db.commit()
 
 
+def _known_group(group: str) -> None:
+    """Any group of any axis. The key is unique across the registry, so the
+    caller never has to name the dimension -- analyse() resolves it."""
+    try:
+        dimension_of(group)
+    except KeyError:
+        raise HTTPException(status_code=404, detail=f"unknown group {group!r}") from None
+
+
 @router.get("/analysis", response_model=AnalysisOut)
 def analyse_portfolio(
     slug: str = Query(DEFAULT_SLUG),
-    group: str = Query("top1", description="Wealth group to compare against"),
+    group: str = Query("top1", description="Group of any axis to compare against"),
     period: str | None = Query(None),
     investable_only: bool = Query(True),
     db: Session = Depends(get_db),
 ):
-    if group not in ALL_GROUPS:
-        raise HTTPException(status_code=404, detail=f"unknown group {group!r}")
+    _known_group(group)
     portfolio = _get_or_404(db, _validate_slug(slug))
     holdings = {h.asset_class: h.value for h in portfolio.holdings}
     try:
@@ -127,11 +135,29 @@ def preview_analysis(
 ):
     """Analyse holdings without saving them -- lets the UI show a live
     comparison while the user is still typing numbers in."""
-    if group not in ALL_GROUPS:
-        raise HTTPException(status_code=404, detail=f"unknown group {group!r}")
+    _known_group(group)
     holdings = {h.asset_class: h.value for h in payload.holdings}
     try:
         benchmarks.resolve_period(period)
     except KeyError:
         raise HTTPException(status_code=404, detail=f"unknown period {period!r}") from None
     return allocation.analyse(holdings, group=group, period=period, investable_only=investable_only)
+
+
+@router.post("/analysis/placements", response_model=PlacementsOut)
+def preview_placements(
+    payload: PortfolioIn,
+    period: str | None = Query(None),
+    investable_only: bool = Query(True),
+):
+    """Where a mix lands on all six axes at once (BACKLOG F19).
+
+    Takes the holdings in the body rather than a slug because the dashboard
+    keeps them in the browser -- a portfolio that was never saved still has an
+    answer to "whose balance sheet does this look like".
+    """
+    holdings = {h.asset_class: h.value for h in payload.holdings}
+    try:
+        return allocation.placements(holdings, period=period, investable_only=investable_only)
+    except KeyError:
+        raise HTTPException(status_code=404, detail=f"unknown period {period!r}") from None

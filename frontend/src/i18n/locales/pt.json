@@ -222,5 +222,16 @@
     "title": "O seu grupo",
     "unset": "Por definir",
     "privacy": "Fica neste navegador; nunca é enviado com um pedido de referência."
+  },
+  "placements": {
+    "title": "Onde a sua carteira se situa em cada corte",
+    "sub": "O grupo de que a sua alocação mais se aproxima em cada eixo. Seis leituras do mesmo balanço, não seis populações: os grupos sobrepõem-se, pelo que estas linhas não somam nada.",
+    "axis": "Corte",
+    "nearest": "Grupo mais próximo",
+    "similarity": "Semelhança",
+    "notConfident": "sem correspondência clara neste corte",
+    "show": "Comparar",
+    "showing": "mostrado acima",
+    "needsApi": "Isto precisa da API: situar uma carteira lê os seis eixos, e o instantâneo incorporado só inclui o património líquido."
   }
 }
