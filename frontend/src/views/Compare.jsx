@@ -7,6 +7,7 @@ import DimensionPicker from '../components/DimensionPicker'
 import CohortPicker from '../components/CohortPicker'
 import Placements from '../components/Placements'
 import PeriodPicker from '../components/PeriodPicker'
+import Rebalance from '../components/Rebalance'
 import { useI18n } from '../i18n'
 
 export default function Compare() {
@@ -193,6 +194,8 @@ export default function Compare() {
           </table>
         </div>
       </div>
+
+      <Rebalance result={result} labels={labels} />
 
       <Placements />
     </>

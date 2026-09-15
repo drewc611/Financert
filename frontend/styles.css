@@ -742,3 +742,10 @@ input[type="number"] {
   font-size: 14.5px;
   line-height: 1.55;
 }
+
+.moves {
+  margin: 0 0 14px;
+  padding-inline-start: 20px;
+  font-size: 14px;
+  line-height: 1.7;
+}

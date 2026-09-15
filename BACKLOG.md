@@ -279,11 +279,11 @@ in both, and the offline and live figures now match to the cent.
 | ~~F33~~ ✅ | Biggest movers: which classes shifted most for a tier over a chosen window | M |
 | ~~F34~~ ✅ | Concentration measure (share in the largest class) per tier | S |
 | ~~F35~~ ✅ | Liquidity score using the existing `liquid` flag on asset classes | S |
-| F36 | Rebalancing distance: smallest set of moves to reach a tier's mix | M |
+| ~~F36~~ ✅ | Rebalancing distance: smallest set of moves to reach a tier's mix | M |
 | ~~F37~~ ✅ | Dollar-terms gap: "you are $X under-allocated to equities" | S |
 | F38 | Scenario mode: edit holdings without saving and see the gap move live (the preview endpoint already exists) | M |
 | F39 | Save named scenarios and compare two side by side | L |
-| F40 | Sensitivity: which single holding change most moves your nearest-tier | M |
+| ~~F40~~ ✅ | Sensitivity: which single holding change most moves your nearest-tier | M |
 | ~~F41~~ ✅ | Aggregate check endpoint exposing the reconciliation residual per period | S |
 
 **F30 is done.** The dashboard held two quarters -- the newest and the newest
@@ -299,6 +299,26 @@ previous answer stays on screen while a new one loads. The cached answer is
 tagged with the axis it came from: clearing it when the axis changes instead
 raced the main fetch, and half the time the wipe landed after the answer --
 caught in the browser, switching to the generation axis with 2000 selected.
+
+**F36 and F40 are one card**, because the second is a sentence about the
+first. The moves are a pairing of the gap table's surpluses to its deficits,
+largest to largest, and the distance is half the sum of the absolute gaps --
+moving a dollar closes an overweight and an underweight at once, so counting it
+twice would double the answer. Gaps inside the tolerance are left alone: they
+are within what the survey can resolve, and "sell $300 of annuities" is not a
+finding.
+
+F40 asks which single class, brought to the benchmark, moves the similarity
+most -- each measured from the same starting point rather than compounding,
+because the answer to "what one change" has to be one change.
+
+Both live in `lib/analysis.js` rather than the API. They are arithmetic over
+numbers the client already holds, they work offline for the same reason the
+gap table does, and the backend has no consumer for them.
+
+The framing needed care: this is the one card in the product that could read as
+advice. It says what matching *would mean* and never that anyone should, and
+the footer disclaimer is unchanged.
 
 **F33 and F32 are one card**, because the biggest movers *are* the era
 comparison: a "What changed" table showing one group's shares at two quarters

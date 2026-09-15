@@ -293,5 +293,11 @@
     "change": "Variación",
     "sub": "Cómo mantenía {tier} sus activos en {from} frente a {to}, empezando por el mayor cambio. Proporciones, no dólares: el balance de cada tramo creció en cualquier periodo largo, así que en dólares esto ordenaría por precios de los activos y no por lo que cambió en la composición.",
     "needsApi": "Esto necesita la API: compara dos trimestres, y la instantánea integrada solo incluye el último."
+  },
+  "rebalance": {
+    "title": "Lo que costaría igualarlo",
+    "sub": "La aritmética de las diferencias anteriores: se movería el {share} de la cartera, en {count} traspasos. Es descriptivo, como el resto de la página: es lo que significaría igualarlo, no una sugerencia de hacerlo.",
+    "move": "{amount} de {from} a {to}",
+    "biggest": "De todos ellos, {asset} por sí solo cerraría la mayor distancia: llevarlo al valor de referencia eleva la similitud en {gain}."
   }
 }

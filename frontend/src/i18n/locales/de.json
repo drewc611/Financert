@@ -293,5 +293,11 @@
     "change": "Veränderung",
     "sub": "Wie {tier} sein Vermögen in {from} gegenüber {to} hielt, größte Veränderung zuerst. Anteile, keine Dollar: Die Bilanz jeder Stufe ist über jeden langen Zeitraum gewachsen, in Dollar würde die Reihenfolge also Vermögenspreise abbilden statt der Veränderung der Aufteilung.",
     "needsApi": "Dafür wird die API gebraucht: Hier werden zwei Quartale verglichen, und der eingebettete Snapshot enthält nur das letzte."
+  },
+  "rebalance": {
+    "title": "Was ein Angleichen erfordern würde",
+    "sub": "Die Arithmetik der Abweichungen oben: {share} des Portfolios würden sich bewegen, in {count} Umschichtungen. Beschreibend wie der Rest der Seite — was ein Angleichen hieße, keine Empfehlung, es zu tun.",
+    "move": "{amount} von {from} nach {to}",
+    "biggest": "Davon würde {asset} allein den größten Abstand schließen — auf den Referenzwert gebracht, steigt die Ähnlichkeit um {gain}."
   }
 }
