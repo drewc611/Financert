@@ -334,7 +334,7 @@ def main() -> int:
 
     # Fail before a client connects rather than on the first tool call.
     try:
-        benchmarks.load_snapshot()
+        benchmarks.verify_snapshot()
     except benchmarks.SnapshotError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1

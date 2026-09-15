@@ -24,10 +24,19 @@ def load_snapshot() -> dict[str, Any]:
         raise SnapshotError(f"DFA snapshot missing at {SNAPSHOT_PATH}. Run `python fetch_dfa.py` to build it.")
     with SNAPSHOT_PATH.open() as fh:
         snapshot = json.load(fh)
-    missing = [g for g in ALL_GROUPS if g not in snapshot.get("groups", {})]
+    return snapshot
+
+
+def verify_snapshot() -> None:
+    """Fail loudly at startup rather than on the first request.
+
+    Checks the default dimension specifically, because that is the one every
+    ungated endpoint answers from -- a missing side file should not wait until
+    someone loads the dashboard to announce itself.
+    """
+    missing = [g for g in ALL_GROUPS if g not in groups_in(DEFAULT_DIMENSION)]
     if missing:
         raise SnapshotError(f"snapshot is missing wealth groups: {', '.join(missing)}")
-    return snapshot
 
 
 def asset_classes() -> list[dict[str, Any]]:
@@ -71,12 +80,13 @@ def resolve_period(period: str | None) -> str:
 
 
 def dimensions() -> dict[str, Any]:
-    """Every dimension in the snapshot, keyed by name.
+    """What axes exist, and their labels and group order -- metadata only.
 
-    A snapshot built before dimensions existed carries only the net-worth map
-    at the top level, so that is synthesised into the same shape rather than
-    treated as an error -- the API should degrade to "one axis" rather than
-    500 on an older file.
+    Cheap by design: the histories live in their own files and are read on
+    demand by groups_in(). A snapshot built before dimensions existed carries
+    only the net-worth map at the top level, so that is synthesised into the
+    same shape rather than treated as an error -- the API should degrade to
+    "one axis" rather than 500 on an older file.
     """
     snapshot = load_snapshot()
     if "dimensions" in snapshot:
@@ -87,7 +97,6 @@ def dimensions() -> dict[str, Any]:
             "label": DIMENSIONS[DEFAULT_DIMENSION]["label"],
             "group_order": snapshot["group_order"],
             "all_groups": snapshot["all_groups"],
-            "groups": snapshot["groups"],
         }
     }
 
@@ -96,11 +105,36 @@ def dimension_names() -> list[str]:
     return list(dimensions())
 
 
+@lru_cache(maxsize=len(DIMENSIONS))
 def groups_in(dimension: str = DEFAULT_DIMENSION) -> dict[str, Any]:
-    try:
-        return dimensions()[dimension]["groups"]
-    except KeyError:
-        raise KeyError(dimension) from None
+    """One axis's groups and their full quarterly history.
+
+    Read from that axis's own file the first time it is asked for, and cached
+    after -- six axes of history is 4.3 MB, and answering a question about one
+    of them should not cost the other five.
+
+    Three shapes are accepted, newest first: an index entry naming a side file,
+    an inline ``groups`` map (a single-file snapshot from before the split),
+    and the bare top-level ``groups`` of a pre-dimension snapshot.
+    """
+    snapshot = load_snapshot()
+    entry = dimensions().get(dimension)
+    if entry is None:
+        raise KeyError(dimension)
+    if "groups" in entry:
+        return entry["groups"]
+    if "file" in entry:
+        path = SNAPSHOT_PATH.parent / entry["file"]
+        if not path.exists():
+            raise SnapshotError(
+                f"snapshot index names {entry['file']} for dimension {dimension!r} but it is missing. "
+                "Run `python fetch_dfa.py` to rebuild."
+            )
+        with path.open() as fh:
+            return json.load(fh)["groups"]
+    if dimension == DEFAULT_DIMENSION and "groups" in snapshot:
+        return snapshot["groups"]
+    raise SnapshotError(f"snapshot has no groups for dimension {dimension!r}")
 
 
 def _entry(group_key: str, period: str, dimension: str = DEFAULT_DIMENSION) -> dict[str, Any]:

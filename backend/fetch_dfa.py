@@ -52,6 +52,7 @@ from app.constants import (
 )
 
 SNAPSHOT_PATH = Path(__file__).parent / "data" / "dfa_snapshot.json"
+DIMENSION_DIRNAME = "dimensions"
 
 # With the full column set the components reconcile to the Fed's published
 # `Assets` total to within 0.0002% across every row, so the bound is tight
@@ -365,6 +366,41 @@ def build_snapshot(since_year: int, *, blob: bytes | None = None) -> dict:
     }
 
 
+def write_snapshot(snapshot: dict) -> None:
+    """Write the index, then one file per dimension.
+
+    Six axes of quarterly history in one document is 4.3 MB, and serving a
+    single axis meant parsing all of it. Splitting keeps the index small enough
+    to load at import (source, periods, the asset taxonomy, and what dimensions
+    exist) and defers each axis's history until something asks for it.
+
+    The index still names every dimension, so a caller can list the axes
+    without touching any of their files.
+    """
+    dimension_dir = SNAPSHOT_PATH.parent / DIMENSION_DIRNAME
+    dimension_dir.mkdir(parents=True, exist_ok=True)
+
+    index = {k: v for k, v in snapshot.items() if k not in ("dimensions", "groups")}
+    index["dimensions"] = {}
+
+    for name, built in snapshot["dimensions"].items():
+        path = dimension_dir / f"{name}.json"
+        path.write_text(json.dumps(built, indent=2) + "\n")
+        index["dimensions"][name] = {
+            "key": name,
+            "label": built["label"],
+            "group_order": built["group_order"],
+            "all_groups": built["all_groups"],
+            # Relative to the index, so the pair can be moved or pointed at by
+            # FINANCERT_SNAPSHOT_PATH without rewriting paths inside the file.
+            "file": f"{DIMENSION_DIRNAME}/{name}.json",
+        }
+        print(f"  wrote {path.name} ({path.stat().st_size / 1024:.0f} KB)", file=sys.stderr)
+
+    SNAPSHOT_PATH.write_text(json.dumps(index, indent=2) + "\n")
+    print(f"wrote {SNAPSHOT_PATH.name} ({SNAPSHOT_PATH.stat().st_size / 1024:.0f} KB index)", file=sys.stderr)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="validate without writing")
@@ -392,9 +428,7 @@ def main() -> int:
         print("\n--check: snapshot validated, nothing written", file=sys.stderr)
         return 0
 
-    SNAPSHOT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    SNAPSHOT_PATH.write_text(json.dumps(snapshot, indent=2) + "\n")
-    print(f"\nwrote {SNAPSHOT_PATH} ({SNAPSHOT_PATH.stat().st_size / 1024:.0f} KB)", file=sys.stderr)
+    write_snapshot(snapshot)
     return 0
 
 

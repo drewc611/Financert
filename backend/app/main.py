@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .config import ALLOW_CREDENTIALS, CORS_ORIGINS
 from .database import init_db
 from .routers import benchmarks, health, portfolio
+from .services import benchmarks as benchmarks_service
 
 DESCRIPTION = """
 Financert compares a portfolio against how American households actually hold
@@ -23,6 +24,11 @@ It is a descriptive benchmarking tool. It reports what the data says the top
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     init_db()
+    # The snapshot is an index plus one file per dimension now, so a missing
+    # side file is possible in a way it was not when everything lived in one
+    # document. Check the default dimension at startup rather than letting the
+    # first dashboard load be what discovers it.
+    benchmarks_service.verify_snapshot()
     yield
 
 
