@@ -119,7 +119,6 @@
     "overTime": "{asset} over time",
     "assetClass": "Asset class",
     "trendSub": "Share of each tier's total assets, since 1989. {first} vs {last} shown; the middle tiers sit between them.",
-    "trendUnavailable": "Trend data unavailable.",
     "shapeTitle": "The shape of each balance sheet",
     "shapeSub": "Three ways to describe a tier in one number each, from the same Federal Reserve data as the table above.",
     "measure": "Measure",
@@ -132,7 +131,10 @@
     "owesTitle": "What each tier owes",
     "debtKind": "Kind of debt",
     "owesSub": "Share of each tier's borrowing, not of its assets. Mortgages dominate the middle; the bottom 50% carries far more of its debt as consumer credit, and the top 1% far more as margin and policy loans.",
-    "unallocatedNote": "“Unallocated” is the gap between the Fed's published asset total and the categories above it. With the full column set it is rounding — under 0.0002% in every quarter since 1989 — and /api/benchmarks/reconciliation publishes it per quarter so that is checkable rather than asserted."
+    "unallocatedNote": "“Unallocated” is the gap between the Fed's published asset total and the categories above it. With the full column set it is rounding — under 0.0002% in every quarter since 1989 — and /api/benchmarks/reconciliation publishes it per quarter so that is checkable rather than asserted.",
+    "trendEmpty": "The source publishes no history for {asset} on this axis.",
+    "trendFailed": "Couldn't load the trend.",
+    "retry": "Try again"
   },
   "chart": {
     "you": "You",
@@ -145,7 +147,8 @@
     "lessThan": "Less than {tier}",
     "allInLine": "Every asset class is in line with {tier}.",
     "showTable": "Show as table",
-    "showChart": "Show as chart"
+    "showChart": "Show as chart",
+    "noHistory": "No history to show for this series."
   },
   "disclaimer": {
     "whatTitle": "What this is.",
@@ -255,7 +258,8 @@
     "showing": "shown above",
     "needsApi": "This one needs the API: placing a portfolio reads all six axes, and the embedded snapshot carries net worth only.",
     "nearestDebt": "Closest by debt",
-    "debtSub": "And the same reading for the {amount} you owe. A household can hold assets like one tier and owe like another — a mortgage and a brokerage account are not the same decision."
+    "debtSub": "And the same reading for the {amount} you owe. A household can hold assets like one tier and owe like another — a mortgage and a brokerage account are not the same decision.",
+    "failed": "Couldn't place this portfolio."
   },
   "placement": {
     "title": {
@@ -300,7 +304,8 @@
     "since": "Since",
     "change": "Change",
     "sub": "How {tier} held its assets in {from} against {to}, biggest move first. Shares, not dollars: every tier's balance sheet grew over any long window, so dollars would rank these by asset prices rather than by what changed about the mix.",
-    "needsApi": "This one needs the API: it compares two quarters, and the embedded snapshot carries the latest one only."
+    "needsApi": "This one needs the API: it compares two quarters, and the embedded snapshot carries the latest one only.",
+    "failed": "Couldn't load what changed."
   },
   "rebalance": {
     "title": "What it would take to match",

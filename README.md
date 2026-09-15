@@ -199,7 +199,7 @@ backend/
 frontend/
   src/
     lib/               api · analysis (mirrors allocation.py) · format · theme
-    components/        AllocationChart · GapChart · TrendChart · Tooltip
+    components/        AllocationChart · GapChart · TrendChart · Tooltip · Hatch
     views/             Compare · Portfolio · Benchmarks
 ```
 

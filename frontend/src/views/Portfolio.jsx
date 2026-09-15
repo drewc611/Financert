@@ -32,11 +32,15 @@ export default function Portfolio() {
     setStatus(null)
     try {
       const res = await save()
-      setStatus(res.ok ? t('portfolio.savedApi') : t('portfolio.savedLocal'))
+      setStatus({ text: res.ok ? t('portfolio.savedApi') : t('portfolio.savedLocal') })
     } catch (err) {
-      setStatus(
-        err.status === 401 ? t('portfolio.needsToken') : t('portfolio.saveFailed', { message: err.message }),
-      )
+      // Flagged as a failure rather than left to read like the confirmation
+      // beside it: "couldn't save" in the same grey as "saved" is a message
+      // people skip (BACKLOG F50).
+      setStatus({
+        text: err.status === 401 ? t('portfolio.needsToken') : t('portfolio.saveFailed', { message: err.message }),
+        error: true,
+      })
     } finally {
       setSaving(false)
     }
@@ -128,7 +132,11 @@ export default function Portfolio() {
         <button className="icon-btn" onClick={clearHoldings} disabled={total === 0 && owed === 0}>
           {t('portfolio.clearAll')}
         </button>
-        {status && <span className="saved-note">{status}</span>}
+        {/* A live region: saving is the one action on this page with an
+            outcome, and it was announced only to people who could see it. */}
+        <span className="saved-note" role="status" data-error={status?.error ? '' : undefined}>
+          {status?.text}
+        </span>
       </div>
 
       {mode === 'live' && (
@@ -150,7 +158,7 @@ export default function Portfolio() {
               className="icon-btn"
               onClick={() => {
                 updateToken(tokenDraft.trim())
-                setStatus(tokenDraft.trim() ? t('portfolio.tokenSaved') : t('portfolio.tokenCleared'))
+                setStatus({ text: tokenDraft.trim() ? t('portfolio.tokenSaved') : t('portfolio.tokenCleared') })
               }}
             >
               {t('portfolio.saveToken')}

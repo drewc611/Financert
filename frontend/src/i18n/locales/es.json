@@ -119,7 +119,6 @@
     "overTime": "{asset} a lo largo del tiempo",
     "assetClass": "Clase de activo",
     "trendSub": "Proporción de los activos totales de cada tramo desde 1989. Se muestran {first} frente a {last}; los tramos intermedios quedan entre ambos.",
-    "trendUnavailable": "Datos de tendencia no disponibles.",
     "shapeTitle": "La forma de cada balance",
     "shapeSub": "Tres maneras de describir un tramo con una sola cifra cada una, a partir de los mismos datos de la Reserva Federal que la tabla anterior.",
     "measure": "Medida",
@@ -132,7 +131,10 @@
     "owesTitle": "Qué debe cada tramo",
     "debtKind": "Tipo de deuda",
     "owesSub": "Proporción del endeudamiento de cada tramo, no de sus activos. Las hipotecas dominan en el centro; el 50% inferior soporta mucha más deuda como crédito al consumo, y el 1% más rico mucha más como préstamos de margen y de póliza.",
-    "unallocatedNote": "«Sin asignar» es la diferencia entre el total de activos publicado por la Reserva Federal y las categorías anteriores. Con el conjunto completo de columnas es redondeo —por debajo del 0,0002% en cada trimestre desde 1989— y /api/benchmarks/reconciliation lo publica por trimestre para que pueda comprobarse en vez de afirmarse."
+    "unallocatedNote": "«Sin asignar» es la diferencia entre el total de activos publicado por la Reserva Federal y las categorías anteriores. Con el conjunto completo de columnas es redondeo —por debajo del 0,0002% en cada trimestre desde 1989— y /api/benchmarks/reconciliation lo publica por trimestre para que pueda comprobarse en vez de afirmarse.",
+    "trendEmpty": "La fuente no publica histórico de {asset} en este eje.",
+    "trendFailed": "No se pudo cargar la evolución.",
+    "retry": "Reintentar"
   },
   "chart": {
     "you": "Usted",
@@ -145,7 +147,8 @@
     "lessThan": "Menos que {tier}",
     "allInLine": "Todas las clases de activos están en línea con {tier}.",
     "showTable": "Ver como tabla",
-    "showChart": "Ver como gráfico"
+    "showChart": "Ver como gráfico",
+    "noHistory": "No hay histórico que mostrar para esta serie."
   },
   "disclaimer": {
     "whatTitle": "Qué es esto.",
@@ -255,7 +258,8 @@
     "showing": "mostrado arriba",
     "needsApi": "Esto necesita la API: situar una cartera lee los seis ejes, y la instantánea integrada solo incluye el patrimonio neto.",
     "nearestDebt": "Más cercano por deuda",
-    "debtSub": "Y la misma lectura para los {amount} que debes. Un hogar puede tener activos como un tramo y deber como otro: una hipoteca y una cuenta de valores no son la misma decisión."
+    "debtSub": "Y la misma lectura para los {amount} que debes. Un hogar puede tener activos como un tramo y deber como otro: una hipoteca y una cuenta de valores no son la misma decisión.",
+    "failed": "No se pudo situar esta cartera."
   },
   "placement": {
     "title": {
@@ -300,7 +304,8 @@
     "since": "Desde",
     "change": "Variación",
     "sub": "Cómo mantenía {tier} sus activos en {from} frente a {to}, empezando por el mayor cambio. Proporciones, no dólares: el balance de cada tramo creció en cualquier periodo largo, así que en dólares esto ordenaría por precios de los activos y no por lo que cambió en la composición.",
-    "needsApi": "Esto necesita la API: compara dos trimestres, y la instantánea integrada solo incluye el último."
+    "needsApi": "Esto necesita la API: compara dos trimestres, y la instantánea integrada solo incluye el último.",
+    "failed": "No se pudo cargar qué ha cambiado."
   },
   "rebalance": {
     "title": "Lo que costaría igualarlo",

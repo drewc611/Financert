@@ -119,7 +119,6 @@
     "overTime": "{asset} ao longo do tempo",
     "assetClass": "Classe de ativo",
     "trendSub": "Proporção do total de ativos de cada faixa desde 1989. São mostrados {first} frente a {last}; as faixas intermediárias ficam entre eles.",
-    "trendUnavailable": "Dados de tendência indisponíveis.",
     "shapeTitle": "O formato de cada balanço",
     "shapeSub": "Três formas de descrever um nível com um único número cada, a partir dos mesmos dados da Reserva Federal da tabela acima.",
     "measure": "Medida",
@@ -132,7 +131,10 @@
     "owesTitle": "O que cada faixa deve",
     "debtKind": "Tipo de dívida",
     "owesSub": "Proporção do endividamento de cada faixa, não dos seus ativos. Os créditos à habitação dominam no meio; os 50% mais pobres suportam muito mais dívida como crédito ao consumo, e o 1% mais rico muito mais como empréstimos de margem e de apólice.",
-    "unallocatedNote": "«Não atribuído» é a diferença entre o total de ativos publicado pela Reserva Federal e as categorias acima. Com o conjunto completo de colunas é arredondamento — abaixo de 0,0002% em todos os trimestres desde 1989 — e /api/benchmarks/reconciliation publica-o por trimestre, para que seja verificável e não apenas afirmado."
+    "unallocatedNote": "«Não atribuído» é a diferença entre o total de ativos publicado pela Reserva Federal e as categorias acima. Com o conjunto completo de colunas é arredondamento — abaixo de 0,0002% em todos os trimestres desde 1989 — e /api/benchmarks/reconciliation publica-o por trimestre, para que seja verificável e não apenas afirmado.",
+    "trendEmpty": "A fonte não publica histórico de {asset} neste eixo.",
+    "trendFailed": "Não foi possível carregar a evolução.",
+    "retry": "Tentar novamente"
   },
   "chart": {
     "you": "Você",
@@ -145,7 +147,8 @@
     "lessThan": "Menos que {tier}",
     "allInLine": "Todas as classes de ativos estão em linha com {tier}.",
     "showTable": "Ver como tabela",
-    "showChart": "Ver como gráfico"
+    "showChart": "Ver como gráfico",
+    "noHistory": "Não há histórico para mostrar nesta série."
   },
   "disclaimer": {
     "whatTitle": "O que isto é.",
@@ -255,7 +258,8 @@
     "showing": "mostrado acima",
     "needsApi": "Isto precisa da API: situar uma carteira lê os seis eixos, e o instantâneo incorporado só inclui o património líquido.",
     "nearestDebt": "Mais próximo por dívida",
-    "debtSub": "E a mesma leitura para os {amount} que deve. Uma família pode deter ativos como uma faixa e dever como outra: um crédito à habitação e uma conta de títulos não são a mesma decisão."
+    "debtSub": "E a mesma leitura para os {amount} que deve. Uma família pode deter ativos como uma faixa e dever como outra: um crédito à habitação e uma conta de títulos não são a mesma decisão.",
+    "failed": "Não foi possível situar esta carteira."
   },
   "placement": {
     "title": {
@@ -300,7 +304,8 @@
     "since": "Desde",
     "change": "Variação",
     "sub": "Como {tier} detinha os seus ativos em {from} face a {to}, começando pela maior variação. Proporções, não dólares: o balanço de cada faixa cresceu em qualquer período longo, pelo que em dólares a ordenação refletiria os preços dos ativos e não o que mudou na composição.",
-    "needsApi": "Isto precisa da API: compara dois trimestres, e o instantâneo incorporado só inclui o último."
+    "needsApi": "Isto precisa da API: compara dois trimestres, e o instantâneo incorporado só inclui o último.",
+    "failed": "Não foi possível carregar o que mudou."
   },
   "rebalance": {
     "title": "O que seria preciso para igualar",

@@ -119,7 +119,6 @@
     "overTime": "{asset} im Zeitverlauf",
     "assetClass": "Anlageklasse",
     "trendSub": "Anteil am Gesamtvermögen jeder Stufe seit 1989. Gezeigt werden {first} gegenüber {last}; die mittleren Stufen liegen dazwischen.",
-    "trendUnavailable": "Trenddaten nicht verfügbar.",
     "shapeTitle": "Die Struktur jeder Bilanz",
     "shapeSub": "Drei Kennzahlen, die eine Stufe jeweils in einer Zahl beschreiben – aus denselben Daten der Federal Reserve wie die Tabelle oben.",
     "measure": "Kennzahl",
@@ -132,7 +131,10 @@
     "owesTitle": "Was jede Stufe schuldet",
     "debtKind": "Art der Schuld",
     "owesSub": "Anteil an den Schulden jeder Stufe, nicht an ihrem Vermögen. In der Mitte dominieren Hypotheken; die unteren 50 % tragen weit mehr Schulden als Konsumkredit, das reichste 1 % weit mehr als Wertpapier- und Policendarlehen.",
-    "unallocatedNote": "„Nicht zugeordnet“ ist die Lücke zwischen dem von der Federal Reserve veröffentlichten Vermögenstotal und den Kategorien darüber. Mit dem vollständigen Spaltensatz ist das Rundung — unter 0,0002 % in jedem Quartal seit 1989 — und /api/benchmarks/reconciliation veröffentlicht sie je Quartal, damit das prüfbar ist und nicht nur behauptet."
+    "unallocatedNote": "„Nicht zugeordnet“ ist die Lücke zwischen dem von der Federal Reserve veröffentlichten Vermögenstotal und den Kategorien darüber. Mit dem vollständigen Spaltensatz ist das Rundung — unter 0,0002 % in jedem Quartal seit 1989 — und /api/benchmarks/reconciliation veröffentlicht sie je Quartal, damit das prüfbar ist und nicht nur behauptet.",
+    "trendEmpty": "Die Quelle veröffentlicht für {asset} auf dieser Achse keinen Verlauf.",
+    "trendFailed": "Der Verlauf konnte nicht geladen werden.",
+    "retry": "Erneut versuchen"
   },
   "chart": {
     "you": "Sie",
@@ -145,7 +147,8 @@
     "lessThan": "Weniger als {tier}",
     "allInLine": "Jede Anlageklasse liegt im Rahmen von {tier}.",
     "showTable": "Als Tabelle zeigen",
-    "showChart": "Als Diagramm zeigen"
+    "showChart": "Als Diagramm zeigen",
+    "noHistory": "Für diese Reihe gibt es keinen Verlauf."
   },
   "disclaimer": {
     "whatTitle": "Was das hier ist.",
@@ -255,7 +258,8 @@
     "showing": "oben gezeigt",
     "needsApi": "Dafür wird die API gebraucht: Eine Einordnung liest alle sechs Achsen, und der eingebettete Snapshot enthält nur das Nettovermögen.",
     "nearestDebt": "Nächste nach Schulden",
-    "debtSub": "Und dieselbe Lesart für die {amount}, die Sie schulden. Ein Haushalt kann Vermögen wie die eine Stufe halten und wie eine andere schulden — eine Hypothek und ein Depot sind nicht dieselbe Entscheidung."
+    "debtSub": "Und dieselbe Lesart für die {amount}, die Sie schulden. Ein Haushalt kann Vermögen wie die eine Stufe halten und wie eine andere schulden — eine Hypothek und ein Depot sind nicht dieselbe Entscheidung.",
+    "failed": "Dieses Portfolio konnte nicht eingeordnet werden."
   },
   "placement": {
     "title": {
@@ -300,7 +304,8 @@
     "since": "Seit",
     "change": "Veränderung",
     "sub": "Wie {tier} sein Vermögen in {from} gegenüber {to} hielt, größte Veränderung zuerst. Anteile, keine Dollar: Die Bilanz jeder Stufe ist über jeden langen Zeitraum gewachsen, in Dollar würde die Reihenfolge also Vermögenspreise abbilden statt der Veränderung der Aufteilung.",
-    "needsApi": "Dafür wird die API gebraucht: Hier werden zwei Quartale verglichen, und der eingebettete Snapshot enthält nur das letzte."
+    "needsApi": "Dafür wird die API gebraucht: Hier werden zwei Quartale verglichen, und der eingebettete Snapshot enthält nur das letzte.",
+    "failed": "Die Veränderungen konnten nicht geladen werden."
   },
   "rebalance": {
     "title": "Was ein Angleichen erfordern würde",

@@ -15,7 +15,10 @@ export default function Benchmarks() {
   const { benchmarks, activeGroups, periodMode, mode, investableOnly, setInvestableOnly } = useAppData()
   const { t, fmt, assetLabel, debtLabel, tierLabel, percentileRange } = useI18n()
   const [trendAsset, setTrendAsset] = useState('corporate_equities')
+  // { state: 'loading' | 'ready' | 'empty' | 'failed', series }
   const [trend, setTrend] = useState(null)
+  // Bumped by the retry button; the fetch reads it only to depend on it.
+  const [reloadTrend, setReloadTrend] = useState(0)
   // Shares answer "how is it held"; dollars per household answer "how much"
   // (BACKLOG F29). Shares stay the default -- they are what the page compares.
   const [perHousehold, setPerHousehold] = useState(false)
@@ -135,31 +138,40 @@ export default function Benchmarks() {
     }))
   }, [allGroups, benchmarks, investableOnly, t, assetLabel])
 
-  // Live mode fetches the full quarterly history; fallback mode uses the
-  // annual samples embedded in the snapshot.
+  /* Live mode fetches the full quarterly history; fallback mode uses the
+     annual samples embedded in the snapshot.
+
+     Three outcomes, kept apart (BACKLOG F50): still fetching, the request
+     failed, and the source has nothing for this asset class. They used to
+     render as one sentence -- "trend data unavailable" -- which told a reader
+     nothing about whether waiting or retrying was the answer. */
   useEffect(() => {
     let cancelled = false
     if (mode === 'fallback') {
       const embedded = benchmarks.trends?.[trendAsset]
-      setTrend(
-        embedded
-          ? allGroups.map((g) => ({ key: g.key, label: g.label, points: embedded[g.key] })).filter((x) => x.points)
-          : null,
-      )
+      const series = embedded
+        ? allGroups.map((g) => ({ key: g.key, label: g.label, points: embedded[g.key] })).filter((x) => x.points)
+        : []
+      setTrend({ state: series.length ? 'ready' : 'empty', series })
       return
     }
+    // Cleared rather than left up: the heading above the chart names the asset
+    // class being fetched, and the previous one's line under that heading
+    // would be a wrong answer rather than a stale one.
+    setTrend({ state: 'loading', series: [] })
     Promise.all(allGroups.map((g) => api.trend({ group: g.key, assetClass: trendAsset })))
       .then((results) => {
         if (cancelled) return
-        setTrend(allGroups.map((g, i) => ({ key: g.key, label: g.label, points: results[i].points })))
+        const series = allGroups.map((g, i) => ({ key: g.key, label: g.label, points: results[i].points }))
+        setTrend({ state: series.some((s) => s.points.length) ? 'ready' : 'empty', series })
       })
       .catch(() => {
-        if (!cancelled) setTrend(null)
+        if (!cancelled) setTrend({ state: 'failed', series: [] })
       })
     return () => {
       cancelled = true
     }
-  }, [trendAsset, mode, benchmarks, allGroups])
+  }, [trendAsset, mode, benchmarks, allGroups, reloadTrend])
 
   // Nested tiers last, so the four partitioning tiers read left to right.
   const tableGroups = [...groups, ...nested]
@@ -179,9 +191,9 @@ export default function Benchmarks() {
   const extremes = useMemo(() => (groups.length ? [groups[0], groups[groups.length - 1]] : []), [groups])
 
   const trendSeries = useMemo(() => {
-    if (!trend) return null
+    if (!trend) return []
     const keys = extremes.map((g) => g.key)
-    return trend.filter((s) => keys.includes(s.key)).map((s) => ({ ...s, label: tierLabel(s.key, s.label) }))
+    return trend.series.filter((s) => keys.includes(s.key)).map((s) => ({ ...s, label: tierLabel(s.key, s.label) }))
   }, [trend, extremes, tierLabel])
 
   return (
@@ -411,10 +423,16 @@ export default function Benchmarks() {
             last: extremes[1] ? tierLabel(extremes[1].key, extremes[1].label) : '',
           })}
         </p>
-        {trendSeries ? (
-          <TrendChart series={trendSeries} assetLabel={trendLabel} />
-        ) : (
-          <p className="empty">{t('benchmarks.trendUnavailable')}</p>
+        {trendSeries.length > 0 && <TrendChart series={trendSeries} assetLabel={trendLabel} />}
+        {trend?.state === 'loading' && <p className="empty">{t('app.loading')}</p>}
+        {trend?.state === 'empty' && <p className="empty">{t('benchmarks.trendEmpty', { asset: trendLabel })}</p>}
+        {trend?.state === 'failed' && (
+          <p className="empty">
+            {t('benchmarks.trendFailed')}{' '}
+            <button type="button" className="link-btn" onClick={() => setReloadTrend((n) => n + 1)}>
+              {t('benchmarks.retry')}
+            </button>
+          </p>
         )}
       </div>
     </>
