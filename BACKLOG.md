@@ -70,6 +70,21 @@ with no lagging class, and the unallocated residual fell from 1–3% to 0.00%.
 
 Each dimension is the same shape of work. Categories are confirmed from the file.
 
+**F17 and F21 are done.** `constants.DIMENSIONS` now describes all six axes --
+member file, groups, categories, nesting -- and `WEALTH_GROUPS`, `GROUP_ORDER`,
+`ALL_GROUPS` and `NESTED_GROUPS` are derived views of the net-worth entry, so
+every existing import kept working unchanged. F11-F15 are now "fetch this
+dimension's file and store it" rather than five copies of the grouping code.
+
+One correction from reading the real archive: **net worth is the only dimension
+with a nested group.** Income's `pct99to100` looks like it should nest the way
+net worth's top 0.1% does, but the file publishes it as a disjoint slice beside
+`pct80to99` -- so income's six groups sum where net worth's five do not. F20 was
+right to warn against assuming the net-worth shape. `constants.summable()` is
+the guard rail (F21): it refuses a nested group beside its siblings, and refuses
+any mix of dimensions, which are separate cuts of the same households rather
+than separate households.
+
 | # | Feature | Size |
 |---|---|---|
 | F11 | **Generation** axis — Silent, Baby Boom, Gen X, Millennial | M |
@@ -78,11 +93,11 @@ Each dimension is the same shape of work. Categories are confirmed from the file
 | F14 | **Race** axis — White, Black, Hispanic, Other | M |
 | F15 | **Age** axis — under 40, 40–54, 55–69, 70+ | M |
 | F16 | Dimension picker in the UI; the whole dashboard re-benchmarks against the chosen axis | L |
-| F17 | Generalise `WEALTH_GROUPS` into a dimension registry so a new axis is data, not code | L |
+| ~~F17~~ ✅ | Generalise `WEALTH_GROUPS` into a dimension registry so a new axis is data, not code | L |
 | F18 | "Compare me to my cohort" — pick your generation/age/education, benchmark against it | M |
 | F19 | Cross-dimension view: your allocation against *all six* axes at once | M |
 | F20 | Per-dimension nesting rules (income has its own top-1% analogue; do not assume the net-worth shape) | M |
-| F21 | Guard rail: dimensions are separate populations and must never be summed together | S |
+| ~~F21~~ ✅ | Guard rail: dimensions are separate populations and must never be summed together | S |
 | F22 | Framing review for the race axis — descriptive, sourced, no causal or prescriptive language | S |
 
 ## Phase 2 — deeper analysis on data we already hold
@@ -156,7 +171,7 @@ estate between the Next 9% and the Next 40%.
 | F69 | Frontend tests — currently lint and build only, no test runner | L |
 | F70 | Visual regression snapshots for the charts | L |
 | F71 | Dependency audit workflow | S |
-| F72 | Data-source contract test hitting the live Fed zip weekly, so a format change surfaces before a refresh needs it | M |
+| F72 ◐ | Data-source contract test hitting the live Fed zip weekly, so a format change surfaces before a refresh needs it — the test exists (`tests/test_dimensions.py`); it still needs a *scheduled* run, since it skips when the network is unreachable | M |
 
 ---
 
