@@ -61,7 +61,9 @@
     "colStatus": "Status",
     "pendingTitle": "{quarter} ist noch nicht vollständig veröffentlicht.",
     "pendingBody": "Die Federal Reserve veröffentlicht {classes} später als den Rest der Bilanz; die Position erscheint unten daher als „noch nicht veröffentlicht“ statt als Zahl. Alle anderen Anteile sind weiterhin korrekt.",
-    "usePeriodInstead": "Stattdessen {quarter} verwenden"
+    "usePeriodInstead": "Stattdessen {quarter} verwenden",
+    "colDollars": "In Dollar",
+    "differDollars": "Die Dollar-Spalte ist diese Abweichung bezogen auf Ihre {total}: was es kosten würde, sie zu schließen."
   },
   "status": {
     "overweight": "Übergewichtet",
@@ -122,7 +124,8 @@
     "perHouseholdNote": "Die Bestände jeder Stufe geteilt durch die Zahl ihrer Haushalte — ein Durchschnitt, kein typischer Haushalt. Die Streuung innerhalb einer Stufe ist oben am größten: Das reichste 0,1 % liegt innerhalb des reichsten 1 % und hält ein Vielfaches von dessen Durchschnitt.",
     "owesTitle": "Was jede Stufe schuldet",
     "debtKind": "Art der Schuld",
-    "owesSub": "Anteil an den Schulden jeder Stufe, nicht an ihrem Vermögen. In der Mitte dominieren Hypotheken; die unteren 50 % tragen weit mehr Schulden als Konsumkredit, das reichste 1 % weit mehr als Wertpapier- und Policendarlehen."
+    "owesSub": "Anteil an den Schulden jeder Stufe, nicht an ihrem Vermögen. In der Mitte dominieren Hypotheken; die unteren 50 % tragen weit mehr Schulden als Konsumkredit, das reichste 1 % weit mehr als Wertpapier- und Policendarlehen.",
+    "unallocatedNote": "„Nicht zugeordnet“ ist die Lücke zwischen dem von der Federal Reserve veröffentlichten Vermögenstotal und den Kategorien darüber. Mit dem vollständigen Spaltensatz ist das Rundung — unter 0,0002 % in jedem Quartal seit 1989 — und /api/benchmarks/reconciliation veröffentlicht sie je Quartal, damit das prüfbar ist und nicht nur behauptet."
   },
   "chart": {
     "you": "Sie",

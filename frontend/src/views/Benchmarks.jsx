@@ -10,7 +10,7 @@ import { useI18n } from '../i18n'
 const TREND_ASSETS = ['corporate_equities', 'private_business', 'real_estate']
 
 export default function Benchmarks() {
-  const { benchmarks, activeGroups, periodMode, mode, investableOnly } = useAppData()
+  const { benchmarks, activeGroups, periodMode, mode, investableOnly, setInvestableOnly } = useAppData()
   const { t, fmt, assetLabel, debtLabel, tierLabel, percentileRange } = useI18n()
   const [trendAsset, setTrendAsset] = useState('corporate_equities')
   const [trend, setTrend] = useState(null)
@@ -186,6 +186,13 @@ export default function Benchmarks() {
     <>
       <div className="controls">
         <DimensionPicker />
+        {/* The table says "share of investable assets" and, until now, gave no
+            way to see the other view -- the switch lived only on the Compare
+            tab, which also made the unallocated residual unreachable here. */}
+        <label>
+          <input type="checkbox" checked={investableOnly} onChange={(e) => setInvestableOnly(e.target.checked)} />
+          {t('controls.investableOnly')}
+        </label>
       </div>
 
       <div className="tiles">
@@ -259,6 +266,11 @@ export default function Benchmarks() {
             the whole story of the tier above it -- so the figure is labelled an
             average rather than left to read as a typical household. */}
         {perHousehold && <p className="sub">{t('benchmarks.perHouseholdNote')}</p>}
+        {/* The residual has a row in the table and, until now, an explanation
+            only in the README (BACKLOG F60). It is a rounding artefact today,
+            and saying so is the difference between a reader trusting the
+            percentages and wondering what is missing from them. */}
+        {rows.some((r) => r.key === UNALLOCATED) && <p className="sub">{t('benchmarks.unallocatedNote')}</p>}
         <div className="chart-scroll">
           <table>
             <thead>

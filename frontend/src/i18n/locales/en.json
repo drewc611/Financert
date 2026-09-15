@@ -61,7 +61,9 @@
     "colStatus": "Status",
     "pendingTitle": "{quarter} is not fully published yet.",
     "pendingBody": "The Federal Reserve releases {classes} later than the rest of the balance sheet, so it appears as “not yet published” below rather than as a number. Every other share is still correct.",
-    "usePeriodInstead": "Use {quarter} instead"
+    "usePeriodInstead": "Use {quarter} instead",
+    "colDollars": "In dollars",
+    "differDollars": "The dollar column is that gap against your {total}: what it would take to close it."
   },
   "status": {
     "overweight": "Overweight",
@@ -122,7 +124,8 @@
     "perHouseholdNote": "Each tier's holdings divided by the number of households in it — an average, not a typical household. The spread inside a tier is widest at the top: the top 0.1% is inside the top 1% and holds several times its average.",
     "owesTitle": "What each tier owes",
     "debtKind": "Kind of debt",
-    "owesSub": "Share of each tier's borrowing, not of its assets. Mortgages dominate the middle; the bottom 50% carries far more of its debt as consumer credit, and the top 1% far more as margin and policy loans."
+    "owesSub": "Share of each tier's borrowing, not of its assets. Mortgages dominate the middle; the bottom 50% carries far more of its debt as consumer credit, and the top 1% far more as margin and policy loans.",
+    "unallocatedNote": "“Unallocated” is the gap between the Fed's published asset total and the categories above it. With the full column set it is rounding — under 0.0002% in every quarter since 1989 — and /api/benchmarks/reconciliation publishes it per quarter so that is checkable rather than asserted."
   },
   "chart": {
     "you": "You",

@@ -141,7 +141,10 @@ export default function Compare() {
         <div className="card-head">
           <h2>{t('compare.differTitle')}</h2>
         </div>
-        <p className="sub">{t('compare.differSub', { tier: benchmarkLabel })}</p>
+        <p className="sub">
+          {t('compare.differSub', { tier: benchmarkLabel })}{' '}
+          {t('compare.differDollars', { total: fmt.usd(result.portfolio_total, { compact: true }) })}
+        </p>
         <GapChart gaps={result.gaps} benchmarkLabel={benchmarkLabel} />
 
         <div className="chart-scroll">
@@ -159,6 +162,12 @@ export default function Compare() {
                 <th scope="col" className="num">
                   {t('compare.colDifference')}
                 </th>
+                {/* The same gap in money (BACKLOG F37). A percentage point is
+                    the comparison; the dollar figure is what it would take to
+                    close it, and readers act on the second one. */}
+                <th scope="col" className="num">
+                  {t('compare.colDollars')}
+                </th>
                 <th scope="col">{t('compare.colStatus')}</th>
               </tr>
             </thead>
@@ -170,6 +179,11 @@ export default function Compare() {
                   <td className="num">{fmt.pct(g.benchmark_pct / 100)}</td>
                   <td className={g.status === 'pending' ? 'num muted' : 'num'}>
                     {g.status === 'pending' ? '—' : fmt.pp(g.gap_pp)}
+                  </td>
+                  <td className={g.status === 'pending' ? 'num muted' : 'num'}>
+                    {g.status === 'pending'
+                      ? '—'
+                      : fmt.usd((g.gap_pp / 100) * result.portfolio_total, { compact: true, signed: true })}
                   </td>
                   <td>
                     <span className="pill" data-status={g.status}>
