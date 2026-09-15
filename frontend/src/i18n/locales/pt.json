@@ -217,5 +217,10 @@
     "income": "Famílias agrupadas pela posição do seu rendimento na distribuição nacional — um corte diferente do património, pois o que se ganha e o que se detém não são a mesma coisa.",
     "race": "Famílias agrupadas pela raça e origem étnica declaradas para a pessoa de referência, nas categorias publicadas pela Reserva Federal.",
     "age": "Famílias agrupadas pela idade da pessoa de referência."
+  },
+  "cohort": {
+    "title": "O seu grupo",
+    "unset": "Por definir",
+    "privacy": "Fica neste navegador; nunca é enviado com um pedido de referência."
   }
 }

@@ -217,5 +217,10 @@
     "income": "Households grouped by where their income falls in the national distribution — a different cut from net worth, since income earned and wealth held are not the same thing.",
     "race": "Households grouped by the race and ethnicity reported for the reference person, in the categories the Federal Reserve publishes.",
     "age": "Households grouped by the age of the reference person."
+  },
+  "cohort": {
+    "title": "Your cohort",
+    "unset": "Not set",
+    "privacy": "Stays in this browser; never sent with a benchmark request."
   }
 }
