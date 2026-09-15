@@ -1,0 +1,113 @@
+name: Data refresh
+
+# The Fed publishes the DFA about ten weeks after each quarter ends, and
+# bringing it forward meant someone remembering to run fetch_dfa.py. This runs
+# it weekly and opens a pull request when the published archive differs from
+# the committed snapshot (BACKLOG F61) -- which is also the alert that a new
+# quarter exists (F62), in the form of something reviewable rather than a
+# notification someone still has to act on.
+#
+# A pull request rather than a commit to main, on purpose: a refresh changes
+# every number on the site, and the diff is the review.
+on:
+  schedule:
+    - cron: "23 7 * * 3"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: data-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        working-directory: backend
+        run: pip install -r requirements.txt
+
+      - name: Record what the snapshot was
+        id: before
+        run: python backend/tools/snapshot_summary.py >> "$GITHUB_OUTPUT"
+
+      # fetch_dfa.py fails the run rather than writing anything if the taxonomy
+      # stops reconciling against the Fed's published totals on either side of
+      # the balance sheet, so a bad refresh never reaches a pull request.
+      - name: Refresh
+        working-directory: backend
+        run: |
+          python fetch_dfa.py
+          python tools/build_fallback.py
+
+      # The comparison is the archive's checksum, not `git diff`. Every run
+      # rewrites `retrieved_at` -- which is the point of that field, it records
+      # when the source was last checked -- so a diff-based test would open an
+      # identical pull request every week. The checksum is exactly what F7 put
+      # in the snapshot: it tells a refresh that changes numbers from one that
+      # does not.
+      - name: Record what it is now
+        id: after
+        run: python backend/tools/snapshot_summary.py >> "$GITHUB_OUTPUT"
+
+      - name: Nothing to do
+        if: steps.after.outputs.checksum == steps.before.outputs.checksum
+        run: |
+          echo "The published archive is unchanged (sha256 starts ${{ steps.after.outputs.checksum }})."
+          git checkout -- backend/data frontend/src/lib/fallbackData.js
+
+      - name: Open a pull request
+        if: steps.after.outputs.checksum != steps.before.outputs.checksum
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BEFORE_PERIOD: ${{ steps.before.outputs.period }}
+          AFTER_PERIOD: ${{ steps.after.outputs.period }}
+          CHECKSUM: ${{ steps.after.outputs.checksum }}
+        run: |
+          set -euo pipefail
+          BRANCH=data/refresh
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$BRANCH"
+          git add backend/data frontend/src/lib/fallbackData.js
+          git commit -m "Refresh the DFA snapshot ($BEFORE_PERIOD -> $AFTER_PERIOD)"
+          # Force-push: this branch is a rolling proposal, and a stale one from
+          # an earlier week has nothing worth keeping.
+          git push --force origin "$BRANCH"
+
+          if [ -n "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[].number')" ]; then
+            echo "A refresh pull request is already open; it now carries the newest data."
+            exit 0
+          fi
+
+          gh pr create --head "$BRANCH" --base main \
+            --title "Data refresh: $AFTER_PERIOD" \
+            --body "$(cat <<BODY
+          The Fed's published archive no longer matches the committed snapshot.
+
+          | | |
+          |---|---|
+          | Latest period | \`$BEFORE_PERIOD\` → \`$AFTER_PERIOD\` |
+          | Archive sha256 | starts \`$CHECKSUM\` |
+
+          Every number on the site comes from these files, so the diff is the
+          review. \`fetch_dfa.py\` reconciles the taxonomy against the Fed's own
+          published totals on both sides of the balance sheet and fails rather
+          than writing when it does not, so this got at least that far.
+
+          The golden-file test pins the *parser*, not the data, so a refresh
+          does not touch it — CI failing here would mean the parse changed, not
+          the quarter.
+
+          Opened by [data-refresh.yml](.github/workflows/data-refresh.yml).
+          BODY
+          )"

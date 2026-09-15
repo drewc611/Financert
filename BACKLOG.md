@@ -375,6 +375,20 @@ the switch now.
 | F59 | Number formatting review — tabular figures everywhere they align | S |
 | ~~F60~~ ✅ | Explain the `unallocated` residual in the UI, not just the README | S |
 
+**F61 and F62 are the same workflow**: the pull request *is* the alert, and it
+is better than one, because it arrives as a reviewable diff rather than as a
+notification someone still has to act on. Weekly, opening a PR when the
+published archive differs from the committed snapshot; `fetch_dfa.py` fails the
+run rather than writing when the taxonomy stops reconciling, so a bad refresh
+never reaches a pull request.
+
+One thing the rehearsal caught: the comparison has to be the archive's
+**checksum**, not `git diff`. Every run rewrites `retrieved_at` -- which is the
+point of that field -- so a diff-based test would have opened an identical pull
+request every week until someone turned the workflow off. The checksum is what
+F7 put in the snapshot for exactly this: telling a refresh that changes numbers
+from one that does not.
+
 **F68 and F71 land with the ESLint 9 migration**, which is what made an audit
 gate possible: the last advisory on either side was `js-yaml` via ESLint 8, and
 flat config retires it. `npm audit` and `pip-audit` both report clean, so the
@@ -409,8 +423,8 @@ pre-existing advisories including a high. The one left is `js-yaml` via ESLint
 
 | # | Feature | Size |
 |---|---|---|
-| F61 | Scheduled quarterly data refresh via GitHub Actions, opening a PR with the diff | M |
-| F62 | Alert when the Fed publishes a new quarter | S |
+| ~~F61~~ ✅ | Scheduled quarterly data refresh via GitHub Actions, opening a PR with the diff | M |
+| ~~F62~~ ✅ | Alert when the Fed publishes a new quarter | S |
 | F63 | Snapshot diff tool: what changed between two refreshes | M |
 | ~~F64~~ ◐ | Deployment config and a real deploy — config done (`Dockerfile.mcp`, `fly.toml`, the Pages workflow, and the verification probes in DEPLOY.md); the deploy itself needs a hosting account | M |
 | F65 | Structured request logging | S |

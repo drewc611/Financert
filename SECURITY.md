@@ -66,6 +66,7 @@ accepted:
 | [Dependabot](.github/dependabot.yml) | Weekly updates for pip, npm and GitHub Actions. |
 | [Dependency audit](.github/workflows/audit.yml) | Weekly, and on any dependency change: `npm audit` (high and above) and `pip-audit` against the pinned requirements. Dependabot proposes updates; this says whether what is on `main` right now has a known vulnerability. |
 | [CI](.github/workflows/ci.yml) | `ruff`, `pytest` (with coverage), `eslint`, `vitest`, and a production frontend build. |
+| [Data refresh](.github/workflows/data-refresh.yml) | Weekly: re-parses the published archive and opens a pull request when its checksum has changed, so a new quarter arrives as something reviewable rather than as a surprise. |
 | [DFA source check](.github/workflows/source-check.yml) | Weekly: downloads and parses the Fed's published archive without writing, so a change in the source surfaces as a failed run rather than during the next refresh. |
 
 ### The one excluded CodeQL query
