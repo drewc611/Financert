@@ -32,7 +32,9 @@
     "mostRecent": "{quarter} (most recent)",
     "fullyPublished": "{quarter} (fully published)",
     "investableOnly": "Investable assets only",
-    "insideTop1": " — inside the top 1%"
+    "insideTop1": " — inside the top 1%",
+    "dimension": "Compare by",
+    "dimensionOffline": "other axes need the API"
   },
   "compare": {
     "emptyTitle": "Nothing to compare yet",
@@ -103,7 +105,7 @@
     "subset": "subset",
     "overTime": "{asset} over time",
     "assetClass": "Asset class",
-    "trendSub": "Share of each tier's total assets, since 1989. Top 1% and bottom 50% shown; the middle tiers sit between them.",
+    "trendSub": "Share of each tier's total assets, since 1989. {first} vs {last} shown; the middle tiers sit between them.",
     "trendUnavailable": "Trend data unavailable.",
     "shapeTitle": "The shape of each balance sheet",
     "shapeSub": "Three ways to describe a tier in one number each, from the same Federal Reserve data as the table above.",
@@ -139,7 +141,29 @@
     "top1": "Top 1%",
     "next9": "Next 9%",
     "next40": "Next 40%",
-    "bottom50": "Bottom 50%"
+    "bottom50": "Bottom 50%",
+    "silent": "Silent and earlier",
+    "boomer": "Baby Boom",
+    "genx": "Gen X",
+    "millennial": "Millennial and later",
+    "no_hs": "No high school diploma",
+    "hs": "High school diploma",
+    "some_college": "Some college",
+    "college": "College degree",
+    "pct00to20": "Bottom 20%",
+    "pct20to40": "20th–40th",
+    "pct40to60": "40th–60th",
+    "pct60to80": "60th–80th",
+    "pct80to99": "80th–99th",
+    "pct99to100": "Top 1%",
+    "white": "White, non-Hispanic",
+    "black": "Black, non-Hispanic",
+    "hispanic": "Hispanic",
+    "other": "Other or multiple",
+    "under40": "Under 40",
+    "age40to54": "40 to 54",
+    "age55to69": "55 to 69",
+    "age70plus": "70 and over"
   },
   "percentiles": {
     "top01": "99.9th–100th",
@@ -177,5 +201,13 @@
     "loans_assets": "Mortgages and other loans held as assets.",
     "misc_assets": "Miscellaneous assets not classified elsewhere.",
     "unallocated": "Assets the Fed's totals include but do not break out separately."
+  },
+  "dimensions": {
+    "networth": "Net worth",
+    "generation": "Generation",
+    "education": "Education",
+    "income": "Income",
+    "race": "Race and ethnicity",
+    "age": "Age"
   }
 }

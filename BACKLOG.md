@@ -121,7 +121,7 @@ than separate households.
 | ~~F13~~ ✅ | **Income** axis — 0–20, 20–40, 40–60, 60–80, 80–99, 99–100 percentile | M |
 | ~~F14~~ ✅ | **Race** axis — White, Black, Hispanic, Other | M |
 | ~~F15~~ ✅ | **Age** axis — under 40, 40–54, 55–69, 70+ | M |
-| F16 | Dimension picker in the UI; the whole dashboard re-benchmarks against the chosen axis | L |
+| ~~F16~~ ✅ | Dimension picker in the UI; the whole dashboard re-benchmarks against the chosen axis | L |
 | ~~F17~~ ✅ | Generalise `WEALTH_GROUPS` into a dimension registry so a new axis is data, not code | L |
 | F18 | "Compare me to my cohort" — pick your generation/age/education, benchmark against it | M |
 | F19 | Cross-dimension view: your allocation against *all six* axes at once | M |

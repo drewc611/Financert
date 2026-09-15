@@ -3,6 +3,7 @@ import { useAppData } from '../context/AppDataContext'
 import { analyse } from '../lib/analysis'
 import AllocationChart from '../components/AllocationChart'
 import GapChart from '../components/GapChart'
+import DimensionPicker from '../components/DimensionPicker'
 import { useI18n } from '../i18n'
 
 export default function Compare() {
@@ -196,12 +197,16 @@ function TierControls({
   const { t, fmt, tierLabel, percentileRange } = useI18n()
   return (
     <div className="controls">
+      <DimensionPicker />
       <label>
         {t('controls.compareAgainst')}
         <select value={groupKey} onChange={(e) => setGroupKey(e.target.value)}>
           {Object.values(groups).map((g) => (
             <option key={g.key} value={g.key}>
-              {tierLabel(g.key, g.label)} ({percentileRange(g.key, g.percentile_range)})
+              {tierLabel(g.key, g.label)}
+              {/* Only a cut defined by percentile has a range; generation,
+                  education, race and age send null rather than inventing one. */}
+              {g.percentile_range ? ` (${percentileRange(g.key, g.percentile_range)})` : ''}
               {g.nested ? t('controls.insideTop1') : ''}
             </option>
           ))}

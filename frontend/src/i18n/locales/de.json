@@ -32,7 +32,9 @@
     "mostRecent": "{quarter} (aktuellstes)",
     "fullyPublished": "{quarter} (vollständig veröffentlicht)",
     "investableOnly": "Nur investierbare Vermögenswerte",
-    "insideTop1": " — innerhalb des reichsten 1 %"
+    "insideTop1": " — innerhalb des reichsten 1 %",
+    "dimension": "Vergleichen nach",
+    "dimensionOffline": "weitere Achsen brauchen die API"
   },
   "compare": {
     "emptyTitle": "Noch nichts zu vergleichen",
@@ -103,7 +105,7 @@
     "subset": "Teilmenge",
     "overTime": "{asset} im Zeitverlauf",
     "assetClass": "Anlageklasse",
-    "trendSub": "Anteil am Gesamtvermögen jeder Stufe seit 1989. Gezeigt werden das reichste 1 % und die unteren 50 %; die mittleren Stufen liegen dazwischen.",
+    "trendSub": "Anteil am Gesamtvermögen jeder Stufe seit 1989. Gezeigt werden {first} gegenüber {last}; die mittleren Stufen liegen dazwischen.",
     "trendUnavailable": "Trenddaten nicht verfügbar.",
     "shapeTitle": "Die Struktur jeder Bilanz",
     "shapeSub": "Drei Kennzahlen, die eine Stufe jeweils in einer Zahl beschreiben – aus denselben Daten der Federal Reserve wie die Tabelle oben.",
@@ -139,7 +141,29 @@
     "top1": "Reichstes 1 %",
     "next9": "Nächste 9 %",
     "next40": "Nächste 40 %",
-    "bottom50": "Untere 50 %"
+    "bottom50": "Untere 50 %",
+    "silent": "Silent Generation und früher",
+    "boomer": "Babyboomer",
+    "genx": "Generation X",
+    "millennial": "Millennials und später",
+    "no_hs": "Ohne Schulabschluss",
+    "hs": "Schulabschluss",
+    "some_college": "Teilweise Hochschulbildung",
+    "college": "Hochschulabschluss",
+    "pct00to20": "Untere 20 %",
+    "pct20to40": "20.–40. Perzentil",
+    "pct40to60": "40.–60. Perzentil",
+    "pct60to80": "60.–80. Perzentil",
+    "pct80to99": "80.–99. Perzentil",
+    "pct99to100": "Oberstes 1 %",
+    "white": "Weiß, nicht hispanisch",
+    "black": "Schwarz, nicht hispanisch",
+    "hispanic": "Hispanisch",
+    "other": "Andere oder mehrere",
+    "under40": "Unter 40",
+    "age40to54": "40 bis 54",
+    "age55to69": "55 bis 69",
+    "age70plus": "70 und älter"
   },
   "percentiles": {
     "top01": "99,9.–100. Perzentil",
@@ -177,5 +201,13 @@
     "loans_assets": "Hypotheken und andere als Vermögenswerte gehaltene Kredite.",
     "misc_assets": "Sonstige, nicht anderweitig eingeordnete Vermögenswerte.",
     "unallocated": "Vermögenswerte, die in den Summen der Federal Reserve enthalten, aber nicht gesondert ausgewiesen sind."
+  },
+  "dimensions": {
+    "networth": "Nettovermögen",
+    "generation": "Generation",
+    "education": "Bildung",
+    "income": "Einkommen",
+    "race": "Herkunft und Ethnie",
+    "age": "Alter"
   }
 }

@@ -32,7 +32,9 @@
     "mostRecent": "{quarter} (más reciente)",
     "fullyPublished": "{quarter} (publicado por completo)",
     "investableOnly": "Solo activos invertibles",
-    "insideTop1": " — dentro del 1% más rico"
+    "insideTop1": " — dentro del 1% más rico",
+    "dimension": "Comparar por",
+    "dimensionOffline": "otros ejes requieren la API"
   },
   "compare": {
     "emptyTitle": "Aún no hay nada que comparar",
@@ -103,7 +105,7 @@
     "subset": "subconjunto",
     "overTime": "{asset} a lo largo del tiempo",
     "assetClass": "Clase de activo",
-    "trendSub": "Proporción de los activos totales de cada tramo desde 1989. Se muestran el 1% más rico y el 50% inferior; los tramos intermedios quedan entre ambos.",
+    "trendSub": "Proporción de los activos totales de cada tramo desde 1989. Se muestran {first} frente a {last}; los tramos intermedios quedan entre ambos.",
     "trendUnavailable": "Datos de tendencia no disponibles.",
     "shapeTitle": "La forma de cada balance",
     "shapeSub": "Tres maneras de describir un tramo con una sola cifra cada una, a partir de los mismos datos de la Reserva Federal que la tabla anterior.",
@@ -139,7 +141,29 @@
     "top1": "1% más rico",
     "next9": "Siguiente 9%",
     "next40": "Siguiente 40%",
-    "bottom50": "50% inferior"
+    "bottom50": "50% inferior",
+    "silent": "Generación silenciosa y anteriores",
+    "boomer": "Baby boom",
+    "genx": "Generación X",
+    "millennial": "Milenial y posteriores",
+    "no_hs": "Sin título de secundaria",
+    "hs": "Título de secundaria",
+    "some_college": "Estudios universitarios parciales",
+    "college": "Título universitario",
+    "pct00to20": "20% inferior",
+    "pct20to40": "percentil 20–40",
+    "pct40to60": "percentil 40–60",
+    "pct60to80": "percentil 60–80",
+    "pct80to99": "percentil 80–99",
+    "pct99to100": "1% más rico",
+    "white": "Blanca, no hispana",
+    "black": "Negra, no hispana",
+    "hispanic": "Hispana",
+    "other": "Otra o múltiple",
+    "under40": "Menos de 40",
+    "age40to54": "40 a 54",
+    "age55to69": "55 a 69",
+    "age70plus": "70 y más"
   },
   "percentiles": {
     "top01": "percentil 99,9–100",
@@ -177,5 +201,13 @@
     "loans_assets": "Hipotecas y otros préstamos mantenidos como activos.",
     "misc_assets": "Activos diversos no clasificados en otra categoría.",
     "unallocated": "Activos incluidos en los totales de la Reserva Federal pero no desglosados por separado."
+  },
+  "dimensions": {
+    "networth": "Patrimonio neto",
+    "generation": "Generación",
+    "education": "Educación",
+    "income": "Ingresos",
+    "race": "Raza y etnia",
+    "age": "Edad"
   }
 }

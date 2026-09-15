@@ -63,9 +63,12 @@ export class ApiError extends Error {
 
 export const api = {
   health: () => request('/healthz'),
-  benchmarks: ({ period, investableOnly = true } = {}) => {
+  benchmarks: ({ period, investableOnly = true, dimension } = {}) => {
     const qs = new URLSearchParams({ investable_only: String(investableOnly) })
     if (period) qs.set('period', period)
+    // Omitted rather than defaulted to 'networth', so the server stays the one
+    // place that decides which axis is the default.
+    if (dimension) qs.set('dimension', dimension)
     return request(`/api/benchmarks?${qs}`)
   },
   portfolios: () => request('/api/portfolios'),

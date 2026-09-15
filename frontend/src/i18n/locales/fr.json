@@ -32,7 +32,9 @@
     "mostRecent": "{quarter} (le plus récent)",
     "fullyPublished": "{quarter} (entièrement publié)",
     "investableOnly": "Actifs investissables uniquement",
-    "insideTop1": " — au sein des 1 % les plus riches"
+    "insideTop1": " — au sein des 1 % les plus riches",
+    "dimension": "Comparer par",
+    "dimensionOffline": "les autres axes nécessitent l'API"
   },
   "compare": {
     "emptyTitle": "Rien à comparer pour l'instant",
@@ -103,7 +105,7 @@
     "subset": "sous-ensemble",
     "overTime": "{asset} dans le temps",
     "assetClass": "Classe d'actifs",
-    "trendSub": "Part des actifs totaux de chaque tranche depuis 1989. Les 1 % les plus riches et les 50 % les moins riches sont affichés ; les tranches intermédiaires se situent entre les deux.",
+    "trendSub": "Part des actifs totaux de chaque tranche depuis 1989. Comparaison de {first} face à {last} ; les tranches intermédiaires se situent entre les deux.",
     "trendUnavailable": "Données de tendance indisponibles.",
     "shapeTitle": "La forme de chaque bilan",
     "shapeSub": "Trois façons de décrire une tranche en un seul chiffre chacune, à partir des mêmes données de la Réserve fédérale que le tableau ci-dessus.",
@@ -139,7 +141,29 @@
     "top1": "1 % les plus riches",
     "next9": "9 % suivants",
     "next40": "40 % suivants",
-    "bottom50": "50 % les moins riches"
+    "bottom50": "50 % les moins riches",
+    "silent": "Génération silencieuse et antérieures",
+    "boomer": "Baby-boom",
+    "genx": "Génération X",
+    "millennial": "Millennials et suivantes",
+    "no_hs": "Sans diplôme du secondaire",
+    "hs": "Diplôme du secondaire",
+    "some_college": "Études supérieures partielles",
+    "college": "Diplôme universitaire",
+    "pct00to20": "20 % les plus modestes",
+    "pct20to40": "20e–40e centile",
+    "pct40to60": "40e–60e centile",
+    "pct60to80": "60e–80e centile",
+    "pct80to99": "80e–99e centile",
+    "pct99to100": "1 % les plus riches",
+    "white": "Blanche, non hispanique",
+    "black": "Noire, non hispanique",
+    "hispanic": "Hispanique",
+    "other": "Autre ou multiple",
+    "under40": "Moins de 40 ans",
+    "age40to54": "40 à 54 ans",
+    "age55to69": "55 à 69 ans",
+    "age70plus": "70 ans et plus"
   },
   "percentiles": {
     "top01": "99,9e–100e centile",
@@ -177,5 +201,13 @@
     "loans_assets": "Prêts hypothécaires et autres prêts détenus comme actifs.",
     "misc_assets": "Actifs divers non classés ailleurs.",
     "unallocated": "Actifs inclus dans les totaux de la Réserve fédérale mais non ventilés séparément."
+  },
+  "dimensions": {
+    "networth": "Patrimoine net",
+    "generation": "Génération",
+    "education": "Niveau d'études",
+    "income": "Revenu",
+    "race": "Origine ethnique",
+    "age": "Âge"
   }
 }
