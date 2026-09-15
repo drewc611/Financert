@@ -3,7 +3,7 @@
 from fastapi import APIRouter, HTTPException, Query
 
 from ..constants import DEFAULT_DIMENSION, dimension_of
-from ..schemas import BenchmarksOut, TrendOut
+from ..schemas import BenchmarksOut, ReconciliationOut, TrendOut
 from ..services import benchmarks
 
 router = APIRouter(prefix="/api", tags=["benchmarks"])
@@ -49,6 +49,21 @@ def get_benchmarks(
         "asset_classes": benchmarks.asset_classes(),
         "liability_classes": benchmarks.liability_classes(),
         "allocations": benchmarks.all_allocations(resolved, investable_only=investable_only, dimension=dimension),
+    }
+
+
+@router.get("/benchmarks/reconciliation", response_model=ReconciliationOut)
+def get_reconciliation(dimension: str = Query(DEFAULT_DIMENSION)):
+    """How much of the Fed's published asset total the taxonomy does not name,
+    per quarter (BACKLOG F41). Published so the claim that it is zero can be
+    checked rather than taken on trust."""
+    if dimension not in benchmarks.dimension_names():
+        raise HTTPException(status_code=404, detail=f"unknown dimension {dimension!r}")
+    rows = benchmarks.reconciliation(dimension)
+    return {
+        "dimension": dimension,
+        "worst_ever": max((r["worst"] for r in rows), default=0.0),
+        "periods": rows,
     }
 
 

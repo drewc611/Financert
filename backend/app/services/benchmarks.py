@@ -311,6 +311,34 @@ def all_allocations(
     return [allocation(g, period, investable_only=investable_only, dimension=dimension) for g in groups_in(dimension)]
 
 
+def reconciliation(dimension: str = DEFAULT_DIMENSION) -> list[dict[str, Any]]:
+    """The unallocated residual per period, per group (BACKLOG F41).
+
+    Every percentage this product shows is a share of the Fed's own published
+    asset total, and the residual is the part of that total the taxonomy does
+    not name. It is 0.00% today, which is exactly why it is worth publishing:
+    a reader has no other way to check that claim, and a refresh that started
+    dropping a column would show up here first.
+    """
+    out = []
+    for period in periods():
+        residuals = {}
+        for group_key in groups_in(dimension):
+            row = _entry(group_key, period, dimension)
+            total = row["total_assets"]
+            residuals[group_key] = (row["assets"].get(UNALLOCATED["key"], 0.0) / total) if total > 0 else 0.0
+        out.append(
+            {
+                "period": period,
+                "residuals": residuals,
+                # One number a reader can scan a column of; the per-group
+                # detail is there for whoever wants to know which one.
+                "worst": max(residuals.values()) if residuals else 0.0,
+            }
+        )
+    return out
+
+
 def trend(group_key: str, asset_key: str, dimension: str = DEFAULT_DIMENSION) -> list[dict[str, Any]]:
     """One asset class's share of a group's assets over the full history.
 

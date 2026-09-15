@@ -61,7 +61,9 @@
     "colStatus": "Situação",
     "pendingTitle": "{quarter} ainda não foi totalmente publicado.",
     "pendingBody": "O Federal Reserve publica {classes} depois do restante do balanço, então aparece abaixo como “ainda não publicado” em vez de um número. Todas as demais proporções continuam corretas.",
-    "usePeriodInstead": "Usar {quarter} em vez disso"
+    "usePeriodInstead": "Usar {quarter} em vez disso",
+    "colDollars": "Em dólares",
+    "differDollars": "A coluna em dólares é essa diferença aplicada aos seus {total}: o que custaria fechá-la."
   },
   "status": {
     "overweight": "Sobrealocado",
@@ -122,7 +124,8 @@
     "perHouseholdNote": "Os ativos de cada faixa divididos pelo número de famílias que a compõem — uma média, não uma família típica. A dispersão dentro de uma faixa é maior no topo: o 0,1% mais rico está dentro do 1% mais rico e detém várias vezes a sua média.",
     "owesTitle": "O que cada faixa deve",
     "debtKind": "Tipo de dívida",
-    "owesSub": "Proporção do endividamento de cada faixa, não dos seus ativos. Os créditos à habitação dominam no meio; os 50% mais pobres suportam muito mais dívida como crédito ao consumo, e o 1% mais rico muito mais como empréstimos de margem e de apólice."
+    "owesSub": "Proporção do endividamento de cada faixa, não dos seus ativos. Os créditos à habitação dominam no meio; os 50% mais pobres suportam muito mais dívida como crédito ao consumo, e o 1% mais rico muito mais como empréstimos de margem e de apólice.",
+    "unallocatedNote": "«Não atribuído» é a diferença entre o total de ativos publicado pela Reserva Federal e as categorias acima. Com o conjunto completo de colunas é arredondamento — abaixo de 0,0002% em todos os trimestres desde 1989 — e /api/benchmarks/reconciliation publica-o por trimestre, para que seja verificável e não apenas afirmado."
   },
   "chart": {
     "you": "Você",

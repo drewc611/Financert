@@ -15,7 +15,7 @@
 const DEFAULT_LOCALE = 'en'
 const DASH = '—'
 
-export function usd(value, { compact = false, locale = DEFAULT_LOCALE } = {}) {
+export function usd(value, { compact = false, signed = false, locale = DEFAULT_LOCALE } = {}) {
   if (value == null || Number.isNaN(value)) return DASH
   return new Intl.NumberFormat(locale, {
     style: 'currency',
@@ -23,6 +23,9 @@ export function usd(value, { compact = false, locale = DEFAULT_LOCALE } = {}) {
     // Compact notation localises the suffix too ("Mio." in German, "mil M"
     // in Spanish) instead of hardcoding K/M/B/T.
     ...(compact ? { notation: 'compact', maximumFractionDigits: 1 } : { maximumFractionDigits: 0 }),
+    // A gap is a direction as much as an amount, and a plus sign is not the
+    // default for a positive currency figure in any locale.
+    ...(signed ? { signDisplay: 'exceptZero' } : {}),
   }).format(value)
 }
 

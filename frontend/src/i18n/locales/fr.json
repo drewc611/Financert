@@ -61,7 +61,9 @@
     "colStatus": "Statut",
     "pendingTitle": "{quarter} n'est pas encore entièrement publié.",
     "pendingBody": "La Réserve fédérale publie {classes} plus tard que le reste du bilan ; cette ligne apparaît donc ci-dessous comme « pas encore publié » plutôt que sous forme de chiffre. Toutes les autres parts restent correctes.",
-    "usePeriodInstead": "Utiliser {quarter} à la place"
+    "usePeriodInstead": "Utiliser {quarter} à la place",
+    "colDollars": "En dollars",
+    "differDollars": "La colonne en dollars applique cet écart à vos {total} : ce qu'il faudrait pour le combler."
   },
   "status": {
     "overweight": "Surpondéré",
@@ -122,7 +124,8 @@
     "perHouseholdNote": "Les avoirs de chaque tranche divisés par le nombre de ménages qu'elle compte : une moyenne, pas un ménage typique. La dispersion interne est la plus forte au sommet : les 0,1 % les plus riches sont inclus dans les 1 % et détiennent plusieurs fois leur moyenne.",
     "owesTitle": "Ce que doit chaque tranche",
     "debtKind": "Type de dette",
-    "owesSub": "Part de l'endettement de chaque tranche, et non de ses actifs. Les prêts immobiliers dominent au milieu ; les 50 % les moins riches portent bien plus de dette en crédit à la consommation, et les 1 % les plus riches bien plus en prêts sur marge et sur police."
+    "owesSub": "Part de l'endettement de chaque tranche, et non de ses actifs. Les prêts immobiliers dominent au milieu ; les 50 % les moins riches portent bien plus de dette en crédit à la consommation, et les 1 % les plus riches bien plus en prêts sur marge et sur police.",
+    "unallocatedNote": "« Non affecté » est l'écart entre le total d'actifs publié par la Réserve fédérale et les catégories ci-dessus. Avec l'ensemble complet des colonnes, il s'agit d'arrondi — moins de 0,0002 % à chaque trimestre depuis 1989 — et /api/benchmarks/reconciliation le publie trimestre par trimestre, pour qu'il soit vérifiable et non simplement affirmé."
   },
   "chart": {
     "you": "Vous",

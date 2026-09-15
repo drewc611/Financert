@@ -61,7 +61,9 @@
     "colStatus": "Estado",
     "pendingTitle": "{quarter} aún no está publicado por completo.",
     "pendingBody": "La Reserva Federal publica {classes} más tarde que el resto del balance, por lo que aparece abajo como «aún no publicado» en lugar de una cifra. Todas las demás proporciones siguen siendo correctas.",
-    "usePeriodInstead": "Usar {quarter} en su lugar"
+    "usePeriodInstead": "Usar {quarter} en su lugar",
+    "colDollars": "En dólares",
+    "differDollars": "La columna en dólares es esa diferencia sobre tus {total}: lo que costaría cerrarla."
   },
   "status": {
     "overweight": "Sobreponderado",
@@ -122,7 +124,8 @@
     "perHouseholdNote": "Los activos de cada tramo divididos entre el número de hogares que contiene: un promedio, no un hogar típico. La dispersión dentro de un tramo es mayor en la cima: el 0,1% más rico está dentro del 1% más rico y posee varias veces su promedio.",
     "owesTitle": "Qué debe cada tramo",
     "debtKind": "Tipo de deuda",
-    "owesSub": "Proporción del endeudamiento de cada tramo, no de sus activos. Las hipotecas dominan en el centro; el 50% inferior soporta mucha más deuda como crédito al consumo, y el 1% más rico mucha más como préstamos de margen y de póliza."
+    "owesSub": "Proporción del endeudamiento de cada tramo, no de sus activos. Las hipotecas dominan en el centro; el 50% inferior soporta mucha más deuda como crédito al consumo, y el 1% más rico mucha más como préstamos de margen y de póliza.",
+    "unallocatedNote": "«Sin asignar» es la diferencia entre el total de activos publicado por la Reserva Federal y las categorías anteriores. Con el conjunto completo de columnas es redondeo —por debajo del 0,0002% en cada trimestre desde 1989— y /api/benchmarks/reconciliation lo publica por trimestre para que pueda comprobarse en vez de afirmarse."
   },
   "chart": {
     "you": "Usted",

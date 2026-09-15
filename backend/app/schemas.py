@@ -240,6 +240,21 @@ class AnalysisOut(BaseModel):
     nearest_tier: NearestTierOut | None
 
 
+class ReconciliationPeriodOut(BaseModel):
+    period: str
+    residuals: dict[str, float]
+    worst: float
+
+
+class ReconciliationOut(BaseModel):
+    """What share of the Fed's published asset total the taxonomy does not
+    name. Zero today; published so that is checkable rather than asserted."""
+
+    dimension: str
+    worst_ever: float
+    periods: list[ReconciliationPeriodOut]
+
+
 class TrendPointOut(BaseModel):
     period: str
     share: float

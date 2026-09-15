@@ -280,11 +280,27 @@ in both, and the offline and live figures now match to the cent.
 | ~~F34~~ ✅ | Concentration measure (share in the largest class) per tier | S |
 | ~~F35~~ ✅ | Liquidity score using the existing `liquid` flag on asset classes | S |
 | F36 | Rebalancing distance: smallest set of moves to reach a tier's mix | M |
-| F37 | Dollar-terms gap: "you are $X under-allocated to equities" | S |
+| ~~F37~~ ✅ | Dollar-terms gap: "you are $X under-allocated to equities" | S |
 | F38 | Scenario mode: edit holdings without saving and see the gap move live (the preview endpoint already exists) | M |
 | F39 | Save named scenarios and compare two side by side | L |
 | F40 | Sensitivity: which single holding change most moves your nearest-tier | M |
-| F41 | Aggregate check endpoint exposing the reconciliation residual per period | S |
+| ~~F41~~ ✅ | Aggregate check endpoint exposing the reconciliation residual per period | S |
+
+**F37, F41 and F60 are done together**, because they are the same idea at three
+scales: say what the number means in terms a reader can act on or check.
+
+F37 puts the gap in money — a percentage point is the comparison, but the
+dollar figure is what it would take to close it, and that is the one people
+act on. F41 publishes the reconciliation residual per quarter at
+`/api/benchmarks/reconciliation`: every percentage on the site is a share of
+the Fed's own published total, and this is the part the taxonomy does not name
+(under 0.0002% in all 147 quarters, on every axis — now checkable rather than
+asserted). F60 says the same thing in the UI where the residual has a row.
+
+F60 turned up a gap of its own: the tiers table said "share of investable
+assets" and the switch that changes it lived only on the Compare tab, so the
+residual row was unreachable from the page that shows it. The tiers view has
+the switch now.
 
 ## Phase 3 — presentation
 
@@ -308,7 +324,7 @@ in both, and the offline and live figures now match to the cent.
 | F57 | Mobile pass on the tiers table (currently scrolls in a container) | M |
 | F58 | Dark-mode audit of the newer components | S |
 | F59 | Number formatting review — tabular figures everywhere they align | S |
-| F60 | Explain the `unallocated` residual in the UI, not just the README | S |
+| ~~F60~~ ✅ | Explain the `unallocated` residual in the UI, not just the README | S |
 
 ## Phase 4 — operational
 

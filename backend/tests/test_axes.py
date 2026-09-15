@@ -265,3 +265,26 @@ def test_the_api_serves_the_debt_mix_and_its_taxonomy(client):
     for alloc in body["allocations"]:
         assert set(alloc["debt_weights"]) <= keys, alloc["group"]
         assert sum(alloc["debt_weights"].values()) == pytest.approx(1.0), alloc["group"]
+
+
+def test_the_reconciliation_endpoint_publishes_the_residual(client):
+    """F41: every percentage this product shows is a share of the Fed's own
+    published total, and this is the part the taxonomy does not name. It is
+    published so the claim that it is ~zero can be checked."""
+    body = client.get("/api/benchmarks/reconciliation").json()
+    assert body["dimension"] == "networth"
+    assert len(body["periods"]) == len(benchmarks.periods())
+    assert body["worst_ever"] < 0.0002, f"residual reached {body['worst_ever']:.6%}"
+    row = body["periods"][-1]
+    assert set(row["residuals"]) == set(constants.all_group_keys("networth"))
+    assert row["worst"] == max(row["residuals"].values())
+
+
+@pytest.mark.parametrize("dimension", AXES)
+def test_the_residual_is_rounding_on_every_axis(client, dimension):
+    body = client.get(f"/api/benchmarks/reconciliation?dimension={dimension}").json()
+    assert body["worst_ever"] < 0.0002, f"{dimension} residual reached {body['worst_ever']:.6%}"
+
+
+def test_an_unknown_dimension_has_no_reconciliation(client):
+    assert client.get("/api/benchmarks/reconciliation?dimension=astrology").status_code == 404
