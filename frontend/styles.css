@@ -31,6 +31,13 @@
   --good: #0ca30c;
   --warning: #fab219;
 
+  /* Status *text*, which is a different job from a chart series: --good and
+     --diverge-under were both chosen to be read as a filled shape, and set in
+     13px type they come to 3.3:1 and 3.9:1 against the surface. These are the
+     same two readings at 5.4:1 and 5.8:1 (BACKLOG F50). */
+  --good-text: #0a7a0a;
+  --bad-text: #c02626;
+
   --radius: 10px;
   --gap: 20px;
   --font: system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -53,6 +60,8 @@
     --diverge-over: #3987e5;
     --diverge-under: #e66767;
     --diverge-mid: #383835;
+    --good-text: #4ecb4e;
+    --bad-text: #e66767;
   }
 }
 
@@ -72,6 +81,8 @@
   --diverge-over: #3987e5;
   --diverge-under: #e66767;
   --diverge-mid: #383835;
+  --good-text: #4ecb4e;
+  --bad-text: #e66767;
 }
 
 * {
@@ -399,6 +410,25 @@ input[type="number"] {
   display: inline-block;
 }
 
+/* The stripes the chart draws over the second series, so the legend is a key
+   to the texture as well as to the colour (BACKLOG F48). The geometry matches
+   components/Hatch.jsx by eye rather than by arithmetic -- an 11px swatch
+   holds two stripes either way. */
+.swatch[data-hatch] {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent 0 2.5px,
+    color-mix(in srgb, var(--surface) 60%, transparent) 2.5px 5px
+  );
+}
+
+/* A line series takes a dash where a bar takes a hatch. */
+.swatch[data-dash] {
+  border-radius: 0;
+  height: 3px;
+  background-image: repeating-linear-gradient(to right, transparent 0 2px, var(--surface) 2px 4px);
+}
+
 /* --- table ---------------------------------------------------------------- */
 
 table {
@@ -522,6 +552,28 @@ td.muted {
   min-width: 520px;
 }
 
+/* The row label rides along while the columns scroll under it (BACKLOG F57).
+   Six tiers do not fit on a phone, and scrolling to the sixth is no use once
+   the asset class it belongs to has scrolled off the left edge.
+
+   inset-inline-start, because Arabic scrolls the other way. The divider is a
+   shadow rather than a border: with border-collapse: collapse a border on a
+   sticky cell is painted by the table, not the cell, and scrolls away with
+   it. */
+.chart-scroll th:first-child,
+.chart-scroll td:first-child {
+  position: sticky;
+  inset-inline-start: 0;
+  z-index: 1;
+  background: var(--surface);
+  box-shadow: 1px 0 0 var(--grid);
+}
+
+[dir="rtl"] .chart-scroll th:first-child,
+[dir="rtl"] .chart-scroll td:first-child {
+  box-shadow: -1px 0 0 var(--grid);
+}
+
 .chart-svg {
   display: block;
   width: 100%;
@@ -559,6 +611,36 @@ td.muted {
 .hit {
   fill: transparent;
   cursor: pointer;
+}
+
+/* Keyboard focus, which the browser's own ring was left to carry and which
+   disappeared entirely against the dark theme on some of these controls. One
+   token, one offset, everywhere (BACKLOG F50). */
+:focus-visible {
+  outline: 2px solid var(--action);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* A focused chart row (BACKLOG F49). The outline goes on the row's own hit
+   rectangle rather than on the <g>: an outline around a group is drawn around
+   its bounding box, which on these charts is the full width of the plot
+   whether the bar is 2px long or 400. */
+.chart-row:focus {
+  outline: none;
+}
+
+.chart-row:focus-visible .hit {
+  fill: color-mix(in srgb, var(--action) 9%, transparent);
+  stroke: var(--action);
+  stroke-width: 1.5;
+}
+
+/* The trend chart is focusable as a whole -- there are no rows to step
+   through, only quarters -- so it keeps the ring. */
+svg.chart-row:focus-visible {
+  outline: 2px solid var(--action);
+  outline-offset: 2px;
 }
 
 /* --- tooltip -------------------------------------------------------------- */
@@ -676,7 +758,13 @@ td.muted {
 
 .saved-note {
   font-size: 13px;
-  color: var(--good);
+  color: var(--good-text);
+}
+
+/* "Couldn't save" printed in the same green as "saved" is a message people
+   read as a confirmation (BACKLOG F50). */
+.saved-note[data-error] {
+  color: var(--bad-text);
 }
 
 .token-box {
@@ -769,6 +857,34 @@ input[type="number"] {
   margin-bottom: 6px;
 }
 
+/* --- narrow viewports ------------------------------------------------------
+   The layout is fluid already -- the tiles are an auto-fit grid and every
+   control row wraps -- so this is the part that fluidity does not reach: the
+   page gutters, which cost a quarter of a 360px screen, and the tile figures,
+   which are set for a row of four and are the first thing to wrap to two
+   lines when there is one. The tables are handled by the sticky first column
+   above (BACKLOG F57). */
+
+@media (max-width: 600px) {
+  .shell {
+    padding: 20px 14px 56px;
+  }
+
+  .tile {
+    padding: 14px 15px;
+  }
+
+  .tile .value {
+    font-size: 22px;
+  }
+
+  /* The gap between cards is the page's main vertical rhythm and is set for a
+     wide screen; on a phone it is most of a scroll. */
+  :root {
+    --gap: 12px;
+  }
+}
+
 /* --- print ---------------------------------------------------------------- */
 
 /* A comparison is a thing people take to someone else -- an adviser, a
@@ -838,6 +954,22 @@ input[type="number"] {
   .chart-scroll table,
   .chart-svg {
     min-width: 0;
+  }
+
+  /* Nothing scrolls on paper, so the pinned first column has nothing to pin
+     against -- and its divider would print as a stray rule down every table. */
+  .chart-scroll th:first-child,
+  .chart-scroll td:first-child {
+    position: static;
+    box-shadow: none;
+  }
+
+  /* A legend is the key to the chart beside it, and a key printed as two empty
+     squares is not one: background colours are dropped from print by default,
+     and every swatch on the page is a background. */
+  .swatch {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
   }
 
   thead {

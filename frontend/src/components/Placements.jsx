@@ -16,15 +16,20 @@ import { useI18n } from '../i18n'
 export default function Placements() {
   const { holdings, debts, investableOnly, mode, dimension, groupKey, showGroup } = useAppData()
   const { t, fmt, dimensionLabel, tierLabel } = useI18n()
-  const [result, setResult] = useState(null)
-  const [failed, setFailed] = useState(false)
+  // { state: 'loading' | 'ready' | 'failed', data }
+  const [answer, setAnswer] = useState({ state: 'loading', data: null })
+  const [reload, setReload] = useState(0)
 
   const hasHoldings = Object.keys(holdings).length > 0
 
   useEffect(() => {
     if (mode !== 'live' || !hasHoldings) return
     let cancelled = false
-    setFailed(false)
+    // The previous answer stays up while the next one loads: this card
+    // refetches on every keystroke in the holdings form, and blanking it each
+    // time would make it flicker rather than update. Every row it shows is
+    // about the same portfolio either way.
+    setAnswer((prev) => ({ state: 'loading', data: prev.data }))
     api
       .placements(
         {
@@ -34,25 +39,39 @@ export default function Placements() {
         },
         { investableOnly },
       )
-      .then((data) => !cancelled && setResult(data))
-      .catch(() => !cancelled && setFailed(true))
+      .then((data) => !cancelled && setAnswer({ state: 'ready', data }))
+      .catch(() => !cancelled && setAnswer({ state: 'failed', data: null }))
     return () => {
       cancelled = true
     }
-  }, [holdings, debts, investableOnly, mode, hasHoldings])
+  }, [holdings, debts, investableOnly, mode, hasHoldings, reload])
 
   if (!hasHoldings) return null
-  if (mode !== 'live' || failed) {
+
+  /* Offline, still loading and failed are three different things, and this
+     card answered all three with "needs the API" (BACKLOG F50). */
+  const result = answer.data
+  if (!result) {
     return (
       <div className="card">
         <div className="card-head">
           <h2>{t('placements.title')}</h2>
         </div>
-        <p className="empty">{t('placements.needsApi')}</p>
+        {mode !== 'live' ? (
+          <p className="empty">{t('placements.needsApi')}</p>
+        ) : answer.state === 'failed' ? (
+          <p className="empty">
+            {t('placements.failed')}{' '}
+            <button type="button" className="link-btn" onClick={() => setReload((n) => n + 1)}>
+              {t('benchmarks.retry')}
+            </button>
+          </p>
+        ) : (
+          <p className="empty">{t('app.loading')}</p>
+        )}
       </div>
     )
   }
-  if (!result) return null
 
   return (
     <div className="card">

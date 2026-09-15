@@ -16,8 +16,9 @@ export default function Movers() {
   const { benchmarks, groupKey, activeGroups, investableOnly, mode } = useAppData()
   const { t, fmt, assetLabel, tierLabel } = useI18n()
   const [from, setFrom] = useState('earliest')
-  const [rows, setRows] = useState(null)
-  const [failed, setFailed] = useState(false)
+  // { state: 'loading' | 'ready' | 'failed', rows }
+  const [answer, setAnswer] = useState({ state: 'loading', rows: null })
+  const [reload, setReload] = useState(0)
   /* Which tier this card is about, chosen here rather than page-wide: the
      tables above show every tier at once, so a control in the page header
      would read as filtering them. Starts from the comparison tab's choice. */
@@ -30,28 +31,45 @@ export default function Movers() {
   useEffect(() => {
     if (!live || !to) return
     let cancelled = false
-    setFailed(false)
+    // Cleared while the next answer is in flight: the sentence under this
+    // table names the tier and the two quarters it is about, so leaving the
+    // previous tier's rows under a changed heading is a wrong answer rather
+    // than a stale one (BACKLOG F50).
+    setAnswer({ state: 'loading', rows: null })
     api
       .movers({ group: shown, from, to, investableOnly })
-      .then((data) => !cancelled && setRows(data))
-      .catch(() => !cancelled && setFailed(true))
+      .then((data) => !cancelled && setAnswer({ state: 'ready', rows: data }))
+      .catch(() => !cancelled && setAnswer({ state: 'failed', rows: null }))
     return () => {
       cancelled = true
     }
-  }, [shown, from, to, investableOnly, live])
+  }, [shown, from, to, investableOnly, live, reload])
 
-  if (!live || failed) {
+  /* Three reasons there is no table, and they used to read as one: the API is
+     not there at all (offline, where this card has no answer to give), the
+     request is still running, and the request failed (where trying again is
+     the obvious next move, so there is a button for it). */
+  if (!live || answer.state !== 'ready') {
     return (
       <div className="card">
         <div className="card-head">
           <h2>{t('movers.title')}</h2>
         </div>
-        <p className="empty">{t('movers.needsApi')}</p>
+        {!live && <p className="empty">{t('movers.needsApi')}</p>}
+        {live && answer.state === 'loading' && <p className="empty">{t('app.loading')}</p>}
+        {live && answer.state === 'failed' && (
+          <p className="empty">
+            {t('movers.failed')}{' '}
+            <button type="button" className="link-btn" onClick={() => setReload((n) => n + 1)}>
+              {t('benchmarks.retry')}
+            </button>
+          </p>
+        )}
       </div>
     )
   }
-  if (!rows) return null
 
+  const rows = answer.rows
   const label = tierLabel(shown, activeGroups[shown]?.label)
 
   return (

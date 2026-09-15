@@ -8,11 +8,15 @@ const H = 300
 const PAD = { top: 14, right: 18, bottom: 30, left: 46 }
 
 const SERIES_COLORS = ['var(--series-you)', 'var(--series-bench)']
+// The second line is dashed as well as differently coloured, so the pair
+// survives greyscale print and colour-vision deficiency (BACKLOG F48). A line
+// takes a dash where a bar takes a hatch; both say "this is the other one".
+const SERIES_DASH = [undefined, '7 4']
 
 /** Multi-line trend of one asset class's share of assets, over time.
  *  Crosshair + tooltip on hover, as line charts should have by default. */
 export default function TrendChart({ series, assetLabel }) {
-  const { tip, show, hide } = useTooltip()
+  const { tip, show, showAt, hide } = useTooltip()
   const { t, fmt } = useI18n()
   const [hoverIdx, setHoverIdx] = useState(null)
 
@@ -27,7 +31,7 @@ export default function TrendChart({ series, assetLabel }) {
     return { paths, xs, maxShare, periods }
   }, [series])
 
-  if (!periods.length) return <p className="empty">No history available.</p>
+  if (!periods.length) return <p className="empty">{t('chart.noHistory')}</p>
 
   const plotH = H - PAD.top - PAD.bottom
   const yFor = (share) => PAD.top + plotH - (share / maxShare) * plotH
@@ -56,6 +60,39 @@ export default function TrendChart({ series, assetLabel }) {
     hide()
   }
 
+  /** The crosshair, driven from the keyboard (BACKLOG F49): the chart is one
+   *  tab stop, and left/right walk the quarters. The tooltip is a live region,
+   *  so each step is announced as well as drawn. */
+  function moveTo(index, element) {
+    const clamped = Math.min(periods.length - 1, Math.max(0, index))
+    setHoverIdx(clamped)
+    showAt(
+      element,
+      <TooltipRows
+        title={fmt.quarter(periods[clamped])}
+        rows={series.map((s) => ({ label: s.label, value: fmt.pct(s.points[clamped].share) }))}
+      />,
+    )
+  }
+
+  function onKeyDown(event) {
+    const from = hoverIdx ?? 0
+    const next = {
+      ArrowRight: from + 1,
+      ArrowUp: from + 1,
+      ArrowLeft: from - 1,
+      ArrowDown: from - 1,
+      Home: 0,
+      End: periods.length - 1,
+    }[event.key]
+    if (next == null) {
+      if (event.key === 'Escape') onLeave()
+      return
+    }
+    event.preventDefault()
+    moveTo(next, event.currentTarget)
+  }
+
   const showLegend = series.length > 1
 
   return (
@@ -64,7 +101,12 @@ export default function TrendChart({ series, assetLabel }) {
         <div className="legend">
           {series.map((s, i) => (
             <span key={s.key}>
-              <i className="swatch" style={{ background: SERIES_COLORS[i % SERIES_COLORS.length] }} /> {s.label}
+              <i
+                className="swatch"
+                data-dash={SERIES_DASH[i % SERIES_DASH.length] ? '' : undefined}
+                style={{ backgroundColor: SERIES_COLORS[i % SERIES_COLORS.length] }}
+              />{' '}
+              {s.label}
             </span>
           ))}
         </div>
@@ -73,10 +115,14 @@ export default function TrendChart({ series, assetLabel }) {
       <ChartFrame table={<TrendTable series={series} />}>
       <div className="chart-scroll">
         <svg
-          className="chart-svg"
+          className="chart-svg chart-row"
           viewBox={`0 0 ${W} ${H}`}
           onMouseMove={onMove}
           onMouseLeave={onLeave}
+          onFocus={(e) => moveTo(hoverIdx ?? 0, e.currentTarget)}
+          onBlur={onLeave}
+          onKeyDown={onKeyDown}
+          tabIndex={0}
           role="img"
           aria-label={t('chart.trendAria', { asset: assetLabel })}
         >
@@ -103,7 +149,16 @@ export default function TrendChart({ series, assetLabel }) {
           )}
 
           {paths.map((d, i) => (
-            <path key={series[i].key} d={d} fill="none" stroke={SERIES_COLORS[i % SERIES_COLORS.length]} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
+            <path
+              key={series[i].key}
+              d={d}
+              fill="none"
+              stroke={SERIES_COLORS[i % SERIES_COLORS.length]}
+              strokeDasharray={SERIES_DASH[i % SERIES_DASH.length]}
+              strokeWidth="2"
+              strokeLinejoin="round"
+              strokeLinecap="round"
+            />
           ))}
 
           {hoverIdx != null &&

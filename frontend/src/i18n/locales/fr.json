@@ -119,7 +119,6 @@
     "overTime": "{asset} dans le temps",
     "assetClass": "Classe d'actifs",
     "trendSub": "Part des actifs totaux de chaque tranche depuis 1989. Comparaison de {first} face à {last} ; les tranches intermédiaires se situent entre les deux.",
-    "trendUnavailable": "Données de tendance indisponibles.",
     "shapeTitle": "La forme de chaque bilan",
     "shapeSub": "Trois façons de décrire une tranche en un seul chiffre chacune, à partir des mêmes données de la Réserve fédérale que le tableau ci-dessus.",
     "measure": "Mesure",
@@ -132,7 +131,10 @@
     "owesTitle": "Ce que doit chaque tranche",
     "debtKind": "Type de dette",
     "owesSub": "Part de l'endettement de chaque tranche, et non de ses actifs. Les prêts immobiliers dominent au milieu ; les 50 % les moins riches portent bien plus de dette en crédit à la consommation, et les 1 % les plus riches bien plus en prêts sur marge et sur police.",
-    "unallocatedNote": "« Non affecté » est l'écart entre le total d'actifs publié par la Réserve fédérale et les catégories ci-dessus. Avec l'ensemble complet des colonnes, il s'agit d'arrondi — moins de 0,0002 % à chaque trimestre depuis 1989 — et /api/benchmarks/reconciliation le publie trimestre par trimestre, pour qu'il soit vérifiable et non simplement affirmé."
+    "unallocatedNote": "« Non affecté » est l'écart entre le total d'actifs publié par la Réserve fédérale et les catégories ci-dessus. Avec l'ensemble complet des colonnes, il s'agit d'arrondi — moins de 0,0002 % à chaque trimestre depuis 1989 — et /api/benchmarks/reconciliation le publie trimestre par trimestre, pour qu'il soit vérifiable et non simplement affirmé.",
+    "trendEmpty": "La source ne publie pas d'historique pour {asset} sur cet axe.",
+    "trendFailed": "Impossible de charger l'évolution.",
+    "retry": "Réessayer"
   },
   "chart": {
     "you": "Vous",
@@ -145,7 +147,8 @@
     "lessThan": "Moins que {tier}",
     "allInLine": "Toutes les classes d'actifs sont conformes à {tier}.",
     "showTable": "Afficher en tableau",
-    "showChart": "Afficher en graphique"
+    "showChart": "Afficher en graphique",
+    "noHistory": "Aucun historique à afficher pour cette série."
   },
   "disclaimer": {
     "whatTitle": "Ce que c'est.",
@@ -255,7 +258,8 @@
     "showing": "affiché ci-dessus",
     "needsApi": "Ceci nécessite l'API : situer un portefeuille lit les six axes, et l'instantané embarqué ne contient que le patrimoine net.",
     "nearestDebt": "Le plus proche par la dette",
-    "debtSub": "Et la même lecture pour les {amount} que vous devez. Un ménage peut détenir des actifs comme une tranche et s'endetter comme une autre : un prêt immobilier et un compte-titres ne sont pas la même décision."
+    "debtSub": "Et la même lecture pour les {amount} que vous devez. Un ménage peut détenir des actifs comme une tranche et s'endetter comme une autre : un prêt immobilier et un compte-titres ne sont pas la même décision.",
+    "failed": "Impossible de situer ce portefeuille."
   },
   "placement": {
     "title": {
@@ -300,7 +304,8 @@
     "since": "Depuis",
     "change": "Évolution",
     "sub": "Comment {tier} détenait ses actifs en {from} par rapport à {to}, plus grand écart d'abord. Des parts, pas des dollars : le bilan de chaque tranche a grossi sur toute longue période, si bien qu'en dollars le classement refléterait les prix des actifs plutôt que l'évolution de la répartition.",
-    "needsApi": "Ceci nécessite l'API : il compare deux trimestres, et l'instantané embarqué ne contient que le dernier."
+    "needsApi": "Ceci nécessite l'API : il compare deux trimestres, et l'instantané embarqué ne contient que le dernier.",
+    "failed": "Impossible de charger ce qui a changé."
   },
   "rebalance": {
     "title": "Ce qu'il faudrait pour égaler",

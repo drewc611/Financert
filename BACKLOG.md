@@ -361,19 +361,71 @@ the switch now.
 | F45 | Slope chart: your allocation vs a tier, class by class | M |
 | F46 | Animated or scrubbable time axis on the trend chart | M |
 | ~~F47~~ ✅ | Table view toggle for every chart (accessibility) | S |
-| F48 | Texture/pattern fills for colour-vision and print | M |
-| F49 | Keyboard navigation through chart series | M |
-| F50 | Empty, loading and error states audited across all three views | M |
+| ~~F48~~ ✅ | Texture/pattern fills for colour-vision and print | M |
+| ~~F49~~ ✅ | Keyboard navigation through chart series | M |
+| ~~F50~~ ✅ | Empty, loading and error states audited across all three views | M |
 | ~~F51~~ ✅ | Print stylesheet | S |
 | F52 | Shareable permalink encoding holdings in the URL | M |
 | ~~F53~~ ✅ | CSV export of your comparison | S |
 | F54 | PNG export of a chart | M |
 | ~~F55~~ ✅ | Onboarding: prefill a plausible household so the app is not empty on arrival | S |
 | F56 | Inline "where does this number come from" popovers citing the series | M |
-| F57 | Mobile pass on the tiers table (currently scrolls in a container) | M |
+| ~~F57~~ ✅ | Mobile pass on the tiers table (currently scrolls in a container) | M |
 | ~~F58~~ ✅ | Dark-mode audit of the newer components | S |
 | ~~F59~~ ✅ | Number formatting review — tabular figures everywhere they align | S |
 | ~~F60~~ ✅ | Explain the `unallocated` residual in the UI, not just the README | S |
+
+**F48, F49, F50 and F57 are one pass over reading the charts and tables
+however you happen to read them.**
+
+F48: both bar charts carried exactly two series and hue was the only thing
+separating them -- invisible printed in grey, and worst on the gap chart, where
+the two hues *are* the finding and red against blue is the pair roughly one man
+in twelve cannot separate. The second series now also carries a 45-degree hatch
+(a dash, on the trend chart's lines), in the chart and in the legend swatch
+beside it. Two things the browser caught that reading the code would not: the
+pattern id has to have `useId()`'s punctuation stripped out of it, because a
+fragment reference is matched literally; and the legend swatch set its colour
+with the `background` *shorthand*, which resets `background-image` and silently
+won the cascade against the stripes -- the check printed `none` until that
+became `backgroundColor`. The print stylesheet gained `print-color-adjust:
+exact` on the swatches in the same pass: background colours are dropped from
+print by default, so the key beside every chart had been printing as two empty
+squares all along.
+
+F49: the rows of both bar charts are focusable, with a roving tabindex -- one
+tab stop per chart, arrows between rows, Home/End to the ends, Escape to
+dismiss the tooltip -- and each row carries its own values in its `aria-label`,
+so focus announces "Real Estate: You 48.0%, Top 1% 11.8%, Difference +36.2 pp"
+rather than a position in a picture. The trend chart steps quarters with the
+same keys. The charts' `role="img"` had to go for this to mean anything: the
+contents of a `role="img"` are not exposed at all, so focusable children inside
+one are a contradiction. The tooltip is anchored to the focused element rather
+than to a cursor, and it was already a live region.
+
+F50: three states were being answered with one sentence, in three places. The
+trend said "trend data unavailable" whether it was still loading, had failed,
+or the source genuinely publishes nothing for that class; "What changed" and
+the six-axis placement card both answered a failed request with "this needs the
+API", which is what they say when there is no API at all. Each now says which
+it is, and the two worth retrying have a button. Two smaller ones in the same
+sweep: the trend chart's only empty state was a hardcoded English string in a
+six-language app, and a failed save was printed in the same green as a
+successful one. That green was also 3.3:1 against the page, so status text got
+its own pair of tokens at 5.4:1 and 5.8:1 -- `--good` and `--diverge-under` are
+chosen to be read as a filled shape, which is not the same job as being read as
+13px type.
+
+F57: the first column of every wide table is pinned, so the asset class stays
+put while the tiers scroll under it -- six columns do not fit on a phone, and
+reaching the sixth was no use once the row it belonged to had scrolled off the
+other edge. `inset-inline-start`, because Arabic scrolls the other way, and
+checked in both: the cell holds its x position after a scroll in either
+direction. The divider is a box-shadow rather than a border, because with
+`border-collapse: collapse` the table paints the border rather than the cell,
+and it scrolls away with the rest. The remainder of the phone pass is small --
+gutters, tile figures, the gap between cards -- because the layout was already
+fluid everywhere else.
 
 **F61 and F62 are the same workflow**: the pull request *is* the alert, and it
 is better than one, because it arrives as a reviewable diff rather than as a

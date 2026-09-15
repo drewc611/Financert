@@ -9,9 +9,18 @@ export function useTooltip() {
     setTip({ x: event.clientX, y: event.clientY, content })
   }, [])
 
+  /** The same tooltip, anchored to an element instead of a pointer — what a
+   *  keyboard user gets on focus (BACKLOG F49). Centred on the row, at its top
+   *  edge, because a row spans the whole chart and its middle is where the
+   *  reader's attention already is. */
+  const showAt = useCallback((element, content) => {
+    const rect = element.getBoundingClientRect()
+    setTip({ x: rect.left + rect.width / 2, y: rect.top, content })
+  }, [])
+
   const hide = useCallback(() => setTip(null), [])
 
-  return { tip, show, hide }
+  return { tip, show, showAt, hide }
 }
 
 export function Tooltip({ tip }) {
