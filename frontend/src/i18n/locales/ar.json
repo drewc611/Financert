@@ -137,7 +137,9 @@
     "noAllocation": "لا يوجد توزيع لعرضه بعد.",
     "moreThan": "أكثر من {tier}",
     "lessThan": "أقل من {tier}",
-    "allInLine": "جميع فئات الأصول متوافقة مع {tier}."
+    "allInLine": "جميع فئات الأصول متوافقة مع {tier}.",
+    "showTable": "عرض كجدول",
+    "showChart": "عرض كرسم بياني"
   },
   "disclaimer": {
     "whatTitle": "ما هذا.",

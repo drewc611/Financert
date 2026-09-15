@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import ChartFrame from './ChartFrame'
 import { Tooltip, TooltipRows, useTooltip } from './Tooltip'
 import { useI18n } from '../i18n'
 
@@ -69,6 +70,7 @@ export default function TrendChart({ series, assetLabel }) {
         </div>
       )}
 
+      <ChartFrame table={<TrendTable series={series} />}>
       <div className="chart-scroll">
         <svg
           className="chart-svg"
@@ -120,7 +122,40 @@ export default function TrendChart({ series, assetLabel }) {
           <line className="baseline" x1={PAD.left} x2={W - PAD.right} y1={H - PAD.bottom} y2={H - PAD.bottom} />
         </svg>
       </div>
+      </ChartFrame>
       <Tooltip tip={tip} />
     </>
+  )
+}
+
+/** One row per quarter, one column per line on the chart. */
+function TrendTable({ series }) {
+  const { t, fmt } = useI18n()
+  const periods = series[0]?.points.map((p) => p.period) ?? []
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">{t('controls.quarter')}</th>
+          {series.map((s) => (
+            <th scope="col" className="num" key={s.key}>
+              {s.label}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {periods.map((period, i) => (
+          <tr key={period}>
+            <td>{fmt.quarter(period)}</td>
+            {series.map((s) => (
+              <td className="num" key={s.key}>
+                {fmt.pct(s.points[i]?.share)}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
   )
 }

@@ -137,7 +137,9 @@
     "noAllocation": "Todavía no hay asignación que mostrar.",
     "moreThan": "Más que {tier}",
     "lessThan": "Menos que {tier}",
-    "allInLine": "Todas las clases de activos están en línea con {tier}."
+    "allInLine": "Todas las clases de activos están en línea con {tier}.",
+    "showTable": "Ver como tabla",
+    "showChart": "Ver como gráfico"
   },
   "disclaimer": {
     "whatTitle": "Qué es esto.",

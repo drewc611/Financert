@@ -137,7 +137,9 @@
     "noAllocation": "Noch keine Aufteilung vorhanden.",
     "moreThan": "Mehr als {tier}",
     "lessThan": "Weniger als {tier}",
-    "allInLine": "Jede Anlageklasse liegt im Rahmen von {tier}."
+    "allInLine": "Jede Anlageklasse liegt im Rahmen von {tier}.",
+    "showTable": "Als Tabelle zeigen",
+    "showChart": "Als Diagramm zeigen"
   },
   "disclaimer": {
     "whatTitle": "Was das hier ist.",

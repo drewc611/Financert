@@ -137,7 +137,9 @@
     "noAllocation": "No allocation to show yet.",
     "moreThan": "More than {tier}",
     "lessThan": "Less than {tier}",
-    "allInLine": "Every asset class is in line with {tier}."
+    "allInLine": "Every asset class is in line with {tier}.",
+    "showTable": "Show as table",
+    "showChart": "Show as chart"
   },
   "disclaimer": {
     "whatTitle": "What this is.",

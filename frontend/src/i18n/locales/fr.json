@@ -137,7 +137,9 @@
     "noAllocation": "Aucune répartition à afficher pour l'instant.",
     "moreThan": "Plus que {tier}",
     "lessThan": "Moins que {tier}",
-    "allInLine": "Toutes les classes d'actifs sont conformes à {tier}."
+    "allInLine": "Toutes les classes d'actifs sont conformes à {tier}.",
+    "showTable": "Afficher en tableau",
+    "showChart": "Afficher en graphique"
   },
   "disclaimer": {
     "whatTitle": "Ce que c'est.",

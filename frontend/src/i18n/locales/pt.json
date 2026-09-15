@@ -137,7 +137,9 @@
     "noAllocation": "Ainda não há alocação para mostrar.",
     "moreThan": "Mais que {tier}",
     "lessThan": "Menos que {tier}",
-    "allInLine": "Todas as classes de ativos estão em linha com {tier}."
+    "allInLine": "Todas as classes de ativos estão em linha com {tier}.",
+    "showTable": "Ver como tabela",
+    "showChart": "Ver como gráfico"
   },
   "disclaimer": {
     "whatTitle": "O que isto é.",

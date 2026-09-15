@@ -19,6 +19,10 @@
   --series-you: #2a78d6;
   --series-bench: #eb6834;
 
+  /* The primary button, which carries white text in both themes, so it is
+     chosen against white rather than against the page. */
+  --action: #1f6fd0;
+
   /* diverging pair for over/under weight, gray midpoint */
   --diverge-over: #2a78d6;
   --diverge-under: #e34948;
@@ -45,6 +49,7 @@
     --border: rgba(255, 255, 255, 0.1);
     --series-you: #3987e5;
     --series-bench: #d95926;
+    --action: #1f6fd0;
     --diverge-over: #3987e5;
     --diverge-under: #e66767;
     --diverge-mid: #383835;
@@ -63,6 +68,7 @@
   --border: rgba(255, 255, 255, 0.1);
   --series-you: #3987e5;
   --series-bench: #d95926;
+  --action: #1f6fd0;
   --diverge-over: #3987e5;
   --diverge-under: #e66767;
   --diverge-mid: #383835;
@@ -260,6 +266,9 @@ button {
   font-weight: 600;
   margin-top: 6px;
   letter-spacing: -0.02em;
+  /* Tiles sit in a row and their values are read down the row as much as
+     across it, so the digits have to be the same width (BACKLOG F59). */
+  font-variant-numeric: tabular-nums;
 }
 
 .tile .note {
@@ -646,7 +655,11 @@ td.muted {
 }
 
 .btn-primary {
-  background: var(--series-you);
+  /* Its own colour rather than --series-you: that variable is a *chart* series,
+     picked to read against the page, and in dark mode white text on it lands at
+     3.64:1 -- under AA for 14px text (BACKLOG F58). This one is chosen against
+     white, which is what is actually printed on it. */
+  background: var(--action);
   color: #fff;
   border: 1px solid transparent;
   border-radius: 8px;
@@ -748,4 +761,103 @@ input[type="number"] {
   padding-inline-start: 20px;
   font-size: 14px;
   line-height: 1.7;
+}
+
+.chart-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 6px;
+}
+
+/* --- print ---------------------------------------------------------------- */
+
+/* A comparison is a thing people take to someone else -- an adviser, a
+   spouse -- and the screen version prints as a wall of dark boxes with
+   controls in it (BACKLOG F51).
+
+   Not a separate layout: it drops what cannot be acted on from paper (the
+   controls, the tab bar, the chart/table switch), flattens the surfaces so a
+   card is a rule rather than a filled box, and keeps the footer's provenance,
+   because a page of figures with no source on it is the one thing worth
+   refusing to hand someone. */
+@media print {
+  /* All three selectors the theme palette is defined on, or the dark ones win
+     on specificity and print white text onto white paper -- which is what this
+     did when it was checked in a dark-scheme browser. */
+  :root,
+  :root:not([data-theme="light"]),
+  :root[data-theme="dark"] {
+    --page: #fff;
+    --surface: #fff;
+    --text-primary: #000;
+    --text-secondary: #222;
+    --text-muted: #444;
+    --border: #999;
+    --grid: #ccc;
+  }
+
+  body {
+    background: #fff;
+    font-size: 11pt;
+  }
+
+  .shell {
+    max-width: none;
+    padding: 0;
+  }
+
+  /* Navigation, controls, and anything that only does something when clicked. */
+  .tabs,
+  .controls,
+  .cohort,
+  .chart-actions,
+  .topbar-actions,
+  .row-actions,
+  .token-box,
+  .link-btn {
+    display: none !important;
+  }
+
+  .card,
+  .tile {
+    border: 1px solid var(--border);
+    box-shadow: none;
+    break-inside: avoid;
+  }
+
+  .card + .card {
+    margin-top: 12px;
+  }
+
+  /* On screen a wide table scrolls inside its container; on paper there is no
+     scrolling, so it has to fit the page instead of being cut off. */
+  .chart-scroll {
+    overflow: visible;
+  }
+
+  .chart-scroll table,
+  .chart-svg {
+    min-width: 0;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr,
+  .moves li {
+    break-inside: avoid;
+  }
+
+  /* The provenance is the point of printing it at all. */
+  .disclaimer {
+    break-inside: avoid;
+    border-top: 1px solid var(--border);
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: var(--text-muted);
+  }
 }
