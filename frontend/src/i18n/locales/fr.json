@@ -64,7 +64,13 @@
     "pendingBody": "La Réserve fédérale publie {classes} plus tard que le reste du bilan ; cette ligne apparaît donc ci-dessous comme « pas encore publié » plutôt que sous forme de chiffre. Toutes les autres parts restent correctes.",
     "usePeriodInstead": "Utiliser {quarter} à la place",
     "colDollars": "En dollars",
-    "differDollars": "La colonne en dollars applique cet écart à vos {total} : ce qu'il faudrait pour le combler."
+    "differDollars": "La colonne en dollars applique cet écart à vos {total} : ce qu'il faudrait pour le combler.",
+    "downloadCsv": "Télécharger le CSV",
+    "csvBenchmark": "Référence",
+    "csvPeriod": "Période",
+    "csvTotal": "Portefeuille comparé",
+    "tryExample": "Charger un ménage d'exemple",
+    "tryExampleNote": "— à peu près la forme médiane américaine : l'essentiel dans le logement, un compte retraite, un petit solde de titres, face à un prêt immobilier. Le bouton qui l'efface est celui qui efface vos propres chiffres."
   },
   "status": {
     "overweight": "Surpondéré",
@@ -137,7 +143,9 @@
     "noAllocation": "Aucune répartition à afficher pour l'instant.",
     "moreThan": "Plus que {tier}",
     "lessThan": "Moins que {tier}",
-    "allInLine": "Toutes les classes d'actifs sont conformes à {tier}."
+    "allInLine": "Toutes les classes d'actifs sont conformes à {tier}.",
+    "showTable": "Afficher en tableau",
+    "showChart": "Afficher en graphique"
   },
   "disclaimer": {
     "whatTitle": "Ce que c'est.",

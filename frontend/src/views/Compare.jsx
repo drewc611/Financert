@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useAppData } from '../context/AppDataContext'
-import { analyse } from '../lib/analysis'
+import { analyse, EXAMPLE_DEBTS, EXAMPLE_HOLDINGS } from '../lib/analysis'
 import AllocationChart from '../components/AllocationChart'
 import GapChart from '../components/GapChart'
 import DimensionPicker from '../components/DimensionPicker'
@@ -8,6 +8,7 @@ import CohortPicker from '../components/CohortPicker'
 import Placements from '../components/Placements'
 import PeriodPicker from '../components/PeriodPicker'
 import Rebalance from '../components/Rebalance'
+import { comparisonRows, download, toCsv } from '../lib/csv'
 import { useI18n } from '../i18n'
 
 export default function Compare() {
@@ -16,6 +17,8 @@ export default function Compare() {
     activeGroups,
     setPeriodMode,
     holdings,
+    setHolding,
+    setDebt,
     groupKey,
     setGroupKey,
     investableOnly,
@@ -34,6 +37,14 @@ export default function Compare() {
   )
 
   const hasHoldings = Object.keys(holdings).length > 0
+
+  /* Both sides at once. The setters are per line, but they run inside one
+     event handler, so React commits them as a single render rather than
+     drawing five intermediate portfolios. */
+  const loadExample = () => {
+    for (const [key, value] of Object.entries(EXAMPLE_HOLDINGS)) setHolding(key, value)
+    for (const [key, value] of Object.entries(EXAMPLE_DEBTS)) setDebt(key, value)
+  }
 
   const chartRows = useMemo(() => {
     const keys = [...new Set([...Object.keys(result.user_weights), ...Object.keys(result.benchmark_weights)])]
@@ -69,6 +80,12 @@ export default function Compare() {
         <div className="card">
           <h2>{t('compare.emptyTitle')}</h2>
           <p className="sub">{t('compare.emptyBody', { tier: benchmarkLabel })}</p>
+          <p className="sub">
+            <button type="button" className="link-btn" onClick={loadExample}>
+              {t('compare.tryExample')}
+            </button>{' '}
+            {t('compare.tryExampleNote')}
+          </p>
           <AllocationChart
             rows={Object.entries(result.benchmark_weights)
               .map(([key, v]) => ({ key, label: labels[key] || key, user: 0, benchmark: v }))
@@ -138,6 +155,36 @@ export default function Compare() {
       <div className="card">
         <div className="card-head">
           <h2>{t('compare.differTitle')}</h2>
+          {/* The same rows as the table below, as a file (BACKLOG F53). Built
+              in the browser, so it works offline too -- and nothing about the
+              portfolio leaves the page to produce it. */}
+          <button
+            type="button"
+            className="link-btn"
+            onClick={() =>
+              download(
+                `financert-${result.benchmark_group}-${result.period}.csv`,
+                toCsv(
+                  comparisonRows(result, {
+                    labels,
+                    benchmarkLabel,
+                    headers: {
+                      assetClass: t('compare.colAssetClass'),
+                      you: t('compare.colYou'),
+                      difference: t('compare.colDifference'),
+                      dollars: t('compare.colDollars'),
+                      benchmark: t('compare.csvBenchmark'),
+                      period: t('compare.csvPeriod'),
+                      total: t('compare.csvTotal'),
+                      investableOnly: t('controls.investableOnly'),
+                    },
+                  }),
+                ),
+              )
+            }
+          >
+            {t('compare.downloadCsv')}
+          </button>
         </div>
         <p className="sub">
           {t('compare.differSub', { tier: benchmarkLabel })}{' '}

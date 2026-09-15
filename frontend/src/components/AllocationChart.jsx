@@ -1,3 +1,4 @@
+import ChartFrame from './ChartFrame'
 import { Tooltip, TooltipRows, useTooltip } from './Tooltip'
 import { useI18n } from '../i18n'
 import { labelGutter } from '../lib/chartLabels'
@@ -39,6 +40,7 @@ export default function AllocationChart({ rows, benchmarkLabel, userLabel }) {
         </span>
       </div>
 
+      <ChartFrame table={<AllocationTable rows={rows} you={you} benchmarkLabel={benchmarkLabel} />}>
       <div className="chart-scroll">
         <svg
           className="chart-svg"
@@ -88,7 +90,37 @@ export default function AllocationChart({ rows, benchmarkLabel, userLabel }) {
           <line className="baseline" x1={LABEL_W} x2={LABEL_W} y1={PAD_T} y2={PAD_T + rows.length * ROW_H} />
         </svg>
       </div>
+      </ChartFrame>
       <Tooltip tip={tip} />
     </>
+  )
+}
+
+/** The chart's own rows, in its own order. */
+function AllocationTable({ rows, you, benchmarkLabel }) {
+  const { t, fmt } = useI18n()
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">{t('benchmarks.assetClass')}</th>
+          <th scope="col" className="num">
+            {you}
+          </th>
+          <th scope="col" className="num">
+            {benchmarkLabel}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row) => (
+          <tr key={row.key}>
+            <td>{row.label}</td>
+            <td className="num">{fmt.pct(row.user)}</td>
+            <td className="num">{fmt.pct(row.benchmark)}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   )
 }

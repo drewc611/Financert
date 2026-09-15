@@ -64,7 +64,13 @@
     "pendingBody": "The Federal Reserve releases {classes} later than the rest of the balance sheet, so it appears as “not yet published” below rather than as a number. Every other share is still correct.",
     "usePeriodInstead": "Use {quarter} instead",
     "colDollars": "In dollars",
-    "differDollars": "The dollar column is that gap against your {total}: what it would take to close it."
+    "differDollars": "The dollar column is that gap against your {total}: what it would take to close it.",
+    "downloadCsv": "Download CSV",
+    "csvBenchmark": "Benchmark",
+    "csvPeriod": "Period",
+    "csvTotal": "Portfolio compared",
+    "tryExample": "Load an example household",
+    "tryExampleNote": "— roughly the median American shape: most of it in the house, a retirement account, a small brokerage balance, against a mortgage. Clearing it is the same button as clearing your own."
   },
   "status": {
     "overweight": "Overweight",
@@ -137,7 +143,9 @@
     "noAllocation": "No allocation to show yet.",
     "moreThan": "More than {tier}",
     "lessThan": "Less than {tier}",
-    "allInLine": "Every asset class is in line with {tier}."
+    "allInLine": "Every asset class is in line with {tier}.",
+    "showTable": "Show as table",
+    "showChart": "Show as chart"
   },
   "disclaimer": {
     "whatTitle": "What this is.",

@@ -360,19 +360,19 @@ the switch now.
 | F44 | Scatter: liquidity vs concentration, one point per tier | M |
 | F45 | Slope chart: your allocation vs a tier, class by class | M |
 | F46 | Animated or scrubbable time axis on the trend chart | M |
-| F47 | Table view toggle for every chart (accessibility) | S |
+| ~~F47~~ ✅ | Table view toggle for every chart (accessibility) | S |
 | F48 | Texture/pattern fills for colour-vision and print | M |
 | F49 | Keyboard navigation through chart series | M |
 | F50 | Empty, loading and error states audited across all three views | M |
-| F51 | Print stylesheet | S |
+| ~~F51~~ ✅ | Print stylesheet | S |
 | F52 | Shareable permalink encoding holdings in the URL | M |
-| F53 | CSV export of your comparison | S |
+| ~~F53~~ ✅ | CSV export of your comparison | S |
 | F54 | PNG export of a chart | M |
-| F55 | Onboarding: prefill a plausible household so the app is not empty on arrival | S |
+| ~~F55~~ ✅ | Onboarding: prefill a plausible household so the app is not empty on arrival | S |
 | F56 | Inline "where does this number come from" popovers citing the series | M |
 | F57 | Mobile pass on the tiers table (currently scrolls in a container) | M |
-| F58 | Dark-mode audit of the newer components | S |
-| F59 | Number formatting review — tabular figures everywhere they align | S |
+| ~~F58~~ ✅ | Dark-mode audit of the newer components | S |
+| ~~F59~~ ✅ | Number formatting review — tabular figures everywhere they align | S |
 | ~~F60~~ ✅ | Explain the `unallocated` residual in the UI, not just the README | S |
 
 **F61 and F62 are the same workflow**: the pull request *is* the alert, and it
@@ -418,6 +418,50 @@ component testing a five-view app earns.
 Vite went 5 → 8 with it (the version Vitest needs), which cleared three
 pre-existing advisories including a high. The one left is `js-yaml` via ESLint
 8, which wants the flat-config migration.
+
+**F53 and F55 are the two ends of the same session**: arriving with nothing,
+and leaving with something.
+
+F53 writes the comparison as a CSV in the browser -- offline included, and
+nothing about the portfolio leaves the page to produce it. It names the
+benchmark, the quarter and the scope in the file, because a spreadsheet three
+months from now has no other way to know what it is a comparison of, and it
+writes plain decimals rather than localised percentages: "12,3 %" imports as
+text or as 123. The scope row is TRUE/FALSE against an existing label, since
+the on-screen wording is a sentence fragment in several languages.
+
+F55 loads a plausible household -- roughly the median American shape, most of
+it in the house, against a mortgage -- on an explicit click, labelled as an
+example, cleared by the same button that clears anything else. An example a
+reader cannot tell from their own numbers would be worse than an empty page.
+
+**F47, F51, F58 and F59 are one pass over how the pages read.**
+
+F47: the charts carried `role="img"` and a label, which says what the picture
+is and nothing about what it shows. Each now has a switch to the same numbers
+as a table -- which is also what a chart is for anyone who wants the number
+rather than the shape. GapChart is the exception: the Compare view already
+prints those rows as a table directly beneath it, and a second copy behind a
+toggle would be two tables of one thing.
+
+F51: a comparison is a thing people take to someone else, and the screen
+version printed as a wall of dark boxes with controls in it. Print now drops
+what cannot be clicked on paper, flattens the surfaces, and keeps the footer's
+provenance -- a page of figures with no source on it is the one thing worth
+refusing to hand over.
+
+F58 found two real defects, both only visible in a dark browser. Printing from
+dark mode produced **white text on white paper**: the print block redefined the
+palette on bare `:root`, which loses on specificity to
+`:root:not([data-theme="light"])`. And the primary button sat at 3.64:1 against
+its own white text -- under AA for 14px -- because it borrowed `--series-you`,
+a *chart series* colour chosen to read against the page rather than under white
+text. It has its own token now. A contrast sweep over every text node in all
+three views, both themes, is otherwise clean.
+
+F59: the tile values are the largest figures on the page and sit in a row where
+they are read down as much as across, so they get tabular figures like every
+other column of numbers already had.
 
 ## Phase 4 — operational
 
