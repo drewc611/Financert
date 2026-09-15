@@ -62,6 +62,8 @@ DIMENSIONS = {
     "networth": {
         "label": "Net worth",
         "member": "dfa-networth-levels-detail.csv",
+        # "what net worth puts me in this group?" -- published only in this cut.
+        "extra_columns": {"minimum_wealth_cutoff": "Minimum Wealth Cutoff"},
         "groups": {
             "top01": {
                 "category": "TopPt1",
@@ -125,6 +127,11 @@ DIMENSIONS = {
     "income": {
         "label": "Income",
         "member": "dfa-income-levels-detail.csv",
+        # The income cut is the only one that publishes its own band edges.
+        "extra_columns": {
+            "minimum_income_cutoff": "Minimum Income Cutoff",
+            "maximum_income_cutoff": "Maximum Income Cutoff",
+        },
         "groups": {
             "pct00to20": {"category": "pct00to20", "label": "Bottom 20%", "population_share": 0.20, "nested": False},
             "pct20to40": {"category": "pct20to40", "label": "20th-40th", "population_share": 0.20, "nested": False},
@@ -381,13 +388,33 @@ CONTROL_COLUMNS = {
     "net_worth": "Net worth",
 }
 
-# Carried per group/period alongside the balance sheet. Household count makes
-# per-household figures possible; the wealth cutoff answers "what net worth
-# puts me in this group?" and is only populated for some categories.
-EXTRA_COLUMNS = {
-    "household_count": "Household count",
-    "minimum_wealth_cutoff": "Minimum Wealth Cutoff",
-}
+# Carried per group/period alongside the balance sheet, for every dimension.
+COMMON_EXTRA_COLUMNS = {"household_count": "Household count"}
+
+
+def extra_columns_for(dimension: str = DEFAULT_DIMENSION) -> dict[str, str]:
+    """Which non-balance-sheet columns this dimension's file carries.
+
+    These genuinely differ per file, and reading one that isn't there is a hard
+    error rather than a zero (see fetch_dfa._num), so this is not decoration:
+    ``Minimum Wealth Cutoff`` exists only in the net-worth cut, and the income
+    cut is the only one with income cutoffs. Verified against the published
+    headers in tests/test_dimensions.py.
+    """
+    return {**COMMON_EXTRA_COLUMNS, **DIMENSIONS[dimension].get("extra_columns", {})}
+
+
+# Extras that are a *threshold*, not a quantity. They cannot be summed: the
+# floor of a combined band is the floor of its lowest part, not the sum of its
+# parts' floors. They are also sparse -- the wealth cutoff comes from the
+# triennial Survey of Consumer Finances, so it exists for 12 of 147 quarters
+# and never for the bottom group, which has no floor. Blank means "not
+# published", which must reach the snapshot as None rather than 0.0: a zero
+# here would read as "no wealth required to be in the top 1%".
+THRESHOLD_COLUMNS = frozenset({"minimum_wealth_cutoff", "minimum_income_cutoff", "maximum_income_cutoff"})
+
+# Net worth's own view, for the callers that predate the registry.
+EXTRA_COLUMNS = extra_columns_for()
 
 # Assets the DFA counts that most people would not call an investment. The
 # "investable" view nets these out so a user comparing their brokerage account

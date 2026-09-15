@@ -1,0 +1,149 @@
+"""The five new dimensions (BACKLOG F11-F15), end to end through the API.
+
+The registry (F17) made these data rather than code, so what is worth testing
+is not five near-identical code paths but the properties that have to hold for
+every axis at once -- and the couple of places where net worth is genuinely
+different from the rest.
+"""
+
+import pytest
+
+from app import constants
+from app.services import benchmarks
+
+AXES = ["networth", "generation", "education", "income", "race", "age"]
+NEW_AXES = [a for a in AXES if a != "networth"]
+
+
+def test_the_snapshot_carries_every_dimension():
+    assert sorted(benchmarks.dimension_names()) == sorted(AXES)
+
+
+@pytest.mark.parametrize("dimension", AXES)
+def test_every_group_has_the_full_history(dimension):
+    groups = benchmarks.groups_in(dimension)
+    assert groups, dimension
+    expected = len(benchmarks.periods())
+    for key, group in groups.items():
+        assert len(group["history"]) == expected, f"{dimension}.{key}"
+
+
+@pytest.mark.parametrize("dimension", AXES)
+def test_weights_sum_to_one_for_every_group(dimension):
+    """The reconciliation in fetch_dfa already proves the taxonomy covers the
+    Fed's published total. This proves the read side renormalises cleanly."""
+    period = benchmarks.latest_complete_period()
+    for key in benchmarks.groups_in(dimension):
+        w = benchmarks.weights(key, period, investable_only=True, dimension=dimension)
+        assert sum(w.values()) == pytest.approx(1.0), f"{dimension}.{key}"
+
+
+@pytest.mark.parametrize("dimension", NEW_AXES)
+def test_the_new_axes_have_no_percentile_range(dimension):
+    """Only a cut defined by percentile has one. Emitting a made-up range for
+    "Baby Boom" would be inventing a fact the source does not carry."""
+    period = benchmarks.latest_complete_period()
+    for alloc in benchmarks.all_allocations(period, dimension=dimension):
+        assert alloc["percentile_range"] is None, f"{dimension}.{alloc['group']}"
+
+
+def test_net_worth_still_has_its_percentile_ranges():
+    period = benchmarks.latest_complete_period()
+    for alloc in benchmarks.all_allocations(period, dimension="networth"):
+        assert alloc["percentile_range"], alloc["group"]
+
+
+@pytest.mark.parametrize("dimension", AXES)
+def test_each_axis_partitions_the_population_on_its_own(dimension):
+    """Summing the non-nested groups of one axis should land on roughly the
+    same national total whichever axis you pick -- they are six cuts of the
+    same households. A cut that is short is a missing group."""
+    period = benchmarks.latest_complete_period()
+    order = benchmarks.dimensions()[dimension]["group_order"]
+    total = sum(benchmarks.allocation(key, period, dimension=dimension)["total_assets"] for key in order)
+    national = sum(
+        benchmarks.allocation(key, period, dimension="networth")["total_assets"]
+        for key in benchmarks.dimensions()["networth"]["group_order"]
+    )
+    assert total == pytest.approx(national, rel=0.01), f"{dimension} sums to {total:,.0f} vs {national:,.0f}"
+
+
+def _cutoffs(group: str, dimension: str, field: str) -> list[tuple[str, float]]:
+    history = benchmarks.groups_in(dimension)[group]["history"]
+    return [(r["period"], r[field]) for r in history if r.get(field) is not None]
+
+
+def test_the_minimum_wealth_cutoff_is_stored_where_published(client):
+    """F6: the column was read and then dropped, which is what made "what net
+    worth puts you in the top 1%?" unanswerable from the snapshot.
+
+    It comes from the triennial Survey of Consumer Finances, so it exists for
+    12 of the 147 quarters and not for the most recent one. Asserting on the
+    latest period would be asserting the source works differently than it does.
+    """
+    populated = _cutoffs("top1", "networth", "minimum_wealth_cutoff")
+    assert len(populated) == 12
+    assert all(value > 0 for _, value in populated)
+    assert populated == sorted(populated), "cutoffs should be in period order"
+
+
+def test_a_composite_group_takes_its_lowest_part_not_their_sum():
+    """The top 1% is TopPt1 + RemainingTop1. A floor is not additive: the
+    combined band begins where its lowest constituent begins, so summing the
+    two would claim a threshold roughly five times the real one."""
+    period, top1 = _cutoffs("top1", "networth", "minimum_wealth_cutoff")[-1]
+    _, top01 = next((p, v) for p, v in _cutoffs("top01", "networth", "minimum_wealth_cutoff") if p == period)
+    assert top1 < top01, "the top 1% floor must sit below the top 0.1% floor"
+
+
+def test_the_bottom_group_has_no_floor():
+    """There is nothing below the bottom 50%, so the file publishes no cutoff.
+    Storing 0.0 would read as "no wealth required", which is a different and
+    false claim."""
+    assert _cutoffs("bottom50", "networth", "minimum_wealth_cutoff") == []
+
+
+def test_only_the_income_axis_carries_income_cutoffs():
+    assert _cutoffs("pct99to100", "income", "minimum_income_cutoff")
+    period = benchmarks.latest_complete_period()
+    generation = benchmarks._entry("boomer", period, "generation")
+    assert "minimum_income_cutoff" not in generation
+    assert "minimum_wealth_cutoff" not in generation
+
+
+# ------------------------------------------------------------------- the API
+
+
+@pytest.mark.parametrize("dimension", AXES)
+def test_the_api_serves_every_dimension(client, dimension):
+    body = client.get(f"/api/benchmarks?dimension={dimension}").json()
+    assert body["dimension"] == dimension
+    served = {a["group"] for a in body["allocations"]}
+    assert served == set(constants.all_group_keys(dimension))
+
+
+def test_the_api_defaults_to_net_worth(client):
+    body = client.get("/api/benchmarks").json()
+    assert body["dimension"] == "networth"
+    assert body["group_order"] == constants.GROUP_ORDER
+
+
+def test_the_api_offers_the_axes_for_a_picker(client):
+    body = client.get("/api/benchmarks").json()
+    assert {d["key"] for d in body["dimensions"]} == set(AXES)
+    for entry in body["dimensions"]:
+        assert entry["label"] and entry["group_order"]
+
+
+def test_an_unknown_dimension_is_404_not_a_silent_default(client):
+    assert client.get("/api/benchmarks?dimension=astrology").status_code == 404
+
+
+def test_the_trend_endpoint_resolves_the_dimension_from_the_group(client):
+    body = client.get("/api/benchmarks/trend?group=millennial&asset_class=real_estate").json()
+    assert body["dimension"] == "generation"
+    assert body["points"]
+
+
+def test_an_unknown_group_is_still_404(client):
+    assert client.get("/api/benchmarks/trend?group=nope&asset_class=real_estate").status_code == 404
