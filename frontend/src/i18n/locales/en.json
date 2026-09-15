@@ -113,7 +113,9 @@
     "leverage": "Leverage",
     "liquidity": "Liquid share",
     "concentration": "Largest holding",
-    "leverageNote": "Leverage is debt against the whole balance sheet, so it does not change with the investable-only switch. The other two follow whatever the table above is showing."
+    "leverageNote": "Leverage is debt against the whole balance sheet, so it does not change with the investable-only switch. The other two follow whatever the table above is showing.",
+    "perHousehold": "Dollars per household",
+    "perHouseholdNote": "Each tier's holdings divided by the number of households in it — an average, not a typical household. The spread inside a tier is widest at the top: the top 0.1% is inside the top 1% and holds several times its average."
   },
   "chart": {
     "you": "You",

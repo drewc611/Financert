@@ -109,6 +109,9 @@ class AllocationOut(BaseModel):
     total_assets: float
     total_liabilities: float
     net_worth: float
+    # None only if a future source stops publishing the count; every group in
+    # every dimension carries one today.
+    household_count: float | None = None
     weights: dict[str, float]
     metrics: ShapeMetricsOut
 

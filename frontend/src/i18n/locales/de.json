@@ -113,7 +113,9 @@
     "leverage": "Verschuldungsgrad",
     "liquidity": "Liquider Anteil",
     "concentration": "Größte Position",
-    "leverageNote": "Der Verschuldungsgrad misst Schulden gegen die gesamte Bilanz und ändert sich daher nicht mit dem Filter „nur investierbar“. Die beiden anderen folgen der Tabelle oben."
+    "leverageNote": "Der Verschuldungsgrad misst Schulden gegen die gesamte Bilanz und ändert sich daher nicht mit dem Filter „nur investierbar“. Die beiden anderen folgen der Tabelle oben.",
+    "perHousehold": "Dollar je Haushalt",
+    "perHouseholdNote": "Die Bestände jeder Stufe geteilt durch die Zahl ihrer Haushalte — ein Durchschnitt, kein typischer Haushalt. Die Streuung innerhalb einer Stufe ist oben am größten: Das reichste 0,1 % liegt innerhalb des reichsten 1 % und hält ein Vielfaches von dessen Durchschnitt."
   },
   "chart": {
     "you": "Sie",

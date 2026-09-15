@@ -297,6 +297,7 @@ function toGroups(allocations) {
       total_assets: alloc.total_assets,
       total_liabilities: alloc.total_liabilities,
       net_worth: alloc.net_worth,
+      household_count: alloc.household_count ?? null,
       // Requested with investable_only=false, so these weights span the full
       // taxonomy and the client can derive either view.
       assets: alloc.weights,

@@ -14,6 +14,9 @@ export default function Benchmarks() {
   const { t, fmt, assetLabel, tierLabel, percentileRange } = useI18n()
   const [trendAsset, setTrendAsset] = useState('corporate_equities')
   const [trend, setTrend] = useState(null)
+  // Shares answer "how is it held"; dollars per household answer "how much"
+  // (BACKLOG F29). Shares stay the default -- they are what the page compares.
+  const [perHousehold, setPerHousehold] = useState(false)
 
   // Split so the nested top 0.1% never sits in the same row as the four
   // tiers that partition the population -- they would not sum to anything.
@@ -31,6 +34,9 @@ export default function Benchmarks() {
   const rows = useMemo(() => {
     const weightsByGroup = Object.fromEntries(
       allGroups.map((g) => [g.key, benchmarkWeights(g, { investableOnly })]),
+    )
+    const fullWeightsByGroup = Object.fromEntries(
+      allGroups.map((g) => [g.key, benchmarkWeights(g, { investableOnly: false })]),
     )
     const keys = benchmarks.assetClasses
       .map((a) => a.key)
@@ -52,6 +58,23 @@ export default function Benchmarks() {
             ? `${t('status.pending')} (${missing})`
             : assetLabel(key, english),
         values: Object.fromEntries(allGroups.map((g) => [g.key, weightsByGroup[g.key][key] ?? null])),
+        /* The same rows in dollars per household (BACKLOG F29). Measured
+           against the whole balance sheet rather than the investable subtotal,
+           so the figure is the same whichever way the investable switch is
+           set: that switch changes which rows are listed, not how much a
+           household holds.
+
+           Read through benchmarkWeights rather than group.assets directly --
+           the API sends shares there and the embedded snapshot sends dollars,
+           and only the normalised form means the same thing in both. */
+        perHousehold: Object.fromEntries(
+          allGroups.map((g) => [
+            g.key,
+            g.household_count > 0
+              ? ((fullWeightsByGroup[g.key][key] ?? 0) * g.total_assets) / g.household_count
+              : null,
+          ]),
+        ),
       }
     })
   }, [allGroups, benchmarks, investableOnly, assetLabel, t])
@@ -115,6 +138,8 @@ export default function Benchmarks() {
 
   // Nested tiers last, so the four partitioning tiers read left to right.
   const tableGroups = [...groups, ...nested]
+
+  const countsHouseholds = allGroups.every((g) => g.household_count > 0)
 
   const trendLabel = assetLabel(
     trendAsset,
@@ -192,6 +217,14 @@ export default function Benchmarks() {
       <div className="card">
         <div className="card-head">
           <h2>{t('benchmarks.holdTitle')}</h2>
+          {/* Only offered where the source publishes a household count to
+              divide by; without one there is no per-household figure to show. */}
+          {countsHouseholds && (
+            <label style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
+              <input type="checkbox" checked={perHousehold} onChange={(e) => setPerHousehold(e.target.checked)} />{' '}
+              {t('benchmarks.perHousehold')}
+            </label>
+          )}
         </div>
         <p className="sub">
           {t('benchmarks.holdSub', {
@@ -199,6 +232,10 @@ export default function Benchmarks() {
             quarter: fmt.quarter(periodMode === 'complete' ? benchmarks.completePeriod : benchmarks.latestPeriod),
           })}
         </p>
+        {/* A mean over millions of households, and the spread inside a tier is
+            the whole story of the tier above it -- so the figure is labelled an
+            average rather than left to read as a typical household. */}
+        {perHousehold && <p className="sub">{t('benchmarks.perHouseholdNote')}</p>}
         <div className="chart-scroll">
           <table>
             <thead>
@@ -216,11 +253,18 @@ export default function Benchmarks() {
               {rows.map((row) => (
                 <tr key={row.key}>
                   <td>{row.label}</td>
-                  {tableGroups.map((g) => (
-                    <td className={row.values[g.key] == null ? 'num muted' : 'num'} key={g.key}>
-                      {row.values[g.key] == null ? '—' : fmt.pct(row.values[g.key])}
-                    </td>
-                  ))}
+                  {tableGroups.map((g) => {
+                    // A row hidden by the investable switch has no share; it
+                    // still has a dollar figure, but showing one here would put
+                    // a number in a column the reader has asked to exclude.
+                    const share = row.values[g.key]
+                    const value = perHousehold && share != null ? row.perHousehold[g.key] : share
+                    return (
+                      <td className={value == null ? 'num muted' : 'num'} key={g.key}>
+                        {value == null ? '—' : perHousehold ? fmt.usd(value, { compact: true }) : fmt.pct(value)}
+                      </td>
+                    )
+                  })}
                 </tr>
               ))}
             </tbody>

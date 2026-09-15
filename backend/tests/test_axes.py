@@ -198,3 +198,28 @@ def test_the_trend_endpoint_resolves_the_dimension_from_the_group(client):
 
 def test_an_unknown_group_is_still_404(client):
     assert client.get("/api/benchmarks/trend?group=nope&asset_class=real_estate").status_code == 404
+
+
+def test_every_group_carries_a_household_count(client):
+    """F29: the counts are what turn a share of $40 trillion into a figure with
+    a household behind it. Every group of every axis has one, and they sum to
+    roughly the national total on each axis independently."""
+    national = None
+    for dimension in AXES:
+        body = client.get(f"/api/benchmarks?dimension={dimension}").json()
+        counts = {a["group"]: a["household_count"] for a in body["allocations"]}
+        assert all(v and v > 0 for v in counts.values()), dimension
+        total = sum(counts[g] for g in body["group_order"])
+        if national is None:
+            national = total
+        assert total == pytest.approx(national, rel=0.01), f"{dimension}: {total:,.0f} vs {national:,.0f}"
+    assert 100e6 < national < 200e6, f"{national:,.0f} US households is not a plausible number"
+
+
+def test_the_nested_tier_is_counted_inside_its_parent_not_beside_it():
+    """The top 0.1%'s households are already in the top 1%'s count, which is
+    why group_order excludes it from the sum above."""
+    period = benchmarks.latest_period()
+    top01 = benchmarks.allocation("top01", period)["household_count"]
+    top1 = benchmarks.allocation("top1", period)["household_count"]
+    assert 0 < top01 < top1
