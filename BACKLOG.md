@@ -366,9 +366,9 @@ the switch now.
 | F50 | Empty, loading and error states audited across all three views | M |
 | ~~F51~~ ✅ | Print stylesheet | S |
 | F52 | Shareable permalink encoding holdings in the URL | M |
-| F53 | CSV export of your comparison | S |
+| ~~F53~~ ✅ | CSV export of your comparison | S |
 | F54 | PNG export of a chart | M |
-| F55 | Onboarding: prefill a plausible household so the app is not empty on arrival | S |
+| ~~F55~~ ✅ | Onboarding: prefill a plausible household so the app is not empty on arrival | S |
 | F56 | Inline "where does this number come from" popovers citing the series | M |
 | F57 | Mobile pass on the tiers table (currently scrolls in a container) | M |
 | ~~F58~~ ✅ | Dark-mode audit of the newer components | S |
@@ -418,6 +418,22 @@ component testing a five-view app earns.
 Vite went 5 → 8 with it (the version Vitest needs), which cleared three
 pre-existing advisories including a high. The one left is `js-yaml` via ESLint
 8, which wants the flat-config migration.
+
+**F53 and F55 are the two ends of the same session**: arriving with nothing,
+and leaving with something.
+
+F53 writes the comparison as a CSV in the browser -- offline included, and
+nothing about the portfolio leaves the page to produce it. It names the
+benchmark, the quarter and the scope in the file, because a spreadsheet three
+months from now has no other way to know what it is a comparison of, and it
+writes plain decimals rather than localised percentages: "12,3 %" imports as
+text or as 123. The scope row is TRUE/FALSE against an existing label, since
+the on-screen wording is a sentence fragment in several languages.
+
+F55 loads a plausible household -- roughly the median American shape, most of
+it in the house, against a mortgage -- on an explicit click, labelled as an
+example, cleared by the same button that clears anything else. An example a
+reader cannot tell from their own numbers would be worse than an empty page.
 
 **F47, F51, F58 and F59 are one pass over how the pages read.**
 

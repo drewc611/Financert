@@ -11,6 +11,28 @@ export const GAP_TOLERANCE_PP = 1.5
 export const PENDING_LABEL = 'Not yet published'
 export const SIMILARITY_FLOOR = 0.5
 
+/* A plausible household to look at, for a first visit that would otherwise be
+   an empty page with a form on it (BACKLOG F55).
+
+   Roughly the US median shape rather than anything aspirational: most of the
+   money in the house, a retirement account, a small brokerage balance and a
+   cash buffer, against a mortgage. It is loaded by an explicit click, labelled
+   as an example, and clearing it is the same button that clears anything else
+   -- an example the reader cannot tell from their own numbers would be worse
+   than an empty page. */
+export const EXAMPLE_HOLDINGS = {
+  real_estate: 320000,
+  pension: 145000,
+  corporate_equities: 38000,
+  deposits: 21000,
+  consumer_durables: 24000,
+}
+
+export const EXAMPLE_DEBTS = {
+  home_mortgages: 198000,
+  consumer_credit: 14000,
+}
+
 export function benchmarkWeights(group, { investableOnly = true } = {}) {
   const assets = { ...group.assets }
   if (investableOnly) {

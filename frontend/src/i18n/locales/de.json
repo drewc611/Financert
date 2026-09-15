@@ -64,7 +64,13 @@
     "pendingBody": "Die Federal Reserve veröffentlicht {classes} später als den Rest der Bilanz; die Position erscheint unten daher als „noch nicht veröffentlicht“ statt als Zahl. Alle anderen Anteile sind weiterhin korrekt.",
     "usePeriodInstead": "Stattdessen {quarter} verwenden",
     "colDollars": "In Dollar",
-    "differDollars": "Die Dollar-Spalte ist diese Abweichung bezogen auf Ihre {total}: was es kosten würde, sie zu schließen."
+    "differDollars": "Die Dollar-Spalte ist diese Abweichung bezogen auf Ihre {total}: was es kosten würde, sie zu schließen.",
+    "downloadCsv": "CSV herunterladen",
+    "csvBenchmark": "Referenz",
+    "csvPeriod": "Zeitraum",
+    "csvTotal": "Verglichenes Portfolio",
+    "tryExample": "Beispielhaushalt laden",
+    "tryExampleNote": "— ungefähr die mediane US-Form: das meiste im Haus, ein Altersvorsorgekonto, ein kleines Depot, dem eine Hypothek gegenübersteht. Gelöscht wird es mit derselben Schaltfläche wie Ihre eigenen Zahlen."
   },
   "status": {
     "overweight": "Übergewichtet",

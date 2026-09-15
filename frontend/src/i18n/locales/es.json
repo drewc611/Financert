@@ -64,7 +64,13 @@
     "pendingBody": "La Reserva Federal publica {classes} más tarde que el resto del balance, por lo que aparece abajo como «aún no publicado» en lugar de una cifra. Todas las demás proporciones siguen siendo correctas.",
     "usePeriodInstead": "Usar {quarter} en su lugar",
     "colDollars": "En dólares",
-    "differDollars": "La columna en dólares es esa diferencia sobre tus {total}: lo que costaría cerrarla."
+    "differDollars": "La columna en dólares es esa diferencia sobre tus {total}: lo que costaría cerrarla.",
+    "downloadCsv": "Descargar CSV",
+    "csvBenchmark": "Referencia",
+    "csvPeriod": "Periodo",
+    "csvTotal": "Cartera comparada",
+    "tryExample": "Cargar un hogar de ejemplo",
+    "tryExampleNote": "— aproximadamente la forma mediana estadounidense: la mayor parte en la vivienda, un plan de jubilación, un pequeño saldo de valores, frente a una hipoteca. Se borra con el mismo botón que borra lo tuyo."
   },
   "status": {
     "overweight": "Sobreponderado",

@@ -64,7 +64,13 @@
     "pendingBody": "O Federal Reserve publica {classes} depois do restante do balanço, então aparece abaixo como “ainda não publicado” em vez de um número. Todas as demais proporções continuam corretas.",
     "usePeriodInstead": "Usar {quarter} em vez disso",
     "colDollars": "Em dólares",
-    "differDollars": "A coluna em dólares é essa diferença aplicada aos seus {total}: o que custaria fechá-la."
+    "differDollars": "A coluna em dólares é essa diferença aplicada aos seus {total}: o que custaria fechá-la.",
+    "downloadCsv": "Descarregar CSV",
+    "csvBenchmark": "Referência",
+    "csvPeriod": "Período",
+    "csvTotal": "Carteira comparada",
+    "tryExample": "Carregar uma família de exemplo",
+    "tryExampleNote": "— aproximadamente a forma mediana norte-americana: a maior parte na habitação, uma conta de reforma, um pequeno saldo de títulos, face a um crédito à habitação. Limpa-se com o mesmo botão que limpa os seus números."
   },
   "status": {
     "overweight": "Sobrealocado",
