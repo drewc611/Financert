@@ -293,5 +293,11 @@
     "change": "Évolution",
     "sub": "Comment {tier} détenait ses actifs en {from} par rapport à {to}, plus grand écart d'abord. Des parts, pas des dollars : le bilan de chaque tranche a grossi sur toute longue période, si bien qu'en dollars le classement refléterait les prix des actifs plutôt que l'évolution de la répartition.",
     "needsApi": "Ceci nécessite l'API : il compare deux trimestres, et l'instantané embarqué ne contient que le dernier."
+  },
+  "rebalance": {
+    "title": "Ce qu'il faudrait pour égaler",
+    "sub": "L'arithmétique des écarts ci-dessus : {share} du portefeuille bougerait, en {count} transferts. Descriptif, comme le reste de la page : c'est ce qu'égaler voudrait dire, pas une suggestion de le faire.",
+    "move": "{amount} de {from} vers {to}",
+    "biggest": "Parmi eux, {asset} à lui seul réduirait le plus l'écart : l'aligner sur la référence augmente la similarité de {gain}."
   }
 }

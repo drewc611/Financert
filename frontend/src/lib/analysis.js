@@ -141,6 +141,70 @@ export function placeByThreshold(groups, netWorth) {
   }
 }
 
+/** The smallest set of moves that would put a portfolio on a tier's mix
+ *  (BACKLOG F36).
+ *
+ *  Every class is either over or under its benchmark weight, and the two sides
+ *  sum to the same amount, so the moves are a pairing of surpluses to
+ *  deficits -- largest to largest, which keeps the count of moves down. The
+ *  total moved is half the sum of the absolute gaps: moving a dollar closes
+ *  both an overweight and an underweight at once, and counting it twice would
+ *  double the distance.
+ *
+ *  Gaps under the tolerance are left alone. They are inside what the survey
+ *  can resolve, and "sell $300 of annuities" is not a finding.
+ */
+export function rebalanceMoves(gaps, total) {
+  if (!(total > 0)) return { moves: [], distance: 0 }
+  const over = gaps
+    .filter((g) => g.status === 'overweight')
+    .map((g) => ({ key: g.asset_class, label: g.label, amount: (g.gap_pp / 100) * total }))
+    .sort((a, b) => b.amount - a.amount)
+  const under = gaps
+    .filter((g) => g.status === 'underweight')
+    .map((g) => ({ key: g.asset_class, label: g.label, amount: (-g.gap_pp / 100) * total }))
+    .sort((a, b) => b.amount - a.amount)
+
+  const moves = []
+  let i = 0
+  let j = 0
+  while (i < over.length && j < under.length) {
+    const amount = Math.min(over[i].amount, under[j].amount)
+    if (amount > 0) moves.push({ from: over[i], to: under[j], amount })
+    over[i].amount -= amount
+    under[j].amount -= amount
+    if (over[i].amount <= 0.005) i += 1
+    if (under[j].amount <= 0.005) j += 1
+  }
+  return { moves, distance: moves.reduce((a, m) => a + m.amount, 0) }
+}
+
+/** Which single class, brought to the benchmark, would move the similarity
+ *  most (BACKLOG F40).
+ *
+ *  One class at a time, each measured against the same starting point rather
+ *  than compounding: the answer to "what one change" has to be one change.
+ *  The rest of the portfolio is rescaled to keep the weights summing to one,
+ *  which is what actually happens when money moves between classes.
+ */
+export function sensitivity(user, bench) {
+  const base = cosineSimilarity(user, bench)
+  const keys = [...new Set([...Object.keys(user), ...Object.keys(bench)])]
+  return keys
+    .map((key) => {
+      const target = bench[key] ?? 0
+      const rest = 1 - (user[key] ?? 0)
+      const scale = rest > 0 ? (1 - target) / rest : 0
+      const moved = Object.fromEntries(keys.map((k) => [k, k === key ? target : (user[k] ?? 0) * scale]))
+      return {
+        asset_class: key,
+        gain: round4(cosineSimilarity(moved, bench) - base),
+      }
+    })
+    .filter((row) => row.gain > 0)
+    .sort((a, b) => b.gain - a.gain)
+}
+
 /** Full comparison, mirroring the backend's /api/analysis response shape. */
 export function analyse(holdings, { groups, groupKey = 'top1', investableOnly = true, labels = {} }) {
   const considered = investableOnly

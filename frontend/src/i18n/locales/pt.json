@@ -293,5 +293,11 @@
     "change": "Variação",
     "sub": "Como {tier} detinha os seus ativos em {from} face a {to}, começando pela maior variação. Proporções, não dólares: o balanço de cada faixa cresceu em qualquer período longo, pelo que em dólares a ordenação refletiria os preços dos ativos e não o que mudou na composição.",
     "needsApi": "Isto precisa da API: compara dois trimestres, e o instantâneo incorporado só inclui o último."
+  },
+  "rebalance": {
+    "title": "O que seria preciso para igualar",
+    "sub": "A aritmética das diferenças acima: mover-se-ia {share} da carteira, em {count} transferências. É descritivo, como o resto da página: é o que igualar significaria, não uma sugestão de o fazer.",
+    "move": "{amount} de {from} para {to}",
+    "biggest": "Destes, {asset} sozinho fecharia a maior distância: levá-lo ao valor de referência aumenta a semelhança em {gain}."
   }
 }

@@ -293,5 +293,11 @@
     "change": "Change",
     "sub": "How {tier} held its assets in {from} against {to}, biggest move first. Shares, not dollars: every tier's balance sheet grew over any long window, so dollars would rank these by asset prices rather than by what changed about the mix.",
     "needsApi": "This one needs the API: it compares two quarters, and the embedded snapshot carries the latest one only."
+  },
+  "rebalance": {
+    "title": "What it would take to match",
+    "sub": "The arithmetic of the gaps above: {share} of the portfolio would move, in {count} transfers. Descriptive, like the rest of this page — it is what matching would mean, not a suggestion to do it.",
+    "move": "{amount} from {from} to {to}",
+    "biggest": "Of those, {asset} alone would close the most distance — bringing it to the benchmark raises the similarity by {gain}."
   }
 }
