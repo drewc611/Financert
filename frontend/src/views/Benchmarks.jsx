@@ -5,6 +5,7 @@ import { benchmarkWeights, debtWeights, shapeMetrics, UNALLOCATED } from '../lib
 import TrendChart from '../components/TrendChart'
 import DimensionPicker from '../components/DimensionPicker'
 import ThresholdPlacement from '../components/ThresholdPlacement'
+import PeriodPicker from '../components/PeriodPicker'
 import { useI18n } from '../i18n'
 
 const TREND_ASSETS = ['corporate_equities', 'private_business', 'real_estate']
@@ -186,6 +187,7 @@ export default function Benchmarks() {
     <>
       <div className="controls">
         <DimensionPicker />
+        <PeriodPicker />
         {/* The table says "share of investable assets" and, until now, gave no
             way to see the other view -- the switch lived only on the Compare
             tab, which also made the unallocated residual unreachable here. */}

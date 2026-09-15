@@ -34,7 +34,8 @@
     "investableOnly": "Somente ativos investíveis",
     "insideTop1": " — dentro do 1% mais rico",
     "dimension": "Comparar por",
-    "dimensionOffline": "outros eixos exigem a API"
+    "dimensionOffline": "outros eixos exigem a API",
+    "historyOffline": "o histórico precisa da API"
   },
   "compare": {
     "emptyTitle": "Ainda não há nada para comparar",

@@ -34,7 +34,8 @@
     "investableOnly": "الأصول القابلة للاستثمار فقط",
     "insideTop1": " — ضمن أغنى ١٪",
     "dimension": "المقارنة حسب",
-    "dimensionOffline": "تتطلب المحاور الأخرى واجهة البرمجة"
+    "dimensionOffline": "تتطلب المحاور الأخرى واجهة البرمجة",
+    "historyOffline": "يتطلب السجل واجهة البرمجة"
   },
   "compare": {
     "emptyTitle": "لا يوجد ما يُقارن بعد",

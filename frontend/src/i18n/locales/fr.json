@@ -34,7 +34,8 @@
     "investableOnly": "Actifs investissables uniquement",
     "insideTop1": " — au sein des 1 % les plus riches",
     "dimension": "Comparer par",
-    "dimensionOffline": "les autres axes nécessitent l'API"
+    "dimensionOffline": "les autres axes nécessitent l'API",
+    "historyOffline": "l'historique nécessite l'API"
   },
   "compare": {
     "emptyTitle": "Rien à comparer pour l'instant",

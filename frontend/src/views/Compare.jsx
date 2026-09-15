@@ -6,13 +6,13 @@ import GapChart from '../components/GapChart'
 import DimensionPicker from '../components/DimensionPicker'
 import CohortPicker from '../components/CohortPicker'
 import Placements from '../components/Placements'
+import PeriodPicker from '../components/PeriodPicker'
 import { useI18n } from '../i18n'
 
 export default function Compare() {
   const {
     benchmarks,
     activeGroups,
-    periodMode,
     setPeriodMode,
     holdings,
     groupKey,
@@ -58,9 +58,6 @@ export default function Compare() {
       setGroupKey={setGroupKey}
       investableOnly={investableOnly}
       setInvestableOnly={setInvestableOnly}
-      periodMode={periodMode}
-      setPeriodMode={setPeriodMode}
-      benchmarks={benchmarks}
     />
   )
 
@@ -202,17 +199,8 @@ export default function Compare() {
   )
 }
 
-function TierControls({
-  groups,
-  groupKey,
-  setGroupKey,
-  investableOnly,
-  setInvestableOnly,
-  periodMode,
-  setPeriodMode,
-  benchmarks,
-}) {
-  const { t, fmt, tierLabel, percentileRange } = useI18n()
+function TierControls({ groups, groupKey, setGroupKey, investableOnly, setInvestableOnly }) {
+  const { t, tierLabel, percentileRange } = useI18n()
   return (
     <>
       <CohortPicker />
@@ -232,22 +220,7 @@ function TierControls({
             ))}
           </select>
         </label>
-        {/* Only meaningful when the newest quarter is missing a class. With the
-            bulk DFA source every quarter is complete, so the two options would
-            be the same date and the control would be noise. */}
-        {benchmarks.latestPeriod !== benchmarks.completePeriod && (
-          <label>
-            {t('controls.quarter')}
-            <select value={periodMode} onChange={(e) => setPeriodMode(e.target.value)}>
-              <option value="latest">
-                {t('controls.mostRecent', { quarter: fmt.quarter(benchmarks.latestPeriod) })}
-              </option>
-              <option value="complete">
-                {t('controls.fullyPublished', { quarter: fmt.quarter(benchmarks.completePeriod) })}
-              </option>
-            </select>
-          </label>
-        )}
+        <PeriodPicker />
         <label>
           <input type="checkbox" checked={investableOnly} onChange={(e) => setInvestableOnly(e.target.checked)} />
           {t('controls.investableOnly')}

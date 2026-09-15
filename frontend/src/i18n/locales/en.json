@@ -34,7 +34,8 @@
     "investableOnly": "Investable assets only",
     "insideTop1": " — inside the top 1%",
     "dimension": "Compare by",
-    "dimensionOffline": "other axes need the API"
+    "dimensionOffline": "other axes need the API",
+    "historyOffline": "history needs the API"
   },
   "compare": {
     "emptyTitle": "Nothing to compare yet",
