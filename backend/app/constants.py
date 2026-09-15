@@ -28,64 +28,185 @@ The file splits the top 1% into ``TopPt1`` and ``RemainingTop1``; the combined
 top 1% is synthesised by summing them (see ``COMPOSITE_GROUPS``).
 """
 
-# --- wealth groups ----------------------------------------------------------
+# --- dimension registry -----------------------------------------------------
 
-# `category` is the value in the CSV's Category column. `parts` marks a group
-# the file does not publish directly, synthesised by summing other categories.
-WEALTH_GROUPS = {
-    # `nested` marks a group that is a subset of another rather than its own
-    # slice of the population. The four groups in GROUP_ORDER partition every
-    # US household; the top 0.1% sits inside the top 1%, so it must never be
-    # summed alongside them or presented as a fifth slice of a pie.
-    "top01": {
-        "category": "TopPt1",
-        "label": "Top 0.1%",
-        "percentile_range": "99.9th-100th",
-        "population_share": 0.001,
-        "nested": True,
-        "nested_in": "top1",
+# The DFA publishes the same balance-sheet taxonomy cut six different ways, one
+# CSV per cut. Each cut is a *dimension*: a set of groups that between them
+# partition every US household. Adding one is a matter of describing it here,
+# not of writing another copy of the fetch-and-group code.
+#
+# Within a dimension's ``groups``:
+#   ``category``    the value in that file's Category column.
+#   ``parts``       a group the file does not publish directly, synthesised by
+#                   summing other categories.
+#   ``nested``      a group that is a subset of another rather than its own
+#                   slice of the population, so it must never be summed
+#                   alongside its siblings or drawn as another slice of a pie.
+#
+# Net worth is the only dimension with a nested group. Income looks like it
+# should have one -- ``pct99to100`` is its top-1% analogue -- but the file
+# publishes it as its own disjoint slice alongside ``pct80to99``, so summing
+# income's six groups is correct where summing net worth's five is not. That
+# asymmetry is exactly why nesting is per-group data rather than a rule the
+# code assumes.
+#
+# ``population_share`` is only meaningful where the cut is defined by
+# percentile: the top 1% is one percent of households by construction. For
+# generation, education, race and age the share is an empirical quantity that
+# moves every quarter, so it is None here and belongs to the fetched data
+# (``Household count``), not to this table.
+#
+# Category values below are transcribed from the published files, not inferred
+# -- tests/test_dimensions.py checks them against the real archive.
+DIMENSIONS = {
+    "networth": {
+        "label": "Net worth",
+        "member": "dfa-networth-levels-detail.csv",
+        "groups": {
+            "top01": {
+                "category": "TopPt1",
+                "label": "Top 0.1%",
+                "percentile_range": "99.9th-100th",
+                "population_share": 0.001,
+                "nested": True,
+                "nested_in": "top1",
+            },
+            "top1": {
+                # Not published as one row; the file splits it at the 99.9th.
+                "parts": ["TopPt1", "RemainingTop1"],
+                "label": "Top 1%",
+                "percentile_range": "99th-100th",
+                "population_share": 0.01,
+                "nested": False,
+            },
+            "next9": {
+                "category": "Next9",
+                "label": "Next 9%",
+                "percentile_range": "90th-99th",
+                "population_share": 0.09,
+                "nested": False,
+            },
+            "next40": {
+                "category": "Next40",
+                "label": "Next 40%",
+                "percentile_range": "50th-90th",
+                "population_share": 0.40,
+                "nested": False,
+            },
+            "bottom50": {
+                "category": "Bottom50",
+                "label": "Bottom 50%",
+                "percentile_range": "0-50th",
+                "population_share": 0.50,
+                "nested": False,
+            },
+        },
     },
-    "top1": {
-        # Not published as one row; the file splits it at the 99.9th percentile.
-        "parts": ["TopPt1", "RemainingTop1"],
-        "label": "Top 1%",
-        "percentile_range": "99th-100th",
-        "population_share": 0.01,
-        "nested": False,
+    "generation": {
+        "label": "Generation",
+        "member": "dfa-generation-levels-detail.csv",
+        "groups": {
+            "silent": {"category": "Silent", "label": "Silent and earlier", "nested": False},
+            "boomer": {"category": "BabyBoom", "label": "Baby Boom", "nested": False},
+            "genx": {"category": "GenX", "label": "Gen X", "nested": False},
+            "millennial": {"category": "Millennial", "label": "Millennial and later", "nested": False},
+        },
     },
-    "next9": {
-        "category": "Next9",
-        "label": "Next 9%",
-        "percentile_range": "90th-99th",
-        "population_share": 0.09,
-        "nested": False,
+    "education": {
+        "label": "Education",
+        "member": "dfa-education-levels-detail.csv",
+        "groups": {
+            "no_hs": {"category": "NoHS", "label": "No high school diploma", "nested": False},
+            "hs": {"category": "HS", "label": "High school diploma", "nested": False},
+            "some_college": {"category": "SomeCollege", "label": "Some college", "nested": False},
+            "college": {"category": "College", "label": "College degree", "nested": False},
+        },
     },
-    "next40": {
-        "category": "Next40",
-        "label": "Next 40%",
-        "percentile_range": "50th-90th",
-        "population_share": 0.40,
-        "nested": False,
+    "income": {
+        "label": "Income",
+        "member": "dfa-income-levels-detail.csv",
+        "groups": {
+            "pct00to20": {"category": "pct00to20", "label": "Bottom 20%", "population_share": 0.20, "nested": False},
+            "pct20to40": {"category": "pct20to40", "label": "20th-40th", "population_share": 0.20, "nested": False},
+            "pct40to60": {"category": "pct40to60", "label": "40th-60th", "population_share": 0.20, "nested": False},
+            "pct60to80": {"category": "pct60to80", "label": "60th-80th", "population_share": 0.20, "nested": False},
+            "pct80to99": {"category": "pct80to99", "label": "80th-99th", "population_share": 0.19, "nested": False},
+            "pct99to100": {"category": "pct99to100", "label": "Top 1%", "population_share": 0.01, "nested": False},
+        },
     },
-    "bottom50": {
-        "category": "Bottom50",
-        "label": "Bottom 50%",
-        "percentile_range": "0-50th",
-        "population_share": 0.50,
-        "nested": False,
+    "race": {
+        "label": "Race and ethnicity",
+        "member": "dfa-race-levels-detail.csv",
+        "groups": {
+            "white": {"category": "White", "label": "White, non-Hispanic", "nested": False},
+            "black": {"category": "Black", "label": "Black, non-Hispanic", "nested": False},
+            "hispanic": {"category": "Hispanic", "label": "Hispanic", "nested": False},
+            "other": {"category": "Other", "label": "Other or multiple", "nested": False},
+        },
+    },
+    "age": {
+        "label": "Age",
+        "member": "dfa-age-levels-detail.csv",
+        "groups": {
+            "under40": {"category": "ageunder40", "label": "Under 40", "nested": False},
+            "age40to54": {"category": "age40to54", "label": "40 to 54", "nested": False},
+            "age55to69": {"category": "age55to69", "label": "55 to 69", "nested": False},
+            "age70plus": {"category": "age70plus", "label": "70 and over", "nested": False},
+        },
     },
 }
 
-# The four groups that partition the population, in wealth order. The
-# nested top 0.1% is deliberately excluded so anything iterating tiers to
-# build a distribution cannot double count it.
-GROUP_ORDER = ["top1", "next9", "next40", "bottom50"]
+# The dimension everything defaults to. The app is built around "how does the
+# top 1% hold its wealth", so net worth stays the one the plain, unqualified
+# endpoints answer for.
+DEFAULT_DIMENSION = "networth"
 
-# Every group with data, including nested ones. Use this for fetching and
-# for offering benchmarks to compare against.
-ALL_GROUPS = ["top01", "top1", "next9", "next40", "bottom50"]
 
-NESTED_GROUPS = [g for g in ALL_GROUPS if WEALTH_GROUPS[g].get("nested")]
+def groups_of(dimension: str = DEFAULT_DIMENSION) -> dict:
+    return DIMENSIONS[dimension]["groups"]
+
+
+def group_order(dimension: str = DEFAULT_DIMENSION) -> list[str]:
+    """The groups that partition the population, in published order.
+
+    Nested groups are excluded, so anything iterating a dimension to build a
+    distribution cannot double count.
+    """
+    return [key for key, spec in groups_of(dimension).items() if not spec.get("nested")]
+
+
+def all_group_keys(dimension: str = DEFAULT_DIMENSION) -> list[str]:
+    """Every group with data, nested ones included -- what to fetch, and what
+    to offer as a benchmark to compare against."""
+    return list(groups_of(dimension))
+
+
+def nested_group_keys(dimension: str = DEFAULT_DIMENSION) -> list[str]:
+    return [key for key, spec in groups_of(dimension).items() if spec.get("nested")]
+
+
+def dimension_of(group_key: str) -> str:
+    """Which dimension a group key belongs to.
+
+    Group keys are unique across the whole registry (checked in
+    tests/test_dimensions.py), so a caller holding only a key can still be
+    routed without being told which axis it came from.
+    """
+    for name, spec in DIMENSIONS.items():
+        if group_key in spec["groups"]:
+            return name
+    raise KeyError(group_key)
+
+
+# --- wealth groups ----------------------------------------------------------
+
+# Net worth's own view of the registry. These four names are what most of the
+# app imports; they are derived rather than written out twice so the registry
+# stays the single source of truth.
+WEALTH_GROUPS = groups_of()
+GROUP_ORDER = group_order()
+ALL_GROUPS = all_group_keys()
+NESTED_GROUPS = nested_group_keys()
 
 # --- legacy block offsets ---------------------------------------------------
 
@@ -303,16 +424,39 @@ def columns_for(asset_key: str) -> list[str]:
     return [spec["column"]]
 
 
-def categories_for(group_key: str) -> list[str]:
-    """Return the CSV Category value(s) that make up a wealth group.
+def categories_for(group_key: str, dimension: str | None = None) -> list[str]:
+    """Return the CSV Category value(s) that make up a group.
 
-    Most groups are one row. The top 1% is not published as a row -- the file
-    splits it at the 99.9th percentile -- so it is summed from its parts.
+    Most groups are one row. Net worth's top 1% is not published as a row --
+    the file splits it at the 99.9th percentile -- so it is summed from its
+    parts. ``dimension`` is resolved from the key when not given.
     """
-    group = WEALTH_GROUPS[group_key]
+    dimension = dimension or dimension_of(group_key)
+    group = groups_of(dimension)[group_key]
     if "parts" in group:
         return list(group["parts"])
     return [group["category"]]
+
+
+def summable(group_keys: list[str]) -> bool:
+    """Whether these groups may be added together.
+
+    Two ways a sum goes wrong, and both look perfectly reasonable in a chart:
+    adding a nested group to the siblings it sits inside (net worth's top 0.1%
+    is already inside its top 1%), and adding groups from different dimensions,
+    which are separate cuts of the *same* households rather than separate
+    households. Callers that total anything should ask first.
+    """
+    if not group_keys:
+        return True
+    try:
+        dimensions = {dimension_of(key) for key in group_keys}
+    except KeyError:
+        return False
+    if len(dimensions) > 1:
+        return False
+    groups = groups_of(dimensions.pop())
+    return not any(groups[key].get("nested") for key in group_keys)
 
 
 def parse_period(period: str) -> str:
