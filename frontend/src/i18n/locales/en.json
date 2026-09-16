@@ -356,5 +356,30 @@
     "aria": "Where the {label} figure comes from",
     "columns": "Federal Reserve DFA columns",
     "from": "Read from {file}, retrieved {when}."
+  },
+  "scenario": {
+    "start": "Try a change",
+    "unsaved": "Trying a change.",
+    "unsavedShort": "Unsaved change",
+    "editing": "Scenario: {name}.",
+    "total": "Nothing is saved while this is open — {amount} across these holdings.",
+    "namePlaceholder": "Name this scenario",
+    "nameAria": "Scenario name",
+    "save": "Keep it",
+    "apply": "Make it my portfolio",
+    "discard": "Throw it away",
+    "listTitle": "Saved scenarios",
+    "listSub": "Kept in this browser, never sent anywhere. Opening one leaves your portfolio untouched.",
+    "name": "Scenario",
+    "classes": "Classes",
+    "open": "Open",
+    "openNow": "open",
+    "delete": "Delete",
+    "myPortfolio": "My portfolio",
+    "compareTitle": "Two of yours, side by side",
+    "compareSub": "Your portfolio against a scenario, and each against {tier}. Similarity is 1.00 for an identical mix.",
+    "left": "Left",
+    "right": "Right",
+    "similarityNote": "similarity to {tier} · {amount}"
   }
 }

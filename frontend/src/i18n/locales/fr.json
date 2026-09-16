@@ -356,5 +356,30 @@
     "aria": "D'où vient le chiffre de {label}",
     "columns": "Colonnes des DFA de la Réserve fédérale",
     "from": "Lu dans {file}, récupéré le {when}."
+  },
+  "scenario": {
+    "start": "Essayer un changement",
+    "unsaved": "Essai en cours.",
+    "unsavedShort": "Changement non enregistré",
+    "editing": "Scénario : {name}.",
+    "total": "Rien n'est enregistré tant que ceci est ouvert — {amount} sur ces lignes.",
+    "namePlaceholder": "Nommer ce scénario",
+    "nameAria": "Nom du scénario",
+    "save": "Le garder",
+    "apply": "En faire mon portefeuille",
+    "discard": "Le jeter",
+    "listTitle": "Scénarios enregistrés",
+    "listSub": "Conservés dans ce navigateur, envoyés nulle part. En ouvrir un ne touche pas à votre portefeuille.",
+    "name": "Scénario",
+    "classes": "Classes",
+    "open": "Ouvrir",
+    "openNow": "ouvert",
+    "delete": "Supprimer",
+    "myPortfolio": "Mon portefeuille",
+    "compareTitle": "Deux des vôtres, côte à côte",
+    "compareSub": "Votre portefeuille face à un scénario, et chacun face à {tier}. La similarité vaut 1,00 pour une composition identique.",
+    "left": "Gauche",
+    "right": "Droite",
+    "similarityNote": "similarité avec {tier} · {amount}"
   }
 }

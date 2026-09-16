@@ -10,6 +10,7 @@ import PeriodPicker from '../components/PeriodPicker'
 import PeriodScrubber from '../components/PeriodScrubber'
 import GapOverTime from '../components/GapOverTime'
 import Rebalance from '../components/Rebalance'
+import ScenarioCompare from '../components/ScenarioCompare'
 import SlopeChart from '../components/SlopeChart'
 import ShareLink from '../components/ShareLink'
 import SharedNotice from '../components/SharedNotice'
@@ -258,6 +259,8 @@ export default function Compare() {
         <p className="sub">{t('compare.slopeSub', { tier: benchmarkLabel })}</p>
         <SlopeChart rows={chartRows} benchmarkLabel={benchmarkLabel} youLabel={t('chart.you')} />
       </div>
+
+      <ScenarioCompare benchmarkWeights={result.benchmark_weights} benchmarkLabel={benchmarkLabel} />
 
       <GapOverTime groupKey={groupKey} label={benchmarkLabel} />
 

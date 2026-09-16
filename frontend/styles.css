@@ -928,6 +928,28 @@ input[type="number"] {
   color: var(--text-primary);
 }
 
+/* The "what if" banner (BACKLOG F38). Visible from every view, because a
+   draft changes every number on all of them. */
+.scenario-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+
+.scenario-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-inline-start: auto;
+}
+
+.scenario-actions input[type="text"] {
+  width: 180px;
+  max-width: 100%;
+}
+
 /* --- source notes --------------------------------------------------------- */
 
 /* "Where does this number come from", beside the number (BACKLOG F56). The

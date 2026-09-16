@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useAppData } from '../context/AppDataContext'
+import ScenarioList from '../components/ScenarioList'
 import SourceNote from '../components/SourceNote'
 import { useI18n } from '../i18n'
 
@@ -18,6 +19,8 @@ export default function Portfolio() {
     portfolios,
     token,
     updateToken,
+    scenario,
+    startScenario,
   } = useAppData()
   const { t, fmt } = useI18n()
   const [status, setStatus] = useState(null)
@@ -133,12 +136,21 @@ export default function Portfolio() {
         <button className="icon-btn" onClick={clearHoldings} disabled={total === 0 && owed === 0}>
           {t('portfolio.clearAll')}
         </button>
+        {/* A draft of this portfolio that does not overwrite it (F38). Every
+            keystroke on this page is otherwise a save. */}
+        {!scenario && (
+          <button className="icon-btn" onClick={startScenario} disabled={total === 0}>
+            {t('scenario.start')}
+          </button>
+        )}
         {/* A live region: saving is the one action on this page with an
             outcome, and it was announced only to people who could see it. */}
         <span className="saved-note" role="status" data-error={status?.error ? '' : undefined}>
           {status?.text}
         </span>
       </div>
+
+      <ScenarioList />
 
       {mode === 'live' && (
         <details className="token-box">

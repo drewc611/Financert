@@ -356,5 +356,30 @@
     "aria": "Woher die Zahl für {label} stammt",
     "columns": "Spalten der DFA der Federal Reserve",
     "from": "Gelesen aus {file}, abgerufen am {when}."
+  },
+  "scenario": {
+    "start": "Eine Änderung ausprobieren",
+    "unsaved": "Änderung wird ausprobiert.",
+    "unsavedShort": "Ungespeicherte Änderung",
+    "editing": "Szenario: {name}.",
+    "total": "Solange dies offen ist, wird nichts gespeichert – {amount} in diesen Positionen.",
+    "namePlaceholder": "Szenario benennen",
+    "nameAria": "Name des Szenarios",
+    "save": "Behalten",
+    "apply": "Zu meinem Portfolio machen",
+    "discard": "Verwerfen",
+    "listTitle": "Gespeicherte Szenarien",
+    "listSub": "Bleiben in diesem Browser und werden nirgendwohin gesendet. Eines zu öffnen lässt Ihr Portfolio unberührt.",
+    "name": "Szenario",
+    "classes": "Klassen",
+    "open": "Öffnen",
+    "openNow": "offen",
+    "delete": "Löschen",
+    "myPortfolio": "Mein Portfolio",
+    "compareTitle": "Zwei von Ihren, nebeneinander",
+    "compareSub": "Ihr Portfolio gegen ein Szenario, und beide gegen {tier}. Ähnlichkeit 1,00 wäre eine identische Mischung.",
+    "left": "Links",
+    "right": "Rechts",
+    "similarityNote": "Ähnlichkeit zu {tier} · {amount}"
   }
 }
