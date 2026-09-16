@@ -57,7 +57,7 @@ jobs:
           fi
           echo "Pages API returned $code; continuing."
 
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
       - uses: actions/jekyll-build-pages@v1
         with:
           source: ./docs
