@@ -35,7 +35,9 @@
     "insideTop1": " — inside the top 1%",
     "dimension": "Compare by",
     "dimensionOffline": "other axes need the API",
-    "historyOffline": "history needs the API"
+    "historyOffline": "history needs the API",
+    "scrub": "Move through time",
+    "scrubRelease": "release to load"
   },
   "compare": {
     "emptyTitle": "Nothing to compare yet",
@@ -72,7 +74,12 @@
     "tryExample": "Load an example household",
     "tryExampleNote": "— roughly the median American shape: most of it in the house, a retirement account, a small brokerage balance, against a mortgage. Clearing it is the same button as clearing your own.",
     "slopeTitle": "Your order against {tier}",
-    "slopeSub": "Every class as a share, yours on the left and {tier} on the right. Crossing lines are classes the two of you rank differently; classes under 2% are drawn but not labelled."
+    "slopeSub": "Every class as a share, yours on the left and {tier} on the right. Crossing lines are classes the two of you rank differently; classes under 2% are drawn but not labelled.",
+    "overTimeTitle": "Would your mix ever have looked like {tier}?",
+    "overTimeSub": "Your allocation held still, with {tier} running through every quarter since 1989. 1.00 would be an identical mix.",
+    "overTimeRange": "Closest in {best} at {bestValue}, furthest in {worst} at {worstValue}; today it is {now}.",
+    "overTimeNeedsApi": "This one needs the API: it reads the group’s whole history, and the embedded snapshot carries the latest quarter.",
+    "overTimeFailed": "Couldn’t load the history."
   },
   "status": {
     "overweight": "Overweight",

@@ -904,6 +904,30 @@ input[type="number"] {
   max-width: 78ch;
 }
 
+/* The period scrubber (BACKLOG F46). A row of its own rather than another
+   control in the wrap: it is as wide as the page allows, because 147 quarters
+   in 200px is a control nobody can land on a year with. */
+.scrubber {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: -8px 0 var(--gap);
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.scrubber input[type="range"] {
+  flex: 1 1 auto;
+  min-width: 0;
+  accent-color: var(--action);
+}
+
+.scrubber output {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--text-primary);
+}
+
 /* --- source notes --------------------------------------------------------- */
 
 /* "Where does this number come from", beside the number (BACKLOG F56). The

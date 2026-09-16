@@ -6,6 +6,7 @@ import TrendChart from '../components/TrendChart'
 import DimensionPicker from '../components/DimensionPicker'
 import ThresholdPlacement from '../components/ThresholdPlacement'
 import PeriodPicker from '../components/PeriodPicker'
+import PeriodScrubber from '../components/PeriodScrubber'
 import Movers from '../components/Movers'
 import CompositionChart from '../components/CompositionChart'
 import ShapeScatter from '../components/ShapeScatter'
@@ -295,6 +296,7 @@ export default function Benchmarks() {
           {t('controls.investableOnly')}
         </label>
       </div>
+      <PeriodScrubber />
 
       <div className="tiles">
         {groups.map((g) => (

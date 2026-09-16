@@ -35,7 +35,9 @@
     "insideTop1": " — innerhalb des reichsten 1 %",
     "dimension": "Vergleichen nach",
     "dimensionOffline": "weitere Achsen brauchen die API",
-    "historyOffline": "der Verlauf braucht die API"
+    "historyOffline": "der Verlauf braucht die API",
+    "scrub": "Durch die Zeit bewegen",
+    "scrubRelease": "zum Laden loslassen"
   },
   "compare": {
     "emptyTitle": "Noch nichts zu vergleichen",
@@ -72,7 +74,12 @@
     "tryExample": "Beispielhaushalt laden",
     "tryExampleNote": "— ungefähr die mediane US-Form: das meiste im Haus, ein Altersvorsorgekonto, ein kleines Depot, dem eine Hypothek gegenübersteht. Gelöscht wird es mit derselben Schaltfläche wie Ihre eigenen Zahlen.",
     "slopeTitle": "Ihre Reihenfolge gegenüber {tier}",
-    "slopeSub": "Jede Klasse als Anteil, Ihre links und die von {tier} rechts. Sich kreuzende Linien sind Klassen, die Sie beide unterschiedlich einordnen; Klassen unter 2 % werden gezeichnet, aber nicht beschriftet."
+    "slopeSub": "Jede Klasse als Anteil, Ihre links und die von {tier} rechts. Sich kreuzende Linien sind Klassen, die Sie beide unterschiedlich einordnen; Klassen unter 2 % werden gezeichnet, aber nicht beschriftet.",
+    "overTimeTitle": "Hat Ihre Mischung je wie {tier} ausgesehen?",
+    "overTimeSub": "Ihre Aufteilung bleibt fest, {tier} läuft durch jedes Quartal seit 1989. 1,00 wäre eine identische Mischung.",
+    "overTimeRange": "Am nächsten in {best} mit {bestValue}, am weitesten in {worst} mit {worstValue}; heute {now}.",
+    "overTimeNeedsApi": "Dafür wird die API gebraucht: sie liest die gesamte Historie der Gruppe, und der eingebettete Snapshot enthält das letzte Quartal.",
+    "overTimeFailed": "Die Historie konnte nicht geladen werden."
   },
   "status": {
     "overweight": "Übergewichtet",

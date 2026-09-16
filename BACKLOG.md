@@ -274,7 +274,7 @@ in both, and the offline and live figures now match to the cent.
 | ~~F28~~ ✅ | Net-worth percentile placement from `Minimum Wealth Cutoff` | M |
 | ~~F29~~ ✅ | Per-household dollar figures using `Household count`, not just shares | M |
 | ~~F30~~ ✅ | Time travel: benchmark against any quarter since 1989, not just two | M |
-| F31 | "Your gap over time" — hold your allocation, watch the gap move as the tier changes | L |
+| ~~F31~~ ✅ | "Your gap over time" — hold your allocation, watch the gap move as the tier changes | L |
 | ~~F32~~ ✅ | Era comparison: the top 1% in 1989 vs 2000 vs 2026 | M |
 | ~~F33~~ ✅ | Biggest movers: which classes shifted most for a tier over a chosen window | M |
 | ~~F34~~ ✅ | Concentration measure (share in the largest class) per tier | S |
@@ -359,7 +359,7 @@ the switch now.
 | ~~F43~~ ✅ | Small multiples: every tier's composition on one screen | M |
 | ~~F44~~ ✅ | Scatter: liquidity vs concentration, one point per tier | M |
 | ~~F45~~ ✅ | Slope chart: your allocation vs a tier, class by class | M |
-| F46 | Animated or scrubbable time axis on the trend chart | M |
+| ~~F46~~ ✅ | Animated or scrubbable time axis on the trend chart | M |
 | ~~F47~~ ✅ | Table view toggle for every chart (accessibility) | S |
 | ~~F48~~ ✅ | Texture/pattern fills for colour-vision and print | M |
 | ~~F49~~ ✅ | Keyboard navigation through chart series | M |
@@ -563,6 +563,35 @@ The palette is a ramp rather than seven categorical hues. The bands are stacked
 in size order, so the ordering already carries meaning, and seven more colours
 would be seven more things to hold in mind; what actually separates two
 adjacent steps is the hairline of `--surface` drawn between them.
+
+**F31 stopped being an L when F42 landed.** It was sized as a large piece of
+work because it needs the tier's mix in every quarter, and the trend endpoint
+answers one class at a time. `/api/benchmarks/composition` already returns
+exactly that, so the chart is one request and a cosine similarity per quarter,
+computed in the page -- which it has to be anyway, since the reader's holdings
+are the other half of every point and they do not leave the browser.
+
+The answer is worth the chart. A household mostly in a house is not simply
+unlike the top 1%: it was *closest* to them in 2009, when the crash had taken
+the equity share down and property up, and has been drifting away since as
+equities went from a fifth of their assets to half. That is a fact about
+thirty years, and the single-quarter view states it as a fact about today.
+
+The axis is fixed at 0–1 rather than fitted to the data: 0.9 means the same
+thing in every quarter, and an axis that rescales itself turns a flat line into
+a dramatic one. Its own labels were wrong at first -- 0.25 and 0.75 printed as
+"0.3" and "0.8" at one decimal, an axis lying about where its own gridlines
+are -- which is the kind of thing only a rendered chart shows.
+
+**F46 is a scrubber, not an animation.** The select is the right control for
+"show me Q1 2009" and the wrong one for moving *through* the history, which is
+the act that makes the shape visible. The value commits on release rather than
+on every input event: each quarter costs a request, and a drag across the range
+would fire a hundred and forty of them. Measured in the browser -- zero requests
+during the drag, one after -- because "it should not refetch while dragging" is
+a claim, and the network panel is where claims like that are settled. The label
+tracks the handle all the way, so the control answers immediately even though
+the page does not.
 
 **F61 and F62 are the same workflow**: the pull request *is* the alert, and it
 is better than one, because it arrives as a reviewable diff rather than as a

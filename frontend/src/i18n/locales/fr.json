@@ -35,7 +35,9 @@
     "insideTop1": " — au sein des 1 % les plus riches",
     "dimension": "Comparer par",
     "dimensionOffline": "les autres axes nécessitent l'API",
-    "historyOffline": "l'historique nécessite l'API"
+    "historyOffline": "l'historique nécessite l'API",
+    "scrub": "Parcourir le temps",
+    "scrubRelease": "relâchez pour charger"
   },
   "compare": {
     "emptyTitle": "Rien à comparer pour l'instant",
@@ -72,7 +74,12 @@
     "tryExample": "Charger un ménage d'exemple",
     "tryExampleNote": "— à peu près la forme médiane américaine : l'essentiel dans le logement, un compte retraite, un petit solde de titres, face à un prêt immobilier. Le bouton qui l'efface est celui qui efface vos propres chiffres.",
     "slopeTitle": "Votre ordre face à {tier}",
-    "slopeSub": "Chaque classe en part, la vôtre à gauche et celle de {tier} à droite. Les lignes qui se croisent sont les classes que vous classez différemment ; celles sous 2 % sont tracées sans étiquette."
+    "slopeSub": "Chaque classe en part, la vôtre à gauche et celle de {tier} à droite. Les lignes qui se croisent sont les classes que vous classez différemment ; celles sous 2 % sont tracées sans étiquette.",
+    "overTimeTitle": "Votre composition a-t-elle déjà ressemblé à {tier} ?",
+    "overTimeSub": "Votre répartition maintenue fixe, {tier} parcourant chaque trimestre depuis 1989. 1,00 serait une composition identique.",
+    "overTimeRange": "Au plus proche en {best} à {bestValue}, au plus loin en {worst} à {worstValue} ; aujourd’hui {now}.",
+    "overTimeNeedsApi": "Ceci nécessite l'API : il lit tout l'historique du groupe, et l'instantané embarqué ne contient que le dernier trimestre.",
+    "overTimeFailed": "Impossible de charger l'historique."
   },
   "status": {
     "overweight": "Surpondéré",
