@@ -325,5 +325,10 @@
     "incomingEmpty": "In diesem Browser ist noch nichts gespeichert.",
     "incomingShow": "Anzeigen",
     "incomingKeep": "Meines behalten"
+  },
+  "source": {
+    "aria": "Woher die Zahl für {label} stammt",
+    "columns": "Spalten der DFA der Federal Reserve",
+    "from": "Gelesen aus {file}, abgerufen am {when}."
   }
 }

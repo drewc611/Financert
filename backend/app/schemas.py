@@ -145,6 +145,10 @@ class AssetClassOut(BaseModel):
     label: str
     liquid: bool
     blurb: str
+    # The DFA column(s) this bucket is the sum of. Sent because "where does
+    # this number come from" is a question the product should answer in the
+    # page rather than in a README (BACKLOG F56).
+    columns: list[str] = Field(default_factory=list)
 
 
 class ShapeMetricsOut(BaseModel):
@@ -177,6 +181,7 @@ class LiabilityClassOut(BaseModel):
     key: str
     label: str
     blurb: str
+    columns: list[str] = Field(default_factory=list)
 
 
 class AllocationOut(BaseModel):
@@ -271,6 +276,7 @@ class BenchmarksOut(BaseModel):
                     "liquid": True,
                     "blurb": "Directly held corporate equities plus mutual fund shares, "
                     "excluding those held through a DC pension.",
+                    "columns": ["Corporate equities and mutual fund shares"],
                 }
             ],
             "liability_classes": [
@@ -278,6 +284,7 @@ class BenchmarksOut(BaseModel):
                     "key": "home_mortgages",
                     "label": "Home Mortgages",
                     "blurb": "Mortgages secured on owner-occupied property, including home equity lines.",
+                    "columns": ["Home mortgages"],
                 }
             ],
             # One of the five net-worth groups.

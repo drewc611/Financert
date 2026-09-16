@@ -866,6 +866,71 @@ input[type="number"] {
   max-width: 78ch;
 }
 
+/* --- source notes --------------------------------------------------------- */
+
+/* "Where does this number come from", beside the number (BACKLOG F56). The
+   marker is deliberately quiet -- it sits beside every asset class on two
+   pages, and eleven loud ones would read as eleven warnings. */
+.source-btn {
+  background: none;
+  border: none;
+  padding: 0 2px;
+  margin-inline-start: 4px;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1;
+}
+
+.source-btn:hover,
+.source-btn[aria-expanded="true"] {
+  color: var(--action);
+}
+
+/* Fixed, from the button's own rectangle: these live in table cells inside a
+   horizontal scroller and in a pinned first column, and an absolutely
+   positioned panel is clipped by the first and painted under the second. */
+.source-pop {
+  position: fixed;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.14);
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  text-transform: none;
+  letter-spacing: normal;
+  white-space: normal;
+}
+
+.source-pop strong {
+  color: var(--text-primary);
+}
+
+.source-pop ul {
+  margin: 3px 0 0;
+  padding-inline-start: 18px;
+}
+
+/* The Fed's own column names, left untranslated: they are what a reader would
+   search the source file for. */
+.source-pop li {
+  color: var(--text-primary);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11.5px;
+}
+
+.source-file {
+  color: var(--text-muted);
+}
+
 /* --- narrow viewports ------------------------------------------------------
    The layout is fluid already -- the tiles are an auto-fit grid and every
    control row wraps -- so this is the part that fluidity does not reach: the

@@ -7,13 +7,14 @@ import DimensionPicker from '../components/DimensionPicker'
 import ThresholdPlacement from '../components/ThresholdPlacement'
 import PeriodPicker from '../components/PeriodPicker'
 import Movers from '../components/Movers'
+import SourceNote from '../components/SourceNote'
 import { useI18n } from '../i18n'
 
 const TREND_ASSETS = ['corporate_equities', 'private_business', 'real_estate']
 
 export default function Benchmarks() {
   const { benchmarks, activeGroups, periodMode, mode, investableOnly, setInvestableOnly } = useAppData()
-  const { t, fmt, assetLabel, debtLabel, tierLabel, percentileRange } = useI18n()
+  const { t, fmt, assetLabel, assetBlurb, debtLabel, debtBlurb, tierLabel, percentileRange } = useI18n()
   const [trendAsset, setTrendAsset] = useState('corporate_equities')
   // { state: 'loading' | 'ready' | 'empty' | 'failed', series }
   const [trend, setTrend] = useState(null)
@@ -55,9 +56,13 @@ export default function Benchmarks() {
       .join(', ')
 
     return keys.map((key) => {
-      const english = benchmarks.assetClasses.find((a) => a.key === key)?.label ?? key
+      const spec = benchmarks.assetClasses.find((a) => a.key === key)
+      const english = spec?.label ?? key
       return {
         key,
+        // The DFA columns this bucket sums, for the provenance note (F56).
+        columns: spec?.columns ?? [],
+        blurb: spec?.blurb ?? '',
         label:
           key === UNALLOCATED && missing
             ? `${t('status.pending')} (${missing})`
@@ -95,6 +100,8 @@ export default function Benchmarks() {
       .map((c) => ({
         key: c.key,
         label: debtLabel(c.key, c.label),
+        columns: c.columns ?? [],
+        blurb: c.blurb ?? '',
         values: Object.fromEntries(allGroups.map((g) => [g.key, byGroup[g.key][c.key] ?? null])),
         perHousehold: Object.fromEntries(
           allGroups.map((g) => [
@@ -302,7 +309,10 @@ export default function Benchmarks() {
             <tbody>
               {rows.map((row) => (
                 <tr key={row.key}>
-                  <td>{row.label}</td>
+                  <td>
+                    {row.label}
+                    <SourceNote label={row.label} columns={row.columns} blurb={assetBlurb(row.key, row.blurb)} />
+                  </td>
                   {tableGroups.map((g) => {
                     // A row hidden by the investable switch has no share; it
                     // still has a dollar figure, but showing one here would put
@@ -344,7 +354,10 @@ export default function Benchmarks() {
               <tbody>
                 {debtRows.map((row) => (
                   <tr key={row.key}>
-                    <td>{row.label}</td>
+                    <td>
+                      {row.label}
+                      <SourceNote label={row.label} columns={row.columns} blurb={debtBlurb(row.key, row.blurb)} />
+                    </td>
                     {tableGroups.map((g) => {
                       const value = perHousehold ? row.perHousehold[g.key] : row.values[g.key]
                       return (

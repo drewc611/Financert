@@ -369,7 +369,7 @@ the switch now.
 | ~~F53~~ ✅ | CSV export of your comparison | S |
 | ~~F54~~ ✅ | PNG export of a chart | M |
 | ~~F55~~ ✅ | Onboarding: prefill a plausible household so the app is not empty on arrival | S |
-| F56 | Inline "where does this number come from" popovers citing the series | M |
+| ~~F56~~ ✅ | Inline "where does this number come from" popovers citing the series | M |
 | ~~F57~~ ✅ | Mobile pass on the tiers table (currently scrolls in a container) | M |
 | ~~F58~~ ✅ | Dark-mode audit of the newer components | S |
 | ~~F59~~ ✅ | Number formatting review — tabular figures everywhere they align | S |
@@ -469,6 +469,44 @@ was opened and looked at. The legend moved into ChartFrame in the same pass, so
 the exported key reads its colours off the swatches already on screen instead
 of resolving custom properties a second time.
 
+**F56 and F63 are the same question asked in two places**: where did this
+number come from, and what changed about it.
+
+F56 was mostly already true and entirely invisible. The snapshot has carried
+the DFA column names per asset class since F7; the API schema simply did not
+declare the field, so FastAPI dropped it on the way out. Now every asset and
+liability class on the tiers tables and in the holdings form has a marker
+beside it that names the published column(s) the bucket sums, the file they
+were read from and the date it was fetched -- the Fed's own strings,
+untranslated, because they are what a reader would search the source for. The
+embedded snapshot carries them too, so the offline page cites its sources like
+the live one.
+
+The popover took three attempts at the same bug, each visible only in a
+browser. Absolutely positioned, it was clipped by the table's horizontal
+scroller. Fixed, it escaped the clipping but was still painted *behind* the
+rows below it, because the pinned first column from F57 is a stacking context
+and a fixed child does not escape one. Portalled to `<body>`, it renders over
+everything, and a layout effect flips it above the marker when there is no room
+below -- measured rather than estimated, since the note is three or four lines
+depending on the language.
+
+F63 answers the review question a data refresh actually poses. A refresh
+rewrites six files and ~4 MB of JSON, and `git diff` over that says only that
+every line changed. `tools/snapshot_diff.py` says three things instead: which
+quarters were added, what changed structurally (a dimension, a group or a class
+appearing or disappearing -- the change that breaks rather than moves), and
+which already-published quarters the Fed **revised**. That last one is the
+point: a revision alters a number a reader has already been shown.
+
+It compares shares, not dollars -- every balance sheet grows, so a dollar
+comparison would report the entire population as revised every quarter -- and
+ignores moves below half a basis point, which is the source's own rounding in
+whole millions. The weekly refresh workflow now keeps a copy of the snapshot it
+is about to replace and puts the diff in the pull request body; that assembly
+was rehearsed locally with `git` and `gh` shimmed, because a heredoc that
+mangles a fenced block is not something to discover on a schedule.
+
 **F61 and F62 are the same workflow**: the pull request *is* the alert, and it
 is better than one, because it arrives as a reviewable diff rather than as a
 notification someone still has to act on. Weekly, opening a PR when the
@@ -563,7 +601,7 @@ other column of numbers already had.
 |---|---|---|
 | ~~F61~~ ✅ | Scheduled quarterly data refresh via GitHub Actions, opening a PR with the diff | M |
 | ~~F62~~ ✅ | Alert when the Fed publishes a new quarter | S |
-| F63 | Snapshot diff tool: what changed between two refreshes | M |
+| ~~F63~~ ✅ | Snapshot diff tool: what changed between two refreshes | M |
 | ~~F64~~ ◐ | Deployment config and a real deploy — config done (`Dockerfile.mcp`, `fly.toml`, the Pages workflow, and the verification probes in DEPLOY.md); the deploy itself needs a hosting account | M |
 | ~~F65~~ ✅ | Structured request logging | S |
 | ~~F66~~ ✅ | Response caching for benchmark endpoints | S |

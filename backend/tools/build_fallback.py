@@ -51,8 +51,14 @@ def main() -> None:
         "complete_periods": snapshot["complete_periods"][-40:],
         "group_order": snapshot["group_order"],
         "periods": snapshot["periods"][-40:],
-        "asset_classes": [{k: a[k] for k in ("key", "label", "liquid", "blurb")} for a in snapshot["asset_classes"]],
-        "liability_classes": [{k: c[k] for k in ("key", "label", "blurb")} for c in snapshot["liability_classes"]],
+        # `columns` travels too: the offline page cites its sources like the
+        # live one does (BACKLOG F56), and it is a handful of strings.
+        "asset_classes": [
+            {k: a[k] for k in ("key", "label", "liquid", "blurb", "columns")} for a in snapshot["asset_classes"]
+        ],
+        "liability_classes": [
+            {k: c[k] for k in ("key", "label", "blurb", "columns")} for c in snapshot["liability_classes"]
+        ],
         "groups": {},
         "trends": {},
     }
