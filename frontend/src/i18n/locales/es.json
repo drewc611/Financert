@@ -138,7 +138,13 @@
     "trendFailed": "No se pudo cargar la evolución.",
     "retry": "Reintentar",
     "scatterTitle": "¿Líquido o concentrado?",
-    "scatterSub": "Las dos medidas anteriores, una frente a otra. Los tramos no forman una línea: la cima de la distribución es a la vez la más concentrada y de las más líquidas, porque la clase en la que se concentra ya es líquida."
+    "scatterSub": "Las dos medidas anteriores, una frente a otra. Los tramos no forman una línea: la cima de la distribución es a la vez la más concentrada y de las más líquidas, porque la clase en la que se concentra ya es líquida.",
+    "multiplesTitle": "La misma mezcla, grupo a grupo",
+    "multiplesSub": "Cada columna son los activos de un grupo, en el mismo orden de bandas. El intercambio que recorre la distribución se ve de una vez: negocios y acciones arriba, una casa abajo.",
+    "compositionTitle": "Cómo cambió la mezcla de un grupo",
+    "compositionSub": "Cada clase como proporción, desde 1989. El 1% más rico pasó de una quinta parte en acciones y otra en negocio privado a la mitad en acciones, un intercambio que ninguna línea suelta muestra. Las siete clases mayores tienen banda propia; el resto se agrupa.",
+    "compositionNeedsApi": "Esto necesita la API: la instantánea integrada trae muestras anuales de tres clases, que son una evolución y no una composición.",
+    "compositionFailed": "No se pudo cargar la composición."
   },
   "chart": {
     "you": "Usted",
@@ -160,7 +166,10 @@
     "axisLiquidity": "En clases líquidas",
     "axisConcentration": "En la clase mayor",
     "scatterNote": "La concentración es la proporción en la clase que sea mayor para ese grupo, que no es la misma para todos. {you} aparece en cuanto introduces posiciones.",
-    "slopeAria": "Cada clase de activo como proporción, {you} a la izquierda y {tier} a la derecha"
+    "slopeAria": "Cada clase de activo como proporción, {you} a la izquierda y {tier} a la derecha",
+    "otherClasses": "Todo lo demás",
+    "compositionAria": "Cada clase de activo como proporción de {tier}, trimestre a trimestre",
+    "multiplesAria": "La mezcla de clases de activo de cada grupo, una al lado de otra"
   },
   "disclaimer": {
     "whatTitle": "Qué es esto.",

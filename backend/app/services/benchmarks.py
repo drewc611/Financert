@@ -376,6 +376,43 @@ def reconciliation(dimension: str = DEFAULT_DIMENSION) -> list[dict[str, Any]]:
     return out
 
 
+def composition(
+    group_key: str, *, investable_only: bool = True, dimension: str = DEFAULT_DIMENSION
+) -> list[dict[str, Any]]:
+    """Every asset class's share of one group, quarter by quarter.
+
+    The trend endpoint answers "what happened to equities"; this answers "what
+    happened to the mix", which is a different question and eleven times the
+    requests if asked one class at a time.
+
+    Shares rather than levels, and each quarter renormalised over the classes
+    that quarter actually published, so the bands of a stacked area always sum
+    to 1 and an incomplete quarter does not open a gap at the top of the chart.
+    """
+    group = groups_in(dimension).get(group_key)
+    if group is None:
+        raise KeyError(group_key)
+
+    out = []
+    for row in group["history"]:
+        assets = dict(row["assets"])
+        if investable_only:
+            for key in NON_INVESTABLE:
+                assets.pop(key, None)
+            # Only in a complete quarter -- see weights() for why the residual
+            # has to stay when the Fed has not published everything yet.
+            if row.get("complete", True):
+                assets.pop(UNALLOCATED["key"], None)
+        total = sum(assets.values())
+        out.append(
+            {
+                "period": row["period"],
+                "shares": {k: (v / total if total else 0.0) for k, v in assets.items()},
+            }
+        )
+    return out
+
+
 def trend(group_key: str, asset_key: str, dimension: str = DEFAULT_DIMENSION) -> list[dict[str, Any]]:
     """One asset class's share of a group's assets over the full history.
 

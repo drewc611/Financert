@@ -76,6 +76,14 @@ export const api = {
     request(`/api/benchmarks/trend?${new URLSearchParams({ group, asset_class: assetClass })}`, {
       timeout: 2500,
     }),
+  /* One group's whole mix over 147 quarters (BACKLOG F42). One request
+     rather than eleven -- the trend endpoint answers one class at a time --
+     and a bigger answer, so a longer timeout than a single series. */
+  composition: ({ group = 'top1', investableOnly = true }) =>
+    request(
+      `/api/benchmarks/composition?${new URLSearchParams({ group, investable_only: String(investableOnly) })}`,
+      { timeout: 4000 },
+    ),
   // What changed about one group's mix between two quarters.
   movers: ({ group, from, to, investableOnly = true }) =>
     request(
