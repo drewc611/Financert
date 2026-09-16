@@ -58,4 +58,33 @@ export default defineConfig({
   plugins: [react(), contentSecurityPolicy()],
   server: { port: 5173 },
   build: { outDir: 'dist', sourcemap: false },
+  /* Two projects, split by what the test actually needs (BACKLOG F69).
+   *
+   * The src/lib tests are pure functions over data and run in node -- which is
+   * why scenarios.test.js stubs localStorage rather than taking on a DOM for
+   * one API with four methods. Component tests need a document, so they get
+   * jsdom and pay its startup cost; keeping that cost off the function tests is
+   * the whole reason for the split.
+   *
+   * The extension is the selector: .test.js is a function, .test.jsx is a
+   * component. `extends: true` inherits the React plugin above, without which
+   * the JSX in the component tests would not compile.
+   */
+  test: {
+    projects: [
+      {
+        extends: true,
+        test: { name: 'unit', include: ['src/**/*.test.js'], environment: 'node' },
+      },
+      {
+        extends: true,
+        test: {
+          name: 'components',
+          include: ['src/**/*.test.jsx'],
+          environment: 'jsdom',
+          setupFiles: ['./tests/setup.js'],
+        },
+      },
+    ],
+  },
 })

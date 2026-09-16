@@ -20,7 +20,17 @@ export default function PeriodScrubber() {
 
   const periods = benchmarks?.periods ?? []
   const live = mode === 'live'
-  const resolved = periodMode === 'latest' ? benchmarks.latestPeriod : periodMode === 'complete' ? benchmarks.completePeriod : periodMode
+  /* Optional, like `periods` above: this reads state that is null until the
+     opening fetch lands. App.jsx does not render the views until it has, so
+     the app never saw it -- but the guard belongs with the read, not two
+     files away, and it is the only thing that stops this component being
+     mountable on its own. */
+  const resolved =
+    periodMode === 'latest'
+      ? benchmarks?.latestPeriod
+      : periodMode === 'complete'
+        ? benchmarks?.completePeriod
+        : periodMode
   const committed = Math.max(0, periods.indexOf(resolved))
   const [draft, setDraft] = useState(committed)
 

@@ -687,9 +687,25 @@ embedded snapshot sends dollars, and reading the raw field made the offline
 tables wrong by a factor of a million. "Normalises either form" is now a test
 rather than a thing to remember.
 
-Components are still verified by opening the app, which is why this is ◐ rather
-than done. That needs a DOM testing library and a judgement about how much
-component testing a five-view app earns.
+Components are covered too, in a second Vitest project: jsdom and Testing
+Library, 28 tests over the state container, the scenario banner, the period
+scrubber, the provenance marker and the gap chart's keyboard. The split is by
+extension — `.test.js` is a function and runs in node, `.test.jsx` is a
+component and gets a DOM — so the function tests keep their startup cost and
+`scenarios.test.js` keeps stubbing localStorage rather than inheriting one.
+
+What earned a test was chosen by what a regression would cost. First of them is
+the bug that nearly lost people's data: an edit during a draft was applied to
+the draft *and* the portfolio, so discarding a scenario kept its edits.
+Reintroducing that exact line now fails two tests, one of them on the persisted
+value.
+
+Mounting each component on its own found two more of the same shape, both
+latent. `PeriodScrubber` and `SourceNote` each read `benchmarks.<field>` on
+their first render, one line below guarding the same object with `?.`.
+`App.jsx` renders no view until the fetch lands, so the app never reached
+either — but the guard belongs with the read rather than two files away, and
+until it was there neither component could be mounted on its own at all.
 
 Vite went 5 → 8 with it (the version Vitest needs), which cleared three
 pre-existing advisories including a high. The one left is `js-yaml` via ESLint
@@ -751,7 +767,7 @@ other column of numbers already had.
 | ~~F66~~ ✅ | Response caching for benchmark endpoints | S |
 | ~~F67~~ ✅ | OpenAPI examples on every endpoint | S |
 | ~~F68~~ ✅ | Backend coverage reporting in CI | S |
-| ~~F69~~ ◐ | Frontend tests — Vitest over `src/lib`; components still browser-verified | L |
+| ~~F69~~ ✅ | Frontend tests — Vitest over `src/lib` in node, plus components in jsdom | L |
 | ~~F70~~ ✅ | Visual regression snapshots for the charts | L |
 | ~~F71~~ ✅ | Dependency audit workflow | S |
 | ~~F72~~ ✅ | Data-source contract test hitting the live Fed zip weekly, so a format change surfaces before a refresh needs it | M |

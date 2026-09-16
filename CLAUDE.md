@@ -55,14 +55,36 @@ npm install
 npm run dev       # :5173
 npm run build     # -> dist/
 npm run preview   # :4173
-npm test          # vitest, the pure functions in src/lib
+npm test          # vitest: both projects (see below)
 npx eslint .     # flat config, eslint.config.js
 ```
 
-`src/lib/analysis.js` mirrors `backend/app/services/allocation.py` and is what
-the dashboard actually computes with -- offline it is the *only* implementation
--- so it carries the frontend's tests (`src/lib/*.test.js`). Components are
-still verified by opening the app.
+`npm test` runs two Vitest projects, split by file extension in
+`vite.config.js`:
+
+- **unit** -- `src/**/*.test.js`, environment `node`. `src/lib/analysis.js`
+  mirrors `backend/app/services/allocation.py` and is what the dashboard
+  actually computes with (offline it is the *only* implementation), so it
+  carries most of these. They are pure functions over data and need no DOM,
+  which is why `scenarios.test.js` stubs `localStorage` rather than taking one
+  on as a dependency.
+- **components** -- `src/**/*.test.jsx`, environment `jsdom`, with
+  `tests/setup.js` wiring Testing Library's cleanup by hand (it self-registers
+  only under `globals: true`, which this config does not set).
+
+Component tests render through `tests/harness.jsx`, which wraps the component
+in both providers and fakes the API at `fetch` rather than mocking
+`src/lib/api.js` -- `vi.mock` is hoisted per file and so cannot live in a
+helper at all, and stubbing the boundary the browser actually has keeps
+`api.js` itself inside what is under test.
+
+A component that reads `benchmarks` has to tolerate it being null. `App.jsx`
+renders no view until the opening fetch lands, so the app never shows that
+state -- but a component test mounts the component alone, which does, and two
+components were crashing there.
+
+Charts are covered separately by `npm run test:visual`, which compares markup
+rather than pixels -- see README.md.
 
 ESLint config is `frontend/eslint.config.js` (flat config, ESLint 9). It lives
 beside `node_modules` because plugins resolve relative to the config file, and
