@@ -8,6 +8,7 @@ import CohortPicker from '../components/CohortPicker'
 import Placements from '../components/Placements'
 import PeriodPicker from '../components/PeriodPicker'
 import Rebalance from '../components/Rebalance'
+import SlopeChart from '../components/SlopeChart'
 import ShareLink from '../components/ShareLink'
 import SharedNotice from '../components/SharedNotice'
 import { comparisonRows, toCsv } from '../lib/csv'
@@ -246,6 +247,14 @@ export default function Compare() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      <div className="card">
+        <div className="card-head">
+          <h2>{t('compare.slopeTitle', { tier: benchmarkLabel })}</h2>
+        </div>
+        <p className="sub">{t('compare.slopeSub', { tier: benchmarkLabel })}</p>
+        <SlopeChart rows={chartRows} benchmarkLabel={benchmarkLabel} youLabel={t('chart.you')} />
       </div>
 
       <Rebalance result={result} labels={labels} />

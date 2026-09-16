@@ -1,19 +1,20 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useAppData } from '../context/AppDataContext'
 import { api } from '../lib/api'
-import { benchmarkWeights, debtWeights, shapeMetrics, UNALLOCATED } from '../lib/analysis'
+import { benchmarkWeights, debtWeights, portfolioWeights, shapeMetrics, UNALLOCATED } from '../lib/analysis'
 import TrendChart from '../components/TrendChart'
 import DimensionPicker from '../components/DimensionPicker'
 import ThresholdPlacement from '../components/ThresholdPlacement'
 import PeriodPicker from '../components/PeriodPicker'
 import Movers from '../components/Movers'
+import ShapeScatter from '../components/ShapeScatter'
 import SourceNote from '../components/SourceNote'
 import { useI18n } from '../i18n'
 
 const TREND_ASSETS = ['corporate_equities', 'private_business', 'real_estate']
 
 export default function Benchmarks() {
-  const { benchmarks, activeGroups, periodMode, mode, investableOnly, setInvestableOnly } = useAppData()
+  const { benchmarks, activeGroups, periodMode, mode, holdings, investableOnly, setInvestableOnly } = useAppData()
   const { t, fmt, assetLabel, assetBlurb, debtLabel, debtBlurb, tierLabel, percentileRange } = useI18n()
   const [trendAsset, setTrendAsset] = useState('corporate_equities')
   // { state: 'loading' | 'ready' | 'empty' | 'failed', series }
@@ -118,8 +119,12 @@ export default function Benchmarks() {
   // here rather than read off the API response so they are identical in
   // offline mode, the same reason benchmarkWeights above is a client-side
   // mirror -- see lib/analysis.shapeMetrics.
+  const liquidKeys = useMemo(
+    () => new Set(benchmarks.assetClasses.filter((a) => a.liquid).map((a) => a.key)),
+    [benchmarks],
+  )
+
   const metricRows = useMemo(() => {
-    const liquidKeys = new Set(benchmarks.assetClasses.filter((a) => a.liquid).map((a) => a.key))
     const byGroup = Object.fromEntries(
       allGroups.map((g) => [g.key, shapeMetrics(g, benchmarkWeights(g, { investableOnly }), liquidKeys)]),
     )
@@ -143,7 +148,38 @@ export default function Benchmarks() {
       ...row,
       values: Object.fromEntries(allGroups.map((g) => [g.key, byGroup[g.key]])),
     }))
-  }, [allGroups, benchmarks, investableOnly, t, assetLabel])
+  }, [allGroups, benchmarks, investableOnly, liquidKeys, t, assetLabel])
+
+  /* The two shape numbers as a position rather than two columns (BACKLOG
+     F44), with the reader's own mix among them when they have entered one --
+     which is what makes it a chart about them rather than about strangers. */
+  const scatterPoints = useMemo(() => {
+    const label = (key) =>
+      assetLabel(key, benchmarks.assetClasses.find((a) => a.key === key)?.label ?? key)
+    const points = allGroups.map((g) => {
+      const metrics = shapeMetrics(g, benchmarkWeights(g, { investableOnly }), liquidKeys)
+      return {
+        key: g.key,
+        label: tierLabel(g.key, g.label),
+        liquidity: metrics.liquidity,
+        concentration: metrics.concentration,
+        largest: metrics.concentrationClass ? label(metrics.concentrationClass) : '—',
+      }
+    })
+    const mine = portfolioWeights(holdings)
+    if (Object.keys(mine).length) {
+      const metrics = shapeMetrics({ total_assets: 0, total_liabilities: 0 }, mine, liquidKeys)
+      points.push({
+        key: 'you',
+        you: true,
+        label: t('chart.you'),
+        liquidity: metrics.liquidity,
+        concentration: metrics.concentration,
+        largest: metrics.concentrationClass ? label(metrics.concentrationClass) : '—',
+      })
+    }
+    return points.filter((p) => p.liquidity != null && p.concentration != null)
+  }, [allGroups, benchmarks, holdings, investableOnly, liquidKeys, assetLabel, tierLabel, t])
 
   /* Live mode fetches the full quarterly history; fallback mode uses the
      annual samples embedded in the snapshot.
@@ -412,6 +448,14 @@ export default function Benchmarks() {
           </table>
         </div>
         <p className="sub">{t('benchmarks.leverageNote')}</p>
+      </div>
+
+      <div className="card">
+        <div className="card-head">
+          <h2>{t('benchmarks.scatterTitle')}</h2>
+        </div>
+        <p className="sub">{t('benchmarks.scatterSub')}</p>
+        <ShapeScatter points={scatterPoints} youLabel={t('chart.you')} />
       </div>
 
       <Movers />

@@ -70,7 +70,9 @@
     "csvPeriod": "Zeitraum",
     "csvTotal": "Verglichenes Portfolio",
     "tryExample": "Beispielhaushalt laden",
-    "tryExampleNote": "— ungefähr die mediane US-Form: das meiste im Haus, ein Altersvorsorgekonto, ein kleines Depot, dem eine Hypothek gegenübersteht. Gelöscht wird es mit derselben Schaltfläche wie Ihre eigenen Zahlen."
+    "tryExampleNote": "— ungefähr die mediane US-Form: das meiste im Haus, ein Altersvorsorgekonto, ein kleines Depot, dem eine Hypothek gegenübersteht. Gelöscht wird es mit derselben Schaltfläche wie Ihre eigenen Zahlen.",
+    "slopeTitle": "Ihre Reihenfolge gegenüber {tier}",
+    "slopeSub": "Jede Klasse als Anteil, Ihre links und die von {tier} rechts. Sich kreuzende Linien sind Klassen, die Sie beide unterschiedlich einordnen; Klassen unter 2 % werden gezeichnet, aber nicht beschriftet."
   },
   "status": {
     "overweight": "Übergewichtet",
@@ -134,7 +136,9 @@
     "unallocatedNote": "„Nicht zugeordnet“ ist die Lücke zwischen dem von der Federal Reserve veröffentlichten Vermögenstotal und den Kategorien darüber. Mit dem vollständigen Spaltensatz ist das Rundung — unter 0,0002 % in jedem Quartal seit 1989 — und /api/benchmarks/reconciliation veröffentlicht sie je Quartal, damit das prüfbar ist und nicht nur behauptet.",
     "trendEmpty": "Die Quelle veröffentlicht für {asset} auf dieser Achse keinen Verlauf.",
     "trendFailed": "Der Verlauf konnte nicht geladen werden.",
-    "retry": "Erneut versuchen"
+    "retry": "Erneut versuchen",
+    "scatterTitle": "Liquide oder konzentriert?",
+    "scatterSub": "Die beiden Kennzahlen von oben gegeneinander. Die Stufen liegen nicht auf einer Linie: die Spitze ist zugleich am stärksten konzentriert und mit am liquidesten, weil die Klasse, in der sie konzentriert ist, selbst liquide ist."
   },
   "chart": {
     "you": "Sie",
@@ -150,7 +154,13 @@
     "showChart": "Als Diagramm zeigen",
     "noHistory": "Für diese Reihe gibt es keinen Verlauf.",
     "savePng": "Als Bild speichern",
-    "pngFailed": "Dieser Browser konnte das Bild nicht erzeugen."
+    "pngFailed": "Dieser Browser konnte das Bild nicht erzeugen.",
+    "noShape": "Zu wenige Stufen für eine Darstellung.",
+    "scatterAria": "Anteil in liquiden Klassen gegenüber dem Anteil in der größten Klasse, ein Punkt je Gruppe",
+    "axisLiquidity": "In liquiden Klassen",
+    "axisConcentration": "In der größten Klasse",
+    "scatterNote": "Konzentration ist der Anteil der jeweils größten Klasse einer Gruppe – nicht für alle dieselbe. {you} erscheint, sobald Positionen eingetragen sind.",
+    "slopeAria": "Jede Anlageklasse als Anteil, {you} links und {tier} rechts"
   },
   "disclaimer": {
     "whatTitle": "Was das hier ist.",

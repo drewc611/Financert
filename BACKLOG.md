@@ -357,8 +357,8 @@ the switch now.
 |---|---|---|
 | F42 | Stacked-area composition chart over time (one tier, all classes) | M |
 | F43 | Small multiples: every tier's composition on one screen | M |
-| F44 | Scatter: liquidity vs concentration, one point per tier | M |
-| F45 | Slope chart: your allocation vs a tier, class by class | M |
+| ~~F44~~ ✅ | Scatter: liquidity vs concentration, one point per tier | M |
+| ~~F45~~ ✅ | Slope chart: your allocation vs a tier, class by class | M |
 | F46 | Animated or scrubbable time axis on the trend chart | M |
 | ~~F47~~ ✅ | Table view toggle for every chart (accessibility) | S |
 | ~~F48~~ ✅ | Texture/pattern fills for colour-vision and print | M |
@@ -506,6 +506,30 @@ whole millions. The weekly refresh workflow now keeps a copy of the snapshot it
 is about to replace and puts the diff in the pull request body; that assembly
 was rehearsed locally with `git` and `gh` shimmed, because a heredoc that
 mangles a fenced block is not something to discover on a schedule.
+
+**F44 and F45 are two charts that say something the tables beside them
+cannot.**
+
+F44 plots the two shape measures against each other, one point per group. The
+table above it states both numbers per tier; what it cannot state is that the
+tiers do not sit on a line -- the top of the distribution is at once the most
+concentrated *and* among the most liquid, because the class it concentrates in
+(equities) is itself a liquid one. The reader's own mix is drawn among them
+once there is one, which is what makes it a chart about them rather than about
+strangers.
+
+F45 is the same eleven numbers as the gap chart, arranged to show *order*
+rather than magnitude. A household with half its money in a house and a tier
+with half of its in equities hold the same two classes at the top in opposite
+order, and the crossing lines are that fact. Labels are pushed apart from the
+top down where they would collide, and classes under 2% keep their line but
+lose their label -- at that size the label is the only thing in the way.
+
+Both are keyboard-navigable and both carry a table, like every chart here since
+F47 and F49. One thing the browser corrected: the focus band that works on a
+bar row -- a filled rectangle over the row's hit area -- covers half a slope
+chart, because a slope row's hit area is the whole span between its two ends.
+There the line is the row, so focus thickens the line instead.
 
 **F61 and F62 are the same workflow**: the pull request *is* the alert, and it
 is better than one, because it arrives as a reviewable diff rather than as a

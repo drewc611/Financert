@@ -70,7 +70,9 @@
     "csvPeriod": "Période",
     "csvTotal": "Portefeuille comparé",
     "tryExample": "Charger un ménage d'exemple",
-    "tryExampleNote": "— à peu près la forme médiane américaine : l'essentiel dans le logement, un compte retraite, un petit solde de titres, face à un prêt immobilier. Le bouton qui l'efface est celui qui efface vos propres chiffres."
+    "tryExampleNote": "— à peu près la forme médiane américaine : l'essentiel dans le logement, un compte retraite, un petit solde de titres, face à un prêt immobilier. Le bouton qui l'efface est celui qui efface vos propres chiffres.",
+    "slopeTitle": "Votre ordre face à {tier}",
+    "slopeSub": "Chaque classe en part, la vôtre à gauche et celle de {tier} à droite. Les lignes qui se croisent sont les classes que vous classez différemment ; celles sous 2 % sont tracées sans étiquette."
   },
   "status": {
     "overweight": "Surpondéré",
@@ -134,7 +136,9 @@
     "unallocatedNote": "« Non affecté » est l'écart entre le total d'actifs publié par la Réserve fédérale et les catégories ci-dessus. Avec l'ensemble complet des colonnes, il s'agit d'arrondi — moins de 0,0002 % à chaque trimestre depuis 1989 — et /api/benchmarks/reconciliation le publie trimestre par trimestre, pour qu'il soit vérifiable et non simplement affirmé.",
     "trendEmpty": "La source ne publie pas d'historique pour {asset} sur cet axe.",
     "trendFailed": "Impossible de charger l'évolution.",
-    "retry": "Réessayer"
+    "retry": "Réessayer",
+    "scatterTitle": "Liquide, ou concentré ?",
+    "scatterSub": "Les deux mesures ci-dessus, l'une face à l'autre. Les tranches ne forment pas une ligne : le haut de la distribution est à la fois le plus concentré et parmi les plus liquides, car la classe où il se concentre est elle-même liquide."
   },
   "chart": {
     "you": "Vous",
@@ -150,7 +154,13 @@
     "showChart": "Afficher en graphique",
     "noHistory": "Aucun historique à afficher pour cette série.",
     "savePng": "Enregistrer comme image",
-    "pngFailed": "Ce navigateur n'a pas pu produire l'image."
+    "pngFailed": "Ce navigateur n'a pas pu produire l'image.",
+    "noShape": "Pas assez de tranches pour tracer le graphique.",
+    "scatterAria": "Part détenue en classes liquides face à la part dans la classe la plus grande, un point par groupe",
+    "axisLiquidity": "En classes liquides",
+    "axisConcentration": "Dans la plus grande classe",
+    "scatterNote": "La concentration est la part de la classe la plus grande pour ce groupe, qui n'est pas la même pour tous. {you} apparaît dès que des lignes sont saisies.",
+    "slopeAria": "Chaque classe d'actifs en part, {you} à gauche et {tier} à droite"
   },
   "disclaimer": {
     "whatTitle": "Ce que c'est.",

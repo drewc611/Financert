@@ -636,6 +636,17 @@ td.muted {
   stroke-width: 1.5;
 }
 
+/* A slope row's hit area is the whole span between its two ends, so filling
+   it on focus washes out half the chart. The line is the row. */
+.slope-svg .chart-row:focus-visible .hit {
+  fill: none;
+  stroke: none;
+}
+
+.slope-svg .chart-row:focus-visible line {
+  stroke-width: 4.5;
+}
+
 /* The trend chart is focusable as a whole -- there are no rows to step
    through, only quarters -- so it keeps the ring. */
 svg.chart-row:focus-visible {
