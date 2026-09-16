@@ -148,7 +148,9 @@
     "allInLine": "Every asset class is in line with {tier}.",
     "showTable": "Show as table",
     "showChart": "Show as chart",
-    "noHistory": "No history to show for this series."
+    "noHistory": "No history to show for this series.",
+    "savePng": "Save as image",
+    "pngFailed": "This browser would not render the image."
   },
   "disclaimer": {
     "whatTitle": "What this is.",
@@ -312,5 +314,16 @@
     "sub": "The arithmetic of the gaps above: {share} of the portfolio would move, in {count} transfers. Descriptive, like the rest of this page — it is what matching would mean, not a suggestion to do it.",
     "move": "{amount} from {from} to {to}",
     "biggest": "Of those, {asset} alone would close the most distance — bringing it to the benchmark raises the similarity by {gain}."
+  },
+  "share": {
+    "copy": "Copy a link to this comparison",
+    "note": "The link carries your holdings in it. They stay out of server logs, but anyone you send it to can read them.",
+    "copied": "Link copied.",
+    "inUrl": "Link put in the address bar — copy it from there.",
+    "incomingTitle": "This link carries a portfolio: {amount} across {count} holdings.",
+    "incomingReplaces": "Showing it replaces the numbers saved in this browser, and there is no undo.",
+    "incomingEmpty": "Nothing is saved in this browser yet.",
+    "incomingShow": "Show it",
+    "incomingKeep": "Keep mine"
   }
 }

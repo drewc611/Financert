@@ -148,7 +148,9 @@
     "allInLine": "Jede Anlageklasse liegt im Rahmen von {tier}.",
     "showTable": "Als Tabelle zeigen",
     "showChart": "Als Diagramm zeigen",
-    "noHistory": "Für diese Reihe gibt es keinen Verlauf."
+    "noHistory": "Für diese Reihe gibt es keinen Verlauf.",
+    "savePng": "Als Bild speichern",
+    "pngFailed": "Dieser Browser konnte das Bild nicht erzeugen."
   },
   "disclaimer": {
     "whatTitle": "Was das hier ist.",
@@ -312,5 +314,16 @@
     "sub": "Die Arithmetik der Abweichungen oben: {share} des Portfolios würden sich bewegen, in {count} Umschichtungen. Beschreibend wie der Rest der Seite — was ein Angleichen hieße, keine Empfehlung, es zu tun.",
     "move": "{amount} von {from} nach {to}",
     "biggest": "Davon würde {asset} allein den größten Abstand schließen — auf den Referenzwert gebracht, steigt die Ähnlichkeit um {gain}."
+  },
+  "share": {
+    "copy": "Link zu diesem Vergleich kopieren",
+    "note": "Der Link enthält Ihre Positionen. Sie landen in keinem Server-Log, aber wer den Link bekommt, kann sie lesen.",
+    "copied": "Link kopiert.",
+    "inUrl": "Link steht in der Adresszeile – von dort kopieren.",
+    "incomingTitle": "Dieser Link enthält ein Portfolio: {amount} in {count} Positionen.",
+    "incomingReplaces": "Es anzuzeigen ersetzt die in diesem Browser gespeicherten Zahlen, ohne Rückgängig.",
+    "incomingEmpty": "In diesem Browser ist noch nichts gespeichert.",
+    "incomingShow": "Anzeigen",
+    "incomingKeep": "Meines behalten"
   }
 }

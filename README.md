@@ -199,9 +199,19 @@ backend/
 frontend/
   src/
     lib/               api · analysis (mirrors allocation.py) · format · theme
+                       csv · png · share (all three build files in the page)
     components/        AllocationChart · GapChart · TrendChart · Tooltip · Hatch
     views/             Compare · Portfolio · Benchmarks
 ```
+
+### Taking it with you
+
+Three ways out of the page, and none of them involves a server: the comparison
+as a **CSV**, a chart as a **PNG** (title and key drawn into the image, so it
+reads on its own), and a **link** to the comparison on screen. The link carries
+the holdings in the URL fragment, which is never sent in an HTTP request — so
+the numbers stay out of server logs, though not out of the hands of whoever you
+send the link to. See [PRIVACY.md](PRIVACY.md).
 
 ## Endpoints
 

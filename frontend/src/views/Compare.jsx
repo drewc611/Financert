@@ -8,7 +8,10 @@ import CohortPicker from '../components/CohortPicker'
 import Placements from '../components/Placements'
 import PeriodPicker from '../components/PeriodPicker'
 import Rebalance from '../components/Rebalance'
-import { comparisonRows, download, toCsv } from '../lib/csv'
+import ShareLink from '../components/ShareLink'
+import SharedNotice from '../components/SharedNotice'
+import { comparisonRows, toCsv } from '../lib/csv'
+import { download } from '../lib/download'
 import { useI18n } from '../i18n'
 
 export default function Compare() {
@@ -76,6 +79,7 @@ export default function Compare() {
   if (!hasHoldings) {
     return (
       <>
+        <SharedNotice />
         {controls}
         <div className="card">
           <h2>{t('compare.emptyTitle')}</h2>
@@ -104,6 +108,7 @@ export default function Compare() {
 
   return (
     <>
+      <SharedNotice />
       {controls}
 
       <PendingNotice
@@ -180,6 +185,7 @@ export default function Compare() {
                     },
                   }),
                 ),
+                'text/csv;charset=utf-8',
               )
             }
           >
@@ -245,6 +251,8 @@ export default function Compare() {
       <Rebalance result={result} labels={labels} />
 
       <Placements />
+
+      <ShareLink />
     </>
   )
 }

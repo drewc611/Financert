@@ -854,7 +854,16 @@ input[type="number"] {
 .chart-actions {
   display: flex;
   justify-content: flex-end;
+  align-items: baseline;
+  gap: 14px;
   margin-bottom: 6px;
+}
+
+/* The link that carries the portfolio, and the sentence saying so. Set as one
+   block rather than a row of controls: the caveat is the point (BACKLOG F52). */
+.share-link {
+  margin-top: var(--gap);
+  max-width: 78ch;
 }
 
 /* --- narrow viewports ------------------------------------------------------

@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { api, getToken, setToken } from '../lib/api'
 import { fallbackData } from '../lib/fallbackData'
+import { decodeShare } from '../lib/share'
 
 const AppDataContext = createContext(null)
 
@@ -61,6 +62,11 @@ export function AppDataProvider({ children }) {
   const [token, setTokenState] = useState(getToken)
   const [slug, setSlug] = useState('default')
   const [portfolios, setPortfolios] = useState([])
+  /* A portfolio arriving in the URL fragment (BACKLOG F52). Held aside rather
+     than applied: adopting it would overwrite whatever this browser has saved,
+     and a link someone else wrote is not a reason to throw away a reader's own
+     numbers. The banner asks; `showShared` is what a yes runs. */
+  const [shared, setShared] = useState(() => (typeof window === 'undefined' ? null : decodeShare(window.location.hash)))
 
   useEffect(() => {
     let cancelled = false
@@ -212,6 +218,14 @@ export function AppDataProvider({ children }) {
     setDebts({})
   }, [])
 
+  /* Take the shared link up, or put it down. Either way the fragment goes:
+     once the answer is on screen the numbers have no business staying in the
+     address bar, and a refresh should not ask the same question again. */
+  const dismissShared = useCallback(() => {
+    setShared(null)
+    window.history.replaceState(null, '', window.location.pathname + window.location.search)
+  }, [])
+
   /* Point the whole dashboard at one group of one axis.
 
      The group is applied through pendingGroup rather than set here whenever
@@ -248,6 +262,19 @@ export function AppDataProvider({ children }) {
     },
     [showGroup],
   )
+
+  /* Take a shared link up: its holdings, its debts, and the view it was taken
+     from. Defined after showGroup because it needs it -- the group may belong
+     to an axis that has to load first. */
+  const showShared = useCallback(() => {
+    if (!shared) return
+    setHoldings(shared.holdings)
+    setDebts(shared.debts)
+    setInvestableOnly(shared.investableOnly)
+    if (shared.periodMode) setPeriodMode(shared.periodMode)
+    if (shared.dimension && shared.groupKey) showGroup(shared.dimension, shared.groupKey)
+    dismissShared()
+  }, [shared, showGroup, dismissShared])
 
   const save = useCallback(async () => {
     if (mode !== 'live') return { ok: false, reason: 'offline' }
@@ -298,6 +325,9 @@ export function AppDataProvider({ children }) {
       debts,
       setDebt,
       clearHoldings,
+      shared,
+      showShared,
+      dismissShared,
       save,
       groupKey,
       setGroupKey,
@@ -323,6 +353,9 @@ export function AppDataProvider({ children }) {
       debts,
       setDebt,
       clearHoldings,
+      shared,
+      showShared,
+      dismissShared,
       save,
       groupKey,
       dimension,

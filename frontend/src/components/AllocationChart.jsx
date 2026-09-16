@@ -56,16 +56,15 @@ export default function AllocationChart({ rows, benchmarkLabel, userLabel }) {
 
   return (
     <>
-      <div className="legend">
-        <span>
-          <i className="swatch" style={{ backgroundColor: 'var(--series-you)' }} /> {you}
-        </span>
-        <span>
-          <i className="swatch" data-hatch="" style={{ backgroundColor: 'var(--series-bench)' }} /> {benchmarkLabel}
-        </span>
-      </div>
-
-      <ChartFrame table={<AllocationTable rows={rows} you={you} benchmarkLabel={benchmarkLabel} />}>
+      <ChartFrame
+        filename={`financert-allocation-${benchmarkLabel}`}
+        caption={t('chart.allocationAria', { you, tier: benchmarkLabel })}
+        legend={[
+          { key: 'you', label: you, color: 'var(--series-you)' },
+          { key: 'bench', label: benchmarkLabel, color: 'var(--series-bench)', hatched: true },
+        ]}
+        table={<AllocationTable rows={rows} you={you} benchmarkLabel={benchmarkLabel} />}
+      >
       <div className="chart-scroll">
         {/* A group rather than an image: the rows below are focusable, and the
             contents of a role="img" are not exposed to a screen reader at all. */}

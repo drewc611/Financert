@@ -148,7 +148,9 @@
     "allInLine": "Toutes les classes d'actifs sont conformes à {tier}.",
     "showTable": "Afficher en tableau",
     "showChart": "Afficher en graphique",
-    "noHistory": "Aucun historique à afficher pour cette série."
+    "noHistory": "Aucun historique à afficher pour cette série.",
+    "savePng": "Enregistrer comme image",
+    "pngFailed": "Ce navigateur n'a pas pu produire l'image."
   },
   "disclaimer": {
     "whatTitle": "Ce que c'est.",
@@ -312,5 +314,16 @@
     "sub": "L'arithmétique des écarts ci-dessus : {share} du portefeuille bougerait, en {count} transferts. Descriptif, comme le reste de la page : c'est ce qu'égaler voudrait dire, pas une suggestion de le faire.",
     "move": "{amount} de {from} vers {to}",
     "biggest": "Parmi eux, {asset} à lui seul réduirait le plus l'écart : l'aligner sur la référence augmente la similarité de {gain}."
+  },
+  "share": {
+    "copy": "Copier un lien vers cette comparaison",
+    "note": "Le lien contient votre portefeuille. Il n'apparaît pas dans les journaux des serveurs, mais toute personne qui le reçoit peut le lire.",
+    "copied": "Lien copié.",
+    "inUrl": "Lien placé dans la barre d'adresse : copiez-le depuis là.",
+    "incomingTitle": "Ce lien contient un portefeuille : {amount} sur {count} lignes.",
+    "incomingReplaces": "L'afficher remplace les chiffres enregistrés dans ce navigateur, sans retour en arrière.",
+    "incomingEmpty": "Rien n'est encore enregistré dans ce navigateur.",
+    "incomingShow": "L'afficher",
+    "incomingKeep": "Garder le mien"
   }
 }
