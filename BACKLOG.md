@@ -281,8 +281,8 @@ in both, and the offline and live figures now match to the cent.
 | ~~F35~~ ✅ | Liquidity score using the existing `liquid` flag on asset classes | S |
 | ~~F36~~ ✅ | Rebalancing distance: smallest set of moves to reach a tier's mix | M |
 | ~~F37~~ ✅ | Dollar-terms gap: "you are $X under-allocated to equities" | S |
-| F38 | Scenario mode: edit holdings without saving and see the gap move live (the preview endpoint already exists) | M |
-| F39 | Save named scenarios and compare two side by side | L |
+| ~~F38~~ ✅ | Scenario mode: edit holdings without saving and see the gap move live | M |
+| ~~F39~~ ✅ | Save named scenarios and compare two side by side | L |
 | ~~F40~~ ✅ | Sensitivity: which single holding change most moves your nearest-tier | M |
 | ~~F41~~ ✅ | Aggregate check endpoint exposing the reconciliation residual per period | S |
 
@@ -592,6 +592,41 @@ during the drag, one after -- because "it should not refetch while dragging" is
 a claim, and the network panel is where claims like that are settled. The label
 tracks the handle all the way, so the control answers immediately even though
 the page does not.
+
+**F38 and F39 are one feature.** A scenario is a set of holdings with a name,
+kept in this browser; the draft is the same thing without the name yet.
+
+F38 exists because every keystroke on the portfolio page is a save. Asking
+"what if the house money were in equities" should not be the same act as
+recording that you did it, so while a draft is open every view reads the draft
+and nothing is written to storage. Three ways out, deliberately three different
+acts: keep it as a named scenario, make it the portfolio (the only one that
+overwrites what is stored), or throw it away. The banner is in the app shell
+rather than on one page, because a draft changes every number on all of them
+and an edit mode you can forget you are in is how a scenario gets read as a
+portfolio.
+
+The browser caught the bug that mattered. The first version applied each edit
+to the draft *and* to the portfolio, and relied on the storage effect skipping
+the write while a draft was open -- which is not enough, because the in-memory
+copy is what gets persisted the moment the draft closes. Discarding a scenario
+kept its edits. An edit now goes to one or the other and never both, and the
+check asserts the saved portfolio is byte-for-byte unchanged through a draft
+and restored after a discard.
+
+F39 reuses the allocation chart rather than inventing a fourth chart shape: two
+series of paired bars is exactly what it is. The two tiles above it are the
+question a scenario is usually asked for -- which of these is closer to the
+tier -- and answer it: the portfolio at 0.64, the all-equities scenario at
+0.92.
+
+`lib/scenarios.js` carries the storage, and is tested as what it is: a store
+anything on the origin could have written, whose numbers end up in the
+arithmetic behind every percentage on the page. Unreadable JSON, a list of
+junk, a holding of "lots" and storage being switched off all come back as
+nothing rather than as an exception on the way to rendering. The tests run in
+node, so they stub four methods rather than adding a DOM implementation as a
+dependency.
 
 **F61 and F62 are the same workflow**: the pull request *is* the alert, and it
 is better than one, because it arrives as a reviewable diff rather than as a

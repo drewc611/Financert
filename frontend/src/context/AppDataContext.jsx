@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { api, getToken, setToken } from '../lib/api'
 import { fallbackData } from '../lib/fallbackData'
 import { decodeShare } from '../lib/share'
+import { readScenarios, remove as removeScenario, suggestName, upsert, writeScenarios } from '../lib/scenarios'
 
 const AppDataContext = createContext(null)
 
@@ -34,6 +35,12 @@ export function AppDataProvider({ children }) {
   const [mode, setMode] = useState('loading')
   const [benchmarks, setBenchmarks] = useState(null)
   const [holdings, setHoldings] = useState(() => readStored(STORAGE_KEY))
+  /* A "what if" draft (BACKLOG F38). While one is open, every reader of
+     `holdings` sees it and nothing is written to storage: asking what a change
+     would do should not be the same act as recording that you made it.
+     `{ name, holdings, debts }`, or null for the real portfolio. */
+  const [scenario, setScenario] = useState(null)
+  const [scenarios, setScenarios] = useState(readScenarios)
   /* What the reader owes, by liability class (BACKLOG F25, F27). Optional:
      comparing an allocation needs no debt side at all, and only net worth and
      the debt questions read this. */
@@ -67,6 +74,12 @@ export function AppDataProvider({ children }) {
      and a link someone else wrote is not a reason to throw away a reader's own
      numbers. The banner asks; `showShared` is what a yes runs. */
   const [shared, setShared] = useState(() => (typeof window === 'undefined' ? null : decodeShare(window.location.hash)))
+
+  /* What the dashboard reads. Every view asks for `holdings`; which set that
+     is depends on whether a draft is open, and nothing downstream needs to
+     know (BACKLOG F38). */
+  const holdingsShown = scenario ? scenario.holdings : holdings
+  const debtsShown = scenario ? scenario.debts : debts
 
   useEffect(() => {
     let cancelled = false
@@ -141,20 +154,24 @@ export function AppDataProvider({ children }) {
   // Holdings live in localStorage so the tool is useful with no backend at
   // all; when the API is up they are also persisted server-side.
   useEffect(() => {
+    // Not while a scenario is open: the whole point of one is that it does not
+    // touch what is saved.
+    if (scenario) return
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(holdings))
     } catch {
       /* storage disabled -- in-memory state still works for this session */
     }
-  }, [holdings])
+  }, [holdings, scenario])
 
   useEffect(() => {
+    if (scenario) return
     try {
       localStorage.setItem(DEBTS_KEY, JSON.stringify(debts))
     } catch {
       /* storage disabled -- in-memory state still works for this session */
     }
-  }, [debts])
+  }, [debts, scenario])
 
   useEffect(() => {
     if (mode !== 'live') return
@@ -195,28 +212,39 @@ export function AppDataProvider({ children }) {
     }
   }, [mode, slug])
 
-  const setHolding = useCallback((assetClass, value) => {
-    setHoldings((prev) => {
-      const next = { ...prev }
-      if (!value || Number(value) <= 0) delete next[assetClass]
-      else next[assetClass] = Number(value)
-      return next
-    })
-  }, [])
+  /* One edit, applied to whichever of the two is in front: the draft when a
+     scenario is open, the saved portfolio otherwise. Every view that edits
+     holdings goes through here, so none of them has to know which. */
+  const edit = useCallback(
+    (field, key, value) => {
+      const apply = (prev) => {
+        const next = { ...prev }
+        if (!value || Number(value) <= 0) delete next[key]
+        else next[key] = Number(value)
+        return next
+      }
+      /* One or the other, never both. Writing to the portfolio *as well* and
+         relying on the storage effect to skip the write is not enough: the
+         in-memory copy is what gets persisted the moment the draft closes,
+         so discarding a scenario kept its edits. */
+      if (scenario) setScenario((draft) => ({ ...draft, [field]: apply(draft[field]) }))
+      else if (field === 'holdings') setHoldings(apply)
+      else setDebts(apply)
+    },
+    [scenario],
+  )
 
-  const setDebt = useCallback((liabilityClass, value) => {
-    setDebts((prev) => {
-      const next = { ...prev }
-      if (!value || Number(value) <= 0) delete next[liabilityClass]
-      else next[liabilityClass] = Number(value)
-      return next
-    })
-  }, [])
+  const setHolding = useCallback((assetClass, value) => edit('holdings', assetClass, value), [edit])
+  const setDebt = useCallback((liabilityClass, value) => edit('debts', liabilityClass, value), [edit])
 
   const clearHoldings = useCallback(() => {
+    if (scenario) {
+      setScenario((draft) => ({ ...draft, holdings: {}, debts: {} }))
+      return
+    }
     setHoldings({})
     setDebts({})
-  }, [])
+  }, [scenario])
 
   /* Take the shared link up, or put it down. Either way the fragment goes:
      once the answer is on screen the numbers have no business staying in the
@@ -276,6 +304,52 @@ export function AppDataProvider({ children }) {
     dismissShared()
   }, [shared, showGroup, dismissShared])
 
+  /* Start a draft from whatever is on screen (F38). Unnamed until it is
+     saved, which is the difference between "try something" and "keep it". */
+  const startScenario = useCallback(() => {
+    setScenario({ name: '', holdings: { ...holdingsShown }, debts: { ...debtsShown } })
+  }, [holdingsShown, debtsShown])
+
+  const discardScenario = useCallback(() => setScenario(null), [])
+
+  /* Make the draft the real portfolio. Deliberate and separate from saving a
+     scenario: this is the one action here that overwrites what is stored. */
+  const applyScenario = useCallback(() => {
+    if (!scenario) return
+    setHoldings({ ...scenario.holdings })
+    setDebts({ ...scenario.debts })
+    setScenario(null)
+  }, [scenario])
+
+  const saveScenario = useCallback(
+    (name) => {
+      if (!scenario) return null
+      const chosen = (name ?? '').trim() || suggestName(scenarios, 'Scenario')
+      const next = upsert(scenarios, { ...scenario, name: chosen, savedAt: new Date().toISOString() })
+      setScenarios(next)
+      writeScenarios(next)
+      setScenario((draft) => (draft ? { ...draft, name: chosen } : draft))
+      return chosen
+    },
+    [scenario, scenarios],
+  )
+
+  const openScenario = useCallback((name) => {
+    setScenarios((list) => {
+      const found = list.find((s) => s.name === name)
+      if (found) setScenario({ name: found.name, holdings: { ...found.holdings }, debts: { ...found.debts } })
+      return list
+    })
+  }, [])
+
+  const deleteScenario = useCallback((name) => {
+    setScenarios((list) => {
+      const next = removeScenario(list, name)
+      writeScenarios(next)
+      return next
+    })
+  }, [])
+
   const save = useCallback(async () => {
     if (mode !== 'live') return { ok: false, reason: 'offline' }
     await api.savePortfolio(
@@ -320,11 +394,21 @@ export function AppDataProvider({ children }) {
       slug,
       setSlug,
       portfolios,
-      holdings,
+      holdings: holdingsShown,
       setHolding,
-      debts,
+      debts: debtsShown,
       setDebt,
       clearHoldings,
+      // The saved portfolio, for the card that compares it against a draft.
+      savedHoldings: holdings,
+      scenario,
+      scenarios,
+      startScenario,
+      discardScenario,
+      applyScenario,
+      saveScenario,
+      openScenario,
+      deleteScenario,
       shared,
       showShared,
       dismissShared,
@@ -349,10 +433,20 @@ export function AppDataProvider({ children }) {
       slug,
       portfolios,
       holdings,
+      holdingsShown,
       setHolding,
       debts,
+      debtsShown,
       setDebt,
       clearHoldings,
+      scenario,
+      scenarios,
+      startScenario,
+      discardScenario,
+      applyScenario,
+      saveScenario,
+      openScenario,
+      deleteScenario,
       shared,
       showShared,
       dismissShared,

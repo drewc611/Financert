@@ -202,10 +202,12 @@ frontend/
   src/
     lib/               api · analysis (mirrors allocation.py) · format · theme
                        csv · png · share (all three build files in the page)
+                       composition · scenarios (both browser-only)
     components/        AllocationChart · GapChart · SlopeChart · ShapeScatter
                        CompositionChart · TierComposition · TrendChart
                        GapOverTime · PeriodScrubber · Tooltip · Hatch
-                       SourceNote
+                       SourceNote · ScenarioBar · ScenarioList
+                       ScenarioCompare
     views/             Compare · Portfolio · Benchmarks
 ```
 

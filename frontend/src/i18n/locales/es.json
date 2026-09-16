@@ -356,5 +356,30 @@
     "aria": "De dónde sale la cifra de {label}",
     "columns": "Columnas de las DFA de la Reserva Federal",
     "from": "Leído de {file}, obtenido el {when}."
+  },
+  "scenario": {
+    "start": "Probar un cambio",
+    "unsaved": "Probando un cambio.",
+    "unsavedShort": "Cambio sin guardar",
+    "editing": "Escenario: {name}.",
+    "total": "No se guarda nada mientras esto está abierto: {amount} en estas posiciones.",
+    "namePlaceholder": "Pon nombre al escenario",
+    "nameAria": "Nombre del escenario",
+    "save": "Guardarlo",
+    "apply": "Convertirlo en mi cartera",
+    "discard": "Descartarlo",
+    "listTitle": "Escenarios guardados",
+    "listSub": "Se quedan en este navegador y no se envían a ninguna parte. Abrir uno no toca tu cartera.",
+    "name": "Escenario",
+    "classes": "Clases",
+    "open": "Abrir",
+    "openNow": "abierto",
+    "delete": "Eliminar",
+    "myPortfolio": "Mi cartera",
+    "compareTitle": "Dos tuyas, una al lado de otra",
+    "compareSub": "Tu cartera frente a un escenario, y cada una frente a {tier}. La similitud es 1,00 para una mezcla idéntica.",
+    "left": "Izquierda",
+    "right": "Derecha",
+    "similarityNote": "similitud con {tier} · {amount}"
   }
 }

@@ -3,6 +3,7 @@ import { AppDataProvider, useAppData } from './context/AppDataContext'
 import Compare from './views/Compare'
 import Portfolio from './views/Portfolio'
 import Benchmarks from './views/Benchmarks'
+import ScenarioBar from './components/ScenarioBar'
 import { applyTheme, nextTheme, readTheme } from './lib/theme'
 import { I18nProvider, LOCALES, useI18n } from './i18n'
 import { useInstallPrompt } from './lib/install'
@@ -75,6 +76,8 @@ function Shell() {
               </button>
             ))}
           </nav>
+
+          <ScenarioBar />
 
           <Active />
 
