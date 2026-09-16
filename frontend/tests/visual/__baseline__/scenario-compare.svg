@@ -5,7 +5,7 @@
   aria-label="Allocation of My portfolio compared with All in equities, by asset class"
   style="fill:rgb(0, 0, 0);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;">
 <defs style="fill:rgb(0, 0, 0);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;">
-<pattern id="hatch-r5"
+<pattern id="hatch-_r_5_"
   width="7"
   height="7"
   patternUnits="userSpaceOnUse"
@@ -107,8 +107,8 @@
   width="756"
   height="11"
   rx="4"
-  fill="url(#hatch-r5)"
-  style="fill:url(&quot;#hatch-r5&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
+  fill="url(#hatch-_r_5_)"
+  style="fill:url(&quot;#hatch-_r_5_&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
 <text class="bar-value"
   x="912"
   y="29"
@@ -142,8 +142,8 @@
   width="1"
   height="11"
   rx="4"
-  fill="url(#hatch-r5)"
-  style="fill:url(&quot;#hatch-r5&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
+  fill="url(#hatch-_r_5_)"
+  style="fill:url(&quot;#hatch-_r_5_&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
 <text class="bar-value"
   x="518.88"
   y="63"
@@ -177,8 +177,8 @@
   width="1"
   height="11"
   rx="4"
-  fill="url(#hatch-r5)"
-  style="fill:url(&quot;#hatch-r5&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
+  fill="url(#hatch-_r_5_)"
+  style="fill:url(&quot;#hatch-_r_5_&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
 <text class="bar-value"
   x="311.52"
   y="97"
@@ -212,8 +212,8 @@
   width="1"
   height="11"
   rx="4"
-  fill="url(#hatch-r5)"
-  style="fill:url(&quot;#hatch-r5&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
+  fill="url(#hatch-_r_5_)"
+  style="fill:url(&quot;#hatch-_r_5_&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
 <text class="bar-value"
   x="186.24"
   y="131"

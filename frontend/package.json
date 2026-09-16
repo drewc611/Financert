@@ -13,8 +13,8 @@
     "test:visual:update": "node tests/visual/charts.mjs --update"
   },
   "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
