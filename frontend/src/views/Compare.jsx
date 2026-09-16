@@ -7,6 +7,8 @@ import DimensionPicker from '../components/DimensionPicker'
 import CohortPicker from '../components/CohortPicker'
 import Placements from '../components/Placements'
 import PeriodPicker from '../components/PeriodPicker'
+import PeriodScrubber from '../components/PeriodScrubber'
+import GapOverTime from '../components/GapOverTime'
 import Rebalance from '../components/Rebalance'
 import SlopeChart from '../components/SlopeChart'
 import ShareLink from '../components/ShareLink'
@@ -257,6 +259,8 @@ export default function Compare() {
         <SlopeChart rows={chartRows} benchmarkLabel={benchmarkLabel} youLabel={t('chart.you')} />
       </div>
 
+      <GapOverTime groupKey={groupKey} label={benchmarkLabel} />
+
       <Rebalance result={result} labels={labels} />
 
       <Placements />
@@ -293,6 +297,7 @@ function TierControls({ groups, groupKey, setGroupKey, investableOnly, setInvest
           {t('controls.investableOnly')}
         </label>
       </div>
+      <PeriodScrubber />
     </>
   )
 }

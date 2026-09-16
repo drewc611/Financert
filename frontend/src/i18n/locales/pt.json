@@ -35,7 +35,9 @@
     "insideTop1": " — dentro do 1% mais rico",
     "dimension": "Comparar por",
     "dimensionOffline": "outros eixos exigem a API",
-    "historyOffline": "o histórico precisa da API"
+    "historyOffline": "o histórico precisa da API",
+    "scrub": "Percorrer o tempo",
+    "scrubRelease": "solte para carregar"
   },
   "compare": {
     "emptyTitle": "Ainda não há nada para comparar",
@@ -72,7 +74,12 @@
     "tryExample": "Carregar uma família de exemplo",
     "tryExampleNote": "— aproximadamente a forma mediana norte-americana: a maior parte na habitação, uma conta de reforma, um pequeno saldo de títulos, face a um crédito à habitação. Limpa-se com o mesmo botão que limpa os seus números.",
     "slopeTitle": "A sua ordem face a {tier}",
-    "slopeSub": "Cada classe como proporção, a sua à esquerda e a de {tier} à direita. As linhas que se cruzam são classes que ordenam de forma diferente; as abaixo de 2% são desenhadas sem etiqueta."
+    "slopeSub": "Cada classe como proporção, a sua à esquerda e a de {tier} à direita. As linhas que se cruzam são classes que ordenam de forma diferente; as abaixo de 2% são desenhadas sem etiqueta.",
+    "overTimeTitle": "A sua composição alguma vez se pareceu com {tier}?",
+    "overTimeSub": "A sua distribuição fixa, com {tier} a percorrer cada trimestre desde 1989. 1,00 seria uma composição idêntica.",
+    "overTimeRange": "Mais próxima em {best} com {bestValue}, mais distante em {worst} com {worstValue}; hoje é {now}.",
+    "overTimeNeedsApi": "Isto precisa da API: lê todo o histórico do grupo, e o instantâneo incorporado traz o último trimestre.",
+    "overTimeFailed": "Não foi possível carregar o histórico."
   },
   "status": {
     "overweight": "Sobrealocado",

@@ -204,7 +204,8 @@ frontend/
                        csv · png · share (all three build files in the page)
     components/        AllocationChart · GapChart · SlopeChart · ShapeScatter
                        CompositionChart · TierComposition · TrendChart
-                       Tooltip · Hatch · SourceNote
+                       GapOverTime · PeriodScrubber · Tooltip · Hatch
+                       SourceNote
     views/             Compare · Portfolio · Benchmarks
 ```
 
