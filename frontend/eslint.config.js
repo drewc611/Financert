@@ -31,4 +31,20 @@ export default [
       'react/prop-types': 'off',
     },
   },
+  {
+    /* The visual-regression runner (BACKLOG F70) is a node script rather than
+       part of the app. Both global sets, because the functions it hands to
+       page.evaluate() are serialised and run in the browser, where document
+       and XMLSerializer are exactly what they mean. */
+    files: ['tests/**/*.mjs'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: { ...globals.node, ...globals.browser },
+    },
+    // The react plugin's config applies to every file it is given; without
+    // this it warns that it cannot find a React version to check against, in a
+    // file that has no JSX in it at all.
+    settings: { react: { version: 'detect' } },
+  },
 ]

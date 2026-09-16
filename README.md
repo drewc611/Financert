@@ -291,7 +291,14 @@ revalidating costs an empty 304. Everything else — portfolios, analyses,
 ```bash
 cd backend  && make test && make lint     # pytest + ruff
 cd frontend && npx eslint . && npm test && npm run build
+cd frontend && npm run test:visual        # the charts, against committed baselines
 ```
+
+`test:visual` needs the API on :8000 and the built dashboard on :4173; it
+compares each chart's *markup* with a committed baseline rather than a
+screenshot, so it does not depend on the machine's font rendering. A chart you
+changed on purpose: `npm run test:visual:update`, then commit the diff — which
+reads as "this path moved", not as a new PNG.
 
 CI runs both on every push and pull request.
 
