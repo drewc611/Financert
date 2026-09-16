@@ -75,6 +75,19 @@ the Financert API you point it at.
 
 Clearing site data removes all of it.
 
+**The shareable link** ("Copy a link to this comparison") is the one feature
+that takes holdings out of the browser, and only when you ask for it. The
+numbers ride in the URL *fragment* — the part after `#`, which a browser never
+sends in an HTTP request and which is stripped from the `Referer` header — so
+the link does not put them in any web server's log, including this app's own.
+That is a statement about servers, not about people: a link is a link, and
+whoever you send it to can read the numbers in it. The app says so beside the
+button, and a link arriving with a portfolio in it asks before replacing
+anything already saved in the browser it lands on.
+
+**The CSV and PNG exports** are built in the page, not on a server. Nothing
+about the portfolio is sent anywhere to produce either file.
+
 ## Data we fetch
 
 `fetch_dfa.py` downloads the Federal Reserve's public Distributional Financial

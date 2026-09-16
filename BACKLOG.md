@@ -365,9 +365,9 @@ the switch now.
 | ~~F49~~ ✅ | Keyboard navigation through chart series | M |
 | ~~F50~~ ✅ | Empty, loading and error states audited across all three views | M |
 | ~~F51~~ ✅ | Print stylesheet | S |
-| F52 | Shareable permalink encoding holdings in the URL | M |
+| ~~F52~~ ✅ | Shareable permalink encoding holdings in the URL | M |
 | ~~F53~~ ✅ | CSV export of your comparison | S |
-| F54 | PNG export of a chart | M |
+| ~~F54~~ ✅ | PNG export of a chart | M |
 | ~~F55~~ ✅ | Onboarding: prefill a plausible household so the app is not empty on arrival | S |
 | F56 | Inline "where does this number come from" popovers citing the series | M |
 | ~~F57~~ ✅ | Mobile pass on the tiers table (currently scrolls in a container) | M |
@@ -426,6 +426,48 @@ direction. The divider is a box-shadow rather than a border, because with
 and it scrolls away with the rest. The remainder of the phone pass is small --
 gutters, tile figures, the gap between cards -- because the layout was already
 fluid everywhere else.
+
+**F52 and F54 are the two remaining ways out of the page**, after the CSV
+(F53). Neither involves a server: the link is assembled in the browser and the
+picture is rasterised there.
+
+F52 puts the holdings in the URL *fragment* rather than the query string, and
+that is the whole design rather than a detail: a fragment is never sent in an
+HTTP request and is stripped from the Referer header, so a link with someone's
+balance sheet in it does not land in a web server's log -- not the static
+host's, not the API's. What it does not do is make the link private, so the
+sentence under the button says that a link is a link. Nothing writes to the
+address bar as the reader types, either: that would put the numbers in the
+browser's history without anyone asking. A link *arriving* with a portfolio in
+it asks before it does anything -- adopting it silently would overwrite
+whatever that browser had saved, with no undo -- and the offer says which it
+is, because "this replaces your numbers" and "nothing is saved here yet" are
+different situations. Everything decodeShare() reads is a stranger's text on
+its way into the arithmetic behind every percentage on the page, so it is
+tested as such: a truncated link, a hand-edited one, a version from the future
+and a holding of "lots" all come back as nothing.
+
+F54 exports the chart itself, read out of the DOM so the file matches the
+screen -- the tier, the quarter, the theme. Two things it needed that were not
+obvious from the code:
+
+- The charts are drawn by the page's stylesheet, so a serialised copy resolves
+  every `var(--series-you)` to nothing and lands on disk as black rectangles.
+  The clone is flattened first: the computed value of the dozen properties
+  these charts actually use, written onto each node.
+- The app ships a real Content-Security-Policy, and `img-src 'self' data:`
+  refuses a `blob:` image. The first version got as far as a console line
+  reading "Refused to load the image" and an empty download; the fix is a
+  `data:` URL, not a wider policy.
+
+A picture of two unlabelled series is not a chart, so the export draws its own
+title and key: the viewBox is extended upwards and the header drawn at negative
+y, which leaves the chart where it is. `viewBox.baseVal` is live, and reading
+the old origin out of it *after* rewriting the viewBox drew the first header a
+header's height above the top of the image -- visible only because the export
+was opened and looked at. The legend moved into ChartFrame in the same pass, so
+the exported key reads its colours off the swatches already on screen instead
+of resolving custom properties a second time.
 
 **F61 and F62 are the same workflow**: the pull request *is* the alert, and it
 is better than one, because it arrives as a reviewable diff rather than as a

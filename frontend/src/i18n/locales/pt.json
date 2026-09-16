@@ -148,7 +148,9 @@
     "allInLine": "Todas as classes de ativos estão em linha com {tier}.",
     "showTable": "Ver como tabela",
     "showChart": "Ver como gráfico",
-    "noHistory": "Não há histórico para mostrar nesta série."
+    "noHistory": "Não há histórico para mostrar nesta série.",
+    "savePng": "Guardar como imagem",
+    "pngFailed": "Este navegador não conseguiu gerar a imagem."
   },
   "disclaimer": {
     "whatTitle": "O que isto é.",
@@ -312,5 +314,16 @@
     "sub": "A aritmética das diferenças acima: mover-se-ia {share} da carteira, em {count} transferências. É descritivo, como o resto da página: é o que igualar significaria, não uma sugestão de o fazer.",
     "move": "{amount} de {from} para {to}",
     "biggest": "Destes, {asset} sozinho fecharia a maior distância: levá-lo ao valor de referência aumenta a semelhança em {gain}."
+  },
+  "share": {
+    "copy": "Copiar uma ligação para esta comparação",
+    "note": "A ligação leva a sua carteira dentro dela. Não fica nos registos do servidor, mas quem a receber consegue lê-la.",
+    "copied": "Ligação copiada.",
+    "inUrl": "Ligação colocada na barra de endereço — copie-a a partir daí.",
+    "incomingTitle": "Esta ligação traz uma carteira: {amount} em {count} posições.",
+    "incomingReplaces": "Mostrá-la substitui os números guardados neste navegador, sem forma de desfazer.",
+    "incomingEmpty": "Ainda não há nada guardado neste navegador.",
+    "incomingShow": "Mostrar",
+    "incomingKeep": "Manter a minha"
   }
 }

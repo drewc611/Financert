@@ -97,22 +97,22 @@ export default function TrendChart({ series, assetLabel }) {
 
   return (
     <>
-      {showLegend && (
-        <div className="legend">
-          {series.map((s, i) => (
-            <span key={s.key}>
-              <i
-                className="swatch"
-                data-dash={SERIES_DASH[i % SERIES_DASH.length] ? '' : undefined}
-                style={{ backgroundColor: SERIES_COLORS[i % SERIES_COLORS.length] }}
-              />{' '}
-              {s.label}
-            </span>
-          ))}
-        </div>
-      )}
-
-      <ChartFrame table={<TrendTable series={series} />}>
+      <ChartFrame
+        filename={`financert-trend-${assetLabel}`}
+        caption={t('chart.trendAria', { asset: assetLabel })}
+        legend={
+          // One line needs no key; two or more do.
+          showLegend
+            ? series.map((s, i) => ({
+                key: s.key,
+                label: s.label,
+                color: SERIES_COLORS[i % SERIES_COLORS.length],
+                dashed: Boolean(SERIES_DASH[i % SERIES_DASH.length]),
+              }))
+            : []
+        }
+        table={<TrendTable series={series} />}
+      >
       <div className="chart-scroll">
         <svg
           className="chart-svg chart-row"

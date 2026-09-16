@@ -1,4 +1,5 @@
 import { useId, useRef, useState } from 'react'
+import ChartFrame from './ChartFrame'
 import Hatch from './Hatch'
 import { Tooltip, TooltipRows, useTooltip } from './Tooltip'
 import { useI18n } from '../i18n'
@@ -57,19 +58,22 @@ export default function GapChart({ gaps, benchmarkLabel }) {
 
   return (
     <>
-      <div className="legend">
-        <span>
-          <i className="swatch" style={{ backgroundColor: 'var(--diverge-over)' }} /> {t('chart.moreThan', { tier: benchmarkLabel })}
-        </span>
-        <span>
-          {/* Under-weight is the hatched side on this chart as well as the red
-              one: over/under is the whole reading, and red against blue is the
-              pair most often lost to colour-vision deficiency (BACKLOG F48). */}
-          <i className="swatch" data-hatch="" style={{ backgroundColor: 'var(--diverge-under)' }} />{' '}
-          {t('chart.lessThan', { tier: benchmarkLabel })}
-        </span>
-      </div>
-
+      {/* Under-weight is the hatched side here as well as the red one:
+          over/under is the whole reading, and red against blue is the pair
+          most often lost to colour-vision deficiency (BACKLOG F48). */}
+      <ChartFrame
+        filename={`financert-gaps-${benchmarkLabel}`}
+        caption={t('chart.gapAria', { tier: benchmarkLabel })}
+        legend={[
+          { key: 'over', label: t('chart.moreThan', { tier: benchmarkLabel }), color: 'var(--diverge-over)' },
+          {
+            key: 'under',
+            label: t('chart.lessThan', { tier: benchmarkLabel }),
+            color: 'var(--diverge-under)',
+            hatched: true,
+          },
+        ]}
+      >
       <div className="chart-scroll">
         <svg
           className="chart-svg"
@@ -150,6 +154,7 @@ export default function GapChart({ gaps, benchmarkLabel }) {
           <line className="baseline" x1={mid} x2={mid} y1={PAD_T} y2={PAD_T + rows.length * ROW_H} />
         </svg>
       </div>
+      </ChartFrame>
       <Tooltip tip={tip} />
     </>
   )

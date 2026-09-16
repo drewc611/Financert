@@ -46,21 +46,3 @@ export function comparisonRows(result, { labels = {}, benchmarkLabel, headers })
     ...body,
   ]
 }
-
-/** Hand the file to the browser.
- *
- *  A Blob and a synthetic click, which is the only way to name a download
- *  without a server. The object URL is revoked on the next frame -- not
- *  immediately, because Safari has not started reading it yet when the click
- *  returns.
- */
-export function download(filename, text, type = 'text/csv;charset=utf-8') {
-  const url = URL.createObjectURL(new Blob([text], { type }))
-  const link = document.createElement('a')
-  link.href = url
-  link.download = filename
-  document.body.appendChild(link)
-  link.click()
-  link.remove()
-  requestAnimationFrame(() => URL.revokeObjectURL(url))
-}
