@@ -5,7 +5,7 @@
   aria-label="Difference in allocation versus Top 1%, in percentage points, by asset class"
   style="fill:rgb(0, 0, 0);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;">
 <defs style="fill:rgb(0, 0, 0);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;">
-<pattern id="hatch-r2"
+<pattern id="hatch-_r_2_"
   width="7"
   height="7"
   patternUnits="userSpaceOnUse"
@@ -129,8 +129,8 @@
   width="218.7180160265267"
   height="12"
   rx="4"
-  fill="url(#hatch-r2)"
-  style="fill:url(&quot;#hatch-r2&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
+  fill="url(#hatch-_r_2_)"
+  style="fill:url(&quot;#hatch-_r_2_&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
 <text class="bar-value"
   x="341.7819839734733"
   y="59"
@@ -158,8 +158,8 @@
   width="152.36750483558995"
   height="12"
   rx="4"
-  fill="url(#hatch-r2)"
-  style="fill:url(&quot;#hatch-r2&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
+  fill="url(#hatch-_r_2_)"
+  style="fill:url(&quot;#hatch-_r_2_&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
 <text class="bar-value"
   x="408.13249516441005"
   y="89"
@@ -216,8 +216,8 @@
   width="39.237496546007186"
   height="12"
   rx="4"
-  fill="url(#hatch-r2)"
-  style="fill:url(&quot;#hatch-r2&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
+  fill="url(#hatch-_r_2_)"
+  style="fill:url(&quot;#hatch-_r_2_&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
 <text class="bar-value"
   x="521.2625034539928"
   y="149"
@@ -245,8 +245,8 @@
   width="34.65501519756839"
   height="12"
   rx="4"
-  fill="url(#hatch-r2)"
-  style="fill:url(&quot;#hatch-r2&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
+  fill="url(#hatch-_r_2_)"
+  style="fill:url(&quot;#hatch-_r_2_&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
 <text class="bar-value"
   x="525.8449848024316"
   y="179"
@@ -274,8 +274,8 @@
   width="21.28944459795524"
   height="12"
   rx="4"
-  fill="url(#hatch-r2)"
-  style="fill:url(&quot;#hatch-r2&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
+  fill="url(#hatch-_r_2_)"
+  style="fill:url(&quot;#hatch-_r_2_&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
 <text class="bar-value"
   x="539.2105554020447"
   y="209"
@@ -303,8 +303,8 @@
   width="10.78792484111633"
   height="12"
   rx="4"
-  fill="url(#hatch-r2)"
-  style="fill:url(&quot;#hatch-r2&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
+  fill="url(#hatch-_r_2_)"
+  style="fill:url(&quot;#hatch-_r_2_&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
 <text class="bar-value"
   x="549.7120751588836"
   y="239"
@@ -332,8 +332,8 @@
   width="9.546836142580823"
   height="12"
   rx="4"
-  fill="url(#hatch-r2)"
-  style="fill:url(&quot;#hatch-r2&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
+  fill="url(#hatch-_r_2_)"
+  style="fill:url(&quot;#hatch-_r_2_&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
 <text class="bar-value"
   x="550.9531638574192"
   y="269"
@@ -361,8 +361,8 @@
   width="4.964354794142029"
   height="12"
   rx="4"
-  fill="url(#hatch-r2)"
-  style="fill:url(&quot;#hatch-r2&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
+  fill="url(#hatch-_r_2_)"
+  style="fill:url(&quot;#hatch-_r_2_&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
 <text class="bar-value"
   x="555.5356452058579"
   y="299"
@@ -390,8 +390,8 @@
   width="2.3867090356452056"
   height="12"
   rx="4"
-  fill="url(#hatch-r2)"
-  style="fill:url(&quot;#hatch-r2&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
+  fill="url(#hatch-_r_2_)"
+  style="fill:url(&quot;#hatch-_r_2_&quot;);fill-opacity:1;stroke-width:1px;font-size:15px;font-weight:400;text-anchor:start;opacity:1;"/>
 <text class="bar-value"
   x="558.1132909643547"
   y="329"

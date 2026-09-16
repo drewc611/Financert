@@ -16,6 +16,14 @@
  * width changing in the stylesheet shows up here too -- the CSS is as much a
  * part of a chart as the geometry.
  *
+ * One consequence of comparing markup: the hatch pattern ids come from
+ * useId(), so a React major that changes its id format rewrites the three
+ * hatched baselines without changing a pixel. React 19 did exactly that --
+ * `:r2:` became `«r2»`, and these charts strip the punctuation, so `r2` became
+ * `_r_2_`. That is a baseline update rather than a bug, but check the diff is
+ * *only* the id before adopting it: a reference that has stopped matching its
+ * pattern looks much the same here and is not benign.
+ *
  *     node tests/visual/charts.mjs            # compare against the baseline
  *     node tests/visual/charts.mjs --update   # adopt the current output
  *
