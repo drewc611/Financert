@@ -70,7 +70,9 @@
     "csvPeriod": "Period",
     "csvTotal": "Portfolio compared",
     "tryExample": "Load an example household",
-    "tryExampleNote": "— roughly the median American shape: most of it in the house, a retirement account, a small brokerage balance, against a mortgage. Clearing it is the same button as clearing your own."
+    "tryExampleNote": "— roughly the median American shape: most of it in the house, a retirement account, a small brokerage balance, against a mortgage. Clearing it is the same button as clearing your own.",
+    "slopeTitle": "Your order against {tier}",
+    "slopeSub": "Every class as a share, yours on the left and {tier} on the right. Crossing lines are classes the two of you rank differently; classes under 2% are drawn but not labelled."
   },
   "status": {
     "overweight": "Overweight",
@@ -134,7 +136,9 @@
     "unallocatedNote": "“Unallocated” is the gap between the Fed's published asset total and the categories above it. With the full column set it is rounding — under 0.0002% in every quarter since 1989 — and /api/benchmarks/reconciliation publishes it per quarter so that is checkable rather than asserted.",
     "trendEmpty": "The source publishes no history for {asset} on this axis.",
     "trendFailed": "Couldn't load the trend.",
-    "retry": "Try again"
+    "retry": "Try again",
+    "scatterTitle": "Liquid, or concentrated?",
+    "scatterSub": "The two measures above, plotted against each other. The tiers do not sit on a line: the top of the distribution is both the most concentrated and among the most liquid, because the class it concentrates in is itself liquid."
   },
   "chart": {
     "you": "You",
@@ -150,7 +154,13 @@
     "showChart": "Show as chart",
     "noHistory": "No history to show for this series.",
     "savePng": "Save as image",
-    "pngFailed": "This browser would not render the image."
+    "pngFailed": "This browser would not render the image.",
+    "noShape": "Not enough tiers to plot.",
+    "scatterAria": "Share held in liquid classes against share in the single largest class, one point per group",
+    "axisLiquidity": "Held in liquid classes",
+    "axisConcentration": "Held in the largest class",
+    "scatterNote": "Concentration is the share in whichever class is largest for that group — not the same class for each. {you} appears once holdings are entered.",
+    "slopeAria": "Each asset class as a share, {you} on the left and {tier} on the right"
   },
   "disclaimer": {
     "whatTitle": "What this is.",

@@ -202,7 +202,8 @@ frontend/
   src/
     lib/               api · analysis (mirrors allocation.py) · format · theme
                        csv · png · share (all three build files in the page)
-    components/        AllocationChart · GapChart · TrendChart · Tooltip · Hatch
+    components/        AllocationChart · GapChart · SlopeChart · ShapeScatter
+                       TrendChart · Tooltip · Hatch · SourceNote
     views/             Compare · Portfolio · Benchmarks
 ```
 

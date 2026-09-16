@@ -70,7 +70,9 @@
     "csvPeriod": "Periodo",
     "csvTotal": "Cartera comparada",
     "tryExample": "Cargar un hogar de ejemplo",
-    "tryExampleNote": "— aproximadamente la forma mediana estadounidense: la mayor parte en la vivienda, un plan de jubilación, un pequeño saldo de valores, frente a una hipoteca. Se borra con el mismo botón que borra lo tuyo."
+    "tryExampleNote": "— aproximadamente la forma mediana estadounidense: la mayor parte en la vivienda, un plan de jubilación, un pequeño saldo de valores, frente a una hipoteca. Se borra con el mismo botón que borra lo tuyo.",
+    "slopeTitle": "Tu orden frente a {tier}",
+    "slopeSub": "Cada clase como proporción, la tuya a la izquierda y la de {tier} a la derecha. Las líneas que se cruzan son clases que ordenáis de forma distinta; las inferiores al 2% se dibujan sin etiqueta."
   },
   "status": {
     "overweight": "Sobreponderado",
@@ -134,7 +136,9 @@
     "unallocatedNote": "«Sin asignar» es la diferencia entre el total de activos publicado por la Reserva Federal y las categorías anteriores. Con el conjunto completo de columnas es redondeo —por debajo del 0,0002% en cada trimestre desde 1989— y /api/benchmarks/reconciliation lo publica por trimestre para que pueda comprobarse en vez de afirmarse.",
     "trendEmpty": "La fuente no publica histórico de {asset} en este eje.",
     "trendFailed": "No se pudo cargar la evolución.",
-    "retry": "Reintentar"
+    "retry": "Reintentar",
+    "scatterTitle": "¿Líquido o concentrado?",
+    "scatterSub": "Las dos medidas anteriores, una frente a otra. Los tramos no forman una línea: la cima de la distribución es a la vez la más concentrada y de las más líquidas, porque la clase en la que se concentra ya es líquida."
   },
   "chart": {
     "you": "Usted",
@@ -150,7 +154,13 @@
     "showChart": "Ver como gráfico",
     "noHistory": "No hay histórico que mostrar para esta serie.",
     "savePng": "Guardar como imagen",
-    "pngFailed": "Este navegador no ha podido generar la imagen."
+    "pngFailed": "Este navegador no ha podido generar la imagen.",
+    "noShape": "No hay tramos suficientes para el gráfico.",
+    "scatterAria": "Proporción en clases líquidas frente a proporción en la clase mayor, un punto por grupo",
+    "axisLiquidity": "En clases líquidas",
+    "axisConcentration": "En la clase mayor",
+    "scatterNote": "La concentración es la proporción en la clase que sea mayor para ese grupo, que no es la misma para todos. {you} aparece en cuanto introduces posiciones.",
+    "slopeAria": "Cada clase de activo como proporción, {you} a la izquierda y {tier} a la derecha"
   },
   "disclaimer": {
     "whatTitle": "Qué es esto.",
