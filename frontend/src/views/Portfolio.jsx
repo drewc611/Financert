@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useAppData } from '../context/AppDataContext'
+import SourceNote from '../components/SourceNote'
 import { useI18n } from '../i18n'
 
 export default function Portfolio() {
@@ -177,6 +178,9 @@ function DebtRow({ debt, value, onChange }) {
     <>
       <label htmlFor={id}>
         <strong style={{ fontWeight: 550 }}>{debtLabel(debt.key, debt.label)}</strong>
+        {/* The blurb below says what belongs in the box; this says which
+            published column the benchmark beside it is (BACKLOG F56). */}
+        <SourceNote label={debtLabel(debt.key, debt.label)} columns={debt.columns} />
         <br />
         <span style={{ color: 'var(--text-muted)', fontSize: 12 }}>{debtBlurb(debt.key, debt.blurb)}</span>
       </label>
@@ -201,6 +205,7 @@ function Row({ asset, value, onChange }) {
     <>
       <label htmlFor={id}>
         <strong style={{ fontWeight: 550 }}>{assetLabel(asset.key, asset.label)}</strong>
+        <SourceNote label={assetLabel(asset.key, asset.label)} columns={asset.columns} />
         <br />
         <span style={{ color: 'var(--text-muted)', fontSize: 12 }}>{assetBlurb(asset.key, asset.blurb)}</span>
       </label>

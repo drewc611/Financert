@@ -325,5 +325,10 @@
     "incomingEmpty": "Todavía no hay nada guardado en este navegador.",
     "incomingShow": "Mostrarla",
     "incomingKeep": "Conservar la mía"
+  },
+  "source": {
+    "aria": "De dónde sale la cifra de {label}",
+    "columns": "Columnas de las DFA de la Reserva Federal",
+    "from": "Leído de {file}, obtenido el {when}."
   }
 }

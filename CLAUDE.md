@@ -138,6 +138,12 @@ python tools/build_fallback.py # regenerate the frontend's embedded copy
 Always run `build_fallback.py` after `fetch_dfa.py`, or the offline dashboard
 drifts from the API.
 
+`tools/snapshot_diff.py OLD NEW` answers what a refresh actually did: the new
+quarter, any structural change, and — the part worth reading twice — any
+**revision**, a quarter the Fed restated that the site has already shown.
+It compares shares rather than dollars, since every balance sheet grows, and
+the weekly refresh workflow puts its output in the pull request body.
+
 `federalreserve.gov` returns **403 to urllib's default user agent**, which is
 why `fetch_dfa.py` sets one. Don't remove it, and don't replace it with a
 browser string — identify the client honestly.

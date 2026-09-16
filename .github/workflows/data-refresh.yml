@@ -40,6 +40,12 @@ jobs:
         id: before
         run: python backend/tools/snapshot_summary.py >> "$GITHUB_OUTPUT"
 
+      # The refresh overwrites these in place, and the interesting question is
+      # what *changed* -- including whether the Fed restated a quarter that is
+      # already on the site (BACKLOG F63). Keep the old files to compare with.
+      - name: Keep the snapshot being replaced
+        run: cp -r backend/data /tmp/snapshot-before
+
       # fetch_dfa.py fails the run rather than writing anything if the taxonomy
       # stops reconciling against the Fed's published totals on either side of
       # the balance sheet, so a bad refresh never reaches a pull request.
@@ -58,6 +64,13 @@ jobs:
       - name: Record what it is now
         id: after
         run: python backend/tools/snapshot_summary.py >> "$GITHUB_OUTPUT"
+
+      - name: What changed
+        if: steps.after.outputs.checksum != steps.before.outputs.checksum
+        run: |
+          python backend/tools/snapshot_diff.py \
+            /tmp/snapshot-before/dfa_snapshot.json backend/data/dfa_snapshot.json \
+            | tee /tmp/refresh-diff.txt
 
       - name: Nothing to do
         if: steps.after.outputs.checksum == steps.before.outputs.checksum
@@ -98,6 +111,14 @@ jobs:
           |---|---|
           | Latest period | \`$BEFORE_PERIOD\` → \`$AFTER_PERIOD\` |
           | Archive sha256 | starts \`$CHECKSUM\` |
+
+          \`\`\`
+          $(cat /tmp/refresh-diff.txt)
+          \`\`\`
+
+          A **revision** line above means the Fed restated a quarter that is
+          already on the site: those are numbers a reader has been shown
+          before, and they are the part of this diff worth reading twice.
 
           Every number on the site comes from these files, so the diff is the
           review. \`fetch_dfa.py\` reconciles the taxonomy against the Fed's own

@@ -113,106 +113,159 @@ export const fallbackData = {
       "key": "corporate_equities",
       "label": "Stocks & Mutual Funds",
       "liquid": true,
-      "blurb": "Directly held corporate equities plus mutual fund shares, excluding those held through a DC pension."
+      "blurb": "Directly held corporate equities plus mutual fund shares, excluding those held through a DC pension.",
+      "columns": [
+        "Corporate equities and mutual fund shares"
+      ]
     },
     {
       "key": "private_business",
       "label": "Private Business Equity",
       "liquid": false,
-      "blurb": "Proprietors' equity in noncorporate business -- partnerships, S-corps, sole proprietorships, and property held to rent out."
+      "blurb": "Proprietors' equity in noncorporate business -- partnerships, S-corps, sole proprietorships, and property held to rent out.",
+      "columns": [
+        "Miscellaneous other equity"
+      ]
     },
     {
       "key": "pension",
       "label": "Pensions & Retirement",
       "liquid": false,
-      "blurb": "Defined benefit and defined contribution pension entitlements."
+      "blurb": "Defined benefit and defined contribution pension entitlements.",
+      "columns": [
+        "DB pension entitlements",
+        "DC pension entitlements"
+      ]
     },
     {
       "key": "real_estate",
       "label": "Real Estate",
       "liquid": false,
-      "blurb": "Owner-occupied real estate including vacant land and mobile homes, at market value."
+      "blurb": "Owner-occupied real estate including vacant land and mobile homes, at market value.",
+      "columns": [
+        "Real estate"
+      ]
     },
     {
       "key": "deposits",
       "label": "Cash & Deposits",
       "liquid": true,
-      "blurb": "Checkable deposits and currency, time deposits and short-term investments."
+      "blurb": "Checkable deposits and currency, time deposits and short-term investments.",
+      "columns": [
+        "Deposits"
+      ]
     },
     {
       "key": "money_market",
       "label": "Money Market Funds",
       "liquid": true,
-      "blurb": "Money market mutual fund shares."
+      "blurb": "Money market mutual fund shares.",
+      "columns": [
+        "Money market fund shares"
+      ]
     },
     {
       "key": "debt_securities",
       "label": "Bonds",
       "liquid": true,
-      "blurb": "Treasury, municipal, corporate and foreign bonds held directly."
+      "blurb": "Treasury, municipal, corporate and foreign bonds held directly.",
+      "columns": [
+        "Debt securities"
+      ]
     },
     {
       "key": "consumer_durables",
       "label": "Consumer Durables",
       "liquid": false,
-      "blurb": "Vehicles, appliances, furnishings -- counted as assets by the Fed, not as investments."
+      "blurb": "Vehicles, appliances, furnishings -- counted as assets by the Fed, not as investments.",
+      "columns": [
+        "Consumer durables"
+      ]
     },
     {
       "key": "annuities",
       "label": "Annuities",
       "liquid": false,
-      "blurb": "Annuities sold by life insurers directly to households, outside a pension."
+      "blurb": "Annuities sold by life insurers directly to households, outside a pension.",
+      "columns": [
+        "Annuities"
+      ]
     },
     {
       "key": "life_insurance",
       "label": "Life Insurance",
       "liquid": false,
-      "blurb": "Cash value of life insurance reserves."
+      "blurb": "Cash value of life insurance reserves.",
+      "columns": [
+        "Life insurance reserves"
+      ]
     },
     {
       "key": "loans_assets",
       "label": "Loans Receivable",
       "liquid": false,
-      "blurb": "Mortgages and other loans held as assets."
+      "blurb": "Mortgages and other loans held as assets.",
+      "columns": [
+        "Loans (Assets)"
+      ]
     },
     {
       "key": "misc_assets",
       "label": "Other Assets",
       "liquid": false,
-      "blurb": "Miscellaneous assets not classified elsewhere."
+      "blurb": "Miscellaneous assets not classified elsewhere.",
+      "columns": [
+        "Miscellaneous assets"
+      ]
     },
     {
       "key": "unallocated",
       "label": "Unallocated",
       "liquid": false,
-      "blurb": "Residual between the Fed's published asset total and the categories above. Rounding only, since the taxonomy now covers every component."
+      "blurb": "Residual between the Fed's published asset total and the categories above. Rounding only, since the taxonomy now covers every component.",
+      "columns": []
     }
   ],
   "liability_classes": [
     {
       "key": "home_mortgages",
       "label": "Home Mortgages",
-      "blurb": "Mortgages secured on owner-occupied property, including home equity lines."
+      "blurb": "Mortgages secured on owner-occupied property, including home equity lines.",
+      "columns": [
+        "Home mortgages"
+      ]
     },
     {
       "key": "consumer_credit",
       "label": "Consumer Credit",
-      "blurb": "Credit cards, car loans, student loans and other unsecured consumer borrowing."
+      "blurb": "Credit cards, car loans, student loans and other unsecured consumer borrowing.",
+      "columns": [
+        "Consumer credit"
+      ]
     },
     {
       "key": "depository_loans",
       "label": "Bank Loans",
-      "blurb": "Loans from banks and other depository institutions not classified elsewhere."
+      "blurb": "Loans from banks and other depository institutions not classified elsewhere.",
+      "columns": [
+        "Depository institutions loans n.e.c."
+      ]
     },
     {
       "key": "other_loans",
       "label": "Other Loans",
-      "blurb": "Margin loans, policy loans and other borrowing outside the categories above."
+      "blurb": "Margin loans, policy loans and other borrowing outside the categories above.",
+      "columns": [
+        "Other loans and advances (Liabilities)"
+      ]
     },
     {
       "key": "deferred_premiums",
       "label": "Deferred Life Premiums",
-      "blurb": "Life insurance premiums owed but not yet paid -- the one liability outside the loan tree."
+      "blurb": "Life insurance premiums owed but not yet paid -- the one liability outside the loan tree.",
+      "columns": [
+        "Deferred and unpaid life insurance premiums"
+      ]
     }
   ],
   "groups": {

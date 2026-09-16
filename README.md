@@ -121,6 +121,7 @@ cd backend
 python fetch_dfa.py            # pull, validate, rewrite the snapshot
 python fetch_dfa.py --check    # pull and validate, write nothing
 python tools/build_fallback.py # regenerate the frontend's embedded copy
+python tools/snapshot_diff.py OLD NEW   # what a refresh changed, and what it revised
 ```
 
 `fetch_dfa.py` downloads the Fed's bulk DFA zip (one request, no API key) and
@@ -195,6 +196,7 @@ backend/
   Dockerfile           REST API image      Dockerfile.mcp  MCP server image
   fly.toml             MCP server deployment (see DEPLOY.md)
   tools/build_fallback.py  regenerate the frontend's embedded copy
+  tools/snapshot_diff.py   what changed between two refreshes
   seed.py              sample portfolio       tests/  pytest suite
 frontend/
   src/

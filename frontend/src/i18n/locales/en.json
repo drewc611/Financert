@@ -325,5 +325,10 @@
     "incomingEmpty": "Nothing is saved in this browser yet.",
     "incomingShow": "Show it",
     "incomingKeep": "Keep mine"
+  },
+  "source": {
+    "aria": "Where the {label} figure comes from",
+    "columns": "Federal Reserve DFA columns",
+    "from": "Read from {file}, retrieved {when}."
   }
 }

@@ -325,5 +325,10 @@
     "incomingEmpty": "Rien n'est encore enregistré dans ce navigateur.",
     "incomingShow": "L'afficher",
     "incomingKeep": "Garder le mien"
+  },
+  "source": {
+    "aria": "D'où vient le chiffre de {label}",
+    "columns": "Colonnes des DFA de la Réserve fédérale",
+    "from": "Lu dans {file}, récupéré le {when}."
   }
 }
