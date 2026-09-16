@@ -69,7 +69,9 @@ export default function SourceNote({ label, columns, blurb }) {
 
   if (!columns?.length) return null
 
-  const source = benchmarks.source ?? {}
+  // Optional because this is null until the opening fetch lands; the `?? {}`
+  // below cannot help if the read itself throws.
+  const source = benchmarks?.source ?? {}
 
   function toggle(event) {
     /* These sit inside the <label> of each holdings field, and a click on

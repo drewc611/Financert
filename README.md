@@ -294,6 +294,10 @@ cd frontend && npx eslint . && npm test && npm run build
 cd frontend && npm run test:visual        # the charts, against committed baselines
 ```
 
+`npm test` is two Vitest projects: `src/**/*.test.js` are pure functions and run
+in node, `src/**/*.test.jsx` are components and run in jsdom with Testing
+Library. Either alone: `npx vitest run --project unit`.
+
 `test:visual` needs the API on :8000 and the built dashboard on :4173; it
 compares each chart's *markup* with a committed baseline rather than a
 screenshot, so it does not depend on the machine's font rendering. A chart you
