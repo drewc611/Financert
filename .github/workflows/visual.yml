@@ -1,0 +1,77 @@
+name: Charts
+
+# Visual regression for the nine charts (BACKLOG F70).
+#
+# The baseline is each chart's markup rather than a screenshot, so this runs on
+# a plain runner: there is no font rasterisation in it to differ between one
+# machine and another. What it does need is the same browser, which the pinned
+# `playwright` dependency provides, and the same data, which is the committed
+# snapshot the API serves.
+#
+# A failure here is not necessarily a bug -- most of them will be a chart that
+# was deliberately changed -- so the job says how to adopt the new output and
+# uploads what it saw.
+on:
+  push:
+    branches: [main, Develop]
+  pull_request:
+    paths:
+      - "frontend/**"
+      - "backend/app/services/benchmarks.py"
+      - "backend/data/**"
+      - ".github/workflows/visual.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  charts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install
+        run: |
+          cd frontend && npm ci
+          npx playwright install --with-deps chromium
+          cd ../backend && pip install -r requirements.txt
+
+      # Three of the nine charts read the whole quarterly history, which only
+      # the API has: the embedded snapshot carries the latest quarter.
+      - name: Start the API
+        working-directory: backend
+        run: |
+          python -m uvicorn app.main:app --port 8000 &
+          for _ in $(seq 1 30); do
+            curl -sf http://localhost:8000/healthz > /dev/null && break
+            sleep 1
+          done
+          curl -sf http://localhost:8000/healthz
+
+      - name: Build and serve the dashboard
+        working-directory: frontend
+        run: |
+          npm run build
+          npx vite preview --port 4173 --strictPort &
+          for _ in $(seq 1 30); do
+            curl -sf http://localhost:4173/ > /dev/null && break
+            sleep 1
+          done
+          curl -sf -o /dev/null http://localhost:4173/
+
+      - name: Compare the charts with their baselines
+        working-directory: frontend
+        run: npm run test:visual
+
+      # No artifact upload: the run prints the first lines that differ for each
+      # chart, which is the whole finding for a colour or a coordinate, and it
+      # keeps this workflow to the actions the rest of the repo already pins.

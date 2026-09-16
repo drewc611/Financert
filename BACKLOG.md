@@ -628,6 +628,29 @@ nothing rather than as an exception on the way to rendering. The tests run in
 node, so they stub four methods rather than adding a DOM implementation as a
 dependency.
 
+**F70 snapshots the markup, not the pixels**, and that is the decision the
+feature turns on. A screenshot baseline encodes the machine's font
+rasterisation, so one rendered on a laptop fails on a CI runner for reasons
+that have nothing to do with the chart -- and this container has no working
+Docker daemon, so baselines could not be generated in the runner's own image
+either. Every coordinate in these SVGs is computed by our code from committed
+data (the label gutter included: it estimates from character counts rather
+than measuring text), so the markup is identical anywhere the same data meets
+the same code and the same pinned browser.
+
+The second reason is that a failure is readable. "This path changed" in a diff
+says what broke; "4,182 pixels differ" says only that something did. Computed
+styles are inlined the way the PNG export does it, so a colour or a stroke
+width changing in the stylesheet is caught too -- the CSS is as much a part of
+a chart as its geometry.
+
+Nine charts are covered, across both tabs, with a fixed portfolio, quarter,
+locale and theme. It was checked the only way a test like this can be trusted:
+by breaking two things on purpose -- a bar height constant and one digit of a
+palette token, `#2a78d6` to `#2a78d7` -- and confirming it failed on seven
+charts with the changed line printed, then passed again when they were put
+back.
+
 **F61 and F62 are the same workflow**: the pull request *is* the alert, and it
 is better than one, because it arrives as a reviewable diff rather than as a
 notification someone still has to act on. Weekly, opening a PR when the
@@ -729,7 +752,7 @@ other column of numbers already had.
 | ~~F67~~ ✅ | OpenAPI examples on every endpoint | S |
 | ~~F68~~ ✅ | Backend coverage reporting in CI | S |
 | ~~F69~~ ◐ | Frontend tests — Vitest over `src/lib`; components still browser-verified | L |
-| F70 | Visual regression snapshots for the charts | L |
+| ~~F70~~ ✅ | Visual regression snapshots for the charts | L |
 | ~~F71~~ ✅ | Dependency audit workflow | S |
 | ~~F72~~ ✅ | Data-source contract test hitting the live Fed zip weekly, so a format change surfaces before a refresh needs it | M |
 
