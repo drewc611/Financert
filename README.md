@@ -203,7 +203,8 @@ frontend/
     lib/               api · analysis (mirrors allocation.py) · format · theme
                        csv · png · share (all three build files in the page)
     components/        AllocationChart · GapChart · SlopeChart · ShapeScatter
-                       TrendChart · Tooltip · Hatch · SourceNote
+                       CompositionChart · TierComposition · TrendChart
+                       Tooltip · Hatch · SourceNote
     views/             Compare · Portfolio · Benchmarks
 ```
 
@@ -223,6 +224,7 @@ send the link to. See [PRIVACY.md](PRIVACY.md).
 | `GET` | `/healthz` | — | liveness, snapshot state, and the deployment's auth/CORS posture |
 | `GET` | `/api/benchmarks` | — | every group for one period; `dimension`, `period` (`latest`/`complete`/a date), `investable_only` |
 | `GET` | `/api/benchmarks/trend` | — | one asset class's share over time; `group`, `asset_class` |
+| `GET` | `/api/benchmarks/composition` | — | one group's whole mix, quarter by quarter; `group`, `investable_only` |
 | `GET` | `/api/portfolios` | token | list every portfolio on this install |
 | `GET` | `/api/portfolio` | token | one portfolio; `slug` |
 | `PUT` | `/api/portfolio` | token | create or fully replace it; `slug` |

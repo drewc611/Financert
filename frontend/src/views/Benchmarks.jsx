@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useAppData } from '../context/AppDataContext'
 import { api } from '../lib/api'
 import { benchmarkWeights, debtWeights, portfolioWeights, shapeMetrics, UNALLOCATED } from '../lib/analysis'
@@ -7,7 +7,9 @@ import DimensionPicker from '../components/DimensionPicker'
 import ThresholdPlacement from '../components/ThresholdPlacement'
 import PeriodPicker from '../components/PeriodPicker'
 import Movers from '../components/Movers'
+import CompositionChart from '../components/CompositionChart'
 import ShapeScatter from '../components/ShapeScatter'
+import TierComposition from '../components/TierComposition'
 import SourceNote from '../components/SourceNote'
 import { useI18n } from '../i18n'
 
@@ -21,6 +23,11 @@ export default function Benchmarks() {
   const [trend, setTrend] = useState(null)
   // Bumped by the retry button; the fetch reads it only to depend on it.
   const [reloadTrend, setReloadTrend] = useState(0)
+  /* One group's whole mix over time (BACKLOG F42), for whichever group the
+     card's own picker is on. Live-only: the embedded snapshot carries annual
+     samples of three classes, which is a trend, not a composition. */
+  const [compositionOf, setCompositionOf] = useState(null)
+  const [composition, setComposition] = useState({ state: 'loading', points: [] })
   // Shares answer "how is it held"; dollars per household answer "how much"
   // (BACKLOG F29). Shares stay the default -- they are what the page compares.
   const [perHousehold, setPerHousehold] = useState(false)
@@ -150,6 +157,19 @@ export default function Benchmarks() {
     }))
   }, [allGroups, benchmarks, investableOnly, liquidKeys, t, assetLabel])
 
+  /* Every group's mix side by side, in band order (BACKLOG F43). The table
+     above is the better tool for reading any one number; this is for the
+     shape, which eleven rows of arithmetic do not show. */
+  const multiples = useMemo(
+    () =>
+      groups.map((g) => ({
+        key: g.key,
+        label: g.label,
+        weights: benchmarkWeights(g, { investableOnly }),
+      })),
+    [groups, investableOnly],
+  )
+
   /* The two shape numbers as a position rather than two columns (BACKLOG
      F44), with the reader's own mix among them when they have entered one --
      which is what makes it a chart about them rather than about strangers. */
@@ -216,10 +236,33 @@ export default function Benchmarks() {
     }
   }, [trendAsset, mode, benchmarks, allGroups, reloadTrend])
 
+  const compositionGroup = compositionOf && activeGroups[compositionOf] ? compositionOf : groups[0]?.key
+
+  useEffect(() => {
+    if (mode !== 'live' || !compositionGroup) {
+      setComposition({ state: mode === 'live' ? 'loading' : 'offline', points: [] })
+      return
+    }
+    let cancelled = false
+    setComposition({ state: 'loading', points: [] })
+    api
+      .composition({ group: compositionGroup, investableOnly })
+      .then((data) => !cancelled && setComposition({ state: 'ready', points: data.points }))
+      .catch(() => !cancelled && setComposition({ state: 'failed', points: [] }))
+    return () => {
+      cancelled = true
+    }
+  }, [compositionGroup, investableOnly, mode])
+
   // Nested tiers last, so the four partitioning tiers read left to right.
   const tableGroups = [...groups, ...nested]
 
   const countsHouseholds = allGroups.every((g) => g.household_count > 0)
+
+  const labelFor = useCallback(
+    (key) => assetLabel(key, benchmarks.assetClasses.find((a) => a.key === key)?.label ?? key),
+    [assetLabel, benchmarks],
+  )
 
   const trendLabel = assetLabel(
     trendAsset,
@@ -452,10 +495,51 @@ export default function Benchmarks() {
 
       <div className="card">
         <div className="card-head">
+          <h2>{t('benchmarks.multiplesTitle')}</h2>
+        </div>
+        <p className="sub">{t('benchmarks.multiplesSub')}</p>
+        <TierComposition groups={multiples} labelFor={labelFor} tierLabel={tierLabel} />
+      </div>
+
+      <div className="card">
+        <div className="card-head">
           <h2>{t('benchmarks.scatterTitle')}</h2>
         </div>
         <p className="sub">{t('benchmarks.scatterSub')}</p>
         <ShapeScatter points={scatterPoints} youLabel={t('chart.you')} />
+      </div>
+
+      <div className="card">
+        <div className="card-head">
+          <h2>{t('benchmarks.compositionTitle')}</h2>
+          <label style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
+            <select value={compositionGroup ?? ''} onChange={(e) => setCompositionOf(e.target.value)}>
+              {Object.values(activeGroups).map((g) => (
+                <option key={g.key} value={g.key}>
+                  {tierLabel(g.key, g.label)}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        <p className="sub">{t('benchmarks.compositionSub')}</p>
+        {composition.state === 'ready' && (
+          <CompositionChart
+            points={composition.points}
+            label={tierLabel(compositionGroup, activeGroups[compositionGroup]?.label)}
+            labelFor={labelFor}
+          />
+        )}
+        {composition.state === 'loading' && <p className="empty">{t('app.loading')}</p>}
+        {composition.state === 'offline' && <p className="empty">{t('benchmarks.compositionNeedsApi')}</p>}
+        {composition.state === 'failed' && (
+          <p className="empty">
+            {t('benchmarks.compositionFailed')}{' '}
+            <button type="button" className="link-btn" onClick={() => setCompositionOf(compositionGroup)}>
+              {t('benchmarks.retry')}
+            </button>
+          </p>
+        )}
       </div>
 
       <Movers />

@@ -38,6 +38,19 @@
   --good-text: #0a7a0a;
   --bad-text: #c02626;
 
+  /* Ordered bands for the composition charts (BACKLOG F42, F43). A ramp
+     rather than a categorical palette: the bands are stacked in size order, so
+     the ordering carries meaning, and seven distinguishable categorical hues
+     would be seven more colours to hold in mind. Adjacent bands are separated
+     by a hairline of --surface, which is what actually makes the edge. */
+  --stack-1: #12395c;
+  --stack-2: #1b5480;
+  --stack-3: #2874a6;
+  --stack-4: #3e93c4;
+  --stack-5: #6fb0d5;
+  --stack-6: #a3cbe4;
+  --stack-7: #cfe2f0;
+
   --radius: 10px;
   --gap: 20px;
   --font: system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -62,6 +75,13 @@
     --diverge-mid: #383835;
     --good-text: #4ecb4e;
     --bad-text: #e66767;
+    --stack-1: #cfe2f0;
+    --stack-2: #a3cbe4;
+    --stack-3: #6fb0d5;
+    --stack-4: #3e93c4;
+    --stack-5: #2874a6;
+    --stack-6: #1b5480;
+    --stack-7: #12395c;
   }
 }
 
@@ -83,6 +103,13 @@
   --diverge-mid: #383835;
   --good-text: #4ecb4e;
   --bad-text: #e66767;
+  --stack-1: #cfe2f0;
+  --stack-2: #a3cbe4;
+  --stack-3: #6fb0d5;
+  --stack-4: #3e93c4;
+  --stack-5: #2874a6;
+  --stack-6: #1b5480;
+  --stack-7: #12395c;
 }
 
 * {

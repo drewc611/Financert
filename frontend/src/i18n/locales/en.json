@@ -138,7 +138,13 @@
     "trendFailed": "Couldn't load the trend.",
     "retry": "Try again",
     "scatterTitle": "Liquid, or concentrated?",
-    "scatterSub": "The two measures above, plotted against each other. The tiers do not sit on a line: the top of the distribution is both the most concentrated and among the most liquid, because the class it concentrates in is itself liquid."
+    "scatterSub": "The two measures above, plotted against each other. The tiers do not sit on a line: the top of the distribution is both the most concentrated and among the most liquid, because the class it concentrates in is itself liquid.",
+    "multiplesTitle": "The same mix, group by group",
+    "multiplesSub": "Each column is one group’s assets, in the same band order. The trade that runs down the distribution is one glance: businesses and equities at the top, a house at the bottom.",
+    "compositionTitle": "How one group’s mix changed",
+    "compositionSub": "Every class as a share, since 1989. The top 1% went from a fifth in equities and a fifth in private business to half in equities — a trade no single line shows. The seven largest classes get their own band; the rest are collected.",
+    "compositionNeedsApi": "This one needs the API: the embedded snapshot carries annual samples of three classes, which is a trend rather than a composition.",
+    "compositionFailed": "Couldn’t load the composition."
   },
   "chart": {
     "you": "You",
@@ -160,7 +166,10 @@
     "axisLiquidity": "Held in liquid classes",
     "axisConcentration": "Held in the largest class",
     "scatterNote": "Concentration is the share in whichever class is largest for that group — not the same class for each. {you} appears once holdings are entered.",
-    "slopeAria": "Each asset class as a share, {you} on the left and {tier} on the right"
+    "slopeAria": "Each asset class as a share, {you} on the left and {tier} on the right",
+    "otherClasses": "Everything else",
+    "compositionAria": "Every asset class as a share of {tier}, quarter by quarter",
+    "multiplesAria": "Every group’s mix of asset classes, side by side"
   },
   "disclaimer": {
     "whatTitle": "What this is.",

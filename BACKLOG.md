@@ -355,8 +355,8 @@ the switch now.
 
 | # | Feature | Size |
 |---|---|---|
-| F42 | Stacked-area composition chart over time (one tier, all classes) | M |
-| F43 | Small multiples: every tier's composition on one screen | M |
+| ~~F42~~ ✅ | Stacked-area composition chart over time (one tier, all classes) | M |
+| ~~F43~~ ✅ | Small multiples: every tier's composition on one screen | M |
 | ~~F44~~ ✅ | Scatter: liquidity vs concentration, one point per tier | M |
 | ~~F45~~ ✅ | Slope chart: your allocation vs a tier, class by class | M |
 | F46 | Animated or scrubbable time axis on the trend chart | M |
@@ -530,6 +530,39 @@ F47 and F49. One thing the browser corrected: the focus band that works on a
 bar row -- a filled rectangle over the row's hit area -- covers half a slope
 chart, because a slope row's hit area is the whole span between its two ends.
 There the line is the row, so focus thickens the line instead.
+
+**F42 and F43 are the composition views**, and both exist because a line
+chart answers one class at a time. The top 1% went from a fifth in equities and
+a fifth in private business to half in equities: that is a *trade*, and no
+single line shows a trade.
+
+F42 needed an endpoint. `/api/benchmarks/trend` answers one (group, class) pair
+per request, so a stacked area of eleven classes was eleven requests;
+`/api/benchmarks/composition` returns the whole mix per quarter in one, with
+each quarter renormalised over the classes that quarter actually published --
+so the bands always sum to 1 and a gap at the top would be a bug rather than
+wealth that went somewhere unnamed. That is the assertion the API test makes,
+over all 147 quarters.
+
+F43 needed no new data at all: the same weights the tiers table already
+computes, drawn as one stacked column per group. The point is the shape rather
+than any one number -- real estate is a sliver at the top of the distribution
+and 59% at the bottom, and the table states that in eleven rows of arithmetic
+while the columns state it at a glance.
+
+Both share `lib/composition.js`, which is the only part worth a unit test: the
+seven largest classes get their own band and the rest are collected, and the
+cut is by share *summed across the whole history* rather than by the newest
+quarter -- otherwise a class that was large for thirty years and is small now
+would vanish into "other" at exactly the point the chart is about. Writing that
+test caught the fixture rather than the code: my first version's arithmetic
+made the newest quarter's winner the overall winner too, so it proved nothing
+until the numbers were fixed.
+
+The palette is a ramp rather than seven categorical hues. The bands are stacked
+in size order, so the ordering already carries meaning, and seven more colours
+would be seven more things to hold in mind; what actually separates two
+adjacent steps is the hairline of `--surface` drawn between them.
 
 **F61 and F62 are the same workflow**: the pull request *is* the alert, and it
 is better than one, because it arrives as a reviewable diff rather than as a

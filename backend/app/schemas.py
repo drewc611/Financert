@@ -527,6 +527,38 @@ class MoversOut(BaseModel):
     movers: list[MoverOut]
 
 
+class CompositionPointOut(BaseModel):
+    period: str
+    shares: dict[str, float]
+
+
+class CompositionOut(BaseModel):
+    """One group's whole mix over time -- the stacked-area view (BACKLOG F42).
+
+    Every quarter's shares sum to 1 over the classes that quarter published,
+    so the bands always fill the plot."""
+
+    model_config = _example(
+        {
+            "group": "top1",
+            "dimension": "networth",
+            "label": "Top 1%",
+            "investable_only": True,
+            # Two of 147 quarters; each carries every class that quarter has.
+            "points": [
+                {"period": "1989-07-01", "shares": {"corporate_equities": 0.201436, "real_estate": 0.152951}},
+                {"period": "2026-01-01", "shares": {"corporate_equities": 0.503409, "real_estate": 0.11808}},
+            ],
+        }
+    )
+
+    group: str
+    dimension: str = "networth"
+    label: str
+    investable_only: bool
+    points: list[CompositionPointOut]
+
+
 class TrendPointOut(BaseModel):
     period: str
     share: float

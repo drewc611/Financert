@@ -202,3 +202,31 @@ def test_all_equities_portfolio_is_overweight_equities(client):
     equities = next(g for g in body["gaps"] if g["asset_class"] == "corporate_equities")
     assert equities["status"] == "overweight"
     assert equities["user_pct"] == pytest.approx(100.0)
+
+
+def test_composition_bands_always_fill_the_plot(client):
+    """Every quarter's shares sum to 1 over the classes that quarter published
+    (BACKLOG F42): a stacked area with a gap at the top would read as wealth
+    that went somewhere unnamed."""
+    body = client.get("/api/benchmarks/composition?group=top1").json()
+    assert body["dimension"] == "networth"
+    assert len(body["points"]) > 100
+    for point in body["points"]:
+        assert sum(point["shares"].values()) == pytest.approx(1.0, abs=1e-9)
+
+
+def test_composition_excludes_what_the_investable_view_excludes(client):
+    investable = client.get("/api/benchmarks/composition?group=top1").json()
+    everything = client.get("/api/benchmarks/composition?group=top1&investable_only=false").json()
+    assert "consumer_durables" not in investable["points"][-1]["shares"]
+    assert "consumer_durables" in everything["points"][-1]["shares"]
+    # Same quarters either way; only the classes counted differ.
+    assert [p["period"] for p in investable["points"]] == [p["period"] for p in everything["points"]]
+
+
+def test_composition_resolves_the_axis_from_the_group(client):
+    """A group key is unique across the registry, so a caller holding one does
+    not have to know which axis it came from."""
+    body = client.get("/api/benchmarks/composition?group=millennial").json()
+    assert body["dimension"] == "generation"
+    assert client.get("/api/benchmarks/composition?group=nobody").status_code == 404

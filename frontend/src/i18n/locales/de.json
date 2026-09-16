@@ -138,7 +138,13 @@
     "trendFailed": "Der Verlauf konnte nicht geladen werden.",
     "retry": "Erneut versuchen",
     "scatterTitle": "Liquide oder konzentriert?",
-    "scatterSub": "Die beiden Kennzahlen von oben gegeneinander. Die Stufen liegen nicht auf einer Linie: die Spitze ist zugleich am stärksten konzentriert und mit am liquidesten, weil die Klasse, in der sie konzentriert ist, selbst liquide ist."
+    "scatterSub": "Die beiden Kennzahlen von oben gegeneinander. Die Stufen liegen nicht auf einer Linie: die Spitze ist zugleich am stärksten konzentriert und mit am liquidesten, weil die Klasse, in der sie konzentriert ist, selbst liquide ist.",
+    "multiplesTitle": "Dieselbe Mischung, Gruppe für Gruppe",
+    "multiplesSub": "Jede Säule ist das Vermögen einer Gruppe, in derselben Bandreihenfolge. Der Tausch, der durch die Verteilung läuft, ist ein einziger Blick: Unternehmen und Aktien oben, ein Haus unten.",
+    "compositionTitle": "Wie sich die Mischung einer Gruppe verändert hat",
+    "compositionSub": "Jede Klasse als Anteil, seit 1989. Das oberste 1 % ging von je einem Fünftel in Aktien und privatem Unternehmen auf die Hälfte in Aktien über – ein Tausch, den keine einzelne Linie zeigt. Die sieben größten Klassen bekommen ein eigenes Band, der Rest wird zusammengefasst.",
+    "compositionNeedsApi": "Dafür wird die API gebraucht: der eingebettete Snapshot enthält Jahresstichproben von drei Klassen – ein Verlauf, keine Zusammensetzung.",
+    "compositionFailed": "Die Zusammensetzung konnte nicht geladen werden."
   },
   "chart": {
     "you": "Sie",
@@ -160,7 +166,10 @@
     "axisLiquidity": "In liquiden Klassen",
     "axisConcentration": "In der größten Klasse",
     "scatterNote": "Konzentration ist der Anteil der jeweils größten Klasse einer Gruppe – nicht für alle dieselbe. {you} erscheint, sobald Positionen eingetragen sind.",
-    "slopeAria": "Jede Anlageklasse als Anteil, {you} links und {tier} rechts"
+    "slopeAria": "Jede Anlageklasse als Anteil, {you} links und {tier} rechts",
+    "otherClasses": "Alles Übrige",
+    "compositionAria": "Jede Anlageklasse als Anteil von {tier}, Quartal für Quartal",
+    "multiplesAria": "Die Zusammensetzung jeder Gruppe, nebeneinander"
   },
   "disclaimer": {
     "whatTitle": "Was das hier ist.",

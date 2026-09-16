@@ -3,7 +3,7 @@
 from fastapi import APIRouter, HTTPException, Query
 
 from ..constants import DEFAULT_DIMENSION, dimension_of
-from ..schemas import BenchmarksOut, MoversOut, ReconciliationOut, TrendOut
+from ..schemas import BenchmarksOut, CompositionOut, MoversOut, ReconciliationOut, TrendOut
 from ..services import benchmarks
 
 router = APIRouter(prefix="/api", tags=["benchmarks"])
@@ -118,3 +118,29 @@ def get_trend(
     except KeyError:
         raise HTTPException(status_code=404, detail=f"unknown asset_class {asset_class!r}") from None
     return {"group": group, "dimension": dimension, "asset_class": asset_class, "points": points}
+
+
+@router.get("/benchmarks/composition", response_model=CompositionOut)
+def get_composition(
+    group: str = Query("top1", description="Group key, from any dimension"),
+    investable_only: bool = Query(True),
+):
+    """One group's whole mix, quarter by quarter (BACKLOG F42).
+
+    The dimension is resolved from the group key, as everywhere else: the key
+    is unique across the registry, so a caller holding one does not have to
+    know which axis it came from.
+    """
+    try:
+        dimension = dimension_of(group)
+    except KeyError:
+        raise HTTPException(status_code=404, detail=f"unknown group {group!r}") from None
+    if group not in benchmarks.groups_in(dimension):
+        raise HTTPException(status_code=404, detail=f"unknown group {group!r}")
+    return {
+        "group": group,
+        "dimension": dimension,
+        "label": benchmarks.groups_in(dimension)[group]["label"],
+        "investable_only": investable_only,
+        "points": benchmarks.composition(group, investable_only=investable_only, dimension=dimension),
+    }

@@ -138,7 +138,13 @@
     "trendFailed": "Impossible de charger l'évolution.",
     "retry": "Réessayer",
     "scatterTitle": "Liquide, ou concentré ?",
-    "scatterSub": "Les deux mesures ci-dessus, l'une face à l'autre. Les tranches ne forment pas une ligne : le haut de la distribution est à la fois le plus concentré et parmi les plus liquides, car la classe où il se concentre est elle-même liquide."
+    "scatterSub": "Les deux mesures ci-dessus, l'une face à l'autre. Les tranches ne forment pas une ligne : le haut de la distribution est à la fois le plus concentré et parmi les plus liquides, car la classe où il se concentre est elle-même liquide.",
+    "multiplesTitle": "La même composition, groupe par groupe",
+    "multiplesSub": "Chaque colonne représente les actifs d'un groupe, dans le même ordre de bandes. L'échange qui parcourt la distribution se voit d'un coup : entreprises et actions en haut, une maison en bas.",
+    "compositionTitle": "Comment la composition d'un groupe a changé",
+    "compositionSub": "Chaque classe en part, depuis 1989. Le 1 % le plus riche est passé d'un cinquième en actions et un cinquième en entreprise privée à la moitié en actions — un échange qu'aucune courbe seule ne montre. Les sept plus grandes classes ont leur bande ; le reste est regroupé.",
+    "compositionNeedsApi": "Ceci nécessite l'API : l'instantané embarqué contient des échantillons annuels de trois classes, ce qui est une évolution et non une composition.",
+    "compositionFailed": "Impossible de charger la composition."
   },
   "chart": {
     "you": "Vous",
@@ -160,7 +166,10 @@
     "axisLiquidity": "En classes liquides",
     "axisConcentration": "Dans la plus grande classe",
     "scatterNote": "La concentration est la part de la classe la plus grande pour ce groupe, qui n'est pas la même pour tous. {you} apparaît dès que des lignes sont saisies.",
-    "slopeAria": "Chaque classe d'actifs en part, {you} à gauche et {tier} à droite"
+    "slopeAria": "Chaque classe d'actifs en part, {you} à gauche et {tier} à droite",
+    "otherClasses": "Tout le reste",
+    "compositionAria": "Chaque classe d'actifs en part de {tier}, trimestre par trimestre",
+    "multiplesAria": "La composition de chaque groupe, côte à côte"
   },
   "disclaimer": {
     "whatTitle": "Ce que c'est.",

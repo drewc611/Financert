@@ -138,7 +138,13 @@
     "trendFailed": "Não foi possível carregar a evolução.",
     "retry": "Tentar novamente",
     "scatterTitle": "Líquido ou concentrado?",
-    "scatterSub": "As duas medidas acima, uma face à outra. As faixas não formam uma linha: o topo da distribuição é ao mesmo tempo o mais concentrado e dos mais líquidos, porque a classe em que se concentra já é líquida."
+    "scatterSub": "As duas medidas acima, uma face à outra. As faixas não formam uma linha: o topo da distribuição é ao mesmo tempo o mais concentrado e dos mais líquidos, porque a classe em que se concentra já é líquida.",
+    "multiplesTitle": "A mesma composição, grupo a grupo",
+    "multiplesSub": "Cada coluna são os ativos de um grupo, na mesma ordem de faixas. A troca que percorre a distribuição vê-se de uma só vez: negócios e ações no topo, uma casa na base.",
+    "compositionTitle": "Como mudou a composição de um grupo",
+    "compositionSub": "Cada classe como proporção, desde 1989. O 1% do topo passou de um quinto em ações e um quinto em negócio privado para metade em ações — uma troca que nenhuma linha isolada mostra. As sete maiores classes têm faixa própria; o resto é agrupado.",
+    "compositionNeedsApi": "Isto precisa da API: o instantâneo incorporado traz amostras anuais de três classes, o que é uma evolução e não uma composição.",
+    "compositionFailed": "Não foi possível carregar a composição."
   },
   "chart": {
     "you": "Você",
@@ -160,7 +166,10 @@
     "axisLiquidity": "Em classes líquidas",
     "axisConcentration": "Na maior classe",
     "scatterNote": "A concentração é a proporção da classe que for maior nesse grupo — não é a mesma para todos. {you} aparece assim que introduzir posições.",
-    "slopeAria": "Cada classe de ativos como proporção, {you} à esquerda e {tier} à direita"
+    "slopeAria": "Cada classe de ativos como proporção, {you} à esquerda e {tier} à direita",
+    "otherClasses": "Tudo o resto",
+    "compositionAria": "Cada classe de ativos como proporção de {tier}, trimestre a trimestre",
+    "multiplesAria": "A composição de cada grupo, lado a lado"
   },
   "disclaimer": {
     "whatTitle": "O que isto é.",
