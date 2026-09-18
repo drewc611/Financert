@@ -2,10 +2,28 @@ name: Publish docs site
 
 # Both AI directories reject a submission without a public privacy policy URL,
 # so this site exists mainly to provide one.
+#
+# ---------------------------------------------------------------------------
+# NOT YET ACTIVE. This needs GitHub Pages switched on:
+#     Settings -> Pages -> Build and deployment -> Source: GitHub Actions
+# Until then the guard below exits 1, which it did on all six runs between
+# 2026-09-08 and 2026-09-16 -- every push to main that touched PRIVACY.md or
+# docs/, each one red for a setting no one reading CI can act on.
+#
+# So it is `workflow_dispatch` only, the same call dependency-review.yml makes
+# for the same reason: a workflow that cannot pass until someone flips a switch
+# should not report a status it has not earned, and should not teach anyone
+# that red on main is normal. Making it pass anyway would be the mistake this
+# repo already undid in codeql.yml, where a workflow reported success while
+# scanning nothing.
+#
+# Flip the setting, run this once from the Actions tab to publish, then restore
+# the `push:` trigger below -- it was:
+#     push:
+#       branches: [main]
+#       paths: ["docs/**", "PRIVACY.md", ".github/workflows/pages.yml"]
+# ---------------------------------------------------------------------------
 on:
-  push:
-    branches: [main]
-    paths: ["docs/**", "PRIVACY.md", ".github/workflows/pages.yml"]
   workflow_dispatch:
 
 permissions:

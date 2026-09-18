@@ -125,15 +125,23 @@ handshake, not that the data snapshot shipped in the image.
 
 ## The privacy policy
 
-`.github/workflows/pages.yml` publishes `docs/` to GitHub Pages on every push
-to `main`. `PRIVACY.md` is rendered into the site at publish time rather than
-copied into `docs/`, so the two cannot drift.
+`.github/workflows/pages.yml` publishes `docs/` to GitHub Pages. `PRIVACY.md`
+is rendered into the site at publish time rather than copied into `docs/`, so
+the two cannot drift.
 
-One-time setup: **Settings → Pages → Source: GitHub Actions**. The workflow
-checks this first and fails with that exact instruction if it has been missed,
-rather than with the bare 404 `configure-pages` would otherwise produce. It
-cannot enable Pages for you — that action's `enablement` option needs a PAT or
-App token, not the workflow's `GITHUB_TOKEN`.
+**This is not running yet, and the one-time setup is the reason:
+Settings → Pages → Build and deployment → Source: GitHub Actions.** The
+workflow checks that first and fails with that exact instruction if it has been
+missed, rather than with the bare 404 `configure-pages` would otherwise
+produce. It cannot enable Pages for you — that action's `enablement` option
+needs a PAT or App token, not the workflow's `GITHUB_TOKEN`.
+
+Until the setting is flipped the workflow is **`workflow_dispatch` only**, for
+the reason `dependency-review.yml` is: it ran on every push to `main` touching
+`docs/` or `PRIVACY.md` and failed all six times, which is how a red CI badge
+stops meaning anything. Once Pages is on, run it once from the Actions tab to
+publish, then restore the `push:` trigger — the exact block to put back is in
+the workflow's own header comment.
 
 The pages land at:
 
