@@ -11,15 +11,14 @@ export const fallbackData = {
     "retrieved_via": "bulk download, dfa-networth-levels-detail.csv",
     "url": "https://www.federalreserve.gov/releases/z1/dataviz/dfa/",
     "download_url": "https://www.federalreserve.gov/releases/z1/dataviz/download/zips/dfa.zip",
-    "retrieved_at": "2026-09-15T08:10:36+00:00",
-    "archive_sha256": "28f708eb3707213bb0c2bc69d7efa070efd8dede8c312e754af152720f6d196f",
-    "archive_bytes": 891509,
+    "retrieved_at": "2026-09-23T06:32:11+00:00",
+    "archive_sha256": "e7f35451dc4df13986ef416d8659d00689ad98a9af79f4b09977e41be5e35919",
+    "archive_bytes": 895897,
     "units": "US dollars, not seasonally adjusted"
   },
-  "latest_period": "2026-01-01",
-  "latest_complete_period": "2026-01-01",
+  "latest_period": "2026-04-01",
+  "latest_complete_period": "2026-04-01",
   "complete_periods": [
-    "2016-04-01",
     "2016-07-01",
     "2016-10-01",
     "2017-01-01",
@@ -58,7 +57,8 @@ export const fallbackData = {
     "2025-04-01",
     "2025-07-01",
     "2025-10-01",
-    "2026-01-01"
+    "2026-01-01",
+    "2026-04-01"
   ],
   "group_order": [
     "top1",
@@ -67,7 +67,6 @@ export const fallbackData = {
     "bottom50"
   ],
   "periods": [
-    "2016-04-01",
     "2016-07-01",
     "2016-10-01",
     "2017-01-01",
@@ -106,7 +105,8 @@ export const fallbackData = {
     "2025-04-01",
     "2025-07-01",
     "2025-10-01",
-    "2026-01-01"
+    "2026-01-01",
+    "2026-04-01"
   ],
   "asset_classes": [
     {
@@ -275,60 +275,60 @@ export const fallbackData = {
       "percentile_range": "99.9th-100th",
       "nested": true,
       "nested_in": "top1",
-      "period": "2026-01-01",
+      "period": "2026-04-01",
       "complete": true,
       "unavailable": [],
-      "total_assets": 25311992000000.0,
-      "total_liabilities": 239711000000.0,
-      "net_worth": 25072282000000.0,
+      "total_assets": 28168034000000.0,
+      "total_liabilities": 300943000000.0,
+      "net_worth": 27867091000000.0,
       "assets": {
-        "corporate_equities": 13331518000000.0,
-        "private_business": 4679452000000.0,
-        "pension": 453454000000.0,
-        "real_estate": 1937284000000.0,
-        "deposits": 1473775000000.0,
-        "money_market": 1006257000000.0,
-        "debt_securities": 1104402000000.0,
-        "consumer_durables": 712377000000.0,
-        "annuities": 71175000000.0,
-        "life_insurance": 232477000000.0,
-        "loans_assets": 265014000000.0,
-        "misc_assets": 44806000000.0,
-        "unallocated": 1000000.0
+        "corporate_equities": 16153923000000.0,
+        "private_business": 4780991000000.0,
+        "pension": 460715000000.0,
+        "real_estate": 1966460000000.0,
+        "deposits": 1448311000000.0,
+        "money_market": 984940000000.0,
+        "debt_securities": 1090909000000.0,
+        "consumer_durables": 740398000000.0,
+        "annuities": 68964000000.0,
+        "life_insurance": 228630000000.0,
+        "loans_assets": 197273000000.0,
+        "misc_assets": 46521000000.0,
+        "unallocated": 0.0
       },
       "liabilities": {
-        "home_mortgages": 117541000000.0,
-        "consumer_credit": 53586000000.0,
-        "depository_loans": 2617000000.0,
-        "other_loans": 63021000000.0,
-        "deferred_premiums": 2946000000.0
+        "home_mortgages": 117243000000.0,
+        "consumer_credit": 52381000000.0,
+        "depository_loans": 17038000000.0,
+        "other_loans": 111624000000.0,
+        "deferred_premiums": 2656000000.0
       },
-      "household_count": 136095.0,
+      "household_count": 136779.0,
       "threshold": {
         "field": "minimum_wealth_cutoff",
-        "value": 46369052.0,
+        "value": 45796944.0,
         "period": "2022-07-01"
       },
       "complete_snapshot": {
-        "period": "2026-01-01",
+        "period": "2026-04-01",
         "assets": {
-          "corporate_equities": 13331518000000.0,
-          "private_business": 4679452000000.0,
-          "pension": 453454000000.0,
-          "real_estate": 1937284000000.0,
-          "deposits": 1473775000000.0,
-          "money_market": 1006257000000.0,
-          "debt_securities": 1104402000000.0,
-          "consumer_durables": 712377000000.0,
-          "annuities": 71175000000.0,
-          "life_insurance": 232477000000.0,
-          "loans_assets": 265014000000.0,
-          "misc_assets": 44806000000.0,
-          "unallocated": 1000000.0
+          "corporate_equities": 16153923000000.0,
+          "private_business": 4780991000000.0,
+          "pension": 460715000000.0,
+          "real_estate": 1966460000000.0,
+          "deposits": 1448311000000.0,
+          "money_market": 984940000000.0,
+          "debt_securities": 1090909000000.0,
+          "consumer_durables": 740398000000.0,
+          "annuities": 68964000000.0,
+          "life_insurance": 228630000000.0,
+          "loans_assets": 197273000000.0,
+          "misc_assets": 46521000000.0,
+          "unallocated": 0.0
         },
-        "total_assets": 25311992000000.0,
-        "total_liabilities": 239711000000.0,
-        "net_worth": 25072282000000.0
+        "total_assets": 28168034000000.0,
+        "total_liabilities": 300943000000.0,
+        "net_worth": 27867091000000.0
       }
     },
     "top1": {
@@ -337,60 +337,60 @@ export const fallbackData = {
       "percentile_range": "99th-100th",
       "nested": false,
       "nested_in": null,
-      "period": "2026-01-01",
+      "period": "2026-04-01",
       "complete": true,
       "unavailable": [],
-      "total_assets": 56042476000000.0,
-      "total_liabilities": 1009477000000.0,
-      "net_worth": 55033000000000.0,
+      "total_assets": 61502966000000.0,
+      "total_liabilities": 1189942000000.0,
+      "net_worth": 60313023000000.0,
       "assets": {
-        "corporate_equities": 27643648000000.0,
-        "private_business": 8762892000000.0,
-        "pension": 2758346000000.0,
-        "real_estate": 6484137000000.0,
-        "deposits": 3420010000000.0,
-        "money_market": 1991774000000.0,
-        "debt_securities": 2255117000000.0,
-        "consumer_durables": 1129619000000.0,
-        "annuities": 285746000000.0,
-        "life_insurance": 622086000000.0,
-        "loans_assets": 549701000000.0,
-        "misc_assets": 139399000000.0,
-        "unallocated": 1000000.0
+        "corporate_equities": 32889546000000.0,
+        "private_business": 8886029000000.0,
+        "pension": 2933061000000.0,
+        "real_estate": 6672380000000.0,
+        "deposits": 3323113000000.0,
+        "money_market": 1957779000000.0,
+        "debt_securities": 2216325000000.0,
+        "consumer_durables": 1162184000000.0,
+        "annuities": 309636000000.0,
+        "life_insurance": 639838000000.0,
+        "loans_assets": 366752000000.0,
+        "misc_assets": 146325000000.0,
+        "unallocated": 0.0
       },
       "liabilities": {
-        "home_mortgages": 557111000000.0,
-        "consumer_credit": 162672000000.0,
-        "depository_loans": 11221000000.0,
-        "other_loans": 266248000000.0,
-        "deferred_premiums": 12225000000.0
+        "home_mortgages": 570336000000.0,
+        "consumer_credit": 163567000000.0,
+        "depository_loans": 171878000000.0,
+        "other_loans": 272696000000.0,
+        "deferred_premiums": 11464000000.0
       },
-      "household_count": 1348292.0,
+      "household_count": 1351004.0,
       "threshold": {
         "field": "minimum_wealth_cutoff",
-        "value": 11146846.0,
+        "value": 11007198.0,
         "period": "2022-07-01"
       },
       "complete_snapshot": {
-        "period": "2026-01-01",
+        "period": "2026-04-01",
         "assets": {
-          "corporate_equities": 27643648000000.0,
-          "private_business": 8762892000000.0,
-          "pension": 2758346000000.0,
-          "real_estate": 6484137000000.0,
-          "deposits": 3420010000000.0,
-          "money_market": 1991774000000.0,
-          "debt_securities": 2255117000000.0,
-          "consumer_durables": 1129619000000.0,
-          "annuities": 285746000000.0,
-          "life_insurance": 622086000000.0,
-          "loans_assets": 549701000000.0,
-          "misc_assets": 139399000000.0,
-          "unallocated": 1000000.0
+          "corporate_equities": 32889546000000.0,
+          "private_business": 8886029000000.0,
+          "pension": 2933061000000.0,
+          "real_estate": 6672380000000.0,
+          "deposits": 3323113000000.0,
+          "money_market": 1957779000000.0,
+          "debt_securities": 2216325000000.0,
+          "consumer_durables": 1162184000000.0,
+          "annuities": 309636000000.0,
+          "life_insurance": 639838000000.0,
+          "loans_assets": 366752000000.0,
+          "misc_assets": 146325000000.0,
+          "unallocated": 0.0
         },
-        "total_assets": 56042476000000.0,
-        "total_liabilities": 1009477000000.0,
-        "net_worth": 55033000000000.0
+        "total_assets": 61502966000000.0,
+        "total_liabilities": 1189942000000.0,
+        "net_worth": 60313023000000.0
       }
     },
     "next9": {
@@ -399,60 +399,60 @@ export const fallbackData = {
       "percentile_range": "90th-99th",
       "nested": false,
       "nested_in": null,
-      "period": "2026-01-01",
+      "period": "2026-04-01",
       "complete": true,
       "unavailable": [],
-      "total_assets": 67334132000000.0,
-      "total_liabilities": 4108736000000.0,
-      "net_worth": 63225396000000.0,
+      "total_assets": 71849146000000.0,
+      "total_liabilities": 4215067000000.0,
+      "net_worth": 67634079000000.0,
       "assets": {
-        "corporate_equities": 20514327000000.0,
-        "private_business": 5252870000000.0,
-        "pension": 12784682000000.0,
-        "real_estate": 14762255000000.0,
-        "deposits": 5054244000000.0,
-        "money_market": 2055926000000.0,
-        "debt_securities": 2386708000000.0,
-        "consumer_durables": 1886084000000.0,
-        "annuities": 1297415000000.0,
-        "life_insurance": 667332000000.0,
-        "loans_assets": 282903000000.0,
-        "misc_assets": 389386000000.0,
+        "corporate_equities": 24014368000000.0,
+        "private_business": 5328226000000.0,
+        "pension": 13311559000000.0,
+        "real_estate": 15083366000000.0,
+        "deposits": 5014713000000.0,
+        "money_market": 2075552000000.0,
+        "debt_securities": 2335425000000.0,
+        "consumer_durables": 1918467000000.0,
+        "annuities": 1407704000000.0,
+        "life_insurance": 684262000000.0,
+        "loans_assets": 266944000000.0,
+        "misc_assets": 408560000000.0,
         "unallocated": 0.0
       },
       "liabilities": {
-        "home_mortgages": 3377823000000.0,
-        "consumer_credit": 514428000000.0,
-        "depository_loans": 3086000000.0,
-        "other_loans": 198922000000.0,
-        "deferred_premiums": 14477000000.0
+        "home_mortgages": 3410241000000.0,
+        "consumer_credit": 524901000000.0,
+        "depository_loans": 60745000000.0,
+        "other_loans": 205266000000.0,
+        "deferred_premiums": 13915000000.0
       },
-      "household_count": 12140540.0,
+      "household_count": 12165969.0,
       "threshold": {
         "field": "minimum_wealth_cutoff",
-        "value": 2148339.0,
+        "value": 2135868.0,
         "period": "2022-07-01"
       },
       "complete_snapshot": {
-        "period": "2026-01-01",
+        "period": "2026-04-01",
         "assets": {
-          "corporate_equities": 20514327000000.0,
-          "private_business": 5252870000000.0,
-          "pension": 12784682000000.0,
-          "real_estate": 14762255000000.0,
-          "deposits": 5054244000000.0,
-          "money_market": 2055926000000.0,
-          "debt_securities": 2386708000000.0,
-          "consumer_durables": 1886084000000.0,
-          "annuities": 1297415000000.0,
-          "life_insurance": 667332000000.0,
-          "loans_assets": 282903000000.0,
-          "misc_assets": 389386000000.0,
+          "corporate_equities": 24014368000000.0,
+          "private_business": 5328226000000.0,
+          "pension": 13311559000000.0,
+          "real_estate": 15083366000000.0,
+          "deposits": 5014713000000.0,
+          "money_market": 2075552000000.0,
+          "debt_securities": 2335425000000.0,
+          "consumer_durables": 1918467000000.0,
+          "annuities": 1407704000000.0,
+          "life_insurance": 684262000000.0,
+          "loans_assets": 266944000000.0,
+          "misc_assets": 408560000000.0,
           "unallocated": 0.0
         },
-        "total_assets": 67334132000000.0,
-        "total_liabilities": 4108736000000.0,
-        "net_worth": 63225396000000.0
+        "total_assets": 71849146000000.0,
+        "total_liabilities": 4215067000000.0,
+        "net_worth": 67634079000000.0
       }
     },
     "next40": {
@@ -461,60 +461,60 @@ export const fallbackData = {
       "percentile_range": "50th-90th",
       "nested": false,
       "nested_in": null,
-      "period": "2026-01-01",
+      "period": "2026-04-01",
       "complete": true,
       "unavailable": [],
-      "total_assets": 60280257000000.0,
-      "total_liabilities": 8795392000000.0,
-      "net_worth": 51484864000000.0,
+      "total_assets": 62317685000000.0,
+      "total_liabilities": 8891801000000.0,
+      "net_worth": 53425884000000.0,
       "assets": {
-        "corporate_equities": 6400950000000.0,
-        "private_business": 2376896000000.0,
-        "pension": 14761048000000.0,
-        "real_estate": 22650205000000.0,
-        "deposits": 5185020000000.0,
-        "money_market": 1104304000000.0,
-        "debt_securities": 1193186000000.0,
-        "consumer_durables": 3773624000000.0,
-        "annuities": 1119576000000.0,
-        "life_insurance": 709094000000.0,
-        "loans_assets": 126781000000.0,
-        "misc_assets": 879571000000.0,
-        "unallocated": 2000000.0
+        "corporate_equities": 7362060000000.0,
+        "private_business": 2371758000000.0,
+        "pension": 15305419000000.0,
+        "real_estate": 23214769000000.0,
+        "deposits": 5090389000000.0,
+        "money_market": 1021646000000.0,
+        "debt_securities": 1158965000000.0,
+        "consumer_durables": 3864458000000.0,
+        "annuities": 1154806000000.0,
+        "life_insurance": 722784000000.0,
+        "loans_assets": 127652000000.0,
+        "misc_assets": 922980000000.0,
+        "unallocated": 0.0
       },
       "liabilities": {
-        "home_mortgages": 6773937000000.0,
-        "consumer_credit": 1769340000000.0,
-        "depository_loans": 4897000000.0,
-        "other_loans": 232135000000.0,
-        "deferred_premiums": 15083000000.0
+        "home_mortgages": 6836034000000.0,
+        "consumer_credit": 1787916000000.0,
+        "depository_loans": 147269000000.0,
+        "other_loans": 105823000000.0,
+        "deferred_premiums": 14760000000.0
       },
-      "household_count": 54071475.0,
+      "household_count": 54064877.0,
       "threshold": {
         "field": "minimum_wealth_cutoff",
-        "value": 241362.0,
+        "value": 240508.0,
         "period": "2022-07-01"
       },
       "complete_snapshot": {
-        "period": "2026-01-01",
+        "period": "2026-04-01",
         "assets": {
-          "corporate_equities": 6400950000000.0,
-          "private_business": 2376896000000.0,
-          "pension": 14761048000000.0,
-          "real_estate": 22650205000000.0,
-          "deposits": 5185020000000.0,
-          "money_market": 1104304000000.0,
-          "debt_securities": 1193186000000.0,
-          "consumer_durables": 3773624000000.0,
-          "annuities": 1119576000000.0,
-          "life_insurance": 709094000000.0,
-          "loans_assets": 126781000000.0,
-          "misc_assets": 879571000000.0,
-          "unallocated": 2000000.0
+          "corporate_equities": 7362060000000.0,
+          "private_business": 2371758000000.0,
+          "pension": 15305419000000.0,
+          "real_estate": 23214769000000.0,
+          "deposits": 5090389000000.0,
+          "money_market": 1021646000000.0,
+          "debt_securities": 1158965000000.0,
+          "consumer_durables": 3864458000000.0,
+          "annuities": 1154806000000.0,
+          "life_insurance": 722784000000.0,
+          "loans_assets": 127652000000.0,
+          "misc_assets": 922980000000.0,
+          "unallocated": 0.0
         },
-        "total_assets": 60280257000000.0,
-        "total_liabilities": 8795392000000.0,
-        "net_worth": 51484864000000.0
+        "total_assets": 62317685000000.0,
+        "total_liabilities": 8891801000000.0,
+        "net_worth": 53425884000000.0
       }
     },
     "bottom50": {
@@ -523,56 +523,56 @@ export const fallbackData = {
       "percentile_range": "0-50th",
       "nested": false,
       "nested_in": null,
-      "period": "2026-01-01",
+      "period": "2026-04-01",
       "complete": true,
       "unavailable": [],
-      "total_assets": 10348948000000.0,
-      "total_liabilities": 6082588000000.0,
-      "net_worth": 4266359000000.0,
+      "total_assets": 10272832000000.0,
+      "total_liabilities": 5994794000000.0,
+      "net_worth": 4278038000000.0,
       "assets": {
-        "corporate_equities": 587223000000.0,
-        "private_business": 166766000000.0,
-        "pension": 1175379000000.0,
-        "real_estate": 4826745000000.0,
-        "deposits": 793232000000.0,
-        "money_market": 54257000000.0,
-        "debt_securities": 28583000000.0,
-        "consumer_durables": 2110476000000.0,
-        "annuities": 58593000000.0,
-        "life_insurance": 169417000000.0,
-        "loans_assets": 2728000000.0,
-        "misc_assets": 375549000000.0,
-        "unallocated": 0.0
+        "corporate_equities": 374196000000.0,
+        "private_business": 168117000000.0,
+        "pension": 1246740000000.0,
+        "real_estate": 4821163000000.0,
+        "deposits": 777430000000.0,
+        "money_market": 55950000000.0,
+        "debt_securities": 32798000000.0,
+        "consumer_durables": 2169713000000.0,
+        "annuities": 59362000000.0,
+        "life_insurance": 169177000000.0,
+        "loans_assets": 2474000000.0,
+        "misc_assets": 395711000000.0,
+        "unallocated": 1000000.0
       },
       "liabilities": {
-        "home_mortgages": 3112114000000.0,
-        "consumer_credit": 2626591000000.0,
-        "depository_loans": 17687000000.0,
-        "other_loans": 322319000000.0,
-        "deferred_premiums": 3879000000.0
+        "home_mortgages": 3160326000000.0,
+        "consumer_credit": 2643874000000.0,
+        "depository_loans": 144390000000.0,
+        "other_loans": 42513000000.0,
+        "deferred_premiums": 3691000000.0
       },
-      "household_count": 67573814.0,
+      "household_count": 67616544.0,
       "threshold": null,
       "complete_snapshot": {
-        "period": "2026-01-01",
+        "period": "2026-04-01",
         "assets": {
-          "corporate_equities": 587223000000.0,
-          "private_business": 166766000000.0,
-          "pension": 1175379000000.0,
-          "real_estate": 4826745000000.0,
-          "deposits": 793232000000.0,
-          "money_market": 54257000000.0,
-          "debt_securities": 28583000000.0,
-          "consumer_durables": 2110476000000.0,
-          "annuities": 58593000000.0,
-          "life_insurance": 169417000000.0,
-          "loans_assets": 2728000000.0,
-          "misc_assets": 375549000000.0,
-          "unallocated": 0.0
+          "corporate_equities": 374196000000.0,
+          "private_business": 168117000000.0,
+          "pension": 1246740000000.0,
+          "real_estate": 4821163000000.0,
+          "deposits": 777430000000.0,
+          "money_market": 55950000000.0,
+          "debt_securities": 32798000000.0,
+          "consumer_durables": 2169713000000.0,
+          "annuities": 59362000000.0,
+          "life_insurance": 169177000000.0,
+          "loans_assets": 2474000000.0,
+          "misc_assets": 395711000000.0,
+          "unallocated": 1000000.0
         },
-        "total_assets": 10348948000000.0,
-        "total_liabilities": 6082588000000.0,
-        "net_worth": 4266359000000.0
+        "total_assets": 10272832000000.0,
+        "total_liabilities": 5994794000000.0,
+        "net_worth": 4278038000000.0
       }
     }
   },
@@ -581,301 +581,301 @@ export const fallbackData = {
       "top01": [
         {
           "period": "1989-07-01",
-          "share": 0.16942
+          "share": 0.1694
         },
         {
           "period": "1990-07-01",
-          "share": 0.11984
+          "share": 0.11706
         },
         {
           "period": "1991-07-01",
-          "share": 0.18896
+          "share": 0.18792
         },
         {
           "period": "1992-07-01",
-          "share": 0.24224
+          "share": 0.24244
         },
         {
           "period": "1993-07-01",
-          "share": 0.27371
+          "share": 0.27382
         },
         {
           "period": "1994-07-01",
-          "share": 0.23965
+          "share": 0.23906
         },
         {
           "period": "1995-07-01",
-          "share": 0.26148
+          "share": 0.26261
         },
         {
           "period": "1996-07-01",
-          "share": 0.29461
+          "share": 0.29622
         },
         {
           "period": "1997-07-01",
-          "share": 0.36603
+          "share": 0.36935
         },
         {
           "period": "1998-07-01",
-          "share": 0.36496
+          "share": 0.3666
         },
         {
           "period": "1999-07-01",
-          "share": 0.39217
+          "share": 0.39607
         },
         {
           "period": "2000-07-01",
-          "share": 0.41281
+          "share": 0.41885
         },
         {
           "period": "2001-07-01",
-          "share": 0.26277
+          "share": 0.26423
         },
         {
           "period": "2002-07-01",
-          "share": 0.22596
+          "share": 0.22652
         },
         {
           "period": "2003-07-01",
-          "share": 0.29979
+          "share": 0.30028
         },
         {
           "period": "2004-07-01",
-          "share": 0.3228
+          "share": 0.32364
         },
         {
           "period": "2005-07-01",
-          "share": 0.34362
+          "share": 0.34482
         },
         {
           "period": "2006-07-01",
-          "share": 0.36626
+          "share": 0.36807
         },
         {
           "period": "2007-07-01",
-          "share": 0.39639
+          "share": 0.39755
         },
         {
           "period": "2008-07-01",
-          "share": 0.31193
+          "share": 0.30585
         },
         {
           "period": "2009-07-01",
-          "share": 0.33235
+          "share": 0.33182
         },
         {
           "period": "2010-07-01",
-          "share": 0.34963
+          "share": 0.34969
         },
         {
           "period": "2011-07-01",
-          "share": 0.33274
+          "share": 0.33092
         },
         {
           "period": "2012-07-01",
-          "share": 0.37822
+          "share": 0.37674
         },
         {
           "period": "2013-07-01",
-          "share": 0.42185
+          "share": 0.42467
         },
         {
           "period": "2014-07-01",
-          "share": 0.44472
+          "share": 0.45064
         },
         {
           "period": "2015-07-01",
-          "share": 0.41738
+          "share": 0.42147
         },
         {
           "period": "2016-07-01",
-          "share": 0.4368
+          "share": 0.44081
         },
         {
           "period": "2017-07-01",
-          "share": 0.45618
+          "share": 0.45898
         },
         {
           "period": "2018-07-01",
-          "share": 0.46753
+          "share": 0.46963
         },
         {
           "period": "2019-07-01",
-          "share": 0.45071
+          "share": 0.44791
         },
         {
           "period": "2020-07-01",
-          "share": 0.4552
+          "share": 0.45392
         },
         {
           "period": "2021-07-01",
-          "share": 0.50807
+          "share": 0.50977
         },
         {
           "period": "2022-07-01",
-          "share": 0.41523
+          "share": 0.41679
         },
         {
           "period": "2023-07-01",
-          "share": 0.44134
+          "share": 0.44266
         },
         {
           "period": "2024-07-01",
-          "share": 0.50421
+          "share": 0.50785
         },
         {
           "period": "2025-07-01",
-          "share": 0.53265
+          "share": 0.53705
         }
       ],
       "top1": [
         {
           "period": "1989-07-01",
-          "share": 0.18691
+          "share": 0.1869
         },
         {
           "period": "1990-07-01",
-          "share": 0.1448
+          "share": 0.14387
         },
         {
           "period": "1991-07-01",
-          "share": 0.19071
+          "share": 0.19016
         },
         {
           "period": "1992-07-01",
-          "share": 0.22464
+          "share": 0.22478
         },
         {
           "period": "1993-07-01",
-          "share": 0.27052
+          "share": 0.27004
         },
         {
           "period": "1994-07-01",
-          "share": 0.25936
+          "share": 0.25878
         },
         {
           "period": "1995-07-01",
-          "share": 0.28721
+          "share": 0.28734
         },
         {
           "period": "1996-07-01",
-          "share": 0.30299
+          "share": 0.30373
         },
         {
           "period": "1997-07-01",
-          "share": 0.3508
+          "share": 0.35247
         },
         {
           "period": "1998-07-01",
-          "share": 0.34102
+          "share": 0.34161
         },
         {
           "period": "1999-07-01",
-          "share": 0.36002
+          "share": 0.3622
         },
         {
           "period": "2000-07-01",
-          "share": 0.37419
+          "share": 0.37712
         },
         {
           "period": "2001-07-01",
-          "share": 0.25704
+          "share": 0.25769
         },
         {
           "period": "2002-07-01",
-          "share": 0.21916
+          "share": 0.22043
         },
         {
           "period": "2003-07-01",
-          "share": 0.26774
+          "share": 0.26825
         },
         {
           "period": "2004-07-01",
-          "share": 0.28169
+          "share": 0.28213
         },
         {
           "period": "2005-07-01",
-          "share": 0.30173
+          "share": 0.30253
         },
         {
           "period": "2006-07-01",
-          "share": 0.32374
+          "share": 0.32495
         },
         {
           "period": "2007-07-01",
-          "share": 0.35397
+          "share": 0.35444
         },
         {
           "period": "2008-07-01",
-          "share": 0.28484
+          "share": 0.28051
         },
         {
           "period": "2009-07-01",
-          "share": 0.29248
+          "share": 0.29316
         },
         {
           "period": "2010-07-01",
-          "share": 0.30797
+          "share": 0.3081
         },
         {
           "period": "2011-07-01",
-          "share": 0.29229
+          "share": 0.29109
         },
         {
           "period": "2012-07-01",
-          "share": 0.32617
+          "share": 0.32538
         },
         {
           "period": "2013-07-01",
-          "share": 0.35922
+          "share": 0.36128
         },
         {
           "period": "2014-07-01",
-          "share": 0.38422
+          "share": 0.38707
         },
         {
           "period": "2015-07-01",
-          "share": 0.36569
+          "share": 0.36746
         },
         {
           "period": "2016-07-01",
-          "share": 0.38471
+          "share": 0.38592
         },
         {
           "period": "2017-07-01",
-          "share": 0.41242
+          "share": 0.41316
         },
         {
           "period": "2018-07-01",
-          "share": 0.43281
+          "share": 0.43352
         },
         {
           "period": "2019-07-01",
-          "share": 0.43165
+          "share": 0.42847
         },
         {
           "period": "2020-07-01",
-          "share": 0.42954
+          "share": 0.42667
         },
         {
           "period": "2021-07-01",
-          "share": 0.47437
+          "share": 0.47322
         },
         {
           "period": "2022-07-01",
-          "share": 0.39145
+          "share": 0.39082
         },
         {
           "period": "2023-07-01",
-          "share": 0.41425
+          "share": 0.41333
         },
         {
           "period": "2024-07-01",
-          "share": 0.47097
+          "share": 0.47111
         },
         {
           "period": "2025-07-01",
-          "share": 0.49778
+          "share": 0.4995
         }
       ],
       "next9": [
@@ -885,147 +885,147 @@ export const fallbackData = {
         },
         {
           "period": "1990-07-01",
-          "share": 0.08054
+          "share": 0.08063
         },
         {
           "period": "1991-07-01",
-          "share": 0.10267
+          "share": 0.10274
         },
         {
           "period": "1992-07-01",
-          "share": 0.11643
+          "share": 0.11632
         },
         {
           "period": "1993-07-01",
-          "share": 0.13334
+          "share": 0.13353
         },
         {
           "period": "1994-07-01",
-          "share": 0.12523
+          "share": 0.12526
         },
         {
           "period": "1995-07-01",
-          "share": 0.14248
+          "share": 0.14241
         },
         {
           "period": "1996-07-01",
-          "share": 0.15574
+          "share": 0.1554
         },
         {
           "period": "1997-07-01",
-          "share": 0.18539
+          "share": 0.18497
         },
         {
           "period": "1998-07-01",
-          "share": 0.18193
+          "share": 0.18187
         },
         {
           "period": "1999-07-01",
-          "share": 0.20874
+          "share": 0.20838
         },
         {
           "period": "2000-07-01",
-          "share": 0.22817
+          "share": 0.22785
         },
         {
           "period": "2001-07-01",
-          "share": 0.16829
+          "share": 0.16844
         },
         {
           "period": "2002-07-01",
-          "share": 0.1363
+          "share": 0.13589
         },
         {
           "period": "2003-07-01",
-          "share": 0.15039
+          "share": 0.1503
         },
         {
           "period": "2004-07-01",
-          "share": 0.15135
+          "share": 0.15143
         },
         {
           "period": "2005-07-01",
-          "share": 0.15859
+          "share": 0.15854
         },
         {
           "period": "2006-07-01",
-          "share": 0.168
+          "share": 0.16773
         },
         {
           "period": "2007-07-01",
-          "share": 0.18262
+          "share": 0.1826
         },
         {
           "period": "2008-07-01",
-          "share": 0.14529
+          "share": 0.14625
         },
         {
           "period": "2009-07-01",
-          "share": 0.15237
+          "share": 0.15201
         },
         {
           "period": "2010-07-01",
-          "share": 0.16333
+          "share": 0.16327
         },
         {
           "period": "2011-07-01",
-          "share": 0.15721
+          "share": 0.157
         },
         {
           "period": "2012-07-01",
-          "share": 0.17855
+          "share": 0.17812
         },
         {
           "period": "2013-07-01",
-          "share": 0.19528
+          "share": 0.19364
         },
         {
           "period": "2014-07-01",
-          "share": 0.20491
+          "share": 0.20409
         },
         {
           "period": "2015-07-01",
-          "share": 0.19095
+          "share": 0.18962
         },
         {
           "period": "2016-07-01",
-          "share": 0.19885
+          "share": 0.19766
         },
         {
           "period": "2017-07-01",
-          "share": 0.21223
+          "share": 0.21079
         },
         {
           "period": "2018-07-01",
-          "share": 0.22234
+          "share": 0.22073
         },
         {
           "period": "2019-07-01",
-          "share": 0.21931
+          "share": 0.21542
         },
         {
           "period": "2020-07-01",
-          "share": 0.23167
+          "share": 0.2275
         },
         {
           "period": "2021-07-01",
-          "share": 0.2765
+          "share": 0.27285
         },
         {
           "period": "2022-07-01",
-          "share": 0.23302
+          "share": 0.23009
         },
         {
           "period": "2023-07-01",
-          "share": 0.24752
+          "share": 0.24425
         },
         {
           "period": "2024-07-01",
-          "share": 0.28573
+          "share": 0.28296
         },
         {
           "period": "2025-07-01",
-          "share": 0.30705
+          "share": 0.30557
         }
       ],
       "next40": [
@@ -1035,59 +1035,59 @@ export const fallbackData = {
         },
         {
           "period": "1990-07-01",
-          "share": 0.03807
+          "share": 0.03828
         },
         {
           "period": "1991-07-01",
-          "share": 0.04812
+          "share": 0.04824
         },
         {
           "period": "1992-07-01",
-          "share": 0.05548
+          "share": 0.05552
         },
         {
           "period": "1993-07-01",
-          "share": 0.05851
+          "share": 0.0585
         },
         {
           "period": "1994-07-01",
-          "share": 0.05423
+          "share": 0.05427
         },
         {
           "period": "1995-07-01",
-          "share": 0.05676
+          "share": 0.05675
         },
         {
           "period": "1996-07-01",
-          "share": 0.06601
+          "share": 0.06598
         },
         {
           "period": "1997-07-01",
-          "share": 0.08022
+          "share": 0.08009
         },
         {
           "period": "1998-07-01",
-          "share": 0.08391
+          "share": 0.08388
         },
         {
           "period": "1999-07-01",
-          "share": 0.0959
+          "share": 0.09571
         },
         {
           "period": "2000-07-01",
-          "share": 0.10398
+          "share": 0.10371
         },
         {
           "period": "2001-07-01",
-          "share": 0.08151
+          "share": 0.0815
         },
         {
           "period": "2002-07-01",
-          "share": 0.0674
+          "share": 0.0675
         },
         {
           "period": "2003-07-01",
-          "share": 0.07063
+          "share": 0.07065
         },
         {
           "period": "2004-07-01",
@@ -1095,87 +1095,87 @@ export const fallbackData = {
         },
         {
           "period": "2005-07-01",
-          "share": 0.06808
+          "share": 0.06807
         },
         {
           "period": "2006-07-01",
-          "share": 0.06895
+          "share": 0.06891
         },
         {
           "period": "2007-07-01",
-          "share": 0.07238
+          "share": 0.07236
         },
         {
           "period": "2008-07-01",
-          "share": 0.05987
+          "share": 0.05996
         },
         {
           "period": "2009-07-01",
-          "share": 0.06115
+          "share": 0.06114
         },
         {
           "period": "2010-07-01",
-          "share": 0.06507
+          "share": 0.06505
         },
         {
           "period": "2011-07-01",
-          "share": 0.066
+          "share": 0.06622
         },
         {
           "period": "2012-07-01",
-          "share": 0.07643
+          "share": 0.07686
         },
         {
           "period": "2013-07-01",
-          "share": 0.08414
+          "share": 0.08436
         },
         {
           "period": "2014-07-01",
-          "share": 0.08618
+          "share": 0.08657
         },
         {
           "period": "2015-07-01",
-          "share": 0.07988
+          "share": 0.08015
         },
         {
           "period": "2016-07-01",
-          "share": 0.0809
+          "share": 0.08124
         },
         {
           "period": "2017-07-01",
-          "share": 0.08313
+          "share": 0.0832
         },
         {
           "period": "2018-07-01",
-          "share": 0.08447
+          "share": 0.08432
         },
         {
           "period": "2019-07-01",
-          "share": 0.08153
+          "share": 0.08022
         },
         {
           "period": "2020-07-01",
-          "share": 0.08464
+          "share": 0.08308
         },
         {
           "period": "2021-07-01",
-          "share": 0.09865
+          "share": 0.0971
         },
         {
           "period": "2022-07-01",
-          "share": 0.08049
+          "share": 0.0792
         },
         {
           "period": "2023-07-01",
-          "share": 0.08529
+          "share": 0.08395
         },
         {
           "period": "2024-07-01",
-          "share": 0.099
+          "share": 0.09775
         },
         {
           "period": "2025-07-01",
-          "share": 0.10738
+          "share": 0.10689
         }
       ],
       "bottom50": [
@@ -1185,23 +1185,23 @@ export const fallbackData = {
         },
         {
           "period": "1990-07-01",
-          "share": 0.01252
+          "share": 0.01398
         },
         {
           "period": "1991-07-01",
-          "share": 0.01736
+          "share": 0.0179
         },
         {
           "period": "1992-07-01",
-          "share": 0.02077
+          "share": 0.02075
         },
         {
           "period": "1993-07-01",
-          "share": 0.02405
+          "share": 0.02344
         },
         {
           "period": "1994-07-01",
-          "share": 0.02312
+          "share": 0.02358
         },
         {
           "period": "1995-07-01",
@@ -1209,23 +1209,23 @@ export const fallbackData = {
         },
         {
           "period": "1996-07-01",
-          "share": 0.02921
+          "share": 0.02946
         },
         {
           "period": "1997-07-01",
-          "share": 0.03706
+          "share": 0.03614
         },
         {
           "period": "1998-07-01",
-          "share": 0.03881
+          "share": 0.0388
         },
         {
           "period": "1999-07-01",
-          "share": 0.04069
+          "share": 0.03879
         },
         {
           "period": "2000-07-01",
-          "share": 0.04211
+          "share": 0.03875
         },
         {
           "period": "2001-07-01",
@@ -1233,11 +1233,11 @@ export const fallbackData = {
         },
         {
           "period": "2002-07-01",
-          "share": 0.02101
+          "share": 0.02244
         },
         {
           "period": "2003-07-01",
-          "share": 0.02038
+          "share": 0.02103
         },
         {
           "period": "2004-07-01",
@@ -1245,23 +1245,23 @@ export const fallbackData = {
         },
         {
           "period": "2005-07-01",
-          "share": 0.01857
+          "share": 0.01868
         },
         {
           "period": "2006-07-01",
-          "share": 0.01991
+          "share": 0.02016
         },
         {
           "period": "2007-07-01",
-          "share": 0.02307
+          "share": 0.02305
         },
         {
           "period": "2008-07-01",
-          "share": 0.01566
+          "share": 0.01817
         },
         {
           "period": "2009-07-01",
-          "share": 0.01536
+          "share": 0.01713
         },
         {
           "period": "2010-07-01",
@@ -1269,63 +1269,63 @@ export const fallbackData = {
         },
         {
           "period": "2011-07-01",
-          "share": 0.01617
+          "share": 0.0167
         },
         {
           "period": "2012-07-01",
-          "share": 0.02068
+          "share": 0.01911
         },
         {
           "period": "2013-07-01",
-          "share": 0.02481
+          "share": 0.02054
         },
         {
           "period": "2014-07-01",
-          "share": 0.02756
+          "share": 0.02344
         },
         {
           "period": "2015-07-01",
-          "share": 0.02409
+          "share": 0.02275
         },
         {
           "period": "2016-07-01",
-          "share": 0.02556
+          "share": 0.02459
         },
         {
           "period": "2017-07-01",
-          "share": 0.02622
+          "share": 0.02524
         },
         {
           "period": "2018-07-01",
-          "share": 0.02613
+          "share": 0.02529
         },
         {
           "period": "2019-07-01",
-          "share": 0.02236
+          "share": 0.02303
         },
         {
           "period": "2020-07-01",
-          "share": 0.0301
+          "share": 0.02227
         },
         {
           "period": "2021-07-01",
-          "share": 0.04518
+          "share": 0.0267
         },
         {
           "period": "2022-07-01",
-          "share": 0.03453
+          "share": 0.01825
         },
         {
           "period": "2023-07-01",
-          "share": 0.03949
+          "share": 0.02091
         },
         {
           "period": "2024-07-01",
-          "share": 0.05103
+          "share": 0.02725
         },
         {
           "period": "2025-07-01",
-          "share": 0.05736
+          "share": 0.03106
         }
       ]
     },
@@ -1333,301 +1333,301 @@ export const fallbackData = {
       "top01": [
         {
           "period": "1989-07-01",
-          "share": 0.32518
+          "share": 0.32515
         },
         {
           "period": "1990-07-01",
-          "share": 0.33947
+          "share": 0.33921
         },
         {
           "period": "1991-07-01",
-          "share": 0.30597
+          "share": 0.30576
         },
         {
           "period": "1992-07-01",
-          "share": 0.28867
+          "share": 0.28965
         },
         {
           "period": "1993-07-01",
-          "share": 0.25668
+          "share": 0.25627
         },
         {
           "period": "1994-07-01",
-          "share": 0.25624
+          "share": 0.25631
         },
         {
           "period": "1995-07-01",
-          "share": 0.243
+          "share": 0.24378
         },
         {
           "period": "1996-07-01",
-          "share": 0.23269
+          "share": 0.23421
         },
         {
           "period": "1997-07-01",
-          "share": 0.22712
+          "share": 0.22894
         },
         {
           "period": "1998-07-01",
-          "share": 0.23413
+          "share": 0.23583
         },
         {
           "period": "1999-07-01",
-          "share": 0.23082
+          "share": 0.23291
         },
         {
           "period": "2000-07-01",
-          "share": 0.23376
+          "share": 0.23566
         },
         {
           "period": "2001-07-01",
-          "share": 0.2807
+          "share": 0.28313
         },
         {
           "period": "2002-07-01",
-          "share": 0.28571
+          "share": 0.29024
         },
         {
           "period": "2003-07-01",
-          "share": 0.2534
+          "share": 0.25514
         },
         {
           "period": "2004-07-01",
-          "share": 0.2528
+          "share": 0.25405
         },
         {
           "period": "2005-07-01",
-          "share": 0.26692
+          "share": 0.26872
         },
         {
           "period": "2006-07-01",
-          "share": 0.26816
+          "share": 0.27043
         },
         {
           "period": "2007-07-01",
-          "share": 0.24961
+          "share": 0.2508
         },
         {
           "period": "2008-07-01",
-          "share": 0.23373
+          "share": 0.23168
         },
         {
           "period": "2009-07-01",
-          "share": 0.17206
+          "share": 0.17302
         },
         {
           "period": "2010-07-01",
-          "share": 0.17606
+          "share": 0.17649
         },
         {
           "period": "2011-07-01",
-          "share": 0.19503
+          "share": 0.19575
         },
         {
           "period": "2012-07-01",
-          "share": 0.20467
+          "share": 0.20574
         },
         {
           "period": "2013-07-01",
-          "share": 0.22698
+          "share": 0.23444
         },
         {
           "period": "2014-07-01",
-          "share": 0.22405
+          "share": 0.23433
         },
         {
           "period": "2015-07-01",
-          "share": 0.24297
+          "share": 0.25562
         },
         {
           "period": "2016-07-01",
-          "share": 0.23558
+          "share": 0.24806
         },
         {
           "period": "2017-07-01",
-          "share": 0.2421
+          "share": 0.25216
         },
         {
           "period": "2018-07-01",
-          "share": 0.247
+          "share": 0.25433
         },
         {
           "period": "2019-07-01",
-          "share": 0.26314
+          "share": 0.27096
         },
         {
           "period": "2020-07-01",
-          "share": 0.24469
+          "share": 0.252
         },
         {
           "period": "2021-07-01",
-          "share": 0.22157
+          "share": 0.22721
         },
         {
           "period": "2022-07-01",
-          "share": 0.25865
+          "share": 0.26477
         },
         {
           "period": "2023-07-01",
-          "share": 0.23455
+          "share": 0.2392
         },
         {
           "period": "2024-07-01",
-          "share": 0.19762
+          "share": 0.20077
         },
         {
           "period": "2025-07-01",
-          "share": 0.18394
+          "share": 0.18624
         }
       ],
       "top1": [
         {
           "period": "1989-07-01",
-          "share": 0.27334
+          "share": 0.27332
         },
         {
           "period": "1990-07-01",
-          "share": 0.28105
+          "share": 0.28048
         },
         {
           "period": "1991-07-01",
-          "share": 0.25696
+          "share": 0.2566
         },
         {
           "period": "1992-07-01",
-          "share": 0.24336
+          "share": 0.244
         },
         {
           "period": "1993-07-01",
-          "share": 0.23359
+          "share": 0.23363
         },
         {
           "period": "1994-07-01",
-          "share": 0.24185
+          "share": 0.24237
         },
         {
           "period": "1995-07-01",
-          "share": 0.23702
+          "share": 0.23809
         },
         {
           "period": "1996-07-01",
-          "share": 0.22242
+          "share": 0.22376
         },
         {
           "period": "1997-07-01",
-          "share": 0.20878
+          "share": 0.21017
         },
         {
           "period": "1998-07-01",
-          "share": 0.20671
+          "share": 0.20752
         },
         {
           "period": "1999-07-01",
-          "share": 0.20164
+          "share": 0.20318
         },
         {
           "period": "2000-07-01",
-          "share": 0.20062
+          "share": 0.20201
         },
         {
           "period": "2001-07-01",
-          "share": 0.23266
+          "share": 0.23382
         },
         {
           "period": "2002-07-01",
-          "share": 0.24199
+          "share": 0.24475
         },
         {
           "period": "2003-07-01",
-          "share": 0.2269
+          "share": 0.22808
         },
         {
           "period": "2004-07-01",
-          "share": 0.22686
+          "share": 0.2277
         },
         {
           "period": "2005-07-01",
-          "share": 0.22487
+          "share": 0.22602
         },
         {
           "period": "2006-07-01",
-          "share": 0.21927
+          "share": 0.22065
         },
         {
           "period": "2007-07-01",
-          "share": 0.20366
+          "share": 0.2043
         },
         {
           "period": "2008-07-01",
-          "share": 0.19929
+          "share": 0.19714
         },
         {
           "period": "2009-07-01",
-          "share": 0.16118
+          "share": 0.16213
         },
         {
           "period": "2010-07-01",
-          "share": 0.16561
+          "share": 0.16602
         },
         {
           "period": "2011-07-01",
-          "share": 0.16991
+          "share": 0.17011
         },
         {
           "period": "2012-07-01",
-          "share": 0.16765
+          "share": 0.16831
         },
         {
           "period": "2013-07-01",
-          "share": 0.17424
+          "share": 0.17922
         },
         {
           "period": "2014-07-01",
-          "share": 0.1791
+          "share": 0.1841
         },
         {
           "period": "2015-07-01",
-          "share": 0.19721
+          "share": 0.20253
         },
         {
           "period": "2016-07-01",
-          "share": 0.19635
+          "share": 0.2006
         },
         {
           "period": "2017-07-01",
-          "share": 0.19238
+          "share": 0.19651
         },
         {
           "period": "2018-07-01",
-          "share": 0.18753
+          "share": 0.19135
         },
         {
           "period": "2019-07-01",
-          "share": 0.1904
+          "share": 0.19535
         },
         {
           "period": "2020-07-01",
-          "share": 0.18776
+          "share": 0.19244
         },
         {
           "period": "2021-07-01",
-          "share": 0.17901
+          "share": 0.18292
         },
         {
           "period": "2022-07-01",
-          "share": 0.21309
+          "share": 0.21693
         },
         {
           "period": "2023-07-01",
-          "share": 0.19459
+          "share": 0.19762
         },
         {
           "period": "2024-07-01",
-          "share": 0.16624
+          "share": 0.16829
         },
         {
           "period": "2025-07-01",
-          "share": 0.15564
+          "share": 0.15739
         }
       ],
       "next9": [
@@ -1637,79 +1637,79 @@ export const fallbackData = {
         },
         {
           "period": "1990-07-01",
-          "share": 0.12555
+          "share": 0.12564
         },
         {
           "period": "1991-07-01",
-          "share": 0.12014
+          "share": 0.12028
         },
         {
           "period": "1992-07-01",
-          "share": 0.11365
+          "share": 0.11372
         },
         {
           "period": "1993-07-01",
-          "share": 0.10616
+          "share": 0.10628
         },
         {
           "period": "1994-07-01",
-          "share": 0.10459
+          "share": 0.10462
         },
         {
           "period": "1995-07-01",
-          "share": 0.10034
+          "share": 0.10016
         },
         {
           "period": "1996-07-01",
-          "share": 0.10194
+          "share": 0.10175
         },
         {
           "period": "1997-07-01",
-          "share": 0.10384
+          "share": 0.10365
         },
         {
           "period": "1998-07-01",
-          "share": 0.1085
+          "share": 0.10864
         },
         {
           "period": "1999-07-01",
-          "share": 0.10106
+          "share": 0.10108
         },
         {
           "period": "2000-07-01",
-          "share": 0.09661
+          "share": 0.09654
         },
         {
           "period": "2001-07-01",
-          "share": 0.10221
+          "share": 0.1024
         },
         {
           "period": "2002-07-01",
-          "share": 0.09932
+          "share": 0.09919
         },
         {
           "period": "2003-07-01",
-          "share": 0.08997
+          "share": 0.09011
         },
         {
           "period": "2004-07-01",
-          "share": 0.09205
+          "share": 0.09231
         },
         {
           "period": "2005-07-01",
-          "share": 0.10305
+          "share": 0.10324
         },
         {
           "period": "2006-07-01",
-          "share": 0.11064
+          "share": 0.1107
         },
         {
           "period": "2007-07-01",
-          "share": 0.11258
+          "share": 0.11276
         },
         {
           "period": "2008-07-01",
-          "share": 0.1019
+          "share": 0.10285
         },
         {
           "period": "2009-07-01",
@@ -1717,67 +1717,67 @@ export const fallbackData = {
         },
         {
           "period": "2010-07-01",
-          "share": 0.07875
+          "share": 0.07888
         },
         {
           "period": "2011-07-01",
-          "share": 0.08404
+          "share": 0.08398
         },
         {
           "period": "2012-07-01",
-          "share": 0.08824
+          "share": 0.08793
         },
         {
           "period": "2013-07-01",
-          "share": 0.09409
+          "share": 0.09434
         },
         {
           "period": "2014-07-01",
-          "share": 0.08769
+          "share": 0.08831
         },
         {
           "period": "2015-07-01",
-          "share": 0.08827
+          "share": 0.089
         },
         {
           "period": "2016-07-01",
-          "share": 0.08214
+          "share": 0.08272
         },
         {
           "period": "2017-07-01",
-          "share": 0.08362
+          "share": 0.08426
         },
         {
           "period": "2018-07-01",
-          "share": 0.08472
+          "share": 0.08525
         },
         {
           "period": "2019-07-01",
-          "share": 0.08844
+          "share": 0.08929
         },
         {
           "period": "2020-07-01",
-          "share": 0.08664
+          "share": 0.08772
         },
         {
           "period": "2021-07-01",
-          "share": 0.08634
+          "share": 0.08756
         },
         {
           "period": "2022-07-01",
-          "share": 0.09889
+          "share": 0.10018
         },
         {
           "period": "2023-07-01",
-          "share": 0.09146
+          "share": 0.09242
         },
         {
           "period": "2024-07-01",
-          "share": 0.08069
+          "share": 0.08134
         },
         {
           "period": "2025-07-01",
-          "share": 0.07745
+          "share": 0.07819
         }
       ],
       "next40": [
@@ -1787,147 +1787,147 @@ export const fallbackData = {
         },
         {
           "period": "1990-07-01",
-          "share": 0.06536
+          "share": 0.06546
         },
         {
           "period": "1991-07-01",
-          "share": 0.06131
+          "share": 0.06147
         },
         {
           "period": "1992-07-01",
-          "share": 0.05711
+          "share": 0.05734
         },
         {
           "period": "1993-07-01",
-          "share": 0.05525
+          "share": 0.05545
         },
         {
           "period": "1994-07-01",
-          "share": 0.0541
+          "share": 0.05426
         },
         {
           "period": "1995-07-01",
-          "share": 0.05237
+          "share": 0.05247
         },
         {
           "period": "1996-07-01",
-          "share": 0.05237
+          "share": 0.05246
         },
         {
           "period": "1997-07-01",
-          "share": 0.05276
+          "share": 0.05282
         },
         {
           "period": "1998-07-01",
-          "share": 0.05366
+          "share": 0.05373
         },
         {
           "period": "1999-07-01",
-          "share": 0.05302
+          "share": 0.05314
         },
         {
           "period": "2000-07-01",
-          "share": 0.05189
+          "share": 0.05202
         },
         {
           "period": "2001-07-01",
-          "share": 0.05255
+          "share": 0.05272
         },
         {
           "period": "2002-07-01",
-          "share": 0.05512
+          "share": 0.05525
         },
         {
           "period": "2003-07-01",
-          "share": 0.05579
+          "share": 0.05595
         },
         {
           "period": "2004-07-01",
-          "share": 0.05805
+          "share": 0.05817
         },
         {
           "period": "2005-07-01",
-          "share": 0.05383
+          "share": 0.05391
         },
         {
           "period": "2006-07-01",
-          "share": 0.05077
+          "share": 0.05081
         },
         {
           "period": "2007-07-01",
-          "share": 0.04782
+          "share": 0.04789
         },
         {
           "period": "2008-07-01",
-          "share": 0.04916
+          "share": 0.0493
         },
         {
           "period": "2009-07-01",
-          "share": 0.04673
+          "share": 0.04686
         },
         {
           "period": "2010-07-01",
-          "share": 0.0505
+          "share": 0.0506
         },
         {
           "period": "2011-07-01",
-          "share": 0.04909
+          "share": 0.04917
         },
         {
           "period": "2012-07-01",
-          "share": 0.04721
+          "share": 0.04728
         },
         {
           "period": "2013-07-01",
-          "share": 0.04508
+          "share": 0.04536
         },
         {
           "period": "2014-07-01",
-          "share": 0.04493
+          "share": 0.04527
         },
         {
           "period": "2015-07-01",
-          "share": 0.04665
+          "share": 0.04698
         },
         {
           "period": "2016-07-01",
-          "share": 0.04545
+          "share": 0.04572
         },
         {
           "period": "2017-07-01",
-          "share": 0.0441
+          "share": 0.04427
         },
         {
           "period": "2018-07-01",
-          "share": 0.04283
+          "share": 0.04282
         },
         {
           "period": "2019-07-01",
-          "share": 0.0428
+          "share": 0.04268
         },
         {
           "period": "2020-07-01",
-          "share": 0.0427
+          "share": 0.04263
         },
         {
           "period": "2021-07-01",
-          "share": 0.04276
+          "share": 0.04268
         },
         {
           "period": "2022-07-01",
-          "share": 0.04642
+          "share": 0.04631
         },
         {
           "period": "2023-07-01",
-          "share": 0.04378
+          "share": 0.04362
         },
         {
           "period": "2024-07-01",
-          "share": 0.04033
+          "share": 0.04011
         },
         {
           "period": "2025-07-01",
-          "share": 0.0395
+          "share": 0.03941
         }
       ],
       "bottom50": [
@@ -1937,147 +1937,147 @@ export const fallbackData = {
         },
         {
           "period": "1990-07-01",
-          "share": 0.02334
+          "share": 0.0232
         },
         {
           "period": "1991-07-01",
-          "share": 0.02279
+          "share": 0.02262
         },
         {
           "period": "1992-07-01",
-          "share": 0.02233
+          "share": 0.02212
         },
         {
           "period": "1993-07-01",
-          "share": 0.02259
+          "share": 0.02252
         },
         {
           "period": "1994-07-01",
-          "share": 0.02278
+          "share": 0.02272
         },
         {
           "period": "1995-07-01",
-          "share": 0.02164
+          "share": 0.02168
         },
         {
           "period": "1996-07-01",
-          "share": 0.02529
+          "share": 0.02536
         },
         {
           "period": "1997-07-01",
-          "share": 0.02786
+          "share": 0.02794
         },
         {
           "period": "1998-07-01",
-          "share": 0.02999
+          "share": 0.03003
         },
         {
           "period": "1999-07-01",
-          "share": 0.02495
+          "share": 0.025
         },
         {
           "period": "2000-07-01",
-          "share": 0.02047
+          "share": 0.02048
         },
         {
           "period": "2001-07-01",
-          "share": 0.01766
+          "share": 0.01754
         },
         {
           "period": "2002-07-01",
-          "share": 0.019
+          "share": 0.01898
         },
         {
           "period": "2003-07-01",
-          "share": 0.01967
+          "share": 0.01978
         },
         {
           "period": "2004-07-01",
-          "share": 0.01963
+          "share": 0.01967
         },
         {
           "period": "2005-07-01",
-          "share": 0.02336
+          "share": 0.02333
         },
         {
           "period": "2006-07-01",
-          "share": 0.02656
+          "share": 0.02652
         },
         {
           "period": "2007-07-01",
-          "share": 0.03048
+          "share": 0.03051
         },
         {
           "period": "2008-07-01",
-          "share": 0.03225
+          "share": 0.03221
         },
         {
           "period": "2009-07-01",
-          "share": 0.03263
+          "share": 0.03273
         },
         {
           "period": "2010-07-01",
-          "share": 0.03303
+          "share": 0.03301
         },
         {
           "period": "2011-07-01",
-          "share": 0.0308
+          "share": 0.03079
         },
         {
           "period": "2012-07-01",
-          "share": 0.02686
+          "share": 0.02688
         },
         {
           "period": "2013-07-01",
-          "share": 0.02123
+          "share": 0.02122
         },
         {
           "period": "2014-07-01",
-          "share": 0.02199
+          "share": 0.02191
         },
         {
           "period": "2015-07-01",
-          "share": 0.02302
+          "share": 0.02278
         },
         {
           "period": "2016-07-01",
-          "share": 0.02316
+          "share": 0.02291
         },
         {
           "period": "2017-07-01",
-          "share": 0.02486
+          "share": 0.02547
         },
         {
           "period": "2018-07-01",
-          "share": 0.02619
+          "share": 0.02757
         },
         {
           "period": "2019-07-01",
-          "share": 0.02766
+          "share": 0.02972
         },
         {
           "period": "2020-07-01",
-          "share": 0.02403
+          "share": 0.02564
         },
         {
           "period": "2021-07-01",
-          "share": 0.01968
+          "share": 0.02071
         },
         {
           "period": "2022-07-01",
-          "share": 0.01743
+          "share": 0.01786
         },
         {
           "period": "2023-07-01",
-          "share": 0.01723
+          "share": 0.0177
         },
         {
           "period": "2024-07-01",
-          "share": 0.01667
+          "share": 0.01723
         },
         {
           "period": "2025-07-01",
-          "share": 0.01632
+          "share": 0.01691
         }
       ]
     },
@@ -2089,297 +2089,297 @@ export const fallbackData = {
         },
         {
           "period": "1990-07-01",
-          "share": 0.10277
+          "share": 0.10309
         },
         {
           "period": "1991-07-01",
-          "share": 0.11489
+          "share": 0.11477
         },
         {
           "period": "1992-07-01",
-          "share": 0.13307
+          "share": 0.1332
         },
         {
           "period": "1993-07-01",
-          "share": 0.10756
+          "share": 0.10791
         },
         {
           "period": "1994-07-01",
-          "share": 0.08923
+          "share": 0.09039
         },
         {
           "period": "1995-07-01",
-          "share": 0.06945
+          "share": 0.06967
         },
         {
           "period": "1996-07-01",
-          "share": 0.06914
+          "share": 0.06958
         },
         {
           "period": "1997-07-01",
-          "share": 0.06597
+          "share": 0.06665
         },
         {
           "period": "1998-07-01",
-          "share": 0.0703
+          "share": 0.07061
         },
         {
           "period": "1999-07-01",
-          "share": 0.07708
+          "share": 0.07759
         },
         {
           "period": "2000-07-01",
-          "share": 0.08425
+          "share": 0.08455
         },
         {
           "period": "2001-07-01",
-          "share": 0.1101
+          "share": 0.11065
         },
         {
           "period": "2002-07-01",
-          "share": 0.12744
+          "share": 0.12964
         },
         {
           "period": "2003-07-01",
-          "share": 0.1253
+          "share": 0.12628
         },
         {
           "period": "2004-07-01",
-          "share": 0.11746
+          "share": 0.11778
         },
         {
           "period": "2005-07-01",
-          "share": 0.11208
+          "share": 0.11248
         },
         {
           "period": "2006-07-01",
-          "share": 0.0993
+          "share": 0.0996
         },
         {
           "period": "2007-07-01",
-          "share": 0.08047
+          "share": 0.08077
         },
         {
           "period": "2008-07-01",
-          "share": 0.09406
+          "share": 0.09319
         },
         {
           "period": "2009-07-01",
-          "share": 0.10191
+          "share": 0.10239
         },
         {
           "period": "2010-07-01",
-          "share": 0.10105
+          "share": 0.10118
         },
         {
           "period": "2011-07-01",
-          "share": 0.09282
+          "share": 0.09261
         },
         {
           "period": "2012-07-01",
-          "share": 0.08245
+          "share": 0.08204
         },
         {
           "period": "2013-07-01",
-          "share": 0.0812
+          "share": 0.08239
         },
         {
           "period": "2014-07-01",
-          "share": 0.07862
+          "share": 0.08127
         },
         {
           "period": "2015-07-01",
-          "share": 0.08149
+          "share": 0.08537
         },
         {
           "period": "2016-07-01",
-          "share": 0.08025
+          "share": 0.08466
         },
         {
           "period": "2017-07-01",
-          "share": 0.08178
+          "share": 0.08529
         },
         {
           "period": "2018-07-01",
-          "share": 0.08197
+          "share": 0.08456
         },
         {
           "period": "2019-07-01",
-          "share": 0.08044
+          "share": 0.08306
         },
         {
           "period": "2020-07-01",
-          "share": 0.08138
+          "share": 0.08305
         },
         {
           "period": "2021-07-01",
-          "share": 0.07936
+          "share": 0.0803
         },
         {
           "period": "2022-07-01",
-          "share": 0.09733
+          "share": 0.09771
         },
         {
           "period": "2023-07-01",
-          "share": 0.09324
+          "share": 0.09359
         },
         {
           "period": "2024-07-01",
-          "share": 0.0832
+          "share": 0.08381
         },
         {
           "period": "2025-07-01",
-          "share": 0.07695
+          "share": 0.07678
         }
       ],
       "top1": [
         {
           "period": "1989-07-01",
-          "share": 0.12906
+          "share": 0.12905
         },
         {
           "period": "1990-07-01",
-          "share": 0.14662
+          "share": 0.14644
         },
         {
           "period": "1991-07-01",
-          "share": 0.14701
+          "share": 0.14659
         },
         {
           "period": "1992-07-01",
-          "share": 0.15646
+          "share": 0.15657
         },
         {
           "period": "1993-07-01",
-          "share": 0.1384
+          "share": 0.13852
         },
         {
           "period": "1994-07-01",
-          "share": 0.12634
+          "share": 0.1272
         },
         {
           "period": "1995-07-01",
-          "share": 0.10404
+          "share": 0.10408
         },
         {
           "period": "1996-07-01",
-          "share": 0.10645
+          "share": 0.10681
         },
         {
           "period": "1997-07-01",
-          "share": 0.10387
+          "share": 0.10445
         },
         {
           "period": "1998-07-01",
-          "share": 0.10945
+          "share": 0.10963
         },
         {
           "period": "1999-07-01",
-          "share": 0.11513
+          "share": 0.11555
         },
         {
           "period": "2000-07-01",
-          "share": 0.12278
+          "share": 0.12312
         },
         {
           "period": "2001-07-01",
-          "share": 0.15722
+          "share": 0.15757
         },
         {
           "period": "2002-07-01",
-          "share": 0.1837
+          "share": 0.18568
         },
         {
           "period": "2003-07-01",
-          "share": 0.1872
+          "share": 0.18799
         },
         {
           "period": "2004-07-01",
-          "share": 0.18533
+          "share": 0.18557
         },
         {
           "period": "2005-07-01",
-          "share": 0.18383
+          "share": 0.18426
         },
         {
           "period": "2006-07-01",
-          "share": 0.17133
+          "share": 0.17194
         },
         {
           "period": "2007-07-01",
-          "share": 0.14968
+          "share": 0.14998
         },
         {
           "period": "2008-07-01",
-          "share": 0.15514
+          "share": 0.1535
         },
         {
           "period": "2009-07-01",
-          "share": 0.14866
+          "share": 0.14947
         },
         {
           "period": "2010-07-01",
-          "share": 0.13919
+          "share": 0.13938
         },
         {
           "period": "2011-07-01",
-          "share": 0.13399
+          "share": 0.1339
         },
         {
           "period": "2012-07-01",
-          "share": 0.12545
+          "share": 0.12546
         },
         {
           "period": "2013-07-01",
-          "share": 0.12734
+          "share": 0.12992
         },
         {
           "period": "2014-07-01",
-          "share": 0.12521
+          "share": 0.12842
         },
         {
           "period": "2015-07-01",
-          "share": 0.13078
+          "share": 0.13456
         },
         {
           "period": "2016-07-01",
-          "share": 0.13068
+          "share": 0.13419
         },
         {
           "period": "2017-07-01",
-          "share": 0.13093
+          "share": 0.13344
         },
         {
           "period": "2018-07-01",
-          "share": 0.13007
+          "share": 0.13169
         },
         {
           "period": "2019-07-01",
-          "share": 0.12699
+          "share": 0.12867
         },
         {
           "period": "2020-07-01",
-          "share": 0.12532
+          "share": 0.1268
         },
         {
           "period": "2021-07-01",
-          "share": 0.1212
+          "share": 0.12291
         },
         {
           "period": "2022-07-01",
-          "share": 0.14173
+          "share": 0.14356
         },
         {
           "period": "2023-07-01",
-          "share": 0.13698
+          "share": 0.13908
         },
         {
           "period": "2024-07-01",
-          "share": 0.12425
+          "share": 0.12666
         },
         {
           "period": "2025-07-01",
-          "share": 0.11592
+          "share": 0.11738
         }
       ],
       "next9": [
@@ -2389,35 +2389,35 @@ export const fallbackData = {
         },
         {
           "period": "1990-07-01",
-          "share": 0.24633
+          "share": 0.24619
         },
         {
           "period": "1991-07-01",
-          "share": 0.23256
+          "share": 0.23274
         },
         {
           "period": "1992-07-01",
-          "share": 0.22518
+          "share": 0.22522
         },
         {
           "period": "1993-07-01",
-          "share": 0.22229
+          "share": 0.22249
         },
         {
           "period": "1994-07-01",
-          "share": 0.22435
+          "share": 0.22416
         },
         {
           "period": "1995-07-01",
-          "share": 0.20814
+          "share": 0.2082
         },
         {
           "period": "1996-07-01",
-          "share": 0.2034
+          "share": 0.20315
         },
         {
           "period": "1997-07-01",
-          "share": 0.19369
+          "share": 0.19317
         },
         {
           "period": "1998-07-01",
@@ -2425,111 +2425,111 @@ export const fallbackData = {
         },
         {
           "period": "1999-07-01",
-          "share": 0.20042
+          "share": 0.19996
         },
         {
           "period": "2000-07-01",
-          "share": 0.20565
+          "share": 0.20537
         },
         {
           "period": "2001-07-01",
-          "share": 0.23861
+          "share": 0.23881
         },
         {
           "period": "2002-07-01",
-          "share": 0.25814
+          "share": 0.25727
         },
         {
           "period": "2003-07-01",
-          "share": 0.25446
+          "share": 0.25431
         },
         {
           "period": "2004-07-01",
-          "share": 0.2573
+          "share": 0.25744
         },
         {
           "period": "2005-07-01",
-          "share": 0.26724
+          "share": 0.26715
         },
         {
           "period": "2006-07-01",
-          "share": 0.26346
+          "share": 0.26338
         },
         {
           "period": "2007-07-01",
-          "share": 0.24507
+          "share": 0.24524
         },
         {
           "period": "2008-07-01",
-          "share": 0.23925
+          "share": 0.24163
         },
         {
           "period": "2009-07-01",
-          "share": 0.22868
+          "share": 0.22873
         },
         {
           "period": "2010-07-01",
-          "share": 0.21477
+          "share": 0.21489
         },
         {
           "period": "2011-07-01",
-          "share": 0.20415
+          "share": 0.2044
         },
         {
           "period": "2012-07-01",
-          "share": 0.19391
+          "share": 0.1937
         },
         {
           "period": "2013-07-01",
-          "share": 0.19238
+          "share": 0.19338
         },
         {
           "period": "2014-07-01",
-          "share": 0.19202
+          "share": 0.19334
         },
         {
           "period": "2015-07-01",
-          "share": 0.19912
+          "share": 0.20024
         },
         {
           "period": "2016-07-01",
-          "share": 0.19941
+          "share": 0.20006
         },
         {
           "period": "2017-07-01",
-          "share": 0.19936
+          "share": 0.20037
         },
         {
           "period": "2018-07-01",
-          "share": 0.19841
+          "share": 0.19982
         },
         {
           "period": "2019-07-01",
-          "share": 0.19316
+          "share": 0.19596
         },
         {
           "period": "2020-07-01",
-          "share": 0.19897
+          "share": 0.20185
         },
         {
           "period": "2021-07-01",
-          "share": 0.21192
+          "share": 0.21458
         },
         {
           "period": "2022-07-01",
-          "share": 0.24957
+          "share": 0.25176
         },
         {
           "period": "2023-07-01",
-          "share": 0.24413
+          "share": 0.24611
         },
         {
           "period": "2024-07-01",
-          "share": 0.22921
+          "share": 0.23162
         },
         {
           "period": "2025-07-01",
-          "share": 0.21933
+          "share": 0.22048
         }
       ],
       "next40": [
@@ -2539,43 +2539,43 @@ export const fallbackData = {
         },
         {
           "period": "1990-07-01",
-          "share": 0.37479
+          "share": 0.37425
         },
         {
           "period": "1991-07-01",
-          "share": 0.35384
+          "share": 0.35375
         },
         {
           "period": "1992-07-01",
-          "share": 0.3447
+          "share": 0.34489
         },
         {
           "period": "1993-07-01",
-          "share": 0.34716
+          "share": 0.34726
         },
         {
           "period": "1994-07-01",
-          "share": 0.35649
+          "share": 0.35635
         },
         {
           "period": "1995-07-01",
-          "share": 0.34607
+          "share": 0.34604
         },
         {
           "period": "1996-07-01",
-          "share": 0.33911
+          "share": 0.33886
         },
         {
           "period": "1997-07-01",
-          "share": 0.32404
+          "share": 0.32381
         },
         {
           "period": "1998-07-01",
-          "share": 0.32635
+          "share": 0.32633
         },
         {
           "period": "1999-07-01",
-          "share": 0.32334
+          "share": 0.32328
         },
         {
           "period": "2000-07-01",
@@ -2583,23 +2583,23 @@ export const fallbackData = {
         },
         {
           "period": "2001-07-01",
-          "share": 0.3669
+          "share": 0.36689
         },
         {
           "period": "2002-07-01",
-          "share": 0.38603
+          "share": 0.38567
         },
         {
           "period": "2003-07-01",
-          "share": 0.39229
+          "share": 0.39214
         },
         {
           "period": "2004-07-01",
-          "share": 0.40504
+          "share": 0.40506
         },
         {
           "period": "2005-07-01",
-          "share": 0.41728
+          "share": 0.41717
         },
         {
           "period": "2006-07-01",
@@ -2607,79 +2607,79 @@ export const fallbackData = {
         },
         {
           "period": "2007-07-01",
-          "share": 0.39184
+          "share": 0.392
         },
         {
           "period": "2008-07-01",
-          "share": 0.37158
+          "share": 0.37275
         },
         {
           "period": "2009-07-01",
-          "share": 0.34909
+          "share": 0.34954
         },
         {
           "period": "2010-07-01",
-          "share": 0.33031
+          "share": 0.33062
         },
         {
           "period": "2011-07-01",
-          "share": 0.31256
+          "share": 0.31271
         },
         {
           "period": "2012-07-01",
-          "share": 0.29879
+          "share": 0.2984
         },
         {
           "period": "2013-07-01",
-          "share": 0.3024
+          "share": 0.30262
         },
         {
           "period": "2014-07-01",
-          "share": 0.31031
+          "share": 0.31093
         },
         {
           "period": "2015-07-01",
-          "share": 0.32494
+          "share": 0.32565
         },
         {
           "period": "2016-07-01",
-          "share": 0.33485
+          "share": 0.33526
         },
         {
           "period": "2017-07-01",
-          "share": 0.3415
+          "share": 0.3419
         },
         {
           "period": "2018-07-01",
-          "share": 0.34655
+          "share": 0.347
         },
         {
           "period": "2019-07-01",
-          "share": 0.33948
+          "share": 0.34091
         },
         {
           "period": "2020-07-01",
-          "share": 0.33736
+          "share": 0.33921
         },
         {
           "period": "2021-07-01",
-          "share": 0.35505
+          "share": 0.35684
         },
         {
           "period": "2022-07-01",
-          "share": 0.38281
+          "share": 0.38418
         },
         {
           "period": "2023-07-01",
-          "share": 0.39069
+          "share": 0.39203
         },
         {
           "period": "2024-07-01",
-          "share": 0.38427
+          "share": 0.38659
         },
         {
           "period": "2025-07-01",
-          "share": 0.37523
+          "share": 0.37694
         }
       ],
       "bottom50": [
@@ -2689,47 +2689,47 @@ export const fallbackData = {
         },
         {
           "period": "1990-07-01",
-          "share": 0.48085
+          "share": 0.47987
         },
         {
           "period": "1991-07-01",
-          "share": 0.48461
+          "share": 0.48376
         },
         {
           "period": "1992-07-01",
-          "share": 0.49417
+          "share": 0.49346
         },
         {
           "period": "1993-07-01",
-          "share": 0.48612
+          "share": 0.48611
         },
         {
           "period": "1994-07-01",
-          "share": 0.48173
+          "share": 0.4816
         },
         {
           "period": "1995-07-01",
-          "share": 0.50388
+          "share": 0.50387
         },
         {
           "period": "1996-07-01",
-          "share": 0.48795
+          "share": 0.48791
         },
         {
           "period": "1997-07-01",
-          "share": 0.47604
+          "share": 0.47649
         },
         {
           "period": "1998-07-01",
-          "share": 0.48474
+          "share": 0.48472
         },
         {
           "period": "1999-07-01",
-          "share": 0.49145
+          "share": 0.49213
         },
         {
           "period": "2000-07-01",
-          "share": 0.49836
+          "share": 0.49978
         },
         {
           "period": "2001-07-01",
@@ -2737,11 +2737,11 @@ export const fallbackData = {
         },
         {
           "period": "2002-07-01",
-          "share": 0.52952
+          "share": 0.52879
         },
         {
           "period": "2003-07-01",
-          "share": 0.54399
+          "share": 0.54356
         },
         {
           "period": "2004-07-01",
@@ -2749,87 +2749,87 @@ export const fallbackData = {
         },
         {
           "period": "2005-07-01",
-          "share": 0.58268
+          "share": 0.58285
         },
         {
           "period": "2006-07-01",
-          "share": 0.59144
+          "share": 0.5916
         },
         {
           "period": "2007-07-01",
-          "share": 0.57206
+          "share": 0.57222
         },
         {
           "period": "2008-07-01",
-          "share": 0.55603
+          "share": 0.55481
         },
         {
           "period": "2009-07-01",
-          "share": 0.54447
+          "share": 0.54355
         },
         {
           "period": "2010-07-01",
-          "share": 0.54131
+          "share": 0.5413
         },
         {
           "period": "2011-07-01",
-          "share": 0.51071
+          "share": 0.51089
         },
         {
           "period": "2012-07-01",
-          "share": 0.49159
+          "share": 0.49322
         },
         {
           "period": "2013-07-01",
-          "share": 0.49244
+          "share": 0.49677
         },
         {
           "period": "2014-07-01",
-          "share": 0.48713
+          "share": 0.49129
         },
         {
           "period": "2015-07-01",
-          "share": 0.48849
+          "share": 0.4909
         },
         {
           "period": "2016-07-01",
-          "share": 0.48987
+          "share": 0.49128
         },
         {
           "period": "2017-07-01",
-          "share": 0.49089
+          "share": 0.49158
         },
         {
           "period": "2018-07-01",
-          "share": 0.49638
+          "share": 0.4963
         },
         {
           "period": "2019-07-01",
-          "share": 0.50241
+          "share": 0.50072
         },
         {
           "period": "2020-07-01",
-          "share": 0.49347
+          "share": 0.497
         },
         {
           "period": "2021-07-01",
-          "share": 0.4911
+          "share": 0.50083
         },
         {
           "period": "2022-07-01",
-          "share": 0.51141
+          "share": 0.52004
         },
         {
           "period": "2023-07-01",
-          "share": 0.50293
+          "share": 0.51276
         },
         {
           "period": "2024-07-01",
-          "share": 0.48628
+          "share": 0.49888
         },
         {
           "period": "2025-07-01",
-          "share": 0.47222
+          "share": 0.48586
         }
       ]
     }

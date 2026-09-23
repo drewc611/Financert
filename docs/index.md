@@ -10,21 +10,21 @@ actually hold their assets, measured by the Federal Reserve's
 
 > **Descriptive, not advice.** Financert reports what the data says; it does
 > not recommend holdings. Matching the top 1%'s allocation would not reproduce
-> their returns — a sixth of their assets is equity in private businesses they
-> own and operate — and the data says nothing about risk, taxes, time horizon
-> or leverage.
+> their returns — a seventh of their assets is equity in private businesses
+> they own and operate — and the data says nothing about risk, taxes, time
+> horizon or leverage.
 
 ## What the data says
 
-Share of investable assets, Q1 2026:
+Share of investable assets, Q2 2026:
 
 | Asset class | Top 0.1% | Top 1% | Next 9% | Next 40% | Bottom 50% |
 |---|---:|---:|---:|---:|---:|
-| Stocks & mutual funds | 54.2% | 50.3% | 31.3% | 11.3% | 7.1% |
-| Private business equity | 19.0% | 16.0% | 8.0% | 4.2% | 2.0% |
-| Real estate | 7.9% | 11.8% | 22.6% | 40.1% | 58.6% |
-| Pensions & retirement | 1.8% | 5.0% | 19.5% | 26.1% | 14.3% |
-| Cash & deposits | 6.0% | 6.2% | 7.7% | 9.2% | 9.6% |
+| Stocks & mutual funds | 58.9% | 54.5% | 34.3% | 12.6% | 4.6% |
+| Private business equity | 17.4% | 14.7% | 7.6% | 4.1% | 2.1% |
+| Real estate | 7.2% | 11.1% | 21.6% | 39.7% | 59.5% |
+| Pensions & retirement | 1.7% | 4.9% | 19.0% | 26.2% | 15.4% |
+| Cash & deposits | 5.3% | 5.5% | 7.2% | 8.7% | 9.6% |
 
 The wealthiest hold their wealth in businesses and equities; the bottom half
 hold theirs in a house. The pattern sharpens the further up you go.
