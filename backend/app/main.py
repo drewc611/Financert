@@ -6,9 +6,10 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from . import config
 from .config import ALLOW_CREDENTIALS, CORS_ORIGINS
 from .database import init_db
-from .middleware import CacheHeaders, RequestLog, configure_logging
+from .middleware import CacheHeaders, RequestLog, configure_logging, emit_startup_warning
 from .routers import benchmarks, health, portfolio
 from .services import benchmarks as benchmarks_service
 
@@ -24,6 +25,13 @@ It is a descriptive benchmarking tool. It reports what the data says the top
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+    config.check_auth_configuration()
+    if not config.AUTH_ENABLED:
+        emit_startup_warning(
+            "auth_disabled",
+            "FINANCERT_API_TOKEN is not set: every /api/portfolio* route is open to anyone "
+            "who can reach this server. Fine on a laptop; set a token before exposing it.",
+        )
     init_db()
     # The snapshot is an index plus one file per dimension now, so a missing
     # side file is possible in a way it was not when everything lived in one

@@ -106,10 +106,12 @@ inherited.
   every portfolio on the install. Correct for a self-hosted single-household
   tool; wrong for anything multi-tenant. Documented in the README, and real
   accounts are on the backlog rather than implied to exist.
-- **Auth is off when `FINANCERT_API_TOKEN` is unset.** This makes `make run`
-  work with no setup, and is the wrong default for anything exposed.
-  `/healthz` reports `auth_enabled` so a deployment can be checked rather than
-  assumed.
+- **Auth is off when `FINANCERT_API_TOKEN` is unset, in development.** This
+  makes `make run` work with no setup, and is the wrong default for anything
+  exposed, so the app warns at start-up and refuses to start at all under
+  `FINANCERT_ENV=production` (the Docker image) unless
+  `FINANCERT_ALLOW_OPEN_PORTFOLIO=true` opts in. `/healthz` reports
+  `auth_enabled` so a deployment can be checked rather than assumed.
 - **No rate limiting.** Single-user tool, no login to brute-force, and the
   benchmark endpoints serve public data. Would need revisiting before any
   public deployment.

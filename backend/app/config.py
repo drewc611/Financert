@@ -24,12 +24,42 @@ CORS_ORIGINS = [
 ]
 
 # Shared secret for the portfolio endpoints. Unset means no authentication,
-# which is the right default for `make run` on a laptop and the wrong one for
-# anything reachable from outside it -- /healthz reports which mode is active
-# so a deployment can be checked without guessing.
+# which is fine for `make run` on a laptop and wrong for anything reachable
+# from outside it -- /healthz reports which mode is active so a deployment can
+# be checked without guessing. The container image sets FINANCERT_ENV=production,
+# and in that mode the app refuses to start without a token (see
+# check_auth_configuration) unless the open mode is opted into explicitly.
 API_TOKEN = os.getenv("FINANCERT_API_TOKEN", "").strip()
 
 AUTH_ENABLED = bool(API_TOKEN)
+
+# Anything other than "production" is treated as local development.
+IS_PRODUCTION = os.getenv("FINANCERT_ENV", "development").strip().lower() == "production"
+
+# Explicit opt-out for a production-mode install that really is meant to have
+# open portfolio routes (a household server on a network nobody else can reach).
+ALLOW_OPEN_PORTFOLIO = os.getenv("FINANCERT_ALLOW_OPEN_PORTFOLIO", "").strip().lower() in {"1", "true", "yes"}
+
+
+class InsecureConfigurationError(RuntimeError):
+    """The environment asks for a production start with the portfolio routes open."""
+
+
+def check_auth_configuration() -> None:
+    """Refuse a production start with no token, unless open mode was chosen.
+
+    Reads the module attributes at call time so tests can patch them, the same
+    way ``dependencies.require_token`` does.
+    """
+    if AUTH_ENABLED or not IS_PRODUCTION or ALLOW_OPEN_PORTFOLIO:
+        return
+    raise InsecureConfigurationError(
+        "FINANCERT_ENV=production but FINANCERT_API_TOKEN is not set, so every "
+        "/api/portfolio* route would be open to anyone who can reach this server. "
+        "Set FINANCERT_API_TOKEN (for example `openssl rand -hex 32`), or set "
+        "FINANCERT_ALLOW_OPEN_PORTFOLIO=true if open access is intended."
+    )
+
 
 # Credentialed CORS plus a wildcard origin is a combination browsers reject
 # outright, and it would be a real hole if they did not. Only send credentials

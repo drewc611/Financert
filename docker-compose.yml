@@ -10,9 +10,12 @@ services:
       # wildcard-plus-credentials. Add your real origin when deploying.
       FINANCERT_CORS_ORIGINS: "http://localhost:8080,http://127.0.0.1:8080"
       FINANCERT_DATABASE_URL: "sqlite:////data/financert.db"
-      # Uncomment to require a bearer token on every /api/portfolio* route.
-      # Generate one with: openssl rand -hex 32
-      # FINANCERT_API_TOKEN: "replace-me"
+      # The image runs in production mode, which refuses to start without a
+      # token. Export one before `docker compose up`: openssl rand -hex 32
+      # Set FINANCERT_ALLOW_OPEN_PORTFOLIO=true instead only if open portfolio
+      # routes are intended (a network nobody else can reach).
+      FINANCERT_API_TOKEN: "${FINANCERT_API_TOKEN:-}"
+      FINANCERT_ALLOW_OPEN_PORTFOLIO: "${FINANCERT_ALLOW_OPEN_PORTFOLIO:-}"
     volumes:
       - financert-db:/data
     healthcheck:

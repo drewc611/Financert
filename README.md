@@ -67,8 +67,11 @@ npm run dev
 Or the whole stack:
 
 ```bash
+export FINANCERT_API_TOKEN=$(openssl rand -hex 32)   # the API image refuses to start without one
 docker compose up --build   # dashboard :8080, API :8000
 ```
+
+The dashboard has a field for that token under **Your portfolio → API token**.
 
 The dashboard tries the API first and falls back to an embedded snapshot of the
 same Federal Reserve data if it can't reach it (900 ms timeout), so it renders
@@ -250,11 +253,19 @@ FINANCERT_API_TOKEN=$(openssl rand -hex 32)   # gates every /api/portfolio* rout
 FINANCERT_CORS_ORIGINS=https://your.domain    # defaults to localhost only
 ```
 
-- **`FINANCERT_API_TOKEN`** — unset means no authentication, which is right for
-  `make run` on a laptop and wrong for anything reachable from elsewhere. When
-  set, the portfolio routes require `Authorization: Bearer <token>`; the
-  benchmark routes stay open because they serve public Federal Reserve data.
-  The dashboard has a field for the token under **Your portfolio → API token**.
+- **`FINANCERT_API_TOKEN`** — when set, the portfolio routes require
+  `Authorization: Bearer <token>`; the benchmark routes stay open because they
+  serve public Federal Reserve data. The dashboard has a field for the token
+  under **Your portfolio → API token**. Unset means no authentication, which is
+  right for `make run` on a laptop: the app starts, logs a warning, and leaves
+  the portfolio routes open. The Docker image sets `FINANCERT_ENV=production`,
+  and in that mode an unset token is a start-up error.
+- **`FINANCERT_ENV`** — `production` turns the missing-token case into a refusal
+  to start. Anything else (the default) is local development.
+- **`FINANCERT_ALLOW_OPEN_PORTFOLIO`** — `true` lets a production-mode install
+  start with no token, for a household server on a network nobody else can
+  reach. It is an explicit choice, and `/healthz` still reports
+  `auth_enabled: false`.
 - **`FINANCERT_CORS_ORIGINS`** — defaults to the local dev origins (ports 5173,
   4173 and 8080 on both `localhost` and `127.0.0.1`), *not* `*`. Credentials
   are only sent when the list is a real allowlist, since browsers reject

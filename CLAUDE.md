@@ -388,8 +388,11 @@ has.
 ## Auth, and what it is not
 
 `FINANCERT_API_TOKEN` gates every `/api/portfolio*` route (constant-time
-compare, no-op when unset so local dev needs no setup). Benchmark routes stay
-public — they serve public Federal Reserve data.
+compare). When it is unset, development still starts with a warning so local
+dev needs no setup, but with `FINANCERT_ENV=production` (which the image sets)
+the backend refuses to start unless `FINANCERT_ALLOW_OPEN_PORTFOLIO=true` says
+open access is intended. Benchmark routes stay public — they serve public
+Federal Reserve data.
 
 It is a **single shared secret, not a per-user login**: anyone holding it sees
 every portfolio on the install. That fits a self-hosted single-household tool.
@@ -412,3 +415,14 @@ Price feeds, brokerage account linking, returns/performance tracking, and any
 form of recommendation. Also: per-user accounts (see above). Don't "complete"
 these without checking with the user first — each one implies a claim the DFA
 cannot support, or a security model this doesn't have.
+
+## Security rules for AI-assisted changes (binding)
+
+Added by the 2026-09 security audit. Full text and references in
+`docs/security/AI-CODING-GUARDRAILS.md`; findings in `SECURITY-AUDIT-2026-09.md`.
+
+- Never write a literal secret, token, password or API key anywhere in the repo. Read it from the environment and **fail closed** when it is missing (`os.environ["X"]`, `${X:?required}`). No `getenv("X", "dev-secret")`, no `|| "changeme"`, no `${X:-password}`.
+- Never emit placeholder credentials (`change-me`, `dev-secret`, `password123`, `admin123`, `letmein`, `supersecret`). If a value is unknown, leave it required and unset, and say so in the PR.
+- Authentication defaults on. Debug servers (`debug=True`) are never committed. Containers run as a non-root `USER`.
+- Pin every GitHub Action to a full commit SHA; pass `${{ github.event.* }}` through `env:`, never into `run:`.
+- Before committing, run `bash scripts/check-placeholder-secrets.sh` and `gitleaks dir . --config .gitleaks.toml`; both must be clean. CI runs the same checks in `.github/workflows/secret-scan.yml`.
