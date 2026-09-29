@@ -46,10 +46,13 @@ accepted:
   single-household tool. "I used the token and saw someone else's portfolio" is
   the documented behaviour. Real multi-tenancy would need accounts, per-user
   ownership and sessions — a different piece of work.
-- **Authentication is off when `FINANCERT_API_TOKEN` is unset.** That is the
-  right default for `make run` on a laptop and the wrong one for anything
-  reachable from elsewhere. `/healthz` reports which mode is live so a
-  deployment can be checked rather than guessed.
+- **Authentication is off when `FINANCERT_API_TOKEN` is unset, in local
+  development.** That is the right default for `make run` on a laptop, and the
+  app logs a warning at start-up when it applies. With `FINANCERT_ENV=production`
+  (which the Docker image sets) an unset token is a start-up error, unless
+  `FINANCERT_ALLOW_OPEN_PORTFOLIO=true` is set to choose open access on purpose.
+  `/healthz` reports which mode is live so a deployment can be checked rather
+  than guessed.
 - **The benchmark endpoints and MCP tools are open.** They serve public Federal
   Reserve data. There is nothing to protect.
 - **The MCP server has no auth and stores nothing.** Both are deliberate; see

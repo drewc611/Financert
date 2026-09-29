@@ -160,12 +160,17 @@ address before it backs a real submission.
 Not required by any directory — the MCP server is a self-contained subset of
 the same code. If you do host them:
 
-- **Set `FINANCERT_API_TOKEN`.** Without it the portfolio routes are open.
-  `openssl rand -hex 32`. Note what it is not: a single shared secret, so
-  anyone holding it sees every portfolio on the install.
+- **Set `FINANCERT_API_TOKEN`.** Without it the portfolio routes are open, so
+  the image (`FINANCERT_ENV=production`) refuses to start unless you also set
+  `FINANCERT_ALLOW_OPEN_PORTFOLIO=true`. `openssl rand -hex 32`. Note what it
+  is not: a single shared secret, so anyone holding it sees every portfolio on
+  the install.
 - **Set `FINANCERT_CORS_ORIGINS`** to the dashboard's real origin. The default
   is local dev ports, and `*` would silently disable credentialed requests.
-- **Point `FINANCERT_DATABASE_URL` at persistent storage.** The default SQLite
-  file lives in the container and dies with it.
+- **Point `FINANCERT_DATABASE_URL` at persistent storage.** In the image the
+  default is `sqlite:////data/financert.db`; mount a volume at `/data`. The
+  image runs as uid 10001, so a volume created by an earlier root-running image
+  must be handed over once:
+  `docker compose run --rm --user root backend chown -R 10001:10001 /data`.
 - `/healthz` reports whether auth is on, so a deployment can be checked without
   guessing.

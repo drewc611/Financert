@@ -5,11 +5,16 @@ Config is read from the environment at import time, so these tests patch the
 that module at call time, so one patch covers both.
 """
 
+import json
+import logging
+import secrets
+
 import pytest
 from fastapi.testclient import TestClient
 
 from app import config
 from app.main import create_app
+from app.middleware import STARTUP_LOGGER
 
 SAMPLE = {"name": "T", "holdings": [{"asset_class": "deposits", "value": 100}]}
 
@@ -76,6 +81,68 @@ def test_healthz_reports_auth_off(client):
 
 def test_healthz_reports_auth_on(secured_client):
     assert secured_client.get("/healthz").json()["auth_enabled"] is True
+
+
+# --- production start-up guard ----------------------------------------------
+
+
+@pytest.fixture
+def production(monkeypatch):
+    """Production mode with no token and no opt-out: the case the guard exists for."""
+    monkeypatch.setattr(config, "IS_PRODUCTION", True)
+    monkeypatch.setattr(config, "AUTH_ENABLED", False)
+    monkeypatch.setattr(config, "API_TOKEN", "")
+    monkeypatch.setattr(config, "ALLOW_OPEN_PORTFOLIO", False)
+
+
+def test_production_without_a_token_refuses_to_start(production):
+    with pytest.raises(config.InsecureConfigurationError, match="FINANCERT_API_TOKEN"):
+        with TestClient(create_app()):
+            pass
+
+
+def test_production_with_a_token_starts(production, monkeypatch):
+    monkeypatch.setattr(config, "AUTH_ENABLED", True)
+    monkeypatch.setattr(config, "API_TOKEN", secrets.token_hex(16))
+    with TestClient(create_app()) as c:
+        assert c.get("/healthz").json()["auth_enabled"] is True
+
+
+def test_production_open_mode_needs_the_explicit_opt_out(production, monkeypatch):
+    monkeypatch.setattr(config, "ALLOW_OPEN_PORTFOLIO", True)
+    with TestClient(create_app()) as c:
+        assert c.get("/healthz").json()["auth_enabled"] is False
+
+
+def test_the_opt_out_is_read_from_the_environment(monkeypatch):
+    """The two flags are parsed at import, so check the parsing on its own."""
+    import importlib
+
+    monkeypatch.setenv("FINANCERT_ENV", "Production")
+    monkeypatch.delenv("FINANCERT_API_TOKEN", raising=False)
+    monkeypatch.setenv("FINANCERT_ALLOW_OPEN_PORTFOLIO", "true")
+    try:
+        reloaded = importlib.reload(config)
+        assert reloaded.IS_PRODUCTION is True
+        assert reloaded.ALLOW_OPEN_PORTFOLIO is True
+        reloaded.check_auth_configuration()  # does not raise
+    finally:
+        monkeypatch.undo()
+        importlib.reload(config)
+
+
+def test_development_without_a_token_starts_and_warns(monkeypatch, caplog):
+    monkeypatch.setattr(config, "IS_PRODUCTION", False)
+    monkeypatch.setattr(config, "AUTH_ENABLED", False)
+    caplog.set_level(logging.WARNING, logger=STARTUP_LOGGER.name)
+    STARTUP_LOGGER.propagate = True  # configure_logging() detaches it, and caplog sits on the root
+    try:
+        with TestClient(create_app()) as c:
+            assert c.put("/api/portfolio", json=SAMPLE).status_code == 200
+    finally:
+        STARTUP_LOGGER.propagate = False
+    events = [json.loads(r.message) for r in caplog.records if r.name == STARTUP_LOGGER.name]
+    assert [e["event"] for e in events] == ["auth_disabled"]
 
 
 # --- multi-portfolio -------------------------------------------------------

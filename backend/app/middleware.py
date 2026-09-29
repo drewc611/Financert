@@ -25,6 +25,9 @@ from .services import benchmarks
 from .time_utils import utcnow
 
 LOGGER = logging.getLogger("financert.request")
+# One-off lifecycle lines get their own logger so the request log stays what
+# the docs say it is: exactly one line per request.
+STARTUP_LOGGER = logging.getLogger("financert.startup")
 
 # A caller-supplied id is echoed back and written to the log, so it is bounded
 # and restricted to characters a trace id actually uses. A malformed one is
@@ -45,13 +48,14 @@ def configure_logging() -> None:
     that trip intact. Idempotent -- create_app() runs once per test client.
     """
     level = logging.getLevelNamesMapping().get(os.getenv("FINANCERT_LOG_LEVEL", "INFO").upper(), logging.INFO)
-    LOGGER.setLevel(level)
-    if not LOGGER.handlers:
-        handler = logging.StreamHandler(sys.stdout)
-        handler.setFormatter(logging.Formatter("%(message)s"))
-        LOGGER.addHandler(handler)
-    # Otherwise the root handler prints the same line again, unformatted.
-    LOGGER.propagate = False
+    for logger in (LOGGER, STARTUP_LOGGER):
+        logger.setLevel(level)
+        if not logger.handlers:
+            handler = logging.StreamHandler(sys.stdout)
+            handler.setFormatter(logging.Formatter("%(message)s"))
+            logger.addHandler(handler)
+        # Otherwise the root handler prints the same line again, unformatted.
+        logger.propagate = False
 
 
 class RequestLog(BaseHTTPMiddleware):
@@ -160,3 +164,14 @@ def _matches(header: str, etag: str) -> bool:
     """
     tags = {part.strip().removeprefix("W/") for part in header.split(",") if part.strip()}
     return "*" in tags or etag in tags
+
+
+def emit_startup_warning(event: str, message: str) -> None:
+    """A one-off warning in the same JSON-per-line shape as the request log."""
+    line = {
+        "ts": f"{utcnow().isoformat(timespec='milliseconds')}Z",
+        "level": "warning",
+        "event": event,
+        "message": message,
+    }
+    STARTUP_LOGGER.warning(json.dumps(line, separators=(",", ":")))

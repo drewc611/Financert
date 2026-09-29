@@ -21,7 +21,8 @@ def require_token(authorization: str = Header(default="")) -> None:
     """Guard the portfolio endpoints with a shared bearer token.
 
     A no-op when ``FINANCERT_API_TOKEN`` is unset, so local development needs
-    no setup. The benchmark endpoints are deliberately left open -- they serve
+    no setup; ``config.check_auth_configuration`` stops a production start in
+    that state unless open access was chosen explicitly. The benchmark endpoints are deliberately left open -- they serve
     public Federal Reserve data and nothing user-specific.
     """
     # Read through the module so there is one place to configure (and patch).
