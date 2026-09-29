@@ -388,8 +388,11 @@ has.
 ## Auth, and what it is not
 
 `FINANCERT_API_TOKEN` gates every `/api/portfolio*` route (constant-time
-compare, no-op when unset so local dev needs no setup). Benchmark routes stay
-public — they serve public Federal Reserve data.
+compare). When it is unset, development still starts with a warning so local
+dev needs no setup, but with `FINANCERT_ENV=production` (which the image sets)
+the backend refuses to start unless `FINANCERT_ALLOW_OPEN_PORTFOLIO=true` says
+open access is intended. Benchmark routes stay public — they serve public
+Federal Reserve data.
 
 It is a **single shared secret, not a per-user login**: anyone holding it sees
 every portfolio on the install. That fits a self-hosted single-household tool.
