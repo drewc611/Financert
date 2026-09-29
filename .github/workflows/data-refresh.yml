@@ -14,9 +14,8 @@ on:
     - cron: "23 7 * * 3"
   workflow_dispatch:
 
-permissions:
-  contents: write
-  pull-requests: write
+# Nothing by default; the one job below asks for what it needs.
+permissions: {}
 
 concurrency:
   group: data-refresh
@@ -25,9 +24,14 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    # contents: write pushes the proposal branch, pull-requests: write opens
+    # and closes the pull requests. Nothing else is granted.
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.11"
           cache: pip
@@ -74,8 +78,10 @@ jobs:
 
       - name: Nothing to do
         if: steps.after.outputs.checksum == steps.before.outputs.checksum
+        env:
+          CHECKSUM: ${{ steps.after.outputs.checksum }}
         run: |
-          echo "The published archive is unchanged (sha256 starts ${{ steps.after.outputs.checksum }})."
+          echo "The published archive is unchanged (sha256 starts $CHECKSUM)."
           git checkout -- backend/data frontend/src/lib/fallbackData.js
 
       - name: Open a pull request
@@ -87,22 +93,22 @@ jobs:
           CHECKSUM: ${{ steps.after.outputs.checksum }}
         run: |
           set -euo pipefail
-          BRANCH=data/refresh
+          # One branch per archive, so a plain push always works: no branch is
+          # ever rewritten. The same archive seen again next week has its
+          # branch already, which means its pull request already exists.
+          BRANCH="data/refresh-${CHECKSUM:0:12}"
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null; then
+            echo "$BRANCH already exists; a pull request for this archive was opened earlier."
+            exit 0
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -c "$BRANCH"
           git add backend/data frontend/src/lib/fallbackData.js
           git commit -m "Refresh the DFA snapshot ($BEFORE_PERIOD -> $AFTER_PERIOD)"
-          # Force-push: this branch is a rolling proposal, and a stale one from
-          # an earlier week has nothing worth keeping.
-          git push --force origin "$BRANCH"
+          git push origin "$BRANCH"
 
-          if [ -n "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[].number')" ]; then
-            echo "A refresh pull request is already open; it now carries the newest data."
-            exit 0
-          fi
-
-          gh pr create --head "$BRANCH" --base main \
+          NEW_PR="$(gh pr create --head "$BRANCH" --base main \
             --title "Data refresh: $AFTER_PERIOD" \
             --body "$(cat <<BODY
           The Fed's published archive no longer matches the committed snapshot.
@@ -131,4 +137,12 @@ jobs:
 
           Opened by [data-refresh.yml](.github/workflows/data-refresh.yml).
           BODY
-          )"
+          )")"
+
+          # An older refresh proposal is out of date the moment a newer archive
+          # exists, so close it rather than leave two competing diffs open.
+          export BRANCH
+          for old in $(gh pr list --state open --json number,headRefName \
+              --jq '.[] | select(.headRefName | startswith("data/refresh")) | select(.headRefName != env.BRANCH) | .number'); do
+            gh pr close "$old" --delete-branch --comment "Superseded by $NEW_PR"
+          done
